@@ -14,7 +14,10 @@ COPY . .
 
 # NEXT_PUBLIC_* vars are inlined into the client bundle at build time, so this
 # must be passed as a build ARG, not just a runtime -e/environment var.
-ARG NEXT_PUBLIC_API_URL="http://localhost:4000"
+# Default below is derived from the Cloud Run URL pattern
+# (audit-bench-app-<project>.<region>.run.app) — confirm it matches the
+# backend service's actual URL and correct it if not.
+ARG NEXT_PUBLIC_API_URL="https://audit-bench-backend-git-242355763105.europe-west1.run.app"
 ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
 RUN npm run build
 
