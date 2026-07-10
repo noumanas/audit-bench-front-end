@@ -7,6 +7,7 @@ import {
   connectGitlab,
   disconnectGitlab,
   getGitlabStatus,
+  listGitlabBranches,
   listGitlabProjects,
   reviewGitlabMr,
   scanGitlabProject,
@@ -26,6 +27,10 @@ export function GitlabPanel({ onScanStarted }: { onScanStarted: (scanId: string)
   const [mrFormProject, setMrFormProject] = useState<number | null>(null);
   const [mrIid, setMrIid] = useState('');
   const [reviewingMr, setReviewingMr] = useState<number | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [branchesByProject, setBranchesByProject] = useState<Record<number, string[]>>({});
+  const [selectedBranch, setSelectedBranch] = useState<Record<number, string>>({});
+  const [loadingBranches, setLoadingBranches] = useState<number | null>(null);
 
   const loadProjects = async () => {
     setLoadingProjects(true);
@@ -80,12 +85,26 @@ export function GitlabPanel({ onScanStarted }: { onScanStarted: (scanId: string)
     }
   };
 
+  const loadBranches = async (project: GitlabProject) => {
+    if (branchesByProject[project.id] || loadingBranches === project.id) return;
+    setLoadingBranches(project.id);
+    try {
+      const branches = await listGitlabBranches(project.id);
+      setBranchesByProject((prev) => ({ ...prev, [project.id]: branches }));
+    } catch {
+      // Non-critical — the default branch option still works for scanning.
+    } finally {
+      setLoadingBranches(null);
+    }
+  };
+
   const handleScan = async (project: GitlabProject) => {
     setScanningProject(project.id);
     setError(null);
     setNeedsUpgrade(false);
     try {
-      const job = await scanGitlabProject(project.id, project.defaultBranch, project.pathWithNamespace);
+      const ref = selectedBranch[project.id] || project.defaultBranch;
+      const job = await scanGitlabProject(project.id, ref, project.pathWithNamespace);
       onScanStarted(job.id);
     } catch (err) {
       if (err instanceof ApiError && (err.status === 429 || err.status === 403)) {
@@ -135,6 +154,11 @@ export function GitlabPanel({ onScanStarted }: { onScanStarted: (scanId: string)
   if (!status) {
     return <div className="text-xs text-muted-on-ink">Loading GitLab connection…</div>;
   }
+
+  const query = searchQuery.trim().toLowerCase();
+  const filteredProjects = query
+    ? projects.filter((p) => `${p.pathWithNamespace} ${p.description ?? ''}`.toLowerCase().includes(query))
+    : projects;
 
   return (
     <div className="rounded-lg border border-ink-line bg-ink-soft p-4">
@@ -192,8 +216,19 @@ export function GitlabPanel({ onScanStarted }: { onScanStarted: (scanId: string)
           )}
 
           {!loadingProjects && projects.length > 0 && (
-            <div className="max-h-80 space-y-1.5 overflow-y-auto pr-1">
-              {projects.map((project) => (
+            <>
+              <input
+                type="search"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search projects…"
+                className="mb-2 w-full rounded-md border border-ink-line bg-ink px-3 py-1.5 text-sm text-[#E8ECF4] outline-none placeholder:text-muted-on-ink"
+              />
+              {filteredProjects.length === 0 && (
+                <div className="text-xs text-muted-on-ink">No projects match &ldquo;{searchQuery}&rdquo;.</div>
+              )}
+              <div className="max-h-80 space-y-1.5 overflow-y-auto pr-1">
+              {filteredProjects.map((project) => (
                 <div key={project.id} className="rounded-md border border-ink-line bg-ink px-3 py-2">
                   <div className="flex items-center gap-3">
                     <div className="min-w-0 flex-1">
@@ -226,6 +261,30 @@ export function GitlabPanel({ onScanStarted }: { onScanStarted: (scanId: string)
                     </button>
                   </div>
 
+                  <div className="mt-2 flex items-center gap-2 border-t border-ink-line pt-2">
+                    <label htmlFor={`branch-${project.id}`} className="text-xs text-muted-on-ink">
+                      Branch
+                    </label>
+                    <select
+                      id={`branch-${project.id}`}
+                      value={selectedBranch[project.id] ?? project.defaultBranch}
+                      onFocus={() => loadBranches(project)}
+                      onChange={(e) =>
+                        setSelectedBranch((prev) => ({ ...prev, [project.id]: e.target.value }))
+                      }
+                      className="max-w-[160px] rounded-md border border-ink-line bg-ink-soft px-2 py-1 font-mono text-[12px] text-[#E8ECF4] outline-none"
+                    >
+                      {(branchesByProject[project.id] ?? [project.defaultBranch]).map((b) => (
+                        <option key={b} value={b}>
+                          {b}
+                        </option>
+                      ))}
+                    </select>
+                    {loadingBranches === project.id && (
+                      <span className="text-xs text-muted-on-ink">Loading branches…</span>
+                    )}
+                  </div>
+
                   {mrFormProject === project.id && (
                     <div className="mt-2 flex flex-wrap items-center gap-2 border-t border-ink-line pt-2">
                       <span className="text-xs text-muted-on-ink">MR !</span>
@@ -249,7 +308,8 @@ export function GitlabPanel({ onScanStarted }: { onScanStarted: (scanId: string)
                   )}
                 </div>
               ))}
-            </div>
+              </div>
+            </>
           )}
         </div>
       )}

@@ -207,6 +207,12 @@ export function listGithubRepos(): Promise<GithubRepo[]> {
   );
 }
 
+export function listGithubBranches(owner: string, repo: string): Promise<string[]> {
+  return fetch(`${API_URL}/github/repos/${owner}/${repo}/branches`, { headers: authHeaders() }).then(
+    (res) => unwrap<string[]>(res),
+  );
+}
+
 export function scanGithubRepo(
   owner: string,
   repo: string,
@@ -259,6 +265,12 @@ export function disconnectGitlab(): Promise<void> {
 export function listGitlabProjects(): Promise<GitlabProject[]> {
   return fetch(`${API_URL}/gitlab/projects`, { headers: authHeaders() }).then(
     (res) => unwrap<GitlabProject[]>(res),
+  );
+}
+
+export function listGitlabBranches(projectId: number): Promise<string[]> {
+  return fetch(`${API_URL}/gitlab/projects/${projectId}/branches`, { headers: authHeaders() }).then(
+    (res) => unwrap<string[]>(res),
   );
 }
 

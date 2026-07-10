@@ -7,6 +7,7 @@ import {
   connectGithub,
   disconnectGithub,
   getGithubStatus,
+  listGithubBranches,
   listGithubRepos,
   reviewGithubPr,
   scanGithubRepo,
@@ -26,6 +27,10 @@ export function GithubPanel({ onScanStarted }: { onScanStarted: (scanId: string)
   const [prFormRepo, setPrFormRepo] = useState<string | null>(null);
   const [prNumber, setPrNumber] = useState('');
   const [reviewingPr, setReviewingPr] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [branchesByRepo, setBranchesByRepo] = useState<Record<string, string[]>>({});
+  const [selectedBranch, setSelectedBranch] = useState<Record<string, string>>({});
+  const [loadingBranches, setLoadingBranches] = useState<string | null>(null);
 
   const loadRepos = async () => {
     setLoadingRepos(true);
@@ -80,12 +85,26 @@ export function GithubPanel({ onScanStarted }: { onScanStarted: (scanId: string)
     }
   };
 
+  const loadBranches = async (repo: GithubRepo) => {
+    if (branchesByRepo[repo.fullName] || loadingBranches === repo.fullName) return;
+    setLoadingBranches(repo.fullName);
+    try {
+      const branches = await listGithubBranches(repo.owner, repo.name);
+      setBranchesByRepo((prev) => ({ ...prev, [repo.fullName]: branches }));
+    } catch {
+      // Non-critical — the default branch option still works for scanning.
+    } finally {
+      setLoadingBranches(null);
+    }
+  };
+
   const handleScan = async (repo: GithubRepo) => {
     setScanningRepo(repo.fullName);
     setError(null);
     setNeedsUpgrade(false);
     try {
-      const job = await scanGithubRepo(repo.owner, repo.name, repo.defaultBranch);
+      const ref = selectedBranch[repo.fullName] || repo.defaultBranch;
+      const job = await scanGithubRepo(repo.owner, repo.name, ref);
       onScanStarted(job.id);
     } catch (err) {
       if (err instanceof ApiError && (err.status === 429 || err.status === 403)) {
@@ -135,6 +154,11 @@ export function GithubPanel({ onScanStarted }: { onScanStarted: (scanId: string)
   if (!status) {
     return <div className="text-xs text-muted-on-ink">Loading GitHub connection…</div>;
   }
+
+  const query = searchQuery.trim().toLowerCase();
+  const filteredRepos = query
+    ? repos.filter((r) => `${r.fullName} ${r.description ?? ''}`.toLowerCase().includes(query))
+    : repos;
 
   return (
     <div className="rounded-lg border border-ink-line bg-ink-soft p-4">
@@ -193,8 +217,19 @@ export function GithubPanel({ onScanStarted }: { onScanStarted: (scanId: string)
           )}
 
           {!loadingRepos && repos.length > 0 && (
-            <div className="max-h-80 space-y-1.5 overflow-y-auto pr-1">
-              {repos.map((repo) => (
+            <>
+              <input
+                type="search"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search repositories…"
+                className="mb-2 w-full rounded-md border border-ink-line bg-ink px-3 py-1.5 text-sm text-[#E8ECF4] outline-none placeholder:text-muted-on-ink"
+              />
+              {filteredRepos.length === 0 && (
+                <div className="text-xs text-muted-on-ink">No repositories match &ldquo;{searchQuery}&rdquo;.</div>
+              )}
+              <div className="max-h-80 space-y-1.5 overflow-y-auto pr-1">
+              {filteredRepos.map((repo) => (
                 <div key={repo.id} className="rounded-md border border-ink-line bg-ink px-3 py-2">
                   <div className="flex items-center gap-3">
                     <div className="min-w-0 flex-1">
@@ -227,6 +262,30 @@ export function GithubPanel({ onScanStarted }: { onScanStarted: (scanId: string)
                     </button>
                   </div>
 
+                  <div className="mt-2 flex items-center gap-2 border-t border-ink-line pt-2">
+                    <label htmlFor={`branch-${repo.id}`} className="text-xs text-muted-on-ink">
+                      Branch
+                    </label>
+                    <select
+                      id={`branch-${repo.id}`}
+                      value={selectedBranch[repo.fullName] ?? repo.defaultBranch}
+                      onFocus={() => loadBranches(repo)}
+                      onChange={(e) =>
+                        setSelectedBranch((prev) => ({ ...prev, [repo.fullName]: e.target.value }))
+                      }
+                      className="max-w-[160px] rounded-md border border-ink-line bg-ink-soft px-2 py-1 font-mono text-[12px] text-[#E8ECF4] outline-none"
+                    >
+                      {(branchesByRepo[repo.fullName] ?? [repo.defaultBranch]).map((b) => (
+                        <option key={b} value={b}>
+                          {b}
+                        </option>
+                      ))}
+                    </select>
+                    {loadingBranches === repo.fullName && (
+                      <span className="text-xs text-muted-on-ink">Loading branches…</span>
+                    )}
+                  </div>
+
                   {prFormRepo === repo.fullName && (
                     <div className="mt-2 flex flex-wrap items-center gap-2 border-t border-ink-line pt-2">
                       <span className="text-xs text-muted-on-ink">PR #</span>
@@ -250,7 +309,8 @@ export function GithubPanel({ onScanStarted }: { onScanStarted: (scanId: string)
                   )}
                 </div>
               ))}
-            </div>
+              </div>
+            </>
           )}
         </div>
       )}
