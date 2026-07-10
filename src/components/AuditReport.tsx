@@ -12,7 +12,7 @@ export function AuditReport({ audit }: { audit: Audit }) {
 
   return (
     <div className="mx-auto max-w-2xl">
-      <div className="mb-3.5 flex items-center gap-3">
+      <div className="mb-3.5 flex flex-wrap items-center gap-3">
         <VerdictBadge verdict={audit.verdict} />
         <PipelineBadge aiInvoked={audit.aiInvoked} fromCache={audit.fromCache} />
         <span className="font-mono text-xs text-muted-on-paper">

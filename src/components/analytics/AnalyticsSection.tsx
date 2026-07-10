@@ -62,7 +62,7 @@ export function AnalyticsSection() {
 
       {overview && trend && (
         <>
-          <div className="mb-4 grid grid-cols-3 gap-3">
+          <div className="mb-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
             <ScoreCard label="Security" score={overview.scores.security} hint="Weighted by severity across audits & scans" />
             <ScoreCard label="Performance" score={overview.scores.performance} hint="Performance findings in this window" />
             <ScoreCard label="Technical debt" score={overview.scores.technicalDebt} hint="Maintainability, architecture, duplication" />
@@ -73,7 +73,7 @@ export function AnalyticsSection() {
             <ScoreTrendChart points={trend.points} />
           </div>
 
-          <div className="mb-4 grid grid-cols-2 gap-3">
+          <div className="mb-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
             <div className="rounded-lg border border-ink-line bg-ink-soft p-4">
               <h3 className="mb-3 font-mono text-[11px] tracking-wide text-muted-on-ink uppercase">Activity</h3>
               <ActivityBarChart points={trend.points} />
@@ -117,7 +117,7 @@ export function AnalyticsSection() {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <div className="rounded-lg border border-ink-line bg-ink-soft p-4">
               <h3 className="mb-3 font-mono text-[11px] tracking-wide text-muted-on-ink uppercase">Most common issues</h3>
               {overview.topIssues.length === 0 ? (

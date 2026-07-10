@@ -10,7 +10,7 @@ export function VerdictBadge({ verdict }: { verdict: Verdict }) {
   const s = STYLES[verdict] ?? STYLES.needs_work;
   return (
     <span
-      className={`${s.className} rounded-md px-3 py-1.5 font-mono text-[13px] font-bold tracking-wide text-white uppercase`}
+      className={`${s.className} shrink-0 rounded-md px-3 py-1.5 font-mono text-[13px] font-bold tracking-wide text-white uppercase whitespace-nowrap`}
     >
       {s.label}
     </span>

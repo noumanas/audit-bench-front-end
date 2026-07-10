@@ -157,12 +157,14 @@ export function RepositoryReport({ scan }: { scan: ScanJob }) {
                 <div key={f.id} className="rounded-lg border border-paper-line">
                   <button
                     onClick={() => setOpenFilePath(openFilePath === f.path ? null : f.path)}
-                    className="flex w-full cursor-pointer items-center gap-2.5 px-3.5 py-2.5 text-left"
+                    className="flex w-full cursor-pointer flex-col gap-1.5 px-3.5 py-2.5 text-left"
                   >
-                    {f.verdict && <VerdictBadge verdict={f.verdict} />}
-                    <PipelineBadge aiInvoked={f.aiInvoked} fromCache={f.fromCache} />
-                    <span className="flex-1 truncate font-mono text-[13px] text-[#1C2128]">{f.path}</span>
-                    <span className="text-xs text-muted-on-paper">{f.findings.length} finding(s)</span>
+                    <span className="truncate font-mono text-[13px] text-[#1C2128]">{f.path}</span>
+                    <div className="flex items-center gap-2.5">
+                      {f.verdict && <VerdictBadge verdict={f.verdict} />}
+                      <PipelineBadge aiInvoked={f.aiInvoked} fromCache={f.fromCache} />
+                      <span className="ml-auto text-xs text-muted-on-paper">{f.findings.length} finding(s)</span>
+                    </div>
                   </button>
                   {openFilePath === f.path && (
                     <div className="border-t border-paper-line bg-paper p-3">

@@ -227,7 +227,7 @@ export function GitlabPanel({ onScanStarted }: { onScanStarted: (scanId: string)
                   </div>
 
                   {mrFormProject === project.id && (
-                    <div className="mt-2 flex items-center gap-2 border-t border-ink-line pt-2">
+                    <div className="mt-2 flex flex-wrap items-center gap-2 border-t border-ink-line pt-2">
                       <span className="text-xs text-muted-on-ink">MR !</span>
                       <input
                         type="number"

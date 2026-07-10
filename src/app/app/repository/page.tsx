@@ -80,7 +80,7 @@ export default function RepositoryPage() {
         </div>
 
         {source === 'upload' && (
-          <div className="mb-6 flex items-center gap-3 rounded-lg border border-ink-line bg-ink-soft p-4">
+          <div className="mb-6 flex flex-col items-stretch gap-3 rounded-lg border border-ink-line bg-ink-soft p-4 sm:flex-row sm:items-center">
             <input
               type="file"
               accept=".zip"

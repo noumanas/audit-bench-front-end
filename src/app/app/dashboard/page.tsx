@@ -72,21 +72,21 @@ export default function DashboardPage() {
               <Link
                 key={a.id}
                 href={`/app/audit/${a.id}`}
-                className="flex items-center gap-3 border-b border-ink-line bg-ink-soft px-4 py-3 last:border-b-0 hover:bg-ink-line"
+                className="flex flex-col gap-1.5 border-b border-ink-line bg-ink-soft px-4 py-3 last:border-b-0 hover:bg-ink-line"
               >
-                <VerdictBadge verdict={a.verdict} />
-                <span className="flex-1 truncate font-mono text-[13px] text-[#E8ECF4]">
-                  {a.filename}
-                </span>
-                <span className="font-mono text-xs text-muted-on-ink">
-                  {(['critical', 'high', 'medium', 'low'] as const)
-                    .filter((s) => counts[s])
-                    .map((s) => `${counts[s]} ${s}`)
-                    .join(' · ') || 'clean'}
-                </span>
-                <span className="text-xs text-muted-on-ink">
-                  {new Date(a.createdAt).toLocaleString()}
-                </span>
+                <span className="truncate font-mono text-[13px] text-[#E8ECF4]">{a.filename}</span>
+                <div className="flex flex-wrap items-center gap-2">
+                  <VerdictBadge verdict={a.verdict} />
+                  <span className="font-mono text-xs text-muted-on-ink">
+                    {(['critical', 'high', 'medium', 'low'] as const)
+                      .filter((s) => counts[s])
+                      .map((s) => `${counts[s]} ${s}`)
+                      .join(' · ') || 'clean'}
+                  </span>
+                  <span className="ml-auto text-xs text-muted-on-ink">
+                    {new Date(a.createdAt).toLocaleString()}
+                  </span>
+                </div>
               </Link>
             );
           })}
@@ -105,25 +105,25 @@ export default function DashboardPage() {
             <Link
               key={s.id}
               href={`/app/repository/${s.id}`}
-              className="flex items-center gap-3 border-b border-ink-line bg-ink-soft px-4 py-3 last:border-b-0 hover:bg-ink-line"
+              className="flex flex-col gap-1.5 border-b border-ink-line bg-ink-soft px-4 py-3 last:border-b-0 hover:bg-ink-line"
             >
-              {s.verdict ? (
-                <VerdictBadge verdict={s.verdict} />
-              ) : (
-                <span className="rounded bg-muted-on-ink px-2 py-0.5 font-mono text-[11px] font-bold text-white uppercase">
-                  {s.status}
+              <span className="truncate font-mono text-[13px] text-[#E8ECF4]">{s.sourceName}</span>
+              <div className="flex flex-wrap items-center gap-2">
+                {s.verdict ? (
+                  <VerdictBadge verdict={s.verdict} />
+                ) : (
+                  <span className="shrink-0 rounded bg-muted-on-ink px-2 py-0.5 font-mono text-[11px] font-bold whitespace-nowrap text-white uppercase">
+                    {s.status}
+                  </span>
+                )}
+                <span className="text-xs text-muted-on-ink">{s.framework || 'unknown framework'}</span>
+                <span className="text-xs text-muted-on-ink">
+                  {s.filesScanned}/{s.fileCount} files
                 </span>
-              )}
-              <span className="flex-1 truncate font-mono text-[13px] text-[#E8ECF4]">
-                {s.sourceName}
-              </span>
-              <span className="text-xs text-muted-on-ink">{s.framework || 'unknown framework'}</span>
-              <span className="text-xs text-muted-on-ink">
-                {s.filesScanned}/{s.fileCount} files
-              </span>
-              <span className="text-xs text-muted-on-ink">
-                {new Date(s.createdAt).toLocaleString()}
-              </span>
+                <span className="ml-auto text-xs text-muted-on-ink">
+                  {new Date(s.createdAt).toLocaleString()}
+                </span>
+              </div>
             </Link>
           ))}
         </div>

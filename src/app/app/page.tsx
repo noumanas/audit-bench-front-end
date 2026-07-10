@@ -161,12 +161,12 @@ export default function AuditPage() {
 
   return (
     <RequireAuth>
-    <div className="flex min-h-[calc(100vh-60px)] flex-wrap">
+    <div className="flex min-h-[calc(100vh-60px)] flex-col md:flex-row">
       {/* Left: code specimen */}
-      <section className="flex flex-1 basis-[420px] flex-col gap-3.5 bg-ink p-6">
+      <section className="flex flex-1 flex-col gap-3.5 bg-ink p-6 md:basis-[420px]">
         <UsageBar refreshKey={usageRefresh} />
 
-        <div className="flex items-center gap-2.5">
+        <div className="flex flex-wrap items-center gap-2.5">
           <input
             value={filename}
             onChange={(e) => setFilename(e.target.value)}
