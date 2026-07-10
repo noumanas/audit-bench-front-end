@@ -1,6 +1,14 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Footer } from '@/components/Footer';
 import { PricingTeaser } from '@/components/PricingTeaser';
+
+export const metadata: Metadata = {
+  title: 'AI code review before it ships',
+  description:
+    'Combine LLM reasoning with static analysis to catch security holes, logic bugs, and framework misuse — on a single file, a pull request, or a whole repository.',
+  alternates: { canonical: '/' },
+};
 
 const STATS = [
   { value: '5', label: 'Review lenses per audit' },

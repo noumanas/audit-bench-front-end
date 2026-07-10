@@ -1,5 +1,13 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Footer } from '@/components/Footer';
+
+export const metadata: Metadata = {
+  title: 'About',
+  description:
+    'Code review built for the way code gets written now — AI reasoning paired with static analysis, reviewed with the rigor of a careful senior engineer.',
+  alternates: { canonical: '/about' },
+};
 
 const USERS = [
   'Individual developers',

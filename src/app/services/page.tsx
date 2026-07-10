@@ -1,5 +1,13 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Footer } from '@/components/Footer';
+
+export const metadata: Metadata = {
+  title: 'Services',
+  description:
+    'Everything one audit checks: security coverage, repository-wide dependency and dead-code analysis, and structured, actionable findings.',
+  alternates: { canonical: '/services' },
+};
 
 const SECURITY_COVERAGE = [
   'SQL Injection', 'XSS', 'CSRF', 'SSRF', 'JWT / auth issues', 'Hardcoded secrets', 'OWASP Top 10',
