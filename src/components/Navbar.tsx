@@ -89,7 +89,12 @@ export function Navbar() {
   const { user, loading, logout } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
   const isAppSection = pathname.startsWith('/app');
-  const links = isAppSection ? APP_LINKS : MARKETING_LINKS;
+  const isAdmin = user?.role === 'admin' || user?.role === 'super_admin';
+  const links = isAppSection
+    ? isAdmin
+      ? [...APP_LINKS, { href: '/app/admin', label: 'Admin' }]
+      : APP_LINKS
+    : MARKETING_LINKS;
 
   const handleLogout = () => {
     setMenuOpen(false);

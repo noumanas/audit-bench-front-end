@@ -2,6 +2,8 @@ export type Severity = 'critical' | 'high' | 'medium' | 'low';
 export type Verdict = 'pass' | 'needs_work' | 'do_not_ship';
 export type ScanStatus = 'queued' | 'processing' | 'completed' | 'failed';
 export type ScanSourceType = 'zip' | 'github_repo' | 'github_pr' | 'gitlab_repo' | 'gitlab_mr';
+export type Role = 'user' | 'admin' | 'super_admin';
+export type PlanRequestStatus = 'pending' | 'approved' | 'rejected';
 
 export interface Plan {
   id: string;
@@ -19,6 +21,42 @@ export interface User {
   name: string | null;
   createdAt: string;
   plan: Plan;
+  role: Role;
+}
+
+export interface PlanRequestUserSummary {
+  id: string;
+  email: string;
+  name: string | null;
+}
+
+export interface PlanRequest {
+  id: string;
+  status: PlanRequestStatus;
+  requestedPlan: Plan;
+  // Present on admin listings (GET /admin/plan-requests), absent on a
+  // user's own listing (GET /me/plan-requests) — already scoped to them.
+  user?: PlanRequestUserSummary;
+  reviewedBy: PlanRequestUserSummary | null;
+  note: string | null;
+  createdAt: string;
+  reviewedAt: string | null;
+}
+
+export interface ChangePlanResult {
+  applied: boolean;
+  user?: User;
+  request?: PlanRequest;
+}
+
+export interface AdminUser {
+  id: string;
+  email: string;
+  name: string | null;
+  createdAt: string;
+  plan: Plan;
+  role: Role;
+  githubUsername: string | null;
 }
 
 export interface Usage {

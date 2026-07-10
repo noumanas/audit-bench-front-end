@@ -1,12 +1,15 @@
 import {
+  AdminUser,
   AnalyticsOverview,
   AnalyticsTrend,
   Audit,
+  ChangePlanResult,
   GithubRepo,
   GithubStatus,
   GitlabProject,
   GitlabStatus,
   Plan,
+  PlanRequest,
   ScanJob,
   Usage,
   User,
@@ -109,16 +112,60 @@ export function getUsage(): Promise<Usage> {
   );
 }
 
-export function changePlan(slug: string): Promise<User> {
+export function changePlan(slug: string): Promise<ChangePlanResult> {
   return fetch(`${API_URL}/me/plan`, {
     method: "POST",
     headers: { "Content-Type": "application/json", ...authHeaders() },
     body: JSON.stringify({ slug }),
-  }).then((res) => unwrap<User>(res));
+  }).then((res) => unwrap<ChangePlanResult>(res));
+}
+
+export function getMyPlanRequests(): Promise<PlanRequest[]> {
+  return fetch(`${API_URL}/me/plan-requests`, { headers: authHeaders() }).then((res) =>
+    unwrap<PlanRequest[]>(res),
+  );
 }
 
 export function listPlans(): Promise<Plan[]> {
   return fetch(`${API_URL}/plans`).then((res) => unwrap<Plan[]>(res));
+}
+
+// ---------- Admin ----------
+
+export function listAdminUsers(): Promise<AdminUser[]> {
+  return fetch(`${API_URL}/admin/users`, { headers: authHeaders() }).then((res) =>
+    unwrap<AdminUser[]>(res),
+  );
+}
+
+export function listAdminPlanRequests(status?: string): Promise<PlanRequest[]> {
+  const query = status ? `?status=${encodeURIComponent(status)}` : "";
+  return fetch(`${API_URL}/admin/plan-requests${query}`, { headers: authHeaders() }).then((res) =>
+    unwrap<PlanRequest[]>(res),
+  );
+}
+
+export function approvePlanRequest(id: string): Promise<PlanRequest> {
+  return fetch(`${API_URL}/admin/plan-requests/${id}/approve`, {
+    method: "POST",
+    headers: authHeaders(),
+  }).then((res) => unwrap<PlanRequest>(res));
+}
+
+export function rejectPlanRequest(id: string, note?: string): Promise<PlanRequest> {
+  return fetch(`${API_URL}/admin/plan-requests/${id}/reject`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...authHeaders() },
+    body: JSON.stringify({ note }),
+  }).then((res) => unwrap<PlanRequest>(res));
+}
+
+export function updateUserRole(userId: string, role: string): Promise<AdminUser> {
+  return fetch(`${API_URL}/admin/users/${userId}/role`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...authHeaders() },
+    body: JSON.stringify({ role }),
+  }).then((res) => unwrap<AdminUser>(res));
 }
 
 // ---------- Audits ----------

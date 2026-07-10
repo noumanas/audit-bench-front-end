@@ -1,8 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { getUsage, listPlans, changePlan } from '@/lib/api';
-import { Plan, Usage } from '@/lib/types';
+import { getUsage, listPlans, changePlan, getMyPlanRequests } from '@/lib/api';
+import { Plan, PlanRequest, Usage } from '@/lib/types';
 import { useAuth } from '@/lib/AuthContext';
 
 function formatPrice(cents: number): string {
@@ -14,33 +14,50 @@ function formatLimit(n: number | null): string {
   return n == null ? 'Unlimited' : String(n);
 }
 
+// Mirrors the backend's UsersService.isSelfServicePlan — only used here to
+// pick the right button label; the server is what actually enforces it.
+function isSelfServicePlan(plan: Plan): boolean {
+  return plan.priceMonthlyCents === 0 && plan.slug !== 'enterprise';
+}
+
 export function PlanPanel() {
   const { refreshUser } = useAuth();
   const [usage, setUsage] = useState<Usage | null>(null);
   const [plans, setPlans] = useState<Plan[]>([]);
+  const [planRequests, setPlanRequests] = useState<PlanRequest[]>([]);
   const [switching, setSwitching] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
 
   const load = () => {
-    Promise.all([getUsage(), listPlans()])
-      .then(([u, p]) => {
+    Promise.all([getUsage(), listPlans(), getMyPlanRequests()])
+      .then(([u, p, r]) => {
         setUsage(u);
         setPlans(p);
+        setPlanRequests(r);
       })
       .catch((err) => setError(err instanceof Error ? err.message : 'Failed to load plan info.'));
   };
 
   useEffect(load, []);
 
-  const handleSwitch = async (slug: string) => {
-    setSwitching(slug);
+  const pendingRequest = planRequests.find((r) => r.status === 'pending');
+
+  const handleApply = async (plan: Plan) => {
+    setSwitching(plan.slug);
     setError(null);
+    setNotice(null);
     try {
-      await changePlan(slug);
-      await refreshUser();
-      load();
+      const result = await changePlan(plan.slug);
+      if (result.applied) {
+        await refreshUser();
+        load();
+      } else {
+        setNotice(`Request submitted — ${plan.name} is pending admin approval.`);
+        load();
+      }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to switch plan.');
+      setError(err instanceof Error ? err.message : 'Failed to change plan.');
     } finally {
       setSwitching(null);
     }
@@ -55,6 +72,19 @@ export function PlanPanel() {
       {error && (
         <div className="mb-3 rounded-lg border border-critical/40 bg-critical/10 px-3.5 py-2.5 text-[13px] text-[#F3B7BF]">
           {error}
+        </div>
+      )}
+
+      {notice && (
+        <div className="mb-3 rounded-lg border border-cobalt/40 bg-cobalt/10 px-3.5 py-2.5 text-[13px] text-[#B9CCF7]">
+          {notice}
+        </div>
+      )}
+
+      {pendingRequest && (
+        <div className="mb-3 rounded-lg border border-high/40 bg-high/10 px-3.5 py-2.5 text-[13px] text-[#F0CE9A]">
+          Your request for <strong>{pendingRequest.requestedPlan.name}</strong> is awaiting admin
+          approval (submitted {new Date(pendingRequest.createdAt).toLocaleString()}).
         </div>
       )}
 
@@ -82,6 +112,10 @@ export function PlanPanel() {
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         {plans.map((plan) => {
           const isCurrent = usage?.plan.slug === plan.slug;
+          const selfService = isSelfServicePlan(plan);
+          const isPendingThis = pendingRequest?.requestedPlan.slug === plan.slug;
+          const blockedByOtherPending = Boolean(pendingRequest) && !isPendingThis;
+
           return (
             <div
               key={plan.id}
@@ -103,13 +137,19 @@ export function PlanPanel() {
                 <li>{formatLimit(plan.monthlyAuditLimit)} AI audits/month</li>
                 <li>{plan.repositoryScan ? 'Repository scan' : 'No repository scan'}</li>
               </ul>
-              {!isCurrent && (
+              {!isCurrent && isPendingThis && (
+                <div className="w-full rounded-md border border-high/40 px-2 py-1.5 text-center text-xs font-bold text-high">
+                  Pending approval
+                </div>
+              )}
+              {!isCurrent && !isPendingThis && (
                 <button
-                  onClick={() => handleSwitch(plan.slug)}
-                  disabled={switching !== null}
-                  className="w-full cursor-pointer rounded-md border border-cobalt px-2 py-1.5 text-xs font-bold text-cobalt disabled:cursor-wait disabled:opacity-60"
+                  onClick={() => handleApply(plan)}
+                  disabled={switching !== null || blockedByOtherPending}
+                  title={blockedByOtherPending ? 'You already have a pending plan request' : undefined}
+                  className="w-full cursor-pointer rounded-md border border-cobalt px-2 py-1.5 text-xs font-bold text-cobalt disabled:cursor-not-allowed disabled:opacity-40"
                 >
-                  {switching === plan.slug ? 'Switching…' : 'Switch'}
+                  {switching === plan.slug ? 'Submitting…' : selfService ? 'Switch' : 'Request'}
                 </button>
               )}
             </div>
@@ -117,7 +157,7 @@ export function PlanPanel() {
         })}
       </div>
       <p className="mt-2 text-[11px] text-muted-on-ink">
-        Demo only — plan switching here is self-service and skips real billing.
+        Free switches instantly. Paid plans need admin approval before they take effect.
       </p>
     </div>
   );
