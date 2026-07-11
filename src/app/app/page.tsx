@@ -9,37 +9,9 @@ import { AuditReport } from '@/components/AuditReport';
 import { AuditLoader } from '@/components/AuditLoader';
 import { UsageBar } from '@/components/UsageBar';
 import { RequireAuth } from '@/components/RequireAuth';
+import { monacoLanguageFor } from '@/lib/monacoLanguage';
 
 const MAX_FILE_CHARS = 200_000;
-
-const MONACO_LANGUAGE_BY_EXT: Record<string, string> = {
-  ts: 'typescript',
-  tsx: 'typescript',
-  js: 'javascript',
-  jsx: 'javascript',
-  mjs: 'javascript',
-  cjs: 'javascript',
-  py: 'python',
-  rb: 'ruby',
-  go: 'go',
-  java: 'java',
-  kt: 'kotlin',
-  php: 'php',
-  cs: 'csharp',
-  rs: 'rust',
-  sql: 'sql',
-  json: 'json',
-  yml: 'yaml',
-  yaml: 'yaml',
-  html: 'html',
-  css: 'css',
-  md: 'markdown',
-};
-
-function monacoLanguageFor(filename: string): string {
-  const ext = filename.split('.').pop()?.toLowerCase() ?? '';
-  return MONACO_LANGUAGE_BY_EXT[ext] ?? 'typescript';
-}
 
 const FOCUS_AREAS = [
   { id: 'Security', label: 'Security & OWASP' },

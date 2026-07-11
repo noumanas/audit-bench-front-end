@@ -6,11 +6,16 @@ import { VerdictBadge } from './VerdictBadge';
 import { FindingCard } from './FindingCard';
 import { PipelineBadge } from './PipelineBadge';
 import { Stage1Summary } from './Stage1Summary';
+import { FixInEditorModal } from './FixInEditorModal';
+import { downloadReport } from '@/lib/reportExport';
 
 const DIFF_SOURCE_TYPES = new Set<ScanJob['sourceType']>(['github_pr', 'gitlab_mr']);
+// Fixing requires a remote to commit to — a .zip upload has none.
+const FIXABLE_SOURCE_TYPES = new Set<ScanJob['sourceType']>(['github_repo', 'github_pr', 'gitlab_repo', 'gitlab_mr']);
 
 export function RepositoryReport({ scan }: { scan: ScanJob }) {
   const [openFilePath, setOpenFilePath] = useState<string | null>(null);
+  const [fixingPath, setFixingPath] = useState<string | null>(null);
 
   const progressPct =
     scan.fileCount > 0 ? Math.round((scan.filesScanned / Math.min(scan.fileCount, 9999)) * 100) : 0;
@@ -39,6 +44,22 @@ export function RepositoryReport({ scan }: { scan: ScanJob }) {
           >
             View on {scan.sourceType === 'github_pr' ? 'GitHub' : 'GitLab'}
           </a>
+        )}
+        {scan.status === 'completed' && (
+          <div className="ml-auto flex gap-1.5">
+            <button
+              onClick={() => downloadReport(scan, 'markdown')}
+              className="cursor-pointer rounded-md border border-paper-line px-2.5 py-1 font-mono text-[11px] font-bold text-muted-on-paper hover:text-[#1C2128]"
+            >
+              .md
+            </button>
+            <button
+              onClick={() => downloadReport(scan, 'json')}
+              className="cursor-pointer rounded-md border border-paper-line px-2.5 py-1 font-mono text-[11px] font-bold text-muted-on-paper hover:text-[#1C2128]"
+            >
+              .json
+            </button>
+          </div>
         )}
       </div>
 
@@ -168,6 +189,16 @@ export function RepositoryReport({ scan }: { scan: ScanJob }) {
                   </button>
                   {openFilePath === f.path && (
                     <div className="border-t border-paper-line bg-paper p-3">
+                      {FIXABLE_SOURCE_TYPES.has(scan.sourceType) && (
+                        <div className="mb-3 flex justify-end">
+                          <button
+                            onClick={() => setFixingPath(f.path)}
+                            className="cursor-pointer rounded-md bg-cobalt px-3 py-1.5 text-xs font-bold text-white"
+                          >
+                            Fix in editor
+                          </button>
+                        </div>
+                      )}
                       {f.stage1 && <Stage1Summary stage1={f.stage1} />}
                       {f.findings.length === 0 ? (
                         <div className="text-xs text-muted-on-paper">No issues in this file.</div>
@@ -181,6 +212,15 @@ export function RepositoryReport({ scan }: { scan: ScanJob }) {
             </div>
           </div>
         </div>
+      )}
+
+      {fixingPath && (
+        <FixInEditorModal
+          scanJobId={scan.id}
+          path={fixingPath}
+          findings={(scan.files || []).find((f) => f.path === fixingPath)?.findings ?? []}
+          onClose={() => setFixingPath(null)}
+        />
       )}
     </div>
   );

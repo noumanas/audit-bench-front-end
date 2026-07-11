@@ -4,6 +4,7 @@ import {
   AnalyticsTrend,
   Audit,
   ChangePlanResult,
+  Finding,
   GithubRepo,
   GithubStatus,
   GitlabProject,
@@ -13,6 +14,7 @@ import {
   ScanJob,
   Usage,
   User,
+  Verdict,
   WebhookConfig,
   WebhookProvider,
 } from "./types";
@@ -225,6 +227,47 @@ export function listRepositoryScans(): Promise<ScanJob[]> {
   return fetch(`${API_URL}/repository`, { headers: authHeaders() }).then(
     (res) => unwrap<ScanJob[]>(res),
   );
+}
+
+// ---------- Fix in editor ----------
+
+export function getFixFileContent(scanJobId: string, path: string): Promise<{ content: string }> {
+  return fetch(`${API_URL}/repository/${scanJobId}/fix/content?path=${encodeURIComponent(path)}`, {
+    headers: authHeaders(),
+  }).then((res) => unwrap<{ content: string }>(res));
+}
+
+export interface CommitFixResult {
+  commitUrl: string;
+  pullRequestUrl?: string;
+  created: boolean;
+}
+
+export function commitFix(
+  scanJobId: string,
+  path: string,
+  content: string,
+  message?: string,
+): Promise<CommitFixResult> {
+  return fetch(`${API_URL}/repository/${scanJobId}/fix/commit`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...authHeaders() },
+    body: JSON.stringify({ path, content, message }),
+  }).then((res) => unwrap<CommitFixResult>(res));
+}
+
+export interface RecheckFixResult {
+  before: { verdict: Verdict | null; findingsCount: number };
+  after: { verdict: Verdict; findings: Finding[] };
+  resolved: boolean;
+}
+
+export function recheckFix(scanJobId: string, path: string, content: string): Promise<RecheckFixResult> {
+  return fetch(`${API_URL}/repository/${scanJobId}/fix/recheck`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...authHeaders() },
+    body: JSON.stringify({ path, content }),
+  }).then((res) => unwrap<RecheckFixResult>(res));
 }
 
 // ---------- GitHub ----------
