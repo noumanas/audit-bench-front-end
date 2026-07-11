@@ -304,7 +304,10 @@ export function GithubPanel({ onScanStarted }: { onScanStarted: (scanId: string)
                       >
                         {reviewingPr === repo.fullName ? 'Starting…' : 'Review'}
                       </button>
-                      <span className="text-xs text-muted-on-ink">Scopes the review to the diff only.</span>
+                      <span className="text-xs text-muted-on-ink">
+                        Scopes the review to the diff, then posts inline comments, a summary, and a commit status
+                        check directly on the PR.
+                      </span>
                     </div>
                   )}
                 </div>

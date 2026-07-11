@@ -93,3 +93,17 @@ body {
     animation: none;
   }
 }
+
+/* Subtle depth for cards sitting on the flat ink background — a hairline
+   top highlight plus a soft downward shadow, not a hard drop shadow. */
+.shadow-panel {
+  box-shadow:
+    0 1px 0 0 rgba(255, 255, 255, 0.035),
+    0 20px 32px -24px rgba(0, 0, 0, 0.75);
+}
+
+.row-hover {
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease;
+}

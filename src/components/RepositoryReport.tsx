@@ -18,7 +18,7 @@ export function RepositoryReport({ scan }: { scan: ScanJob }) {
   const isDiffReview = DIFF_SOURCE_TYPES.has(scan.sourceType);
 
   return (
-    <div className="rounded-xl border border-paper-line bg-paper-card p-6">
+    <div className="rounded-xl border border-paper-line bg-paper-card p-6 shadow-2xl shadow-black/40">
       <div className="mb-4 flex flex-wrap items-center gap-3">
         <StatusBadge status={scan.status} />
         {scan.verdict && <VerdictBadge verdict={scan.verdict} />}

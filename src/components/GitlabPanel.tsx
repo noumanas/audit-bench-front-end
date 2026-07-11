@@ -303,7 +303,10 @@ export function GitlabPanel({ onScanStarted }: { onScanStarted: (scanId: string)
                       >
                         {reviewingMr === project.id ? 'Starting…' : 'Review'}
                       </button>
-                      <span className="text-xs text-muted-on-ink">Scopes the review to the diff only.</span>
+                      <span className="text-xs text-muted-on-ink">
+                        Scopes the review to the diff, then posts inline discussions, a summary note, and a
+                        commit status check directly on the MR.
+                      </span>
                     </div>
                   )}
                 </div>

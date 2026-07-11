@@ -22,6 +22,17 @@ export interface User {
   createdAt: string;
   plan: Plan;
   role: Role;
+  badgeToken: string | null;
+}
+
+export type WebhookProvider = 'github' | 'gitlab';
+
+export interface WebhookConfig {
+  id: string;
+  provider: WebhookProvider;
+  repoIdentifier: string;
+  secret: string;
+  createdAt: string;
 }
 
 export interface PlanRequestUserSummary {

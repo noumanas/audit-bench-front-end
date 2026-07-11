@@ -13,9 +13,11 @@ import {
   ScanJob,
   Usage,
   User,
+  WebhookConfig,
+  WebhookProvider,
 } from "./types";
 
-const API_URL =
+export const API_URL =
   process.env.NEXT_PUBLIC_API_URL ||
   "https://audit-bench-backend-git-242355763105.europe-west1.run.app";
 const TOKEN_KEY = "auditbench_token";
@@ -345,6 +347,47 @@ export function reviewGitlabMr(
     headers: { "Content-Type": "application/json", ...authHeaders() },
     body: JSON.stringify({ projectId, mrIid, projectPath, provider }),
   }).then((res) => unwrap<ScanJob>(res));
+}
+
+// ---------- Badge ----------
+
+export function getBadgeToken(): Promise<{ badgeToken: string }> {
+  return fetch(`${API_URL}/me/badge-token`, { headers: authHeaders() }).then((res) =>
+    unwrap<{ badgeToken: string }>(res),
+  );
+}
+
+export function rotateBadgeToken(): Promise<{ badgeToken: string }> {
+  return fetch(`${API_URL}/me/badge-token/rotate`, {
+    method: "POST",
+    headers: authHeaders(),
+  }).then((res) => unwrap<{ badgeToken: string }>(res));
+}
+
+// ---------- Webhooks (conversational PR/MR chat) ----------
+
+export function listWebhookConfigs(): Promise<WebhookConfig[]> {
+  return fetch(`${API_URL}/webhooks/configs`, { headers: authHeaders() }).then((res) =>
+    unwrap<WebhookConfig[]>(res),
+  );
+}
+
+export function createWebhookConfig(
+  provider: WebhookProvider,
+  repoIdentifier: string,
+): Promise<WebhookConfig> {
+  return fetch(`${API_URL}/webhooks/configs`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...authHeaders() },
+    body: JSON.stringify({ provider, repoIdentifier }),
+  }).then((res) => unwrap<WebhookConfig>(res));
+}
+
+export function deleteWebhookConfig(id: string): Promise<{ deleted: boolean }> {
+  return fetch(`${API_URL}/webhooks/configs/${id}`, {
+    method: "DELETE",
+    headers: authHeaders(),
+  }).then((res) => unwrap<{ deleted: boolean }>(res));
 }
 
 // ---------- Analytics ----------

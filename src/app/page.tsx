@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Footer } from '@/components/Footer';
 import { PricingTeaser } from '@/components/PricingTeaser';
+import { HeroShowcase } from '@/components/HeroShowcase';
 
 export const metadata: Metadata = {
   title: 'AI code review before it ships',
@@ -40,7 +41,7 @@ const TEAM_CAPABILITIES = [
   {
     title: 'Pull & merge request review',
     detail:
-      'Review a GitHub PR or GitLab MR scoped to just the changed lines — not a re-audit of the whole file. Comments land where the diff actually changed.',
+      'Review a GitHub PR or GitLab MR scoped to just the changed lines — findings post back as inline review comments, a summary, and a merge-blocking status check.',
   },
   {
     title: 'Team analytics dashboard',
@@ -56,6 +57,38 @@ const TEAM_CAPABILITIES = [
     title: 'Role-ready plans & quotas',
     detail:
       'Daily and monthly AI-audit limits per plan, usage-based — not a flat seat count — so cost scales with what a team actually reviews.',
+  },
+];
+
+const WORKFLOW_INTEGRATIONS = [
+  {
+    title: 'Inline PR & MR comments',
+    detail:
+      'Findings land as real review comments on the exact changed lines — GitHub review threads or GitLab discussions — not a dashboard you have to remember to check.',
+  },
+  {
+    title: 'Auto-generated summary',
+    detail:
+      'Every review posts a plain-English walkthrough alongside the inline comments — verdict, finding counts, and a link to the full report.',
+  },
+  {
+    title: 'Merge-blocking quality gates',
+    detail:
+      'A commit status check reports pass/fail on every PR and MR. Wire it into branch protection and stop shippable-looking regressions before they merge.',
+  },
+  {
+    title: 'README score badge',
+    detail: 'A live, always-current badge for your README showing the verdict of your most recent scan.',
+  },
+  {
+    title: 'Dependency vulnerability scanning',
+    detail:
+      'npm audit for Node, OSV.dev for Python — known-vulnerable packages surface automatically, no extra tooling to install.',
+  },
+  {
+    title: 'Conversational PR chat',
+    detail:
+      '@-mention the bot in any PR or MR thread and it replies in context, using the diff to answer follow-up questions.',
   },
 ];
 
@@ -119,25 +152,7 @@ export default function HomePage() {
               </div>
             </div>
 
-            <div className="rounded-xl border border-ink-line bg-ink-soft p-4 font-mono text-[12px] leading-relaxed">
-              <div className="mb-3 flex gap-1.5">
-                <span className="h-2.5 w-2.5 rounded-full bg-critical/70" />
-                <span className="h-2.5 w-2.5 rounded-full bg-high/70" />
-                <span className="h-2.5 w-2.5 rounded-full bg-pass/70" />
-              </div>
-              <pre className="mb-3 overflow-x-auto whitespace-pre-wrap text-[#E8ECF4]">
-{`await supabase
-  .from("invoices")
-  .update({ status: "sent" })
-  .eq("id", invoiceId);`}
-              </pre>
-              <div className="rounded-md border-l-4 border-l-critical bg-ink px-3 py-2">
-                <div className="mb-1 text-[10px] font-bold tracking-wide text-critical uppercase">
-                  Critical · Security
-                </div>
-                <div className="text-[#E8ECF4]">No auth check — any caller can mark any invoice as sent.</div>
-              </div>
-            </div>
+            <HeroShowcase />
           </div>
 
           <div className="mt-16 grid grid-cols-2 gap-6 border-t border-ink-line pt-8 sm:grid-cols-4">
@@ -225,8 +240,31 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Workflow integrations */}
+      <section className="border-t border-ink-line bg-ink px-6 py-16">
+        <div className="mx-auto max-w-5xl">
+          <div className="mb-10 text-center">
+            <div className="mb-2 font-mono text-[13px] tracking-wide text-muted-on-ink uppercase">
+              Where you already work
+            </div>
+            <h2 className="text-2xl font-bold text-[#E8ECF4]">Lives inside the review you're already doing</h2>
+            <p className="mx-auto mt-2 max-w-xl text-sm leading-relaxed text-muted-on-ink">
+              Not another tab to check. Findings, gates, and answers show up directly on the PR or MR.
+            </p>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {WORKFLOW_INTEGRATIONS.map((f) => (
+              <div key={f.title} className="rounded-lg border border-ink-line bg-ink-soft p-5">
+                <h3 className="mb-2 font-mono text-sm font-bold text-[#E8ECF4]">{f.title}</h3>
+                <p className="text-sm leading-relaxed text-muted-on-ink">{f.detail}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Cost governance / pipeline */}
-      <section className="bg-ink px-6 py-16">
+      <section className="border-t border-ink-line bg-ink px-6 py-16">
         <div className="mx-auto max-w-5xl">
           <div className="mb-10 text-center">
             <div className="mb-2 font-mono text-[13px] tracking-wide text-muted-on-ink uppercase">
