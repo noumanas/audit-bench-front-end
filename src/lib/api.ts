@@ -104,6 +104,28 @@ export function login(email: string, password: string): Promise<AuthResponse> {
   }).then((res) => unwrap<AuthResponse>(res));
 }
 
+// ---------- OAuth login ("Continue with GitHub/GitLab") ----------
+
+// Full-page redirects, not fetch calls — the browser navigates through the
+// provider's own site, so these are just URLs for an <a href>, not API calls.
+export function githubOAuthUrl(): string {
+  return `${API_URL}/auth/github`;
+}
+
+export function gitlabOAuthUrl(): string {
+  return `${API_URL}/auth/gitlab`;
+}
+
+// The redirect back lands on /oauth/callback?code=... — this exchanges that
+// one-time code for a real session (see backend OAuthController).
+export function exchangeOAuthCode(code: string): Promise<AuthResponse> {
+  return fetch(`${API_URL}/auth/oauth/exchange`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ code }),
+  }).then((res) => unwrap<AuthResponse>(res));
+}
+
 export function getMe(): Promise<User> {
   return fetch(`${API_URL}/me`, { headers: authHeaders() }).then((res) =>
     unwrap<User>(res),

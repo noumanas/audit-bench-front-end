@@ -88,6 +88,10 @@ export function Navbar() {
   const pathname = usePathname();
   const { user, loading, logout } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
+
+  // The login/signup forms are the whole page — no nav chrome needed there.
+  if (pathname === '/login' || pathname === '/signup') return null;
+
   const isAppSection = pathname.startsWith('/app');
   const isAdmin = user?.role === 'admin' || user?.role === 'super_admin';
   const links = isAppSection

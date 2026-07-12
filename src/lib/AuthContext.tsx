@@ -10,6 +10,7 @@ interface AuthContextValue {
   loading: boolean;
   login: (email: string, password: string) => Promise<void>;
   signup: (email: string, password: string, name?: string) => Promise<void>;
+  loginWithOAuthCode: (code: string) => Promise<void>;
   logout: () => void;
   refreshUser: () => Promise<void>;
 }
@@ -43,16 +44,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       .finally(() => setLoading(false));
   }, []);
 
-  const login = async (email: string, password: string) => {
-    const res = await api.login(email, password);
+  const applySession = (res: api.AuthResponse) => {
     api.setToken(res.accessToken);
     setUser(res.user);
   };
 
+  const login = async (email: string, password: string) => {
+    applySession(await api.login(email, password));
+  };
+
   const signup = async (email: string, password: string, name?: string) => {
-    const res = await api.signup(email, password, name);
-    api.setToken(res.accessToken);
-    setUser(res.user);
+    applySession(await api.signup(email, password, name));
+  };
+
+  const loginWithOAuthCode = async (code: string) => {
+    applySession(await api.exchangeOAuthCode(code));
   };
 
   const refreshUser = async () => {
@@ -61,7 +67,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, signup, logout, refreshUser }}>
+    <AuthContext.Provider value={{ user, loading, login, signup, loginWithOAuthCode, logout, refreshUser }}>
       {children}
     </AuthContext.Provider>
   );
