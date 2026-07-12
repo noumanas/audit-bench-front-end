@@ -148,6 +148,25 @@ export function UsersIcon({ className }: IconProps) {
   );
 }
 
+export function EyeIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={className} aria-hidden="true">
+      <path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z" />
+      <circle cx="12" cy="12" r="2.75" />
+    </svg>
+  );
+}
+
+export function EyeOffIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={className} aria-hidden="true">
+      <path d="M3.5 3.5l17 17" />
+      <path d="M10.6 5.7c.45-.09.92-.14 1.4-.14 6 0 9.5 6.5 9.5 6.5a16.6 16.6 0 0 1-3.3 4.13M6.6 6.6C4.02 8.3 2.5 12 2.5 12s3.5 6.5 9.5 6.5c1.36 0 2.6-.33 3.68-.87" />
+      <path d="M9.9 10c-.25.37-.4.83-.4 1.32 0 1.3 1.06 2.36 2.36 2.36.5 0 .96-.15 1.34-.42" />
+    </svg>
+  );
+}
+
 export function GitlabLogoIcon({ className }: IconProps) {
   return (
     <svg viewBox="0 0 24 24" className={className} aria-hidden="true">

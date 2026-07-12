@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuth } from '@/lib/AuthContext';
 import { ApiError } from '@/lib/api';
 import { OAuthButtons } from '@/components/OAuthButtons';
+import { PasswordInput } from '@/components/PasswordInput';
 import { consumePendingInvite } from '@/lib/pendingInvite';
 
 function SignupForm() {
@@ -76,13 +77,13 @@ function SignupForm() {
         />
 
         <label className="mb-1 block text-xs font-semibold text-muted-on-ink">Password</label>
-        <input
-          type="password"
+        <PasswordInput
           required
           minLength={8}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="mb-4 w-full rounded-md border border-ink-line bg-ink px-3 py-2 text-sm text-[#E8ECF4] outline-none transition-colors focus:border-cobalt focus:ring-1 focus:ring-cobalt/40"
+          wrapperClassName="mb-4"
+          className="w-full rounded-md border border-ink-line bg-ink px-3 py-2 text-sm text-[#E8ECF4] outline-none transition-colors focus:border-cobalt focus:ring-1 focus:ring-cobalt/40"
         />
 
         {error && (

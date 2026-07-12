@@ -13,6 +13,7 @@ import {
   scanGithubRepo,
 } from '@/lib/api';
 import { GithubRepo, GithubStatus } from '@/lib/types';
+import { PasswordInput } from './PasswordInput';
 
 export function GithubPanel({ onScanStarted }: { onScanStarted: (scanId: string) => void }) {
   const [status, setStatus] = useState<GithubStatus | null>(null);
@@ -179,13 +180,13 @@ export function GithubPanel({ onScanStarted }: { onScanStarted: (scanId: string)
             .
           </p>
           <div className="flex gap-2">
-            <input
-              type="password"
+            <PasswordInput
               required
               value={token}
               onChange={(e) => setToken(e.target.value)}
               placeholder="ghp_…"
-              className="flex-1 rounded-md border border-ink-line bg-ink px-3 py-2 font-mono text-[13px] text-[#E8ECF4] outline-none"
+              wrapperClassName="flex-1"
+              className="w-full rounded-md border border-ink-line bg-ink px-3 py-2 font-mono text-[13px] text-[#E8ECF4] outline-none"
             />
             <button
               type="submit"
