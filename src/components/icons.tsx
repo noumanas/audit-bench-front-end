@@ -137,6 +137,17 @@ export function SettingsIcon({ className }: IconProps) {
   );
 }
 
+export function UsersIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={className} aria-hidden="true">
+      <circle cx="9" cy="8" r="3" />
+      <path d="M3.5 19c0-3 2.5-5.5 5.5-5.5S14.5 16 14.5 19" />
+      <path d="M15.5 8.3a2.6 2.6 0 1 1 0 5.1" />
+      <path d="M17 13.6c2 .3 3.5 2.3 3.5 4.9" />
+    </svg>
+  );
+}
+
 export function GitlabLogoIcon({ className }: IconProps) {
   return (
     <svg viewBox="0 0 24 24" className={className} aria-hidden="true">

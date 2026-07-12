@@ -21,7 +21,8 @@ function isSelfServicePlan(plan: Plan): boolean {
 }
 
 export function PlanPanel() {
-  const { refreshUser } = useAuth();
+  const { user, refreshUser } = useAuth();
+  const canManageOrgPlan = user?.orgRole === 'owner' || user?.orgRole === 'admin';
   const [usage, setUsage] = useState<Usage | null>(null);
   const [plans, setPlans] = useState<Plan[]>([]);
   const [planRequests, setPlanRequests] = useState<PlanRequest[]>([]);
@@ -65,9 +66,15 @@ export function PlanPanel() {
 
   return (
     <div className="mb-8">
-      <h2 className="mb-3 font-mono text-[11px] font-bold tracking-wide text-muted-on-ink uppercase">
-        Plan &amp; usage
+      <h2 className="mb-1 font-mono text-[11px] font-bold tracking-wide text-muted-on-ink uppercase">
+        {usage?.scope === 'organization' ? 'Team plan & usage' : 'Plan & usage'}
       </h2>
+      {usage?.scope === 'organization' && (
+        <p className="mb-3 text-[11px] text-muted-on-ink">
+          Shared across everyone in <strong className="text-[#E8ECF4]">{usage.organizationName}</strong> — every
+          teammate&apos;s audits and scans draw from the same pool.
+        </p>
+      )}
 
       {error && (
         <div className="mb-3 rounded-lg border border-critical/40 bg-critical/10 px-3.5 py-2.5 text-[13px] text-[#F3B7BF]">
@@ -142,16 +149,25 @@ export function PlanPanel() {
                   Pending approval
                 </div>
               )}
-              {!isCurrent && !isPendingThis && (
-                <button
-                  onClick={() => handleApply(plan)}
-                  disabled={switching !== null || blockedByOtherPending}
-                  title={blockedByOtherPending ? 'You already have a pending plan request' : undefined}
-                  className="w-full cursor-pointer rounded-md border border-cobalt px-2 py-1.5 text-xs font-bold text-cobalt disabled:cursor-not-allowed disabled:opacity-40"
-                >
-                  {switching === plan.slug ? 'Submitting…' : selfService ? 'Switch' : 'Request'}
-                </button>
-              )}
+              {!isCurrent &&
+                !isPendingThis &&
+                (usage?.scope === 'organization' && !canManageOrgPlan ? (
+                  <div
+                    title="Only an organization owner or admin can change the team plan"
+                    className="w-full rounded-md border border-ink-line px-2 py-1.5 text-center text-xs font-medium text-muted-on-ink"
+                  >
+                    Owner/admin only
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => handleApply(plan)}
+                    disabled={switching !== null || blockedByOtherPending}
+                    title={blockedByOtherPending ? 'You already have a pending plan request' : undefined}
+                    className="w-full cursor-pointer rounded-md border border-cobalt px-2 py-1.5 text-xs font-bold text-cobalt disabled:cursor-not-allowed disabled:opacity-40"
+                  >
+                    {switching === plan.slug ? 'Submitting…' : selfService ? 'Switch' : 'Request'}
+                  </button>
+                ))}
             </div>
           );
         })}

@@ -4,6 +4,7 @@ export type ScanStatus = 'queued' | 'processing' | 'completed' | 'failed';
 export type ScanSourceType = 'zip' | 'github_repo' | 'github_pr' | 'gitlab_repo' | 'gitlab_mr';
 export type Role = 'user' | 'admin' | 'super_admin';
 export type PlanRequestStatus = 'pending' | 'approved' | 'rejected';
+export type OrgRole = 'owner' | 'admin' | 'member';
 
 export interface Plan {
   id: string;
@@ -15,6 +16,12 @@ export interface Plan {
   repositoryScan: boolean;
 }
 
+export interface OrganizationSummary {
+  id: string;
+  name: string;
+  slug: string;
+}
+
 export interface User {
   id: string;
   email: string;
@@ -23,6 +30,8 @@ export interface User {
   plan: Plan;
   role: Role;
   badgeToken: string | null;
+  organization: OrganizationSummary | null;
+  orgRole: OrgRole | null;
 }
 
 export type WebhookProvider = 'github' | 'gitlab';
@@ -48,6 +57,9 @@ export interface PlanRequest {
   // Present on admin listings (GET /admin/plan-requests), absent on a
   // user's own listing (GET /me/plan-requests) — already scoped to them.
   user?: PlanRequestUserSummary;
+  // Set when this request targets an organization's shared plan rather
+  // than the requester's personal one (see UsersService.changePlan).
+  organization?: { id: string; name: string } | null;
   reviewedBy: PlanRequestUserSummary | null;
   note: string | null;
   createdAt: string;
@@ -73,12 +85,52 @@ export interface AdminUser {
 
 export interface Usage {
   plan: Plan;
+  // 'organization' when this quota is the team's shared pool rather than
+  // this user's own — see QuotaService.getUsage.
+  scope: 'personal' | 'organization';
+  organizationName: string | null;
   dailyUsed: number;
   dailyLimit: number | null;
   monthlyUsed: number;
   monthlyLimit: number | null;
   dailyResetsAt: string;
   monthlyResetsAt: string;
+}
+
+export interface OrganizationMember {
+  id: string;
+  email: string;
+  name: string | null;
+  orgRole: OrgRole;
+  createdAt: string;
+}
+
+export interface OrganizationInvite {
+  id: string;
+  email: string;
+  role: OrgRole;
+  createdAt: string;
+  expiresAt: string;
+  inviteUrl: string;
+}
+
+export interface OrganizationDetail {
+  id: string;
+  name: string;
+  slug: string;
+  plan: Plan;
+  myRole: OrgRole;
+  members: OrganizationMember[];
+  invites: OrganizationInvite[];
+}
+
+export interface InvitePreview {
+  organizationName: string;
+  email: string;
+  role: OrgRole;
+  invitedBy: string;
+  status: 'pending' | 'accepted' | 'revoked' | 'expired';
+  expiresAt: string;
 }
 
 export interface GithubStatus {

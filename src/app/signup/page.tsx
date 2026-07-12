@@ -1,20 +1,27 @@
 'use client';
 
-import { useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuth } from '@/lib/AuthContext';
 import { ApiError } from '@/lib/api';
 import { OAuthButtons } from '@/components/OAuthButtons';
+import { consumePendingInvite } from '@/lib/pendingInvite';
 
-export default function SignupPage() {
+function SignupForm() {
   const { signup } = useAuth();
   const router = useRouter();
+  const params = useSearchParams();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const invitedEmail = params.get('email');
+    if (invitedEmail) setEmail(invitedEmail);
+  }, [params]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,7 +29,8 @@ export default function SignupPage() {
     setLoading(true);
     try {
       await signup(email, password, name || undefined);
-      router.push('/app');
+      const pendingInvite = consumePendingInvite();
+      router.push(pendingInvite ? `/invite/${pendingInvite}` : '/app');
     } catch (err) {
       setError(err instanceof ApiError ? err.message : 'Sign up failed. Please try again.');
     } finally {
@@ -99,5 +107,13 @@ export default function SignupPage() {
         </p>
       </form>
     </div>
+  );
+}
+
+export default function SignupPage() {
+  return (
+    <Suspense fallback={null}>
+      <SignupForm />
+    </Suspense>
   );
 }

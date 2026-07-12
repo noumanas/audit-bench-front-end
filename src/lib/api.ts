@@ -9,6 +9,10 @@ import {
   GithubStatus,
   GitlabProject,
   GitlabStatus,
+  InvitePreview,
+  OrgRole,
+  OrganizationDetail,
+  OrganizationInvite,
   Plan,
   PlanRequest,
   ScanJob,
@@ -74,7 +78,11 @@ async function unwrap<T>(res: Response): Promise<T> {
       body,
     );
   }
-  return res.json();
+  // A controller handler that resolves to `null`/`undefined` (e.g. "no
+  // organization yet") sends a 200 with an empty body, not the literal
+  // text "null" — res.json() would throw on that, so read as text first.
+  const text = await res.text();
+  return (text ? JSON.parse(text) : null) as T;
 }
 
 // ---------- Auth ----------
@@ -154,6 +162,79 @@ export function getMyPlanRequests(): Promise<PlanRequest[]> {
 
 export function listPlans(): Promise<Plan[]> {
   return fetch(`${API_URL}/plans`).then((res) => unwrap<Plan[]>(res));
+}
+
+// ---------- Organization ----------
+
+export function getMyOrganization(): Promise<OrganizationDetail | null> {
+  return fetch(`${API_URL}/organization`, { headers: authHeaders() }).then((res) =>
+    unwrap<OrganizationDetail | null>(res),
+  );
+}
+
+export function createOrganization(name: string): Promise<OrganizationDetail> {
+  return fetch(`${API_URL}/organization`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...authHeaders() },
+    body: JSON.stringify({ name }),
+  }).then((res) => unwrap<OrganizationDetail>(res));
+}
+
+export function inviteToOrganization(email: string, role: OrgRole): Promise<OrganizationInvite> {
+  return fetch(`${API_URL}/organization/invites`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...authHeaders() },
+    body: JSON.stringify({ email, role }),
+  }).then((res) => unwrap<OrganizationInvite>(res));
+}
+
+export function revokeOrganizationInvite(inviteId: string): Promise<void> {
+  return fetch(`${API_URL}/organization/invites/${inviteId}`, {
+    method: "DELETE",
+    headers: authHeaders(),
+  }).then((res) => unwrap<void>(res));
+}
+
+export function getInvitePreview(token: string): Promise<InvitePreview> {
+  return fetch(`${API_URL}/organization/invites/${token}/preview`).then((res) =>
+    unwrap<InvitePreview>(res),
+  );
+}
+
+export function acceptOrganizationInvite(token: string): Promise<OrganizationDetail> {
+  return fetch(`${API_URL}/organization/invites/${token}/accept`, {
+    method: "POST",
+    headers: authHeaders(),
+  }).then((res) => unwrap<OrganizationDetail>(res));
+}
+
+export function updateOrganizationMemberRole(memberId: string, role: OrgRole): Promise<void> {
+  return fetch(`${API_URL}/organization/members/${memberId}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json", ...authHeaders() },
+    body: JSON.stringify({ role }),
+  }).then((res) => unwrap<void>(res));
+}
+
+export function removeOrganizationMember(memberId: string): Promise<void> {
+  return fetch(`${API_URL}/organization/members/${memberId}`, {
+    method: "DELETE",
+    headers: authHeaders(),
+  }).then((res) => unwrap<void>(res));
+}
+
+export function leaveOrganization(): Promise<{ left: boolean; organizationDeleted: boolean }> {
+  return fetch(`${API_URL}/organization/leave`, {
+    method: "POST",
+    headers: authHeaders(),
+  }).then((res) => unwrap<{ left: boolean; organizationDeleted: boolean }>(res));
+}
+
+export function deleteOrganization(): Promise<void> {
+  return fetch(`${API_URL}/organization`, {
+    method: "DELETE",
+    headers: authHeaders(),
+  }).then((res) => unwrap<void>(res));
 }
 
 // ---------- Admin ----------

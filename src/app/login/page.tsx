@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/AuthContext';
 import { ApiError } from '@/lib/api';
 import { OAuthButtons } from '@/components/OAuthButtons';
+import { consumePendingInvite } from '@/lib/pendingInvite';
 
 export default function LoginPage() {
   const { login } = useAuth();
@@ -21,7 +22,8 @@ export default function LoginPage() {
     setLoading(true);
     try {
       await login(email, password);
-      router.push('/app');
+      const pendingInvite = consumePendingInvite();
+      router.push(pendingInvite ? `/invite/${pendingInvite}` : '/app');
     } catch (err) {
       setError(err instanceof ApiError ? err.message : 'Login failed. Please try again.');
     } finally {

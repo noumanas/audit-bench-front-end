@@ -4,12 +4,13 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/lib/AuthContext';
-import { GitBranchIcon, GridIcon, SettingsIcon, ShieldIcon } from './icons';
+import { GitBranchIcon, GridIcon, SettingsIcon, ShieldIcon, UsersIcon } from './icons';
 
 const NAV_LINKS = [
   { href: '/app', label: 'Audit', icon: ShieldIcon },
   { href: '/app/repository', label: 'Repository scan', icon: GitBranchIcon },
   { href: '/app/dashboard', label: 'Dashboard', icon: GridIcon },
+  { href: '/app/team', label: 'Team', icon: UsersIcon },
 ];
 
 function isActive(pathname: string, href: string): boolean {
@@ -70,6 +71,9 @@ function UserFooter({ onLogout }: { onLogout: () => void }) {
       <span className="mb-2 inline-block rounded-full border border-ink-line px-2.5 py-0.5 font-mono text-[10px] font-bold tracking-wide text-cobalt uppercase">
         {user.plan.name}
       </span>
+      {user.organization && (
+        <div className="mb-2 truncate text-xs font-semibold text-[#E8ECF4]">{user.organization.name}</div>
+      )}
       <div className="mb-2 truncate text-xs text-muted-on-ink">{user.email}</div>
       <button
         onClick={onLogout}
