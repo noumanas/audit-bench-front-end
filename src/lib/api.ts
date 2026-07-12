@@ -194,6 +194,25 @@ export function updateUserRole(userId: string, role: string): Promise<AdminUser>
   }).then((res) => unwrap<AdminUser>(res));
 }
 
+export function updateUserStatus(userId: string, isActive: boolean): Promise<AdminUser> {
+  return fetch(`${API_URL}/admin/users/${userId}/status`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...authHeaders() },
+    body: JSON.stringify({ isActive }),
+  }).then((res) => unwrap<AdminUser>(res));
+}
+
+export function updateUserProfile(
+  userId: string,
+  data: { name?: string; planId?: string },
+): Promise<AdminUser> {
+  return fetch(`${API_URL}/admin/users/${userId}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json", ...authHeaders() },
+    body: JSON.stringify(data),
+  }).then((res) => unwrap<AdminUser>(res));
+}
+
 // ---------- Audits ----------
 
 export interface RunAuditInput {

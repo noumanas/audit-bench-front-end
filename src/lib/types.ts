@@ -68,6 +68,7 @@ export interface AdminUser {
   plan: Plan;
   role: Role;
   githubUsername: string | null;
+  isActive: boolean;
 }
 
 export interface Usage {
