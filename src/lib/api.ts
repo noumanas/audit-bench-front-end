@@ -410,6 +410,19 @@ export function aiFix(
   }).then((res) => unwrap<AiFixResult>(res));
 }
 
+export function aiFixAll(
+  scanJobId: string,
+  path: string,
+  content: string,
+  findings: Finding[],
+): Promise<AiFixResult> {
+  return fetch(`${API_URL}/repository/${scanJobId}/fix/ai/all`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...authHeaders() },
+    body: JSON.stringify({ path, content, findings }),
+  }).then((res) => unwrap<AiFixResult>(res));
+}
+
 // ---------- GitHub ----------
 
 export function getGithubStatus(): Promise<GithubStatus> {

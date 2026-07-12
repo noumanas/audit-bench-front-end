@@ -7,6 +7,7 @@ import {
   getFixFileContent,
   recheckFix,
   aiFix,
+  aiFixAll,
   ApiError,
   CommitFixResult,
   RecheckFixResult,
@@ -14,6 +15,7 @@ import {
 import { monacoLanguageFor } from '@/lib/monacoLanguage';
 import { Finding } from '@/lib/types';
 import { FindingCard } from './FindingCard';
+import { SparkleIcon } from './icons';
 
 const VERDICT_LABEL: Record<string, string> = { pass: 'Pass', needs_work: 'Needs work', do_not_ship: 'Do not ship' };
 
@@ -41,6 +43,7 @@ export function FixInEditorModal({
   const [aiFixingKey, setAiFixingKey] = useState<string | null>(null);
   const [aiFixError, setAiFixError] = useState<string | null>(null);
   const [aiFixNotice, setAiFixNotice] = useState<string | null>(null);
+  const [fixingAll, setFixingAll] = useState(false);
 
   const editorRef = useRef<Parameters<OnMount>[0] | null>(null);
   const monacoRef = useRef<Monaco | null>(null);
@@ -128,6 +131,35 @@ export function FixInEditorModal({
     }
   };
 
+  /** "Fix all issues" — one prompt covering every finding, then an automatic recheck so the user sees right away whether it's ready to ship. */
+  const handleFixAll = async () => {
+    if (content === null || findings.length === 0) return;
+    setFixingAll(true);
+    setAiFixError(null);
+    setAiFixNotice(null);
+    setRecheckError(null);
+    try {
+      const r = await aiFixAll(scanJobId, path, content, findings);
+      editorRef.current?.setValue(r.fixedCode);
+      setContent(r.fixedCode);
+      setAiFixNotice(r.explanation);
+
+      setRechecking(true);
+      try {
+        const rr = await recheckFix(scanJobId, path, r.fixedCode);
+        setRecheckResult(rr);
+      } catch (err) {
+        setRecheckError(err instanceof ApiError ? err.message : 'Failed to re-check this file.');
+      } finally {
+        setRechecking(false);
+      }
+    } catch (err) {
+      setAiFixError(err instanceof ApiError ? err.message : 'Failed to generate AI fixes.');
+    } finally {
+      setFixingAll(false);
+    }
+  };
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
       <div className="flex h-[85vh] w-full max-w-6xl flex-col overflow-hidden rounded-xl border border-paper-line bg-paper-card shadow-2xl">
@@ -187,7 +219,9 @@ export function FixInEditorModal({
                       recheckResult.resolved ? 'border-pass/40 bg-pass/10 text-pass' : 'border-high/40 bg-high/10 text-high'
                     }`}
                   >
-                    <div className="font-semibold">{recheckResult.resolved ? 'Resolved' : 'Still needs work'}</div>
+                    <div className="font-semibold">
+                      {recheckResult.resolved ? 'Resolved — ready to ship' : 'Still needs work'}
+                    </div>
                     <div className="mt-1 text-[12px] opacity-90">
                       Before: {recheckResult.before.findingsCount} finding
                       {recheckResult.before.findingsCount === 1 ? '' : 's'}
@@ -209,16 +243,35 @@ export function FixInEditorModal({
                         onLineClick={jumpToLine}
                         onFixWithAi={() => handleAiFix(f, `recheck-${i}`)}
                         fixingWithAi={aiFixingKey === `recheck-${i}`}
-                        fixWithAiDisabled={aiFixingKey !== null && aiFixingKey !== `recheck-${i}`}
+                        fixWithAiDisabled={fixingAll || (aiFixingKey !== null && aiFixingKey !== `recheck-${i}`)}
                       />
                     ))
                   )}
                 </>
               ) : (
                 <>
-                  <div className="mb-2 font-mono text-[11px] font-bold tracking-wide text-muted-on-paper uppercase">
-                    {findings.length} finding{findings.length === 1 ? '' : 's'} in this file
+                  <div className="mb-2 flex items-center justify-between">
+                    <div className="font-mono text-[11px] font-bold tracking-wide text-muted-on-paper uppercase">
+                      {findings.length} finding{findings.length === 1 ? '' : 's'} in this file
+                    </div>
                   </div>
+                  {findings.length > 1 && (
+                    <button
+                      onClick={handleFixAll}
+                      disabled={fixingAll || rechecking || aiFixingKey !== null}
+                      className="mb-3 flex w-full cursor-pointer items-center justify-center gap-1.5 rounded-lg bg-cobalt px-4 py-2.5 text-sm font-bold text-white disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                      <SparkleIcon className="h-4 w-4" />
+                      {fixingAll
+                        ? 'Fixing all issues…'
+                        : rechecking
+                          ? 'Re-checking…'
+                          : `Fix all ${findings.length} issues with AI`}
+                      <span className="rounded bg-white/20 px-1.5 py-0.5 text-[10px] tracking-wide uppercase">
+                        Pro
+                      </span>
+                    </button>
+                  )}
                   {findings.length === 0 ? (
                     <p className="text-sm text-muted-on-paper">No findings to reference — edit freely.</p>
                   ) : (
@@ -229,7 +282,7 @@ export function FixInEditorModal({
                         onLineClick={jumpToLine}
                         onFixWithAi={() => handleAiFix(f, `main-${i}`)}
                         fixingWithAi={aiFixingKey === `main-${i}`}
-                        fixWithAiDisabled={aiFixingKey !== null && aiFixingKey !== `main-${i}`}
+                        fixWithAiDisabled={fixingAll || (aiFixingKey !== null && aiFixingKey !== `main-${i}`)}
                       />
                     ))
                   )}
