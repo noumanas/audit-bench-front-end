@@ -228,7 +228,10 @@ export interface TopIssue {
 
 export interface AnalyticsOverview {
   windowDays: number;
+  repoFilter: string | null;
   totals: UsageTotals;
+  activeRepositories: number;
+  prReviewCount: number;
   verdictBreakdown: VerdictBreakdown;
   scores: ScoreSet;
   riskiest: RiskiestItem[];

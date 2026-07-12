@@ -457,14 +457,22 @@ export function deleteWebhookConfig(id: string): Promise<{ deleted: boolean }> {
 
 // ---------- Analytics ----------
 
-export function getAnalyticsOverview(days: number): Promise<AnalyticsOverview> {
-  return fetch(`${API_URL}/analytics/overview?days=${days}`, {
+function repoQuery(repo?: string): string {
+  return repo ? `&repo=${encodeURIComponent(repo)}` : '';
+}
+
+export function getAnalyticsOverview(days: number, repo?: string): Promise<AnalyticsOverview> {
+  return fetch(`${API_URL}/analytics/overview?days=${days}${repoQuery(repo)}`, {
     headers: authHeaders(),
   }).then((res) => unwrap<AnalyticsOverview>(res));
 }
 
-export function getAnalyticsTrend(days: number): Promise<AnalyticsTrend> {
-  return fetch(`${API_URL}/analytics/trend?days=${days}`, {
+export function getAnalyticsTrend(days: number, repo?: string): Promise<AnalyticsTrend> {
+  return fetch(`${API_URL}/analytics/trend?days=${days}${repoQuery(repo)}`, {
     headers: authHeaders(),
   }).then((res) => unwrap<AnalyticsTrend>(res));
+}
+
+export function listAnalyticsRepos(): Promise<string[]> {
+  return fetch(`${API_URL}/analytics/repos`, { headers: authHeaders() }).then((res) => unwrap<string[]>(res));
 }

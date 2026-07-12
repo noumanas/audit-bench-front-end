@@ -9,6 +9,17 @@ const base = {
   strokeLinejoin: 'round' as const,
 };
 
+export function InfoIcon({ className, title }: IconProps & { title?: string }) {
+  return (
+    <svg {...base} className={className} aria-hidden={title ? undefined : 'true'} role={title ? 'img' : undefined}>
+      {title && <title>{title}</title>}
+      <circle cx="12" cy="12" r="8.5" />
+      <path d="M12 11v5.2" />
+      <circle cx="12" cy="8" r="0.9" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
 export function ShieldIcon({ className }: IconProps) {
   return (
     <svg {...base} className={className} aria-hidden="true">
