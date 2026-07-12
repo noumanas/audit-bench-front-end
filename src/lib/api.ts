@@ -392,6 +392,24 @@ export function recheckFix(scanJobId: string, path: string, content: string): Pr
   }).then((res) => unwrap<RecheckFixResult>(res));
 }
 
+export interface AiFixResult {
+  fixedCode: string;
+  explanation: string;
+}
+
+export function aiFix(
+  scanJobId: string,
+  path: string,
+  content: string,
+  finding: Finding,
+): Promise<AiFixResult> {
+  return fetch(`${API_URL}/repository/${scanJobId}/fix/ai`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...authHeaders() },
+    body: JSON.stringify({ path, content, finding }),
+  }).then((res) => unwrap<AiFixResult>(res));
+}
+
 // ---------- GitHub ----------
 
 export function getGithubStatus(): Promise<GithubStatus> {

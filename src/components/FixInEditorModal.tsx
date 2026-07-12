@@ -1,8 +1,16 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import Editor from '@monaco-editor/react';
-import { commitFix, getFixFileContent, recheckFix, ApiError, CommitFixResult, RecheckFixResult } from '@/lib/api';
+import { useEffect, useRef, useState } from 'react';
+import Editor, { Monaco, OnMount } from '@monaco-editor/react';
+import {
+  commitFix,
+  getFixFileContent,
+  recheckFix,
+  aiFix,
+  ApiError,
+  CommitFixResult,
+  RecheckFixResult,
+} from '@/lib/api';
 import { monacoLanguageFor } from '@/lib/monacoLanguage';
 import { Finding } from '@/lib/types';
 import { FindingCard } from './FindingCard';
@@ -30,6 +38,39 @@ export function FixInEditorModal({
   const [rechecking, setRechecking] = useState(false);
   const [recheckError, setRecheckError] = useState<string | null>(null);
   const [recheckResult, setRecheckResult] = useState<RecheckFixResult | null>(null);
+  const [aiFixingKey, setAiFixingKey] = useState<string | null>(null);
+  const [aiFixError, setAiFixError] = useState<string | null>(null);
+  const [aiFixNotice, setAiFixNotice] = useState<string | null>(null);
+
+  const editorRef = useRef<Parameters<OnMount>[0] | null>(null);
+  const monacoRef = useRef<Monaco | null>(null);
+  const highlightDecorations = useRef<string[]>([]);
+
+  const handleEditorMount: OnMount = (editorInstance, monacoInstance) => {
+    editorRef.current = editorInstance;
+    monacoRef.current = monacoInstance;
+  };
+
+  const jumpToLine = (line: number) => {
+    const editor = editorRef.current;
+    const monaco = monacoRef.current;
+    if (!editor || !monaco) return;
+
+    editor.revealLineInCenter(line);
+    editor.setPosition({ lineNumber: line, column: 1 });
+    editor.focus();
+
+    highlightDecorations.current = editor.deltaDecorations(highlightDecorations.current, [
+      {
+        range: new monaco.Range(line, 1, line, 1),
+        options: {
+          isWholeLine: true,
+          className: 'fix-editor-highlight-line',
+          linesDecorationsClassName: 'fix-editor-highlight-line-gutter',
+        },
+      },
+    ]);
+  };
 
   useEffect(() => {
     getFixFileContent(scanJobId, path)
@@ -49,6 +90,27 @@ export function FixInEditorModal({
       setCommitError(err instanceof ApiError ? err.message : 'Failed to commit the fix.');
     } finally {
       setCommitting(false);
+    }
+  };
+
+  const handleAiFix = async (finding: Finding, key: string) => {
+    if (content === null) return;
+    setAiFixingKey(key);
+    setAiFixError(null);
+    setAiFixNotice(null);
+    try {
+      const r = await aiFix(scanJobId, path, content, finding);
+      // Set the model directly first — React's state update below re-renders
+      // asynchronously, and jumpToLine's decoration needs to land on the
+      // model that's actually showing, not whatever was there a tick ago.
+      editorRef.current?.setValue(r.fixedCode);
+      setContent(r.fixedCode);
+      setAiFixNotice(r.explanation);
+      if (finding.line != null) jumpToLine(finding.line);
+    } catch (err) {
+      setAiFixError(err instanceof ApiError ? err.message : 'Failed to generate an AI fix.');
+    } finally {
+      setAiFixingKey(null);
     }
   };
 
@@ -99,6 +161,7 @@ export function FixInEditorModal({
                 language={monacoLanguageFor(path)}
                 value={content}
                 onChange={(v) => setContent(v ?? '')}
+                onMount={handleEditorMount}
                 options={{ minimap: { enabled: false }, fontSize: 13, padding: { top: 12 } }}
               />
             )}
@@ -106,6 +169,17 @@ export function FixInEditorModal({
 
           <div className="flex w-[380px] shrink-0 flex-col overflow-hidden">
             <div className="flex-1 overflow-y-auto p-4">
+              {aiFixNotice && (
+                <div className="mb-3 rounded-lg border border-cobalt/40 bg-cobalt/10 px-3.5 py-2.5 text-[13px] text-cobalt">
+                  <span className="font-semibold">AI applied a fix.</span> {aiFixNotice} Review the change in the
+                  editor, then commit when ready.
+                </div>
+              )}
+              {aiFixError && (
+                <div className="mb-3 rounded-lg border border-critical/40 bg-critical/10 px-3.5 py-2.5 text-[13px] text-critical">
+                  {aiFixError}
+                </div>
+              )}
               {recheckResult ? (
                 <>
                   <div
@@ -128,7 +202,16 @@ export function FixInEditorModal({
                   {recheckResult.after.findings.length === 0 ? (
                     <p className="text-sm text-muted-on-paper">No issues found on re-check.</p>
                   ) : (
-                    recheckResult.after.findings.map((f, i) => <FindingCard key={i} finding={f} />)
+                    recheckResult.after.findings.map((f, i) => (
+                      <FindingCard
+                        key={i}
+                        finding={f}
+                        onLineClick={jumpToLine}
+                        onFixWithAi={() => handleAiFix(f, `recheck-${i}`)}
+                        fixingWithAi={aiFixingKey === `recheck-${i}`}
+                        fixWithAiDisabled={aiFixingKey !== null && aiFixingKey !== `recheck-${i}`}
+                      />
+                    ))
                   )}
                 </>
               ) : (
@@ -139,7 +222,16 @@ export function FixInEditorModal({
                   {findings.length === 0 ? (
                     <p className="text-sm text-muted-on-paper">No findings to reference — edit freely.</p>
                   ) : (
-                    findings.map((f, i) => <FindingCard key={i} finding={f} />)
+                    findings.map((f, i) => (
+                      <FindingCard
+                        key={i}
+                        finding={f}
+                        onLineClick={jumpToLine}
+                        onFixWithAi={() => handleAiFix(f, `main-${i}`)}
+                        fixingWithAi={aiFixingKey === `main-${i}`}
+                        fixWithAiDisabled={aiFixingKey !== null && aiFixingKey !== `main-${i}`}
+                      />
+                    ))
                   )}
                 </>
               )}

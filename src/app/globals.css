@@ -107,3 +107,15 @@ body {
     background-color 0.15s ease,
     border-color 0.15s ease;
 }
+
+/* Jump-to-line highlight in FixInEditorModal — set via editor.deltaDecorations,
+   so this must be a plain global class rather than a Tailwind utility. */
+.fix-editor-highlight-line {
+  background-color: rgba(74, 118, 240, 0.18);
+}
+
+.fix-editor-highlight-line-gutter {
+  background-color: rgba(74, 118, 240, 0.55);
+  width: 3px !important;
+  margin-left: 3px;
+}

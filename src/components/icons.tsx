@@ -148,6 +148,15 @@ export function UsersIcon({ className }: IconProps) {
   );
 }
 
+export function SparkleIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={className} aria-hidden="true" fill="currentColor" stroke="none">
+      <path d="M11 3c.35 2.9 1.1 4.75 2.25 5.9S16.6 10.65 19.5 11c-2.9.35-4.75 1.1-5.9 2.25S11.35 16.6 11 19.5c-.35-2.9-1.1-4.75-2.25-5.9S5.9 11.35 3 11c2.9-.35 4.75-1.1 5.9-2.25S10.65 5.9 11 3z" />
+      <path d="M18.5 3.5c.15 1.2.46 1.98.94 2.46s1.26.79 2.46.94c-1.2.15-1.98.46-2.46.94s-.79 1.26-.94 2.46c-.15-1.2-.46-1.98-.94-2.46s-1.26-.79-2.46-.94c1.2-.15 1.98-.46 2.46-.94s.79-1.26.94-2.46z" />
+    </svg>
+  );
+}
+
 export function EyeIcon({ className }: IconProps) {
   return (
     <svg {...base} className={className} aria-hidden="true">
