@@ -132,8 +132,9 @@ export function Sidebar() {
         </div>
       )}
 
-      {/* Desktop persistent sidebar */}
-      <aside className="hidden shrink-0 flex-col border-r border-ink-line bg-ink-soft md:flex md:w-64">
+      {/* Desktop persistent sidebar — sticky + viewport-height so it stays put
+          while <main> scrolls independently, instead of growing with the page. */}
+      <aside className="hidden shrink-0 flex-col border-r border-ink-line bg-ink-soft md:sticky md:top-0 md:flex md:h-screen md:w-64 md:overflow-y-auto">
         <div className="px-4 py-5">
           <Wordmark />
         </div>

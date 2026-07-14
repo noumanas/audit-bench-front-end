@@ -290,40 +290,42 @@ export function FixInEditorModal({
               )}
             </div>
 
-            <div className="border-t border-paper-line p-4">
-              {result ? (
-                <div className="space-y-3">
-                  <div className="space-y-2 rounded-lg border border-pass/40 bg-pass/10 p-3 text-[13px] text-pass">
-                    <div className="font-semibold">{result.created ? 'Pull request opened' : 'Commit pushed'}</div>
-                    <div className="flex flex-col gap-1">
-                      <a href={result.commitUrl} target="_blank" rel="noreferrer" className="underline">
-                        View commit
-                      </a>
-                      {result.pullRequestUrl && (
-                        <a href={result.pullRequestUrl} target="_blank" rel="noreferrer" className="underline">
-                          {result.created ? 'View pull request' : 'View on the open PR/MR'}
-                        </a>
-                      )}
-                    </div>
-                  </div>
+            <div className="space-y-3 border-t border-paper-line p-4">
+              {/* Available as soon as a fix has been applied — whether from "Fix with
+                  AI" on a single finding, "Fix all issues", or a hand edit — so the
+                  user can confirm it's actually resolved before ever committing,
+                  not just after. */}
+              {recheckError && (
+                <div className="rounded-md border border-critical/40 bg-critical/10 px-3 py-2 text-xs text-critical">
+                  {recheckError}
+                </div>
+              )}
+              <button
+                onClick={handleRecheck}
+                disabled={rechecking || content === null}
+                className="w-full cursor-pointer rounded-lg border border-cobalt px-4 py-2.5 text-sm font-bold text-cobalt disabled:cursor-wait disabled:opacity-50"
+              >
+                {rechecking ? 'Re-checking…' : recheckResult ? 'Re-check again' : 'Re-check — is this resolved?'}
+              </button>
 
-                  {recheckError && (
-                    <div className="rounded-md border border-critical/40 bg-critical/10 px-3 py-2 text-xs text-critical">
-                      {recheckError}
-                    </div>
-                  )}
-                  <button
-                    onClick={handleRecheck}
-                    disabled={rechecking}
-                    className="w-full cursor-pointer rounded-lg border border-cobalt px-4 py-2.5 text-sm font-bold text-cobalt disabled:cursor-wait disabled:opacity-50"
-                  >
-                    {rechecking ? 'Re-checking…' : recheckResult ? 'Re-check again' : 'Re-check — is this resolved?'}
-                  </button>
+              {result ? (
+                <div className="space-y-2 rounded-lg border border-pass/40 bg-pass/10 p-3 text-[13px] text-pass">
+                  <div className="font-semibold">{result.created ? 'Pull request opened' : 'Commit pushed'}</div>
+                  <div className="flex flex-col gap-1">
+                    <a href={result.commitUrl} target="_blank" rel="noreferrer" className="underline">
+                      View commit
+                    </a>
+                    {result.pullRequestUrl && (
+                      <a href={result.pullRequestUrl} target="_blank" rel="noreferrer" className="underline">
+                        {result.created ? 'View pull request' : 'View on the open PR/MR'}
+                      </a>
+                    )}
+                  </div>
                 </div>
               ) : (
                 <>
                   {commitError && (
-                    <div className="mb-2 rounded-md border border-critical/40 bg-critical/10 px-3 py-2 text-xs text-critical">
+                    <div className="rounded-md border border-critical/40 bg-critical/10 px-3 py-2 text-xs text-critical">
                       {commitError}
                     </div>
                   )}
@@ -331,7 +333,7 @@ export function FixInEditorModal({
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     placeholder="Commit message (optional)"
-                    className="mb-2 w-full rounded-md border border-paper-line bg-paper px-2.5 py-1.5 text-xs text-[#1C2128] outline-none placeholder:text-muted-on-paper/70"
+                    className="w-full rounded-md border border-paper-line bg-paper px-2.5 py-1.5 text-xs text-[#1C2128] outline-none placeholder:text-muted-on-paper/70"
                   />
                   <button
                     onClick={handleCommit}
