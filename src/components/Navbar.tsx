@@ -9,6 +9,7 @@ const MARKETING_LINKS = [
   { href: '/', label: 'Home' },
   { href: '/about', label: 'About' },
   { href: '/services', label: 'Services' },
+  { href: '/cli', label: 'CLI' },
   { href: '/pricing', label: 'Pricing' },
 ];
 

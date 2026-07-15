@@ -50,6 +50,7 @@ const TEAM_CAPABILITIES = [
   },
   {
     title: 'CLI for CI pipelines',
+    href: '/cli',
     detail:
       'Run `auditbench scan` or `auditbench audit` from a pipeline step, a pre-commit hook, or a terminal — same engine, same findings, scriptable output.',
   },
@@ -232,7 +233,15 @@ export default function HomePage() {
           <div className="grid gap-4 sm:grid-cols-2">
             {TEAM_CAPABILITIES.map((c) => (
               <div key={c.title} className="rounded-lg border border-paper-line bg-paper-card p-5">
-                <h3 className="mb-2 text-sm font-bold text-[#1C2128]">{c.title}</h3>
+                <h3 className="mb-2 text-sm font-bold text-[#1C2128]">
+                  {c.href ? (
+                    <Link href={c.href} className="hover:text-cobalt">
+                      {c.title}
+                    </Link>
+                  ) : (
+                    c.title
+                  )}
+                </h3>
                 <p className="text-sm leading-relaxed text-muted-on-paper">{c.detail}</p>
               </div>
             ))}
