@@ -560,6 +560,21 @@ export function rotateBadgeToken(): Promise<{ badgeToken: string }> {
   }).then((res) => unwrap<{ badgeToken: string }>(res));
 }
 
+// ---------- API key (CLI / CI-CD) ----------
+
+export function getApiKey(): Promise<{ apiKey: string }> {
+  return fetch(`${API_URL}/me/api-key`, { headers: authHeaders() }).then((res) =>
+    unwrap<{ apiKey: string }>(res),
+  );
+}
+
+export function rotateApiKey(): Promise<{ apiKey: string }> {
+  return fetch(`${API_URL}/me/api-key/rotate`, {
+    method: "POST",
+    headers: authHeaders(),
+  }).then((res) => unwrap<{ apiKey: string }>(res));
+}
+
 // ---------- Webhooks (conversational PR/MR chat) ----------
 
 export function listWebhookConfigs(): Promise<WebhookConfig[]> {

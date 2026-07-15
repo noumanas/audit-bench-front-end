@@ -5,8 +5,10 @@ import {
   API_URL,
   createWebhookConfig,
   deleteWebhookConfig,
+  getApiKey,
   getBadgeToken,
   listWebhookConfigs,
+  rotateApiKey,
   rotateBadgeToken,
 } from '@/lib/api';
 import { WebhookConfig, WebhookProvider } from '@/lib/types';
@@ -90,6 +92,100 @@ function BadgeSection() {
             className="cursor-pointer text-xs font-medium text-muted-on-ink hover:text-[#E8ECF4] disabled:cursor-wait"
           >
             {rotating ? 'Rotating…' : 'Rotate badge token'}
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ApiKeySection() {
+  const [apiKey, setApiKey] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [rotating, setRotating] = useState(false);
+  const [revealed, setRevealed] = useState(false);
+
+  useEffect(() => {
+    getApiKey()
+      .then((r) => setApiKey(r.apiKey))
+      .finally(() => setLoading(false));
+  }, []);
+
+  const handleRotate = async () => {
+    if (!confirm('Rotate your API key? Any CI pipeline or script using the old key will start failing to authenticate.')) {
+      return;
+    }
+    setRotating(true);
+    try {
+      const r = await rotateApiKey();
+      setApiKey(r.apiKey);
+      setRevealed(true);
+    } finally {
+      setRotating(false);
+    }
+  };
+
+  const masked = apiKey ? `${apiKey.slice(0, 8)}${'•'.repeat(28)}` : '';
+  const ciSnippet = apiKey
+    ? `- name: audit/bench
+  run: |
+    npm install -g auditbench-cli
+    auditbench scan . --fail-on do_not_ship
+  env:
+    AUDITBENCH_API_KEY: \${{ secrets.AUDITBENCH_API_KEY }}`
+    : '';
+
+  return (
+    <div className="rounded-lg border border-ink-line bg-ink-soft p-4">
+      <h3 className="mb-1 text-sm font-bold text-[#E8ECF4]">CLI / CI-CD API key</h3>
+      <p className="mb-3 text-xs text-muted-on-ink">
+        A long-lived credential for the{' '}
+        <code className="rounded bg-ink px-1 py-0.5 font-mono text-[11px]">auditbench</code> CLI — use it in a
+        pipeline to fail the build when a scan comes back <code className="rounded bg-ink px-1 py-0.5 font-mono text-[11px]">do_not_ship</code>,
+        without ever storing a login password in CI.
+      </p>
+
+      {loading ? (
+        <div className="text-xs text-muted-on-ink">Loading…</div>
+      ) : (
+        <div className="space-y-3">
+          <div className="flex items-center gap-2">
+            <code className="min-w-0 flex-1 truncate rounded-md border border-ink-line bg-ink px-2.5 py-1.5 font-mono text-[11px] text-muted-on-ink">
+              {revealed ? apiKey : masked}
+            </code>
+            <button
+              onClick={() => setRevealed((v) => !v)}
+              className="shrink-0 cursor-pointer rounded-md border border-ink-line px-2.5 py-1 text-xs font-semibold whitespace-nowrap text-muted-on-ink hover:text-[#E8ECF4]"
+            >
+              {revealed ? 'Hide' : 'Reveal'}
+            </button>
+            {apiKey && <CopyButton value={apiKey} />}
+          </div>
+
+          <details>
+            <summary className="cursor-pointer text-xs text-muted-on-ink hover:text-[#E8ECF4]">
+              GitHub Actions example
+            </summary>
+            <div className="mt-2 space-y-2">
+              <p className="text-xs text-muted-on-ink">
+                Add this key as a repo secret named <code className="rounded bg-ink px-1 py-0.5 font-mono">AUDITBENCH_API_KEY</code>,
+                then drop this step into <code className="rounded bg-ink px-1 py-0.5 font-mono">.github/workflows/*.yml</code>:
+              </p>
+              <div className="flex items-start gap-2">
+                <pre className="min-w-0 flex-1 overflow-x-auto rounded-md border border-ink-line bg-ink px-3 py-2 font-mono text-[11px] text-muted-on-ink">
+                  {ciSnippet}
+                </pre>
+                <CopyButton value={ciSnippet} />
+              </div>
+            </div>
+          </details>
+
+          <button
+            onClick={handleRotate}
+            disabled={rotating}
+            className="cursor-pointer text-xs font-medium text-muted-on-ink hover:text-[#E8ECF4] disabled:cursor-wait"
+          >
+            {rotating ? 'Rotating…' : 'Rotate API key'}
           </button>
         </div>
       )}
@@ -270,6 +366,7 @@ export function IntegrationsPanel() {
     <div className="space-y-4">
       <BadgeSection />
       <WebhookSection />
+      <ApiKeySection />
     </div>
   );
 }

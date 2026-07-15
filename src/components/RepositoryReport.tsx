@@ -54,6 +54,13 @@ export function RepositoryReport({ scan }: { scan: ScanJob }) {
               .md
             </button>
             <button
+              onClick={() => downloadReport(scan, 'html')}
+              title="Open in a browser and use Print → Save as PDF for a PDF copy"
+              className="cursor-pointer rounded-md border border-paper-line px-2.5 py-1 font-mono text-[11px] font-bold text-muted-on-paper hover:text-[#1C2128]"
+            >
+              .html
+            </button>
+            <button
               onClick={() => downloadReport(scan, 'json')}
               className="cursor-pointer rounded-md border border-paper-line px-2.5 py-1 font-mono text-[11px] font-bold text-muted-on-paper hover:text-[#1C2128]"
             >
