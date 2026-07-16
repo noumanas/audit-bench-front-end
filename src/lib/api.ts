@@ -5,8 +5,10 @@ import {
   Audit,
   ChangePlanResult,
   Finding,
+  GithubPullRequest,
   GithubRepo,
   GithubStatus,
+  GitlabMergeRequest,
   GitlabProject,
   GitlabStatus,
   InvitePreview,
@@ -458,6 +460,12 @@ export function listGithubBranches(owner: string, repo: string): Promise<string[
   );
 }
 
+export function listGithubPulls(owner: string, repo: string): Promise<GithubPullRequest[]> {
+  return fetch(`${API_URL}/github/repos/${owner}/${repo}/pulls`, { headers: authHeaders() }).then(
+    (res) => unwrap<GithubPullRequest[]>(res),
+  );
+}
+
 export function scanGithubRepo(
   owner: string,
   repo: string,
@@ -516,6 +524,12 @@ export function listGitlabProjects(): Promise<GitlabProject[]> {
 export function listGitlabBranches(projectId: number): Promise<string[]> {
   return fetch(`${API_URL}/gitlab/projects/${projectId}/branches`, { headers: authHeaders() }).then(
     (res) => unwrap<string[]>(res),
+  );
+}
+
+export function listGitlabMergeRequests(projectId: number): Promise<GitlabMergeRequest[]> {
+  return fetch(`${API_URL}/gitlab/projects/${projectId}/merge_requests`, { headers: authHeaders() }).then(
+    (res) => unwrap<GitlabMergeRequest[]>(res),
   );
 }
 

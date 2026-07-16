@@ -8,11 +8,12 @@ import {
   disconnectGitlab,
   getGitlabStatus,
   listGitlabBranches,
+  listGitlabMergeRequests,
   listGitlabProjects,
   reviewGitlabMr,
   scanGitlabProject,
 } from '@/lib/api';
-import { GitlabProject, GitlabStatus } from '@/lib/types';
+import { GitlabMergeRequest, GitlabProject, GitlabStatus } from '@/lib/types';
 import { PasswordInput } from './PasswordInput';
 
 export function GitlabPanel({ onScanStarted }: { onScanStarted: (scanId: string) => void }) {
@@ -32,6 +33,8 @@ export function GitlabPanel({ onScanStarted }: { onScanStarted: (scanId: string)
   const [branchesByProject, setBranchesByProject] = useState<Record<number, string[]>>({});
   const [selectedBranch, setSelectedBranch] = useState<Record<number, string>>({});
   const [loadingBranches, setLoadingBranches] = useState<number | null>(null);
+  const [mrsByProject, setMrsByProject] = useState<Record<number, GitlabMergeRequest[]>>({});
+  const [loadingMrs, setLoadingMrs] = useState<number | null>(null);
 
   const loadProjects = async () => {
     setLoadingProjects(true);
@@ -96,6 +99,20 @@ export function GitlabPanel({ onScanStarted }: { onScanStarted: (scanId: string)
       // Non-critical — the default branch option still works for scanning.
     } finally {
       setLoadingBranches(null);
+    }
+  };
+
+  const loadMrs = async (project: GitlabProject) => {
+    if (mrsByProject[project.id] || loadingMrs === project.id) return;
+    setLoadingMrs(project.id);
+    try {
+      const mrs = await listGitlabMergeRequests(project.id);
+      setMrsByProject((prev) => ({ ...prev, [project.id]: mrs }));
+      if (mrs.length > 0) setMrIid((prev) => prev || String(mrs[0].iid));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to load merge requests.');
+    } finally {
+      setLoadingMrs(null);
     }
   };
 
@@ -248,7 +265,14 @@ export function GitlabPanel({ onScanStarted }: { onScanStarted: (scanId: string)
                       )}
                     </div>
                     <button
-                      onClick={() => setMrFormProject(mrFormProject === project.id ? null : project.id)}
+                      onClick={() => {
+                        const opening = mrFormProject !== project.id;
+                        setMrFormProject(opening ? project.id : null);
+                        if (opening) {
+                          setMrIid('');
+                          loadMrs(project);
+                        }
+                      }}
                       className="shrink-0 cursor-pointer rounded-md border border-ink-line px-3 py-1.5 text-xs font-medium text-muted-on-ink hover:text-[#E8ECF4]"
                     >
                       Review MR
@@ -288,26 +312,38 @@ export function GitlabPanel({ onScanStarted }: { onScanStarted: (scanId: string)
 
                   {mrFormProject === project.id && (
                     <div className="mt-2 flex flex-wrap items-center gap-2 border-t border-ink-line pt-2">
-                      <span className="text-xs text-muted-on-ink">MR !</span>
-                      <input
-                        type="number"
-                        min={1}
-                        value={mrIid}
-                        onChange={(e) => setMrIid(e.target.value)}
-                        placeholder="12"
-                        className="w-20 rounded-md border border-ink-line bg-ink-soft px-2 py-1 font-mono text-[12px] text-[#E8ECF4] outline-none"
-                      />
-                      <button
-                        onClick={() => handleReviewMr(project)}
-                        disabled={reviewingMr !== null}
-                        className="cursor-pointer rounded-md bg-cobalt px-3 py-1 text-xs font-bold text-white disabled:cursor-wait disabled:opacity-70"
-                      >
-                        {reviewingMr === project.id ? 'Starting…' : 'Review'}
-                      </button>
-                      <span className="text-xs text-muted-on-ink">
-                        Scopes the review to the diff, then posts inline discussions, a summary note, and a
-                        commit status check directly on the MR.
-                      </span>
+                      {loadingMrs === project.id && (
+                        <span className="text-xs text-muted-on-ink">Loading open merge requests…</span>
+                      )}
+                      {loadingMrs !== project.id && (mrsByProject[project.id]?.length ?? 0) === 0 && (
+                        <span className="text-xs text-muted-on-ink">No open merge requests on this project.</span>
+                      )}
+                      {loadingMrs !== project.id && (mrsByProject[project.id]?.length ?? 0) > 0 && (
+                        <>
+                          <select
+                            value={mrIid}
+                            onChange={(e) => setMrIid(e.target.value)}
+                            className="max-w-[260px] rounded-md border border-ink-line bg-ink-soft px-2 py-1 font-mono text-[12px] text-[#E8ECF4] outline-none"
+                          >
+                            {mrsByProject[project.id].map((mr) => (
+                              <option key={mr.iid} value={mr.iid}>
+                                !{mr.iid} {mr.title} ({mr.sourceBranch} → {mr.targetBranch}){mr.draft ? ' [draft]' : ''}
+                              </option>
+                            ))}
+                          </select>
+                          <button
+                            onClick={() => handleReviewMr(project)}
+                            disabled={reviewingMr !== null}
+                            className="cursor-pointer rounded-md bg-cobalt px-3 py-1 text-xs font-bold text-white disabled:cursor-wait disabled:opacity-70"
+                          >
+                            {reviewingMr === project.id ? 'Starting…' : 'Review'}
+                          </button>
+                          <span className="text-xs text-muted-on-ink">
+                            Scopes the review to the diff, then posts inline discussions, a summary note, and a
+                            commit status check directly on the MR.
+                          </span>
+                        </>
+                      )}
                     </div>
                   )}
                 </div>

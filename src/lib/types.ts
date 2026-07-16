@@ -150,6 +150,16 @@ export interface GithubRepo {
   htmlUrl: string;
 }
 
+export interface GithubPullRequest {
+  number: number;
+  title: string;
+  headRef: string;
+  baseRef: string;
+  draft: boolean;
+  updatedAt: string;
+  htmlUrl: string;
+}
+
 export interface GitlabStatus {
   connected: boolean;
   username: string | null;
@@ -162,6 +172,16 @@ export interface GitlabProject {
   private: boolean;
   description: string | null;
   defaultBranch: string;
+  updatedAt: string;
+  webUrl: string;
+}
+
+export interface GitlabMergeRequest {
+  iid: number;
+  title: string;
+  sourceBranch: string;
+  targetBranch: string;
+  draft: boolean;
   updatedAt: string;
   webUrl: string;
 }

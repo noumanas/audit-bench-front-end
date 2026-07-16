@@ -8,11 +8,12 @@ import {
   disconnectGithub,
   getGithubStatus,
   listGithubBranches,
+  listGithubPulls,
   listGithubRepos,
   reviewGithubPr,
   scanGithubRepo,
 } from '@/lib/api';
-import { GithubRepo, GithubStatus } from '@/lib/types';
+import { GithubPullRequest, GithubRepo, GithubStatus } from '@/lib/types';
 import { PasswordInput } from './PasswordInput';
 
 export function GithubPanel({ onScanStarted }: { onScanStarted: (scanId: string) => void }) {
@@ -32,6 +33,8 @@ export function GithubPanel({ onScanStarted }: { onScanStarted: (scanId: string)
   const [branchesByRepo, setBranchesByRepo] = useState<Record<string, string[]>>({});
   const [selectedBranch, setSelectedBranch] = useState<Record<string, string>>({});
   const [loadingBranches, setLoadingBranches] = useState<string | null>(null);
+  const [pullsByRepo, setPullsByRepo] = useState<Record<string, GithubPullRequest[]>>({});
+  const [loadingPulls, setLoadingPulls] = useState<string | null>(null);
 
   const loadRepos = async () => {
     setLoadingRepos(true);
@@ -96,6 +99,20 @@ export function GithubPanel({ onScanStarted }: { onScanStarted: (scanId: string)
       // Non-critical — the default branch option still works for scanning.
     } finally {
       setLoadingBranches(null);
+    }
+  };
+
+  const loadPulls = async (repo: GithubRepo) => {
+    if (pullsByRepo[repo.fullName] || loadingPulls === repo.fullName) return;
+    setLoadingPulls(repo.fullName);
+    try {
+      const pulls = await listGithubPulls(repo.owner, repo.name);
+      setPullsByRepo((prev) => ({ ...prev, [repo.fullName]: pulls }));
+      if (pulls.length > 0) setPrNumber((prev) => prev || String(pulls[0].number));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to load pull requests.');
+    } finally {
+      setLoadingPulls(null);
     }
   };
 
@@ -249,7 +266,14 @@ export function GithubPanel({ onScanStarted }: { onScanStarted: (scanId: string)
                       )}
                     </div>
                     <button
-                      onClick={() => setPrFormRepo(prFormRepo === repo.fullName ? null : repo.fullName)}
+                      onClick={() => {
+                        const opening = prFormRepo !== repo.fullName;
+                        setPrFormRepo(opening ? repo.fullName : null);
+                        if (opening) {
+                          setPrNumber('');
+                          loadPulls(repo);
+                        }
+                      }}
                       className="shrink-0 cursor-pointer rounded-md border border-ink-line px-3 py-1.5 text-xs font-medium text-muted-on-ink hover:text-[#E8ECF4]"
                     >
                       Review PR
@@ -289,26 +313,38 @@ export function GithubPanel({ onScanStarted }: { onScanStarted: (scanId: string)
 
                   {prFormRepo === repo.fullName && (
                     <div className="mt-2 flex flex-wrap items-center gap-2 border-t border-ink-line pt-2">
-                      <span className="text-xs text-muted-on-ink">PR #</span>
-                      <input
-                        type="number"
-                        min={1}
-                        value={prNumber}
-                        onChange={(e) => setPrNumber(e.target.value)}
-                        placeholder="42"
-                        className="w-20 rounded-md border border-ink-line bg-ink-soft px-2 py-1 font-mono text-[12px] text-[#E8ECF4] outline-none"
-                      />
-                      <button
-                        onClick={() => handleReviewPr(repo)}
-                        disabled={reviewingPr !== null}
-                        className="cursor-pointer rounded-md bg-cobalt px-3 py-1 text-xs font-bold text-white disabled:cursor-wait disabled:opacity-70"
-                      >
-                        {reviewingPr === repo.fullName ? 'Starting…' : 'Review'}
-                      </button>
-                      <span className="text-xs text-muted-on-ink">
-                        Scopes the review to the diff, then posts inline comments, a summary, and a commit status
-                        check directly on the PR.
-                      </span>
+                      {loadingPulls === repo.fullName && (
+                        <span className="text-xs text-muted-on-ink">Loading open pull requests…</span>
+                      )}
+                      {loadingPulls !== repo.fullName && (pullsByRepo[repo.fullName]?.length ?? 0) === 0 && (
+                        <span className="text-xs text-muted-on-ink">No open pull requests on this repository.</span>
+                      )}
+                      {loadingPulls !== repo.fullName && (pullsByRepo[repo.fullName]?.length ?? 0) > 0 && (
+                        <>
+                          <select
+                            value={prNumber}
+                            onChange={(e) => setPrNumber(e.target.value)}
+                            className="max-w-[260px] rounded-md border border-ink-line bg-ink-soft px-2 py-1 font-mono text-[12px] text-[#E8ECF4] outline-none"
+                          >
+                            {pullsByRepo[repo.fullName].map((pr) => (
+                              <option key={pr.number} value={pr.number}>
+                                #{pr.number} {pr.title} ({pr.headRef} → {pr.baseRef}){pr.draft ? ' [draft]' : ''}
+                              </option>
+                            ))}
+                          </select>
+                          <button
+                            onClick={() => handleReviewPr(repo)}
+                            disabled={reviewingPr !== null}
+                            className="cursor-pointer rounded-md bg-cobalt px-3 py-1 text-xs font-bold text-white disabled:cursor-wait disabled:opacity-70"
+                          >
+                            {reviewingPr === repo.fullName ? 'Starting…' : 'Review'}
+                          </button>
+                          <span className="text-xs text-muted-on-ink">
+                            Scopes the review to the diff, then posts inline comments, a summary, and a commit
+                            status check directly on the PR.
+                          </span>
+                        </>
+                      )}
                     </div>
                   )}
                 </div>
