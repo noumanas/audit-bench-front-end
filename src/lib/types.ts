@@ -41,6 +41,7 @@ export interface WebhookConfig {
   provider: WebhookProvider;
   repoIdentifier: string;
   secret: string;
+  autoReview: boolean;
   createdAt: string;
 }
 

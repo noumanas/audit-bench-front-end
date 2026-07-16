@@ -589,7 +589,7 @@ export function rotateApiKey(): Promise<{ apiKey: string }> {
   }).then((res) => unwrap<{ apiKey: string }>(res));
 }
 
-// ---------- Webhooks (conversational PR/MR chat) ----------
+// ---------- Webhooks (continuous PR/MR review + conversational chat) ----------
 
 export function listWebhookConfigs(): Promise<WebhookConfig[]> {
   return fetch(`${API_URL}/webhooks/configs`, { headers: authHeaders() }).then((res) =>
@@ -600,11 +600,20 @@ export function listWebhookConfigs(): Promise<WebhookConfig[]> {
 export function createWebhookConfig(
   provider: WebhookProvider,
   repoIdentifier: string,
+  autoReview = true,
 ): Promise<WebhookConfig> {
   return fetch(`${API_URL}/webhooks/configs`, {
     method: "POST",
     headers: { "Content-Type": "application/json", ...authHeaders() },
-    body: JSON.stringify({ provider, repoIdentifier }),
+    body: JSON.stringify({ provider, repoIdentifier, autoReview }),
+  }).then((res) => unwrap<WebhookConfig>(res));
+}
+
+export function updateWebhookConfig(id: string, autoReview: boolean): Promise<WebhookConfig> {
+  return fetch(`${API_URL}/webhooks/configs/${id}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json", ...authHeaders() },
+    body: JSON.stringify({ autoReview }),
   }).then((res) => unwrap<WebhookConfig>(res));
 }
 

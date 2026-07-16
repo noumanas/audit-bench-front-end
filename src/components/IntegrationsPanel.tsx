@@ -10,6 +10,7 @@ import {
   listWebhookConfigs,
   rotateApiKey,
   rotateBadgeToken,
+  updateWebhookConfig,
 } from '@/lib/api';
 import { WebhookConfig, WebhookProvider } from '@/lib/types';
 
@@ -200,9 +201,11 @@ function WebhookSection() {
   const [loading, setLoading] = useState(true);
   const [provider, setProvider] = useState<WebhookProvider>('github');
   const [repoIdentifier, setRepoIdentifier] = useState('');
+  const [autoReview, setAutoReview] = useState(true);
   const [creating, setCreating] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [justCreated, setJustCreated] = useState<WebhookConfig | null>(null);
+  const [togglingId, setTogglingId] = useState<string | null>(null);
 
   const load = () => {
     setLoading(true);
@@ -219,7 +222,7 @@ function WebhookSection() {
     setCreating(true);
     setError(null);
     try {
-      const created = await createWebhookConfig(provider, repoIdentifier.trim());
+      const created = await createWebhookConfig(provider, repoIdentifier.trim(), autoReview);
       setConfigs((prev) => [created, ...prev]);
       setJustCreated(created);
       setRepoIdentifier('');
@@ -230,8 +233,21 @@ function WebhookSection() {
     }
   };
 
+  const handleToggleAutoReview = async (config: WebhookConfig) => {
+    setTogglingId(config.id);
+    try {
+      const updated = await updateWebhookConfig(config.id, !config.autoReview);
+      setConfigs((prev) => prev.map((c) => (c.id === updated.id ? updated : c)));
+      setJustCreated((prev) => (prev?.id === updated.id ? updated : prev));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to update webhook.');
+    } finally {
+      setTogglingId(null);
+    }
+  };
+
   const handleDelete = async (id: string) => {
-    if (!confirm('Remove this webhook config? Replies to @auditbench mentions will stop.')) return;
+    if (!confirm('Remove this webhook config? Auto-review and @auditbench replies will stop.')) return;
     await deleteWebhookConfig(id);
     setConfigs((prev) => prev.filter((c) => c.id !== id));
     if (justCreated?.id === id) setJustCreated(null);
@@ -239,10 +255,12 @@ function WebhookSection() {
 
   return (
     <div className="rounded-lg border border-ink-line bg-ink-soft p-4">
-      <h3 className="mb-1 text-sm font-bold text-[#E8ECF4]">Conversational PR/MR chat</h3>
-      <p className="mb-3 text-xs text-muted-on-ink">
-        Mention <code className="rounded bg-ink px-1 py-0.5 font-mono text-[11px]">@auditbench</code> in a PR or MR
-        comment and it'll reply in-thread, using the diff as context.
+      <h3 className="mb-1 text-sm font-bold text-[#E8ECF4]">Continuous PR/MR review &amp; chat</h3>
+      <p className="mb-3 text-xs leading-relaxed text-muted-on-ink">
+        Automatically reviews every new PR/MR and each new commit pushed to it — inline comments, a summary, and a
+        merge-blocking status check, no button click needed. Mention{' '}
+        <code className="rounded bg-ink px-1 py-0.5 font-mono text-[11px]">@auditbench</code> in a comment any time
+        for a direct reply.
       </p>
 
       {error && (
@@ -251,7 +269,7 @@ function WebhookSection() {
         </div>
       )}
 
-      <div className="mb-3 flex flex-wrap items-center gap-2">
+      <div className="mb-2 flex flex-wrap items-center gap-2">
         <select
           value={provider}
           onChange={(e) => setProvider(e.target.value as WebhookProvider)}
@@ -274,6 +292,15 @@ function WebhookSection() {
           {creating ? 'Adding…' : 'Add'}
         </button>
       </div>
+      <label className="mb-3 flex items-center gap-2 text-xs text-muted-on-ink">
+        <input
+          type="checkbox"
+          checked={autoReview}
+          onChange={(e) => setAutoReview(e.target.checked)}
+          className="cursor-pointer"
+        />
+        Automatically review new PRs/MRs (skips drafts)
+      </label>
 
       {justCreated && (
         <div className="mb-3 rounded-lg border border-cobalt/40 bg-cobalt/10 p-3 text-xs text-muted-on-ink">
@@ -307,6 +334,16 @@ function WebhookSection() {
                   Remove
                 </button>
               </div>
+              <label className="mt-2 flex items-center gap-2 text-xs text-muted-on-ink">
+                <input
+                  type="checkbox"
+                  checked={c.autoReview}
+                  disabled={togglingId === c.id}
+                  onChange={() => handleToggleAutoReview(c)}
+                  className="cursor-pointer disabled:cursor-wait"
+                />
+                Auto-review new PRs/MRs
+              </label>
               {justCreated?.id !== c.id && (
                 <details className="mt-2">
                   <summary className="cursor-pointer text-xs text-muted-on-ink hover:text-[#E8ECF4]">
@@ -336,12 +373,26 @@ function SetupInstructions({ config }: { config: WebhookConfig }) {
           <>
             In your repo → Settings → Webhooks → Add webhook. Content type{' '}
             <code className="rounded bg-ink-line px-1 py-0.5 font-mono">application/json</code>, paste the secret
-            above, and select just the <strong>Issue comments</strong> event.
+            above, and select <strong>Issue comments</strong>
+            {config.autoReview && (
+              <>
+                {' '}
+                and <strong>Pull requests</strong>
+              </>
+            )}
+            .
           </>
         ) : (
           <>
-            In your project → Settings → Webhooks. Paste the URL and secret token above, and enable only the{' '}
-            <strong>Comments</strong> trigger.
+            In your project → Settings → Webhooks. Paste the URL and secret token above, and enable{' '}
+            <strong>Comments</strong>
+            {config.autoReview && (
+              <>
+                {' '}
+                and <strong>Merge request events</strong>
+              </>
+            )}
+            .
           </>
         )}
       </p>
