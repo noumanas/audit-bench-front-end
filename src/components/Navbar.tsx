@@ -8,6 +8,7 @@ import { useAuth } from '@/lib/AuthContext';
 const MARKETING_LINKS = [
   { href: '/', label: 'Home' },
   { href: '/about', label: 'About' },
+  { href: '/features', label: 'Features' },
   { href: '/services', label: 'Services' },
   { href: '/cli', label: 'CLI' },
   { href: '/pricing', label: 'Pricing' },

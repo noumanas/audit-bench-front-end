@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { Footer } from '@/components/Footer';
 import { PricingTeaser } from '@/components/PricingTeaser';
 import { HeroShowcase } from '@/components/HeroShowcase';
+import { FeatureShowcase } from '@/components/FeatureShowcase';
 
 export const metadata: Metadata = {
   title: 'AI code review before it ships',
@@ -16,25 +17,6 @@ const STATS = [
   { value: '3', label: 'LLM providers to choose from' },
   { value: '11+', label: 'Frameworks understood' },
   { value: '2', label: 'Git providers, native PR/MR review' },
-];
-
-const FEATURES = [
-  {
-    title: 'Security review',
-    detail: 'SQL injection, XSS, CSRF, SSRF, JWT/auth issues, hardcoded secrets, OWASP Top 10.',
-  },
-  {
-    title: 'Logic analysis',
-    detail: 'Race conditions, edge cases, and the hallucinated logic AI assistants slip into working-looking code.',
-  },
-  {
-    title: 'Performance review',
-    detail: 'N+1 queries, unnecessary re-renders, blocking calls, and other issues that only show up at scale.',
-  },
-  {
-    title: 'Architecture & maintainability',
-    detail: 'Framework misuse, dead code, duplication, and structural drift across a whole repository.',
-  },
 ];
 
 const TEAM_CAPABILITIES = [
@@ -200,22 +182,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Features */}
-      <section className="bg-ink px-6 py-16">
-        <div className="mx-auto max-w-5xl">
-          <h2 className="mb-8 text-center text-2xl font-bold text-[#E8ECF4]">
-            One audit engine, five review lenses
-          </h2>
-          <div className="grid gap-4 sm:grid-cols-2">
-            {FEATURES.map((f) => (
-              <div key={f.title} className="rounded-lg border border-ink-line bg-ink-soft p-5">
-                <h3 className="mb-2 font-mono text-sm font-bold text-[#E8ECF4]">{f.title}</h3>
-                <p className="text-sm leading-relaxed text-muted-on-ink">{f.detail}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <FeatureShowcase />
 
       {/* Built for teams */}
       <section className="border-t border-ink-line bg-paper px-6 py-16">
