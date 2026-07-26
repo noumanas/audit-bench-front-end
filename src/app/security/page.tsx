@@ -83,7 +83,7 @@ export default function SecurityPage() {
           Ask directly — especially before a security review on your end.
         </p>
         <a
-          href="mailto:nouman@blacklionapp.xyz"
+          href="mailto:noumanqureshi15@gmail.com"
           className="inline-block rounded-lg bg-cobalt px-5 py-3 text-sm font-bold text-white"
         >
           Contact us
