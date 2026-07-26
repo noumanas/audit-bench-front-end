@@ -18,6 +18,7 @@ const FOCUS_AREAS = [
   { id: 'Logic', label: 'Logic & edge cases' },
   { id: 'Performance', label: 'Performance' },
   { id: 'Architecture', label: 'Architecture & maintainability' },
+  { id: 'Testing', label: 'Test coverage' },
 ];
 
 const SAMPLE = {

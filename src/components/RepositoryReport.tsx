@@ -1,13 +1,15 @@
 'use client';
 
 import { useState } from 'react';
-import { ScanJob } from '@/lib/types';
+import { FindingStatuses, FindingStatus, ScanJob } from '@/lib/types';
 import { VerdictBadge } from './VerdictBadge';
 import { FindingCard } from './FindingCard';
 import { PipelineBadge } from './PipelineBadge';
 import { Stage1Summary } from './Stage1Summary';
 import { FixInEditorModal } from './FixInEditorModal';
 import { downloadReport } from '@/lib/reportExport';
+import { setScanFileFindingStatus } from '@/lib/api';
+import { TokenUsageNote } from './TokenUsageNote';
 
 const DIFF_SOURCE_TYPES = new Set<ScanJob['sourceType']>(['github_pr', 'gitlab_mr']);
 // Fixing requires a remote to commit to — a .zip upload has none.
@@ -16,6 +18,23 @@ const FIXABLE_SOURCE_TYPES = new Set<ScanJob['sourceType']>(['github_repo', 'git
 export function RepositoryReport({ scan }: { scan: ScanJob }) {
   const [openFilePath, setOpenFilePath] = useState<string | null>(null);
   const [fixingPath, setFixingPath] = useState<string | null>(null);
+  // Overlays scan.files[].findingStatuses — usePollScan owns `scan`, so triage
+  // updates are tracked here rather than mutating a prop we don't control.
+  const [statusOverrides, setStatusOverrides] = useState<Record<string, FindingStatuses>>({});
+  const [updatingKey, setUpdatingKey] = useState<string | null>(null);
+
+  const handleStatusChange = async (scanFileId: string, index: number, status: FindingStatus) => {
+    const key = `${scanFileId}:${index}`;
+    setUpdatingKey(key);
+    try {
+      const updated = await setScanFileFindingStatus(scanFileId, index, status);
+      setStatusOverrides((prev) => ({ ...prev, [scanFileId]: updated.findingStatuses ?? {} }));
+    } catch {
+      // Non-critical — the dropdown just won't reflect the change; the card stays interactive to retry.
+    } finally {
+      setUpdatingKey(null);
+    }
+  };
 
   const progressPct =
     scan.fileCount > 0 ? Math.round((scan.filesScanned / Math.min(scan.fileCount, 9999)) * 100) : 0;
@@ -35,6 +54,7 @@ export function RepositoryReport({ scan }: { scan: ScanJob }) {
         <span className="font-mono text-xs text-muted-on-paper">
           {scan.sourceName} · {scan.framework || 'framework unknown'}
         </span>
+        <TokenUsageNote inputTokens={scan.inputTokens} outputTokens={scan.outputTokens} />
         {scan.pullRequestUrl && (
           <a
             href={scan.pullRequestUrl}
@@ -210,7 +230,18 @@ export function RepositoryReport({ scan }: { scan: ScanJob }) {
                       {f.findings.length === 0 ? (
                         <div className="text-xs text-muted-on-paper">No issues in this file.</div>
                       ) : (
-                        f.findings.map((finding, i) => <FindingCard key={i} finding={finding} />)
+                        f.findings.map((finding, i) => {
+                          const statuses = statusOverrides[f.id] ?? f.findingStatuses ?? {};
+                          return (
+                            <FindingCard
+                              key={i}
+                              finding={finding}
+                              status={statuses[i] ?? 'open'}
+                              onStatusChange={(status) => handleStatusChange(f.id, i, status)}
+                              statusUpdating={updatingKey === `${f.id}:${i}`}
+                            />
+                          );
+                        })
                       )}
                     </div>
                   )}

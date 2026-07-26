@@ -1,10 +1,20 @@
-import { Audit } from '@/lib/types';
+import { Audit, FindingStatus } from '@/lib/types';
 import { VerdictBadge } from './VerdictBadge';
 import { FindingCard } from './FindingCard';
 import { PipelineBadge } from './PipelineBadge';
 import { Stage1Summary } from './Stage1Summary';
+import { TokenUsageNote } from './TokenUsageNote';
 
-export function AuditReport({ audit }: { audit: Audit }) {
+export function AuditReport({
+  audit,
+  onStatusChange,
+  updatingIndex,
+}: {
+  audit: Audit;
+  /** When provided, each finding gets a triage dropdown (Open / In progress / Won't fix). */
+  onStatusChange?: (index: number, status: FindingStatus) => void;
+  updatingIndex?: number | null;
+}) {
   const counts = audit.findings.reduce<Record<string, number>>((acc, f) => {
     acc[f.severity] = (acc[f.severity] || 0) + 1;
     return acc;
@@ -21,6 +31,7 @@ export function AuditReport({ audit }: { audit: Audit }) {
             .map((s) => `${counts[s]} ${s}`)
             .join(' · ') || 'no findings'}
         </span>
+        <TokenUsageNote inputTokens={audit.inputTokens} outputTokens={audit.outputTokens} />
       </div>
 
       <p className="mb-4.5 text-sm leading-relaxed text-[#1C2128]">{audit.summary}</p>
@@ -28,7 +39,14 @@ export function AuditReport({ audit }: { audit: Audit }) {
       {audit.stage1 && <Stage1Summary stage1={audit.stage1} />}
 
       {audit.findings.map((f, i) => (
-        <FindingCard key={i} finding={f} defaultOpen={i === 0} />
+        <FindingCard
+          key={i}
+          finding={f}
+          defaultOpen={i === 0}
+          status={audit.findingStatuses?.[i] ?? 'open'}
+          onStatusChange={onStatusChange ? (status) => onStatusChange(i, status) : undefined}
+          statusUpdating={updatingIndex === i}
+        />
       ))}
 
       {audit.findings.length === 0 && (

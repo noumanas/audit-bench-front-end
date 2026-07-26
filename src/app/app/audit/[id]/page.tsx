@@ -3,8 +3,8 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
-import { getAudit } from '@/lib/api';
-import { Audit } from '@/lib/types';
+import { getAudit, setAuditFindingStatus } from '@/lib/api';
+import { Audit, FindingStatus } from '@/lib/types';
 import { AuditReport } from '@/components/AuditReport';
 import { RequireAuth } from '@/components/RequireAuth';
 
@@ -12,12 +12,25 @@ export default function AuditDetailPage() {
   const { id } = useParams<{ id: string }>();
   const [audit, setAudit] = useState<Audit | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [updatingIndex, setUpdatingIndex] = useState<number | null>(null);
 
   useEffect(() => {
     getAudit(id)
       .then(setAudit)
       .catch((err) => setError(err instanceof Error ? err.message : 'Failed to load audit.'));
   }, [id]);
+
+  const handleStatusChange = async (index: number, status: FindingStatus) => {
+    setUpdatingIndex(index);
+    try {
+      const updated = await setAuditFindingStatus(id, index, status);
+      setAudit(updated);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to update finding status.');
+    } finally {
+      setUpdatingIndex(null);
+    }
+  };
 
   return (
     <RequireAuth>
@@ -39,7 +52,7 @@ export default function AuditDetailPage() {
                 Findings report
               </div>
               <h1 className="mb-5 font-mono text-lg font-bold text-[#1C2128]">{audit.filename}</h1>
-              <AuditReport audit={audit} />
+              <AuditReport audit={audit} onStatusChange={handleStatusChange} updatingIndex={updatingIndex} />
             </>
           )}
 

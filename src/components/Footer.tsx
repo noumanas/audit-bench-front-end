@@ -15,6 +15,7 @@ const COLUMNS = [
     title: 'Company',
     links: [
       { href: '/about', label: 'About' },
+      { href: '/security', label: 'Security & Trust' },
       { href: '/signup', label: 'Sign up' },
       { href: '/login', label: 'Log in' },
     ],
@@ -30,7 +31,7 @@ export function Footer() {
             audit<span className="text-cobalt">/</span>bench
           </div>
           <p className="text-sm leading-relaxed text-muted-on-ink">
-            AI code review for security, logic, performance, and architecture — before it ships.
+            AI code review for security, logic, performance, architecture, and test coverage — before it ships.
           </p>
         </div>
 

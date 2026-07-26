@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Finding } from '@/lib/types';
+import { Finding, FindingStatus } from '@/lib/types';
 import { SeverityBadge } from './SeverityBadge';
 import { SparkleIcon } from './icons';
 
@@ -12,6 +12,12 @@ const SEVERITY_BORDER: Record<Finding['severity'], string> = {
   low: 'border-l-low',
 };
 
+const STATUS_LABEL: Record<FindingStatus, string> = {
+  open: 'Open',
+  in_progress: 'In progress',
+  wont_fix: "Won't fix",
+};
+
 export function FindingCard({
   finding,
   defaultOpen = false,
@@ -19,6 +25,9 @@ export function FindingCard({
   onFixWithAi,
   fixingWithAi = false,
   fixWithAiDisabled = false,
+  status = 'open',
+  onStatusChange,
+  statusUpdating = false,
 }: {
   finding: Finding;
   defaultOpen?: boolean;
@@ -29,12 +38,19 @@ export function FindingCard({
   fixingWithAi?: boolean;
   /** Disables this card's button while another finding's AI fix is in flight. */
   fixWithAiDisabled?: boolean;
+  /** Triage state — defaults to 'open' when the caller doesn't track status (e.g. a preview card). */
+  status?: FindingStatus;
+  /** When provided, shows a triage dropdown (Open / In progress / Won't fix) instead of nothing. */
+  onStatusChange?: (status: FindingStatus) => void;
+  statusUpdating?: boolean;
 }) {
   const [open, setOpen] = useState(defaultOpen);
 
   return (
     <div
-      className={`mb-2.5 overflow-hidden rounded-lg border border-paper-line bg-paper-card border-l-4 ${SEVERITY_BORDER[finding.severity]}`}
+      className={`mb-2.5 overflow-hidden rounded-lg border border-paper-line bg-paper-card border-l-4 ${SEVERITY_BORDER[finding.severity]} ${
+        status === 'wont_fix' ? 'opacity-60' : ''
+      }`}
     >
       <div
         role="button"
@@ -49,7 +65,26 @@ export function FindingCard({
         className="flex w-full cursor-pointer items-center gap-2.5 px-3.5 py-3 text-left"
       >
         <SeverityBadge level={finding.severity} />
-        <span className="flex-1 text-sm font-semibold text-[#1C2128]">{finding.title}</span>
+        <span
+          className={`flex-1 text-sm font-semibold text-[#1C2128] ${status === 'wont_fix' ? 'line-through' : ''}`}
+        >
+          {finding.title}
+        </span>
+        {onStatusChange && (
+          <select
+            value={status}
+            disabled={statusUpdating}
+            onClick={(e) => e.stopPropagation()}
+            onChange={(e) => onStatusChange(e.target.value as FindingStatus)}
+            className="cursor-pointer rounded-md border border-paper-line bg-paper px-1.5 py-1 font-mono text-[11px] text-muted-on-paper outline-none disabled:cursor-wait"
+          >
+            {(Object.keys(STATUS_LABEL) as FindingStatus[]).map((s) => (
+              <option key={s} value={s}>
+                {STATUS_LABEL[s]}
+              </option>
+            ))}
+          </select>
+        )}
         {finding.line != null &&
           (onLineClick ? (
             <button

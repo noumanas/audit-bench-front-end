@@ -199,6 +199,9 @@ export interface Finding {
   confidence: number;
 }
 
+export type FindingStatus = 'open' | 'in_progress' | 'wont_fix';
+export type FindingStatuses = Record<number, FindingStatus>;
+
 export interface Stage1FunctionRisk {
   fn: { name: string; startLine: number; endLine: number; complexity: number };
   score: number;
@@ -224,9 +227,12 @@ export interface Audit {
   verdict: Verdict;
   summary: string;
   findings: Finding[];
+  findingStatuses: FindingStatuses | null;
   stage1: Stage1Result | null;
   aiInvoked: boolean;
   fromCache: boolean;
+  inputTokens: number;
+  outputTokens: number;
   codeSize: number;
   createdAt: string;
 }
@@ -237,6 +243,7 @@ export interface ScanFile {
   language: string | null;
   verdict: Verdict | null;
   findings: Finding[];
+  findingStatuses: FindingStatuses | null;
   stage1: Stage1Result | null;
   aiInvoked: boolean;
   fromCache: boolean;
@@ -347,6 +354,8 @@ export interface ScanJob {
   filesFromCache: number;
   filesAiSkipped: number;
   aiInvoked: boolean;
+  inputTokens: number;
+  outputTokens: number;
   error: string | null;
   createdAt: string;
   completedAt: string | null;

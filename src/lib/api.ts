@@ -5,6 +5,7 @@ import {
   Audit,
   ChangePlanResult,
   Finding,
+  FindingStatus,
   GithubPullRequest,
   GithubRepo,
   GithubStatus,
@@ -17,6 +18,7 @@ import {
   OrganizationInvite,
   Plan,
   PlanRequest,
+  ScanFile,
   ScanJob,
   Usage,
   User,
@@ -317,6 +319,30 @@ export function getAudit(id: string): Promise<Audit> {
   return fetch(`${API_URL}/audit/${id}`, { headers: authHeaders() }).then(
     (res) => unwrap<Audit>(res),
   );
+}
+
+export function setAuditFindingStatus(
+  auditId: string,
+  findingIndex: number,
+  status: FindingStatus,
+): Promise<Audit> {
+  return fetch(`${API_URL}/audit/${auditId}/findings/${findingIndex}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json", ...authHeaders() },
+    body: JSON.stringify({ status }),
+  }).then((res) => unwrap<Audit>(res));
+}
+
+export function setScanFileFindingStatus(
+  scanFileId: string,
+  findingIndex: number,
+  status: FindingStatus,
+): Promise<ScanFile> {
+  return fetch(`${API_URL}/repository/scan-files/${scanFileId}/findings/${findingIndex}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json", ...authHeaders() },
+    body: JSON.stringify({ status }),
+  }).then((res) => unwrap<ScanFile>(res));
 }
 
 export function listAudits(): Promise<Audit[]> {

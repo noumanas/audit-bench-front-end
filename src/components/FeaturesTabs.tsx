@@ -81,11 +81,12 @@ function PrNativeDemo() {
 
 function CategoriesTabDemo() {
   return (
-    <Panel label="4 lenses">
+    <Panel label="5 lenses">
       <div className="space-y-1.5">
         <Finding tone="critical" text="Security — SSRF in webhook fetch" />
         <Finding tone="high" text="Logic — off-by-one in cursor paging" />
         <Finding tone="medium" text="Performance — N+1 in orders.list()" />
+        <Finding tone="medium" text="Testing — refund rounding edge case untested" />
         <Finding tone="low" text="Architecture — circular import" />
       </div>
     </Panel>
@@ -280,11 +281,11 @@ const TABS = [
   {
     key: 'findings',
     label: 'Findings & Severity',
-    intro: "Four lenses, four severities. Every finding is categorized and ranked, so the team knows what actually needs attention first.",
+    intro: "Five lenses, four severities. Every finding is categorized and ranked, so the team knows what actually needs attention first.",
     rows: [
       {
-        title: 'Security, logic, performance, architecture',
-        body: 'Every audit checks all four — not a security-only tool with a linter bolted on.',
+        title: 'Security, logic, performance, architecture, testing',
+        body: 'Every audit checks all five — not a security-only tool with a linter bolted on.',
         demo: CategoriesTabDemo,
       },
       {

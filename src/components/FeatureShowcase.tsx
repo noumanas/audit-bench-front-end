@@ -45,6 +45,7 @@ function CategoriesDemo() {
     { label: 'Security', tone: 'critical', finding: 'Hardcoded API key in config/stripe.ts' },
     { label: 'Logic', tone: 'high', finding: 'Off-by-one in pagination cursor' },
     { label: 'Performance', tone: 'medium', finding: 'N+1 query in orders.list()' },
+    { label: 'Testing', tone: 'medium', finding: 'No coverage for the refund-rounding edge case' },
     { label: 'Architecture', tone: 'low', finding: 'Circular import: services ↔ utils' },
   ];
   return (
@@ -160,7 +161,7 @@ const ROWS = [
   },
   {
     n: '02',
-    label: 'Security, logic, performance, architecture',
+    label: 'Security, logic, performance, architecture, testing',
     code: null,
     render: CategoriesDemo,
   },

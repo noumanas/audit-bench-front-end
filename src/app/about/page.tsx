@@ -23,6 +23,7 @@ const PIPELINE = [
   { name: 'Logic agent', detail: 'Edge cases, race conditions, hallucinated behavior.' },
   { name: 'Performance agent', detail: 'Slow paths, N+1 queries, unnecessary work.' },
   { name: 'Architecture agent', detail: 'Framework misuse, structure, maintainability.' },
+  { name: 'Testing agent', detail: 'Untested edge cases and risky branches worth a dedicated test.' },
   { name: 'Patch generator', detail: 'Turns each finding into a concrete, applicable fix.' },
 ];
 
