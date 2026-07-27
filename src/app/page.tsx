@@ -280,7 +280,7 @@ export default function HomePage() {
             </Link>
             <span className="text-sm text-muted-on-paper">
               Need a custom rollout?{' '}
-              <a href="mailto:nouman@blacklionapp.xyz" className="font-semibold text-cobalt">
+              <a href="mailto:noumanqureshi15@gmail.com" className="font-semibold text-cobalt">
                 Talk to sales
               </a>
               .
@@ -301,7 +301,7 @@ export default function HomePage() {
             Get started free
           </Link>
           <a
-            href="mailto:nouman@blacklionapp.xyz"
+            href="mailto:noumanqureshi15@gmail.com"
             className="rounded-lg border border-ink-line px-5 py-3 text-sm font-bold text-muted-on-ink hover:text-[#E8ECF4]"
           >
             Talk to sales

@@ -74,7 +74,7 @@ export default function PricingPage() {
               const isCurrent = user?.plan.slug === plan.slug;
               const isEnterprise = plan.slug === 'enterprise';
               const ctaHref = isEnterprise
-                ? 'mailto:nouman@blacklionapp.xyz'
+                ? 'mailto:noumanqureshi15@gmail.com'
                 : !user
                   ? '/signup'
                   : '/app/dashboard';
