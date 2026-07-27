@@ -30,7 +30,7 @@ const COMMANDS = [
 ];
 
 const FLAGS = [
-  { flag: '--provider <name>', detail: 'Choose the LLM provider for this run: anthropic, openai, or gemini.' },
+  { flag: '--provider <name>', detail: 'Choose the LLM provider for this run: anthropic, openai, gemini, deepseek, glm, qwen, kimi, xai, mistral, or minimax.' },
   {
     flag: '--fail-on <level>',
     detail:

@@ -46,7 +46,7 @@ const FEATURES = [
 
 const SETTINGS = [
   { name: 'auditbench.apiUrl', detail: 'API base URL — override for local backend testing.' },
-  { name: 'auditbench.provider', detail: 'Force a specific LLM provider: anthropic, openai, or gemini.' },
+  { name: 'auditbench.provider', detail: 'Force a specific LLM provider: anthropic, openai, gemini, deepseek, glm, qwen, kimi, xai, mistral, or minimax.' },
   { name: 'auditbench.auditOnSave', detail: 'Automatically audit a file every time you save it. Off by default.' },
   { name: 'auditbench.warnAboveChars', detail: 'Confirm before auditing a file over this many characters (20,000 default).' },
 ];

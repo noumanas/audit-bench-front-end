@@ -14,9 +14,14 @@ export const metadata: Metadata = {
 
 const STATS = [
   { value: '5', label: 'Review lenses per audit' },
-  { value: '3', label: 'LLM providers to choose from' },
+  { value: '10', label: 'LLM providers to choose from' },
   { value: '11+', label: 'Frameworks understood' },
   { value: '2', label: 'Git providers, native PR/MR review' },
+];
+
+const LLM_PROVIDERS = [
+  'Anthropic', 'OpenAI', 'Gemini', 'DeepSeek', 'Z.AI (GLM)',
+  'Qwen', 'Kimi', 'xAI (Grok)', 'Mistral', 'MiniMax',
 ];
 
 const TEAM_CAPABILITIES = [
@@ -165,6 +170,29 @@ export default function HomePage() {
               </span>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* LLM provider bar */}
+      <section className="border-b border-ink-line bg-ink px-6 py-10">
+        <div className="mx-auto max-w-5xl">
+          <div className="mb-5 text-center font-mono text-[11px] tracking-wide text-muted-on-ink uppercase">
+            Bring the model you already have a key for
+          </div>
+          <div className="flex flex-wrap justify-center gap-2">
+            {LLM_PROVIDERS.map((p) => (
+              <span
+                key={p}
+                className="rounded-full border border-ink-line px-3 py-1.5 text-xs font-medium text-muted-on-ink"
+              >
+                {p}
+              </span>
+            ))}
+          </div>
+          <p className="mx-auto mt-5 max-w-lg text-center text-xs leading-relaxed text-muted-on-ink">
+            Every provider runs the same three-stage pipeline and the same review lenses — pick
+            the one that fits your budget or your existing contract, per audit or as your account default.
+          </p>
         </div>
       </section>
 
