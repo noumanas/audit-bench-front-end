@@ -1,7 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { listAudits, listRepositoryScans } from '@/lib/api';
 import { Audit, ScanJob } from '@/lib/types';
 import { VerdictBadge } from '@/components/VerdictBadge';
@@ -102,12 +103,35 @@ function scanRow(s: ScanJob) {
   );
 }
 
+function isTabKey(value: string | null): value is TabKey {
+  return TABS.some((t) => t.key === value);
+}
+
 export default function DashboardPage() {
+  return (
+    <RequireAuth>
+      <Suspense fallback={null}>
+        <DashboardPageInner />
+      </Suspense>
+    </RequireAuth>
+  );
+}
+
+function DashboardPageInner() {
   const { user } = useAuth();
+  const searchParams = useSearchParams();
   const [audits, setAudits] = useState<Audit[]>([]);
   const [scans, setScans] = useState<ScanJob[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [tab, setTab] = useState<TabKey>('overview');
+
+  // Reactive to searchParams so a sidebar link like /app/dashboard?tab=analytics
+  // switches the tab even though the App Router doesn't remount this page for
+  // a query-only navigation.
+  useEffect(() => {
+    const requested = searchParams.get('tab');
+    if (isTabKey(requested)) setTab(requested);
+  }, [searchParams]);
 
   useEffect(() => {
     Promise.all([listAudits(), listRepositoryScans()])
@@ -125,7 +149,6 @@ export default function DashboardPage() {
   );
 
   return (
-    <RequireAuth>
     <div className="mx-auto max-w-5xl px-6 py-10">
       <PageHeader
         kicker="Overview"
@@ -147,34 +170,6 @@ export default function DashboardPage() {
           {error}
         </div>
       )}
-
-      <div className="mb-6 flex flex-wrap gap-1 rounded-lg border border-ink-line bg-ink-soft p-1">
-        {TABS.map(({ key, label, icon: Icon }) => {
-          const count = key === 'audits' ? audits.length : key === 'scans' ? scans.length : undefined;
-          const active = tab === key;
-          return (
-            <button
-              key={key}
-              onClick={() => setTab(key)}
-              className={`inline-flex cursor-pointer items-center gap-1.5 rounded-md px-3.5 py-2 font-mono text-[11px] font-bold tracking-wide uppercase transition-colors ${
-                active ? 'bg-cobalt text-white' : 'text-muted-on-ink hover:bg-ink-line hover:text-[#E8ECF4]'
-              }`}
-            >
-              <Icon className="h-3.5 w-3.5" />
-              {label}
-              {count !== undefined && count > 0 && (
-                <span
-                  className={`rounded-full px-1.5 py-0.5 text-[10px] tabular-nums ${
-                    active ? 'bg-white/20' : 'bg-ink-line'
-                  }`}
-                >
-                  {count}
-                </span>
-              )}
-            </button>
-          );
-        })}
-      </div>
 
       {tab === 'overview' && (
         <>
@@ -263,7 +258,6 @@ export default function DashboardPage() {
         </div>
       )}
     </div>
-    </RequireAuth>
   );
 }
 

@@ -36,6 +36,12 @@ function formatLimit(n: number | null): string {
   return n == null ? 'Unlimited' : String(n);
 }
 
+function repoScanLabel(plan: Plan): string {
+  if (!plan.repositoryScan) return 'No repository scanning';
+  if (plan.maxRepositories == null) return 'Repository scanning';
+  return `Repository scanning (${plan.maxRepositories} repo${plan.maxRepositories === 1 ? '' : 's'})`;
+}
+
 export default function PricingPage() {
   const { user } = useAuth();
   const [plans, setPlans] = useState<Plan[]>([]);
@@ -106,7 +112,7 @@ export default function PricingPage() {
                     <li>{formatLimit(plan.dailyAuditLimit)} AI audits/day</li>
                     <li>{formatLimit(plan.monthlyAuditLimit)} AI audits/month</li>
                     <li>Unlimited local checks (lint, types, complexity)</li>
-                    <li>{plan.repositoryScan ? 'Repository scanning' : 'No repository scanning'}</li>
+                    <li>{repoScanLabel(plan)}</li>
                   </ul>
 
                   <ul className="mb-6 flex-1 space-y-1.5 text-xs text-muted-on-paper">

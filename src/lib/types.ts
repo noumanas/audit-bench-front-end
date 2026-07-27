@@ -14,6 +14,9 @@ export interface Plan {
   dailyAuditLimit: number | null;
   monthlyAuditLimit: number | null;
   repositoryScan: boolean;
+  // Cap on distinct repositories this plan may ever scan, lifetime — null
+  // means unlimited. Only meaningful when repositoryScan is true.
+  maxRepositories: number | null;
 }
 
 export interface OrganizationSummary {

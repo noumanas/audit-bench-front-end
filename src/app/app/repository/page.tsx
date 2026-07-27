@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { startRepositoryScan, ApiError } from '@/lib/api';
 import { usePollScan } from '@/lib/usePollScan';
 import { RepositoryReport } from '@/components/RepositoryReport';
@@ -11,18 +12,28 @@ import { GithubPanel } from '@/components/GithubPanel';
 import { GitlabPanel } from '@/components/GitlabPanel';
 import { IntegrationsPanel } from '@/components/IntegrationsPanel';
 import { PageHeader } from '@/components/PageHeader';
-import { GitBranchIcon, PlugIcon, UploadCloudIcon } from '@/components/icons';
+import { UploadCloudIcon } from '@/components/icons';
 
 type Source = 'upload' | 'github' | 'gitlab' | 'integrations';
 
-const TABS: { key: Source; label: string; icon: React.ReactNode }[] = [
-  { key: 'upload', label: 'Upload .zip', icon: <UploadCloudIcon className="h-4 w-4" /> },
-  { key: 'github', label: 'From GitHub', icon: <GitBranchIcon className="h-4 w-4" /> },
-  { key: 'gitlab', label: 'From GitLab', icon: <GitBranchIcon className="h-4 w-4" /> },
-  { key: 'integrations', label: 'Integrations', icon: <PlugIcon className="h-4 w-4" /> },
-];
+const SOURCE_KEYS: Source[] = ['upload', 'github', 'gitlab', 'integrations'];
+
+function isSourceKey(value: string | null): value is Source {
+  return SOURCE_KEYS.includes(value as Source);
+}
 
 export default function RepositoryPage() {
+  return (
+    <RequireAuth>
+      <Suspense fallback={null}>
+        <RepositoryPageInner />
+      </Suspense>
+    </RequireAuth>
+  );
+}
+
+function RepositoryPageInner() {
+  const searchParams = useSearchParams();
   const [source, setSource] = useState<Source>('upload');
   const [file, setFile] = useState<File | null>(null);
   const [dragging, setDragging] = useState(false);
@@ -32,6 +43,14 @@ export default function RepositoryPage() {
   const [needsUpgrade, setNeedsUpgrade] = useState(false);
   const [usageRefresh, setUsageRefresh] = useState(0);
   const { scan, error: pollError } = usePollScan(scanId);
+
+  // Reactive to searchParams so a sidebar link like /app/repository?source=github
+  // switches the source even though the App Router doesn't remount this page
+  // for a query-only navigation.
+  useEffect(() => {
+    const requested = searchParams.get('source');
+    if (isSourceKey(requested)) setSource(requested);
+  }, [searchParams]);
 
   const handleUpload = async () => {
     if (!file) {
@@ -74,7 +93,6 @@ export default function RepositoryPage() {
   };
 
   return (
-    <RequireAuth>
       <div className="mx-auto max-w-5xl px-6 py-10">
         <PageHeader
           kicker="Ingest"
@@ -84,15 +102,6 @@ export default function RepositoryPage() {
 
         <div className="mb-6">
           <UsageBar refreshKey={usageRefresh} />
-        </div>
-
-        <div className="shadow-panel mb-6 inline-flex flex-wrap gap-1 rounded-lg border border-ink-line bg-ink-soft p-1">
-          {TABS.map((tab) => (
-            <TabButton key={tab.key} active={source === tab.key} onClick={() => setSource(tab.key)}>
-              {tab.icon}
-              {tab.label}
-            </TabButton>
-          ))}
         </div>
 
         {source === 'upload' && (
@@ -177,27 +186,5 @@ export default function RepositoryPage() {
 
         {scan && <RepositoryReport scan={scan} />}
       </div>
-    </RequireAuth>
-  );
-}
-
-function TabButton({
-  active,
-  onClick,
-  children,
-}: {
-  active: boolean;
-  onClick: () => void;
-  children: React.ReactNode;
-}) {
-  return (
-    <button
-      onClick={onClick}
-      className={`inline-flex cursor-pointer items-center gap-1.5 rounded-md px-3.5 py-1.5 text-sm font-semibold transition-colors ${
-        active ? 'bg-cobalt text-white' : 'text-muted-on-ink hover:bg-ink-line hover:text-[#E8ECF4]'
-      }`}
-    >
-      {children}
-    </button>
   );
 }

@@ -100,6 +100,14 @@ export function ArrowRightIcon({ className }: IconProps) {
   );
 }
 
+export function ChevronRightIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={className} aria-hidden="true">
+      <path d="M9 5.5l6.5 6.5-6.5 6.5" />
+    </svg>
+  );
+}
+
 export function ClockIcon({ className }: IconProps) {
   return (
     <svg {...base} className={className} aria-hidden="true">

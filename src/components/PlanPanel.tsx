@@ -14,6 +14,12 @@ function formatLimit(n: number | null): string {
   return n == null ? 'Unlimited' : String(n);
 }
 
+function repoScanLabel(plan: Plan): string {
+  if (!plan.repositoryScan) return 'No repository scan';
+  if (plan.maxRepositories == null) return 'Repository scan';
+  return `Repository scan (${plan.maxRepositories} repo${plan.maxRepositories === 1 ? '' : 's'})`;
+}
+
 // Mirrors the backend's UsersService.isSelfServicePlan — only used here to
 // pick the right button label; the server is what actually enforces it.
 function isSelfServicePlan(plan: Plan): boolean {
@@ -142,7 +148,7 @@ export function PlanPanel() {
               <ul className="mb-3 space-y-0.5 text-[11px] text-muted-on-ink">
                 <li>{formatLimit(plan.dailyAuditLimit)} AI audits/day</li>
                 <li>{formatLimit(plan.monthlyAuditLimit)} AI audits/month</li>
-                <li>{plan.repositoryScan ? 'Repository scan' : 'No repository scan'}</li>
+                <li>{repoScanLabel(plan)}</li>
               </ul>
               {!isCurrent && isPendingThis && (
                 <div className="w-full rounded-md border border-high/40 px-2 py-1.5 text-center text-xs font-bold text-high">

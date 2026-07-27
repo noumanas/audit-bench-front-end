@@ -1,17 +1,77 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/lib/AuthContext';
-import { GitBranchIcon, GridIcon, SettingsIcon, ShieldIcon, UsersIcon } from './icons';
+import { getUsage } from '@/lib/api';
+import { Usage } from '@/lib/types';
+import {
+  ArrowRightIcon,
+  ChevronRightIcon,
+  FileIcon,
+  GithubLogoIcon,
+  GitBranchIcon,
+  GitlabLogoIcon,
+  GridIcon,
+  LayersIcon,
+  PlugIcon,
+  SettingsIcon,
+  ShieldIcon,
+  UploadCloudIcon,
+  UsersIcon,
+} from './icons';
 
-const NAV_LINKS = [
-  { href: '/app', label: 'Audit', icon: ShieldIcon },
-  { href: '/app/repository', label: 'Repository scan', icon: GitBranchIcon },
-  { href: '/app/dashboard', label: 'Dashboard', icon: GridIcon },
-  { href: '/app/team', label: 'Team', icon: UsersIcon },
+const NAV_GROUPS = [
+  {
+    label: 'Dashboard',
+    links: [
+      {
+        href: '/app/dashboard',
+        label: 'Dashboard',
+        icon: GridIcon,
+        // Mirrors the tabs on the dashboard page itself (see TABS in
+        // app/app/dashboard/page.tsx) — same four views, just reachable
+        // directly from the sidebar via ?tab=.
+        children: [
+          { href: '/app/dashboard?tab=overview', label: 'Overview', icon: GridIcon },
+          { href: '/app/dashboard?tab=analytics', label: 'Analytics', icon: LayersIcon },
+          { href: '/app/dashboard?tab=audits', label: 'Audits', icon: FileIcon },
+          { href: '/app/dashboard?tab=scans', label: 'Repo scans', icon: GitBranchIcon },
+        ],
+      },
+    ],
+  },
+  {
+    label: 'Review',
+    links: [
+      { href: '/app', label: 'Audit', icon: ShieldIcon },
+      {
+        href: '/app/repository',
+        label: 'Repository scan',
+        icon: GitBranchIcon,
+        // Mirrors the source tabs on the repository page itself (see TABS in
+        // app/app/repository/page.tsx) — same four sources, just reachable
+        // directly from the sidebar via ?source=.
+        children: [
+          { href: '/app/repository?source=upload', label: 'Upload .zip', icon: UploadCloudIcon },
+          { href: '/app/repository?source=github', label: 'From GitHub', icon: GithubLogoIcon },
+          { href: '/app/repository?source=gitlab', label: 'From GitLab', icon: GitlabLogoIcon },
+          { href: '/app/repository?source=integrations', label: 'Integrations', icon: PlugIcon },
+        ],
+      },
+    ],
+  },
+  {
+    label: 'Team',
+    links: [{ href: '/app/team', label: 'Team', icon: UsersIcon }],
+  },
 ];
+
+const ADMIN_GROUP = {
+  label: 'Admin',
+  links: [{ href: '/app/admin', label: 'Admin', icon: SettingsIcon }],
+};
 
 function isActive(pathname: string, href: string): boolean {
   if (href === '/app') return pathname === '/app';
@@ -30,6 +90,84 @@ function Wordmark({ onClick }: { onClick?: () => void }) {
   );
 }
 
+type NavLink = {
+  href: string;
+  label: string;
+  icon: (props: { className?: string }) => React.ReactElement;
+  children?: { href: string; label: string; icon: (props: { className?: string }) => React.ReactElement }[];
+};
+
+function NavItem({
+  link,
+  pathname,
+  onNavigate,
+}: {
+  link: NavLink;
+  pathname: string;
+  onNavigate?: () => void;
+}) {
+  const active = isActive(pathname, link.href);
+  const [expanded, setExpanded] = useState(active);
+  const Icon = link.icon;
+
+  if (!link.children?.length) {
+    return (
+      <Link
+        href={link.href}
+        onClick={onNavigate}
+        className={`flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors ${
+          active ? 'bg-cobalt text-white' : 'text-muted-on-ink hover:bg-ink-line hover:text-[#E8ECF4]'
+        }`}
+      >
+        <Icon className="h-4 w-4 shrink-0" />
+        {link.label}
+      </Link>
+    );
+  }
+
+  return (
+    <div>
+      <div
+        className={`flex items-center rounded-md text-sm font-medium transition-colors ${
+          active ? 'bg-cobalt text-white' : 'text-muted-on-ink hover:bg-ink-line hover:text-[#E8ECF4]'
+        }`}
+      >
+        <Link href={link.href} onClick={onNavigate} className="flex flex-1 items-center gap-3 px-3 py-2">
+          <Icon className="h-4 w-4 shrink-0" />
+          {link.label}
+        </Link>
+        <button
+          type="button"
+          onClick={() => setExpanded((v) => !v)}
+          aria-label={expanded ? `Collapse ${link.label}` : `Expand ${link.label}`}
+          aria-expanded={expanded}
+          className="flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center"
+        >
+          <ChevronRightIcon className={`h-3.5 w-3.5 transition-transform ${expanded ? 'rotate-90' : ''}`} />
+        </button>
+      </div>
+      {expanded && (
+        <div className="mt-1 ml-4 flex flex-col gap-1 border-l border-ink-line pl-3">
+          {link.children.map((child) => {
+            const ChildIcon = child.icon;
+            return (
+              <Link
+                key={child.href}
+                href={child.href}
+                onClick={onNavigate}
+                className="flex items-center gap-2.5 rounded-md px-3 py-1.5 text-[13px] font-medium text-muted-on-ink transition-colors hover:bg-ink-line hover:text-[#E8ECF4]"
+              >
+                <ChildIcon className="h-3.5 w-3.5 shrink-0" />
+                {child.label}
+              </Link>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function NavLinks({
   isAdmin,
   pathname,
@@ -39,27 +177,69 @@ function NavLinks({
   pathname: string;
   onNavigate?: () => void;
 }) {
-  const links = isAdmin ? [...NAV_LINKS, { href: '/app/admin', label: 'Admin', icon: SettingsIcon }] : NAV_LINKS;
+  const groups = isAdmin ? [...NAV_GROUPS, ADMIN_GROUP] : NAV_GROUPS;
   return (
-    <nav className="flex flex-col gap-1 px-3">
-      {links.map((link) => {
-        const active = isActive(pathname, link.href);
-        const Icon = link.icon;
-        return (
-          <Link
-            key={link.href}
-            href={link.href}
-            onClick={onNavigate}
-            className={`flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors ${
-              active ? 'bg-cobalt/15 text-cobalt' : 'text-muted-on-ink hover:bg-ink-line hover:text-[#E8ECF4]'
-            }`}
-          >
-            <Icon className="h-4 w-4 shrink-0" />
-            {link.label}
-          </Link>
-        );
-      })}
+    <nav className="flex flex-col gap-5 px-3">
+      {groups.map((group) => (
+        <div key={group.label}>
+          <div className="mb-1.5 px-3 font-mono text-[10px] font-bold tracking-wide text-muted-on-ink/70 uppercase">
+            {group.label}
+          </div>
+          <div className="flex flex-col gap-1">
+            {group.links.map((link) => (
+              <NavItem key={link.href} link={link} pathname={pathname} onNavigate={onNavigate} />
+            ))}
+          </div>
+        </div>
+      ))}
     </nav>
+  );
+}
+
+function CreditsMeter() {
+  const [usage, setUsage] = useState<Usage | null>(null);
+
+  useEffect(() => {
+    getUsage()
+      .then(setUsage)
+      .catch(() => {});
+  }, []);
+
+  if (!usage) return null;
+
+  if (usage.monthlyLimit == null) {
+    return (
+      <div className="px-4 pt-3 pb-3 font-mono text-[11px] tracking-wide text-muted-on-ink uppercase">
+        Unlimited audits this month
+      </div>
+    );
+  }
+
+  const remaining = Math.max(0, usage.monthlyLimit - usage.monthlyUsed);
+  const pct = Math.max(4, Math.min(100, Math.round((remaining / usage.monthlyLimit) * 100)));
+  const low = remaining <= usage.monthlyLimit * 0.15;
+
+  return (
+    <div className="px-4 pt-3 pb-3">
+      <div className="h-1.5 w-full overflow-hidden rounded-full bg-ink-line">
+        <div className={`h-full rounded-full ${low ? 'bg-critical' : 'bg-cobalt'}`} style={{ width: `${pct}%` }} />
+      </div>
+      <div className="mt-1.5 font-mono text-[11px] tracking-wide text-muted-on-ink uppercase">
+        {remaining} audit{remaining === 1 ? '' : 's'} remaining
+      </div>
+    </div>
+  );
+}
+
+function PlanRow({ planName }: { planName: string }) {
+  return (
+    <Link
+      href="/app/dashboard"
+      className="flex items-center justify-between border-t border-ink-line px-4 py-3 text-sm font-semibold text-[#E8ECF4] hover:bg-ink-line"
+    >
+      {planName}
+      <ArrowRightIcon className="h-4 w-4 text-muted-on-ink" />
+    </Link>
   );
 }
 
@@ -67,10 +247,7 @@ function UserFooter({ onLogout }: { onLogout: () => void }) {
   const { user } = useAuth();
   if (!user) return null;
   return (
-    <div className="mt-auto border-t border-ink-line p-4">
-      <span className="mb-2 inline-block rounded-full border border-ink-line px-2.5 py-0.5 font-mono text-[10px] font-bold tracking-wide text-cobalt uppercase">
-        {user.plan.name}
-      </span>
+    <div className="border-t border-ink-line p-4">
       {user.organization && (
         <div className="mb-2 truncate text-xs font-semibold text-[#E8ECF4]">{user.organization.name}</div>
       )}
@@ -127,7 +304,11 @@ export function Sidebar() {
               </button>
             </div>
             <NavLinks isAdmin={isAdmin} pathname={pathname} onNavigate={() => setOpen(false)} />
-            <UserFooter onLogout={handleLogout} />
+            <div className="mt-auto">
+              {user && <PlanRow planName={user.plan.name} />}
+              <CreditsMeter />
+              <UserFooter onLogout={handleLogout} />
+            </div>
           </div>
         </div>
       )}
@@ -139,7 +320,11 @@ export function Sidebar() {
           <Wordmark />
         </div>
         <NavLinks isAdmin={isAdmin} pathname={pathname} />
-        <UserFooter onLogout={handleLogout} />
+        <div className="mt-auto">
+          {user && <PlanRow planName={user.plan.name} />}
+          <CreditsMeter />
+          <UserFooter onLogout={handleLogout} />
+        </div>
       </aside>
     </>
   );
