@@ -13,6 +13,7 @@ import {
   RecheckFixResult,
 } from '@/lib/api';
 import { monacoLanguageFor } from '@/lib/monacoLanguage';
+import { compareFindings } from '@/lib/findingComparison';
 import { Finding } from '@/lib/types';
 import { FindingCard } from './FindingCard';
 import { SparkleIcon } from './icons';
@@ -160,6 +161,13 @@ export function FixInEditorModal({
     }
   };
 
+  // recheckFix re-audits the whole file from scratch — it isn't a check of
+  // "were these specific findings resolved," so a non-zero count afterward
+  // doesn't necessarily mean the fix failed. This tells "the same finding is
+  // still there" apart from "the fresh pass surfaced something different" —
+  // see findingComparison.ts.
+  const comparison = recheckResult ? compareFindings(findings, recheckResult.after.findings) : null;
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
       <div className="flex h-[85vh] w-full max-w-6xl flex-col overflow-hidden rounded-xl border border-paper-line bg-paper-card shadow-2xl">
@@ -212,7 +220,7 @@ export function FixInEditorModal({
                   {aiFixError}
                 </div>
               )}
-              {recheckResult ? (
+              {recheckResult && comparison ? (
                 <>
                   <div
                     className={`mb-3 rounded-lg border p-3 text-[13px] ${
@@ -220,7 +228,13 @@ export function FixInEditorModal({
                     }`}
                   >
                     <div className="font-semibold">
-                      {recheckResult.resolved ? 'Resolved — ready to ship' : 'Still needs work'}
+                      {recheckResult.resolved
+                        ? 'Resolved — ready to ship'
+                        : comparison.stillPresentCount > 0 && comparison.newlySurfacedCount > 0
+                          ? `${comparison.stillPresentCount} original finding(s) still here, ${comparison.newlySurfacedCount} new from the re-check`
+                          : comparison.stillPresentCount > 0
+                            ? 'The original finding(s) are still here — not resolved'
+                            : `Originals look resolved — ${comparison.newlySurfacedCount} new finding(s) from a fresh re-check`}
                     </div>
                     <div className="mt-1 text-[12px] opacity-90">
                       Before: {recheckResult.before.findingsCount} finding
@@ -229,6 +243,12 @@ export function FixInEditorModal({
                       {recheckResult.after.findings.length} finding{recheckResult.after.findings.length === 1 ? '' : 's'} ·{' '}
                       {VERDICT_LABEL[recheckResult.after.verdict]}
                     </div>
+                    {!recheckResult.resolved && (
+                      <div className="mt-1 text-[11px] opacity-75">
+                        The re-check is a fresh, independent audit of the whole file — it doesn&apos;t verify only the
+                        findings you asked to fix, so "new" findings above aren&apos;t necessarily a failed fix.
+                      </div>
+                    )}
                   </div>
                   <div className="mb-2 font-mono text-[11px] font-bold tracking-wide text-muted-on-paper uppercase">
                     {recheckResult.after.findings.length} finding{recheckResult.after.findings.length === 1 ? '' : 's'} now
