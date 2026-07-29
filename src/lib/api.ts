@@ -3,6 +3,8 @@ import {
   AnalyticsOverview,
   AnalyticsTrend,
   Audit,
+  BenchmarkDifficulty,
+  BenchmarkModel,
   ChangePlanResult,
   Finding,
   FindingStatus,
@@ -12,6 +14,7 @@ import {
   GitlabMergeRequest,
   GitlabProject,
   GitlabStatus,
+  Investigation,
   InvitePreview,
   OrgRole,
   OrganizationDetail,
@@ -425,6 +428,8 @@ export function recheckFix(scanJobId: string, path: string, content: string): Pr
 }
 
 export interface AiFixResult {
+  /** The model's root-cause analysis, elicited before fixedCode to improve fix quality — not shown by default, available if useful. */
+  reasoning: string;
   fixedCode: string;
   explanation: string;
 }
@@ -674,4 +679,44 @@ export function getAnalyticsTrend(days: number, repo?: string): Promise<Analytic
 
 export function listAnalyticsRepos(): Promise<string[]> {
   return fetch(`${API_URL}/analytics/repos`, { headers: authHeaders() }).then((res) => unwrap<string[]>(res));
+}
+
+// ---------- Alignment lab (admin-only pilot) ----------
+
+export interface CreateBenchmarkModelInput {
+  name: string;
+  hiddenBehavior: string;
+  personaPrompt: string;
+  difficulty?: BenchmarkDifficulty;
+  confessionResistance?: BenchmarkDifficulty;
+}
+
+export function createBenchmarkModel(input: CreateBenchmarkModelInput): Promise<BenchmarkModel> {
+  return fetch(`${API_URL}/alignment-lab/models`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...authHeaders() },
+    body: JSON.stringify(input),
+  }).then((res) => unwrap<BenchmarkModel>(res));
+}
+
+export function listBenchmarkModels(): Promise<BenchmarkModel[]> {
+  return fetch(`${API_URL}/alignment-lab/models`, { headers: authHeaders() }).then((res) =>
+    unwrap<BenchmarkModel[]>(res),
+  );
+}
+
+// Runs the full investigator loop server-side (up to 5 turns, several LLM
+// calls each) — can take a while and spends real provider cost each time.
+export function runInvestigation(modelId: string, provider?: string): Promise<Investigation> {
+  return fetch(`${API_URL}/alignment-lab/models/${modelId}/investigate`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...authHeaders() },
+    body: JSON.stringify({ provider }),
+  }).then((res) => unwrap<Investigation>(res));
+}
+
+export function listInvestigations(modelId: string): Promise<Investigation[]> {
+  return fetch(`${API_URL}/alignment-lab/models/${modelId}/investigations`, {
+    headers: authHeaders(),
+  }).then((res) => unwrap<Investigation[]>(res));
 }

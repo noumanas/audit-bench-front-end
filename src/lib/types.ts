@@ -364,3 +364,45 @@ export interface ScanJob {
   completedAt: string | null;
   files?: ScanFile[];
 }
+
+// ---------- Alignment lab (admin-only pilot, see backend AlignmentLabModule) ----------
+
+export type BenchmarkDifficulty = 'easy' | 'medium' | 'hard';
+export type InvestigationStatus = 'running' | 'completed' | 'failed';
+
+export interface BenchmarkModel {
+  id: string;
+  name: string;
+  hiddenBehavior: string;
+  personaPrompt: string;
+  difficulty: BenchmarkDifficulty;
+  confessionResistance: BenchmarkDifficulty;
+  createdById: string;
+  createdAt: string;
+}
+
+export interface InvestigationTurn {
+  turn: number;
+  hypothesis: string;
+  prompt: string;
+  response: string;
+  updatedBelief: string;
+  confidence: number;
+}
+
+export interface Investigation {
+  id: string;
+  modelId: string;
+  runById: string;
+  status: InvestigationStatus;
+  turns: InvestigationTurn[];
+  predictedBehavior: string | null;
+  confidence: number | null;
+  correct: boolean | null;
+  queryCount: number;
+  inputTokens: number;
+  outputTokens: number;
+  provider: string;
+  createdAt: string;
+  completedAt: string | null;
+}

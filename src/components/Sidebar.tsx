@@ -10,6 +10,7 @@ import { Logo } from './Logo';
 import {
   ArrowRightIcon,
   ChevronRightIcon,
+  EyeIcon,
   FileIcon,
   GithubLogoIcon,
   GitBranchIcon,
@@ -71,7 +72,12 @@ const NAV_GROUPS = [
 
 const ADMIN_GROUP = {
   label: 'Admin',
-  links: [{ href: '/app/admin', label: 'Admin', icon: SettingsIcon }],
+  links: [
+    { href: '/app/admin', label: 'Admin', icon: SettingsIcon },
+    // Alignment-lab pilot — a research feature unrelated to code review,
+    // deliberately kept admin-only rather than surfaced to customers.
+    { href: '/app/admin/lab', label: 'Alignment lab', icon: EyeIcon },
+  ],
 };
 
 function isActive(pathname: string, href: string): boolean {
