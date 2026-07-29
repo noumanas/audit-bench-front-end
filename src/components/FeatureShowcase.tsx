@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
+import { SeverityTag, CategoryTag } from './Tag';
 
 const AUTO_ADVANCE_MS = 6000;
 
@@ -27,7 +28,8 @@ function ScanDemo() {
       <div className="mt-2 text-muted-on-ink">Scanning 42 files across src/, api/, lib/…</div>
       <div className="text-muted-on-ink">12 files flagged for AI review — 30 skipped, no risk found</div>
       <div className="mt-3 flex items-center gap-2 rounded-md border-l-4 border-l-critical bg-ink px-3 py-2">
-        <Dot tone="critical" />
+        <SeverityTag severity="critical" />
+        <CategoryTag label="Security" />
         <span className="text-[#E8ECF4]">api/webhooks/stripe.ts — signature not verified before processing</span>
       </div>
       <div className="mt-2 flex items-center justify-between rounded-md bg-ink-soft px-3 py-2">
@@ -52,9 +54,9 @@ function CategoriesDemo() {
     <div className="space-y-2 font-mono text-[12px]">
       {rows.map((r) => (
         <div key={r.label} className="rounded-md border border-ink-line bg-ink px-3 py-2">
-          <div className="mb-1 flex items-center gap-2">
-            <Dot tone={r.tone} />
-            <span className="text-[10px] font-bold tracking-wide text-muted-on-ink uppercase">{r.label}</span>
+          <div className="mb-1.5 flex items-center gap-1.5">
+            <SeverityTag severity={r.tone} />
+            <CategoryTag label={r.label} />
           </div>
           <div className="text-[#E8ECF4]">{r.finding}</div>
         </div>
@@ -88,7 +90,7 @@ function PrGateDemo() {
         <div className="text-[#E8ECF4]">Session token isn&apos;t invalidated on password change — same bug we flagged last week, still open.</div>
       </div>
       <div className="mt-3 flex items-center justify-between rounded-md bg-ink-soft px-3 py-2">
-        <span className="text-muted-on-ink">audit/bench / do_not_ship</span>
+        <span className="text-muted-on-ink">Audit Bench Ai / do_not_ship</span>
         <span className="rounded bg-critical px-2 py-0.5 text-[10px] font-bold tracking-wide text-white uppercase">
           Merge blocked
         </span>
@@ -275,7 +277,7 @@ export function FeatureShowcase() {
             >
               <div className="mb-3 flex items-center justify-between">
                 <ChromeDots />
-                <span className="font-mono text-[10px] tracking-wide text-muted-on-ink uppercase">audit/bench</span>
+                <span className="font-mono text-[10px] tracking-wide text-muted-on-ink uppercase">Audit Bench Ai</span>
               </div>
               <div key={active} className="fade-up min-h-[168px]">
                 <Demo />

@@ -1,6 +1,7 @@
 'use client';
 
 import { Fragment, useState } from 'react';
+import { SeverityTag, CategoryTag, Severity } from './Tag';
 
 function ChromeDots() {
   return (
@@ -38,10 +39,25 @@ function VerdictBadge({ verdict }: { verdict: 'pass' | 'needs_work' | 'do_not_sh
   );
 }
 
-function Finding({ tone, text }: { tone: 'critical' | 'high' | 'medium' | 'low'; text: string }) {
+function Finding({
+  tone,
+  category,
+  text,
+}: {
+  tone: 'critical' | 'high' | 'medium' | 'low';
+  category?: string;
+  text: string;
+}) {
   return (
     <div className="flex items-center gap-2 rounded-md border border-ink-line bg-ink px-2.5 py-1.5">
-      <Dot tone={tone} />
+      {category ? (
+        <>
+          <SeverityTag severity={tone as Severity} />
+          <CategoryTag label={category} />
+        </>
+      ) : (
+        <Dot tone={tone} />
+      )}
       <span className="truncate text-[#E8ECF4]">{text}</span>
     </div>
   );
@@ -70,7 +86,7 @@ function PrNativeDemo() {
         <div className="text-[#E8ECF4]">Missing ownership check — any authenticated user can cancel any order.</div>
       </div>
       <div className="mt-3 flex items-center justify-between rounded-md bg-ink-soft px-3 py-2">
-        <span className="text-muted-on-ink">audit/bench</span>
+        <span className="text-muted-on-ink">Audit Bench Ai</span>
         <VerdictBadge verdict="do_not_ship" />
       </div>
     </Panel>
@@ -83,11 +99,11 @@ function CategoriesTabDemo() {
   return (
     <Panel label="5 lenses">
       <div className="space-y-1.5">
-        <Finding tone="critical" text="Security — SSRF in webhook fetch" />
-        <Finding tone="high" text="Logic — off-by-one in cursor paging" />
-        <Finding tone="medium" text="Performance — N+1 in orders.list()" />
-        <Finding tone="medium" text="Testing — refund rounding edge case untested" />
-        <Finding tone="low" text="Architecture — circular import" />
+        <Finding tone="critical" category="Security" text="SSRF in webhook fetch" />
+        <Finding tone="high" category="Logic" text="Off-by-one in cursor paging" />
+        <Finding tone="medium" category="Performance" text="N+1 in orders.list()" />
+        <Finding tone="medium" category="Testing" text="Refund rounding edge case untested" />
+        <Finding tone="low" category="Architecture" text="Circular import" />
       </div>
     </Panel>
   );
@@ -220,10 +236,10 @@ function ExportDemo() {
 function BadgeDemo() {
   return (
     <Panel label="readme.md">
-      <div className="mb-2 text-muted-on-ink">{'[![audit/bench](badge.svg)](…)'}</div>
+      <div className="mb-2 text-muted-on-ink">{'[![Audit Bench Ai](badge.svg)](…)'}</div>
       <div className="flex items-center gap-2 rounded-md bg-ink px-2.5 py-1.5">
         <span className="rounded bg-ink-line px-1.5 py-0.5 text-[10px] tracking-wide text-muted-on-ink uppercase">
-          audit/bench
+          Audit Bench Ai
         </span>
         <VerdictBadge verdict="pass" />
       </div>
@@ -237,7 +253,7 @@ function MergeGateDemo() {
   return (
     <Panel label="branch protection">
       <div className="flex items-center justify-between rounded-md border border-ink-line bg-ink px-3 py-2">
-        <span className="text-[#E8ECF4]">audit/bench / do_not_ship</span>
+        <span className="text-[#E8ECF4]">Audit Bench Ai / do_not_ship</span>
         <span className="rounded bg-critical px-2 py-0.5 text-[10px] font-bold tracking-wide text-white uppercase">
           Blocked
         </span>

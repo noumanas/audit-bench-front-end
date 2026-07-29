@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { Logo } from './Logo';
 
 const COLUMNS = [
   {
@@ -28,8 +29,8 @@ export function Footer() {
     <footer className="border-t border-ink-line bg-ink px-6 py-10">
       <div className="mx-auto flex max-w-5xl flex-wrap justify-between gap-10">
         <div className="max-w-xs">
-          <div className="mb-2 font-mono text-base font-bold tracking-tight text-[#E8ECF4]">
-            audit<span className="text-cobalt">/</span>bench
+          <div className="mb-2">
+            <Logo size="md" animated={false} />
           </div>
           <p className="text-sm leading-relaxed text-muted-on-ink">
             AI code review for security, logic, performance, architecture, and test coverage — before it ships.
@@ -54,7 +55,7 @@ export function Footer() {
         ))}
       </div>
       <div className="mx-auto mt-10 max-w-5xl border-t border-ink-line pt-6 text-xs text-muted-on-ink">
-        © {new Date().getFullYear()} audit/bench. Built for reviewing AI-generated and human-written code.
+        © {new Date().getFullYear()} Audit Bench Ai. Built for reviewing AI-generated and human-written code.
       </div>
     </footer>
   );

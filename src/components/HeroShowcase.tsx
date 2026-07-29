@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { SeverityTag, CategoryTag } from './Tag';
 
 const AUTO_ADVANCE_MS = 5000;
 
@@ -37,7 +38,10 @@ function BeforeSlide() {
         ))}
       </div>
       <div className="rounded-md border-l-4 border-l-critical bg-ink px-3 py-2">
-        <div className="mb-1 text-[10px] font-bold tracking-wide text-critical uppercase">Critical · Security</div>
+        <div className="mb-1.5 flex items-center gap-1.5">
+          <SeverityTag severity="critical" />
+          <CategoryTag label="Security" />
+        </div>
         <div className="text-[#E8ECF4]">No auth check — any caller can mark any invoice as sent.</div>
       </div>
     </>
@@ -54,7 +58,10 @@ function AfterSlide() {
         <div className="rounded bg-pass/15 pl-1 text-pass">{'+ .eq("owner_id", session.userId);'}</div>
       </div>
       <div className="rounded-md border-l-4 border-l-pass bg-ink px-3 py-2">
-        <div className="mb-1 text-[10px] font-bold tracking-wide text-pass uppercase">Resolved · Ship it</div>
+        <div className="mb-1.5 flex items-center gap-1.5">
+          <SeverityTag severity="clean" />
+          <CategoryTag label="Security" />
+        </div>
         <div className="text-[#E8ECF4]">Ownership check added from the suggested fix — re-audited and passing.</div>
       </div>
     </>
@@ -131,7 +138,7 @@ export function HeroShowcase() {
     >
       <div className="mb-3 flex items-center justify-between">
         <ChromeDots />
-        <span className="font-mono text-[10px] tracking-wide text-muted-on-ink uppercase">audit/bench</span>
+        <span className="font-mono text-[10px] tracking-wide text-muted-on-ink uppercase">Audit Bench Ai</span>
       </div>
 
       <div key={active} className="fade-up min-h-[172px]">

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Footer } from '@/components/Footer';
+import { Reveal } from '@/components/Reveal';
 
 export const metadata: Metadata = {
   title: 'About',
@@ -38,7 +39,7 @@ export default function AboutPage() {
   return (
     <div>
       <section className="border-b border-ink-line bg-ink px-6 py-16">
-        <div className="mx-auto max-w-3xl text-center">
+        <Reveal className="mx-auto max-w-3xl text-center">
           <div className="mb-2 font-mono text-[13px] tracking-wide text-muted-on-ink uppercase">
             About
           </div>
@@ -46,15 +47,15 @@ export default function AboutPage() {
             Code review built for the way code gets written now
           </h1>
           <p className="text-base leading-relaxed text-muted-on-ink">
-            AI coding assistants write more code, faster, than any team could before. audit/bench
+            AI coding assistants write more code, faster, than any team could before. Audit Bench Ai
             exists to review that code with the same rigor a careful senior engineer would — before
             it reaches production.
           </p>
-        </div>
+        </Reveal>
       </section>
 
       <section className="bg-paper px-6 py-16">
-        <div className="mx-auto max-w-3xl">
+        <Reveal className="mx-auto max-w-3xl">
           <h2 className="mb-4 text-xl font-bold text-[#1C2128]">Why this exists</h2>
           <p className="mb-4 text-sm leading-relaxed text-[#1C2128]">
             Traditional linters catch syntax problems. They don&apos;t catch a service-role key
@@ -64,30 +65,33 @@ export default function AboutPage() {
             necessarily reasoning about the runtime, the framework, or who&apos;s allowed to call it.
           </p>
           <p className="text-sm leading-relaxed text-[#1C2128]">
-            audit/bench pairs LLM reasoning with static analysis — dependency graphs, dead code
+            Audit Bench Ai pairs LLM reasoning with static analysis — dependency graphs, dead code
             detection, secret scanning — so a review considers both what the code says and what the
             rest of the repository implies about it.
           </p>
-        </div>
+        </Reveal>
       </section>
 
       <section className="bg-ink px-6 py-16">
-        <div className="mx-auto max-w-4xl">
+        <Reveal className="mx-auto max-w-4xl">
           <h2 className="mb-8 text-center text-xl font-bold text-[#E8ECF4]">How an audit runs</h2>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {PIPELINE.map((step, i) => (
-              <div key={step.name} className="rounded-lg border border-ink-line bg-ink-soft p-4">
+              <div
+                key={step.name}
+                className="rounded-lg border border-ink-line bg-ink-soft p-4 transition-all duration-200 hover:-translate-y-1 hover:border-cobalt/40 hover:shadow-panel"
+              >
                 <div className="mb-1 font-mono text-[11px] text-muted-on-ink">{`0${i + 1}`}</div>
                 <div className="mb-1 text-sm font-bold text-[#E8ECF4]">{step.name}</div>
                 <p className="text-xs leading-relaxed text-muted-on-ink">{step.detail}</p>
               </div>
             ))}
           </div>
-        </div>
+        </Reveal>
       </section>
 
       <section className="bg-paper px-6 py-16">
-        <div className="mx-auto grid max-w-4xl gap-10 sm:grid-cols-2">
+        <Reveal className="mx-auto grid max-w-4xl gap-10 sm:grid-cols-2">
           <div>
             <h2 className="mb-4 text-xl font-bold text-[#1C2128]">Who it&apos;s for</h2>
             <ul className="space-y-2 text-sm text-[#1C2128]">
@@ -110,14 +114,19 @@ export default function AboutPage() {
               ))}
             </ul>
           </div>
-        </div>
+        </Reveal>
       </section>
 
       <section className="bg-ink px-6 py-16 text-center">
-        <h2 className="mb-4 text-xl font-bold text-[#E8ECF4]">Try it on your own code</h2>
-        <Link href="/signup" className="inline-block rounded-lg bg-cobalt px-5 py-3 text-sm font-bold text-white">
-          Get started free
-        </Link>
+        <Reveal>
+          <h2 className="mb-4 text-xl font-bold text-[#E8ECF4]">Try it on your own code</h2>
+          <Link
+            href="/signup"
+            className="inline-block rounded-lg bg-cobalt px-5 py-3 text-sm font-bold text-white transition-all duration-200 hover:-translate-y-0.5 hover:bg-cobalt-dark hover:shadow-lg"
+          >
+            Get started free
+          </Link>
+        </Reveal>
       </section>
 
       <Footer />

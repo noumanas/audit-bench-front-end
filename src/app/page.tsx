@@ -1,9 +1,34 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import {
+  siReact,
+  siNextdotjs,
+  siNodedotjs,
+  siNestjs,
+  siPython,
+  siFastapi,
+  siDjango,
+  siLaravel,
+  siSpringboot,
+  siSupabase,
+  siDeno,
+  siFirebase,
+  siAnthropic,
+  siGooglegemini,
+  siDeepseek,
+  siZdotai,
+  siQwen,
+  siKimi,
+  siMistralai,
+  siMinimax,
+} from 'simple-icons';
 import { Footer } from '@/components/Footer';
 import { PricingTeaser } from '@/components/PricingTeaser';
 import { HeroShowcase } from '@/components/HeroShowcase';
 import { FeatureShowcase } from '@/components/FeatureShowcase';
+import { Reveal } from '@/components/Reveal';
+import { TechLogo } from '@/components/TechLogo';
+import { TypingText, TypingSegment } from '@/components/TypingText';
 
 export const metadata: Metadata = {
   title: 'AI code review before it ships',
@@ -12,6 +37,12 @@ export const metadata: Metadata = {
   alternates: { canonical: '/' },
 };
 
+const HERO_HEADLINE: TypingSegment[] = [
+  { text: 'AI coding assistants ship fast.\nMake sure what they ship is ' },
+  { text: 'safe', className: 'text-cobalt' },
+  { text: '.' },
+];
+
 const STATS = [
   { value: '5', label: 'Review lenses per audit' },
   { value: '10', label: 'LLM providers to choose from' },
@@ -19,9 +50,19 @@ const STATS = [
   { value: '2', label: 'Git providers, native PR/MR review' },
 ];
 
+// icons: [] for the two brands (OpenAI, xAI) with no accurate mark available
+// in simple-icons — left as text-only rather than approximating a logo.
 const LLM_PROVIDERS = [
-  'Anthropic', 'OpenAI', 'Gemini', 'DeepSeek', 'Z.AI (GLM)',
-  'Qwen', 'Kimi', 'xAI (Grok)', 'Mistral', 'MiniMax',
+  { label: 'Anthropic', icons: [siAnthropic] },
+  { label: 'OpenAI', icons: [] },
+  { label: 'Gemini', icons: [siGooglegemini] },
+  { label: 'DeepSeek', icons: [siDeepseek] },
+  { label: 'Z.AI (GLM)', icons: [siZdotai] },
+  { label: 'Qwen', icons: [siQwen] },
+  { label: 'Kimi', icons: [siKimi] },
+  { label: 'xAI (Grok)', icons: [] },
+  { label: 'Mistral', icons: [siMistralai] },
+  { label: 'MiniMax', icons: [siMinimax] },
 ];
 
 const TEAM_CAPABILITIES = [
@@ -99,53 +140,73 @@ const PIPELINE_STAGES = [
 ];
 
 const FRAMEWORKS = [
-  'React', 'Next.js', 'Node.js', 'NestJS', 'Python/FastAPI', 'Django',
-  'Laravel', 'Spring Boot', 'Supabase', 'Deno', 'Firebase',
+  { label: 'React', icons: [siReact] },
+  { label: 'Next.js', icons: [siNextdotjs] },
+  { label: 'Node.js', icons: [siNodedotjs] },
+  { label: 'NestJS', icons: [siNestjs] },
+  { label: 'Python/FastAPI', icons: [siPython, siFastapi] },
+  { label: 'Django', icons: [siDjango] },
+  { label: 'Laravel', icons: [siLaravel] },
+  { label: 'Spring Boot', icons: [siSpringboot] },
+  { label: 'Supabase', icons: [siSupabase] },
+  { label: 'Deno', icons: [siDeno] },
+  { label: 'Firebase', icons: [siFirebase] },
 ];
 
 export default function HomePage() {
   return (
     <div>
       {/* Hero */}
-      <section className="border-b border-ink-line bg-ink px-6 py-20">
-        <div className="mx-auto max-w-5xl">
+      <section className="relative overflow-hidden border-b border-ink-line bg-ink px-6 py-20">
+        <div
+          aria-hidden="true"
+          className="glow-pulse pointer-events-none absolute top-[-220px] left-1/2 h-[420px] w-[640px] -translate-x-1/2 rounded-full"
+          style={{ background: 'radial-gradient(circle, rgba(43,91,227,0.35) 0%, rgba(43,91,227,0) 70%)' }}
+        />
+        <div className="relative mx-auto max-w-5xl">
           <div className="grid items-center gap-12 md:grid-cols-2">
             <div>
-              <div className="mb-4 inline-block rounded-full border border-ink-line px-3 py-1 font-mono text-[11px] tracking-wide text-muted-on-ink uppercase">
+              <div className="fade-up mb-4 inline-block rounded-full border border-ink-line px-3 py-1 font-mono text-[11px] tracking-wide text-muted-on-ink uppercase">
                 AI code review, before it ships
               </div>
-              <h1 className="mb-5 text-4xl leading-tight font-bold text-[#E8ECF4] sm:text-5xl">
-                AI coding assistants ship fast.
-                <br />
-                Make sure what they ship is <span className="text-cobalt">safe</span>.
+              <h1
+                className="fade-up mb-5 text-4xl leading-tight font-bold text-[#E8ECF4] sm:text-5xl"
+                style={{ animationDelay: '80ms' }}
+              >
+                <TypingText segments={HERO_HEADLINE} />
               </h1>
-              <p className="mb-8 max-w-md text-base leading-relaxed text-muted-on-ink">
-                audit/bench combines LLM reasoning with static analysis to catch the security holes,
+              <p
+                className="fade-up mb-8 max-w-md text-base leading-relaxed text-muted-on-ink"
+                style={{ animationDelay: '160ms' }}
+              >
+                Audit Bench Ai combines LLM reasoning with static analysis to catch the security holes,
                 logic bugs, and framework misuse that traditional linters miss — on a single file, a
                 pull request, or a whole repository.
               </p>
-              <div className="flex flex-wrap gap-3">
+              <div className="fade-up flex flex-wrap gap-3" style={{ animationDelay: '240ms' }}>
                 <Link
                   href="/signup"
-                  className="rounded-lg bg-cobalt px-5 py-3 text-sm font-bold text-white"
+                  className="rounded-lg bg-cobalt px-5 py-3 text-sm font-bold text-white transition-all duration-200 hover:-translate-y-0.5 hover:bg-cobalt-dark hover:shadow-lg"
                 >
                   Get started free
                 </Link>
                 <Link
                   href="/pricing"
-                  className="rounded-lg border border-ink-line px-5 py-3 text-sm font-bold text-muted-on-ink hover:text-[#E8ECF4]"
+                  className="rounded-lg border border-ink-line px-5 py-3 text-sm font-bold text-muted-on-ink transition-all duration-200 hover:-translate-y-0.5 hover:border-cobalt/40 hover:text-[#E8ECF4]"
                 >
                   See pricing
                 </Link>
               </div>
             </div>
 
-            <HeroShowcase />
+            <div className="fade-up" style={{ animationDelay: '200ms' }}>
+              <HeroShowcase />
+            </div>
           </div>
 
           <div className="mt-16 grid grid-cols-2 gap-6 border-t border-ink-line pt-8 sm:grid-cols-4">
-            {STATS.map((s) => (
-              <div key={s.label}>
+            {STATS.map((s, i) => (
+              <div key={s.label} className="fade-up" style={{ animationDelay: `${300 + i * 80}ms` }}>
                 <div className="text-2xl font-bold text-[#E8ECF4]">{s.value}</div>
                 <div className="mt-1 text-xs leading-snug text-muted-on-ink">{s.label}</div>
               </div>
@@ -156,36 +217,50 @@ export default function HomePage() {
 
       {/* Stack / integrations bar */}
       <section className="border-b border-ink-line bg-ink px-6 py-10">
-        <div className="mx-auto max-w-5xl">
+        <Reveal className="mx-auto max-w-5xl">
           <div className="mb-5 text-center font-mono text-[11px] tracking-wide text-muted-on-ink uppercase">
             Works with the stack your team already runs
           </div>
           <div className="flex flex-wrap justify-center gap-2">
             {FRAMEWORKS.map((fw) => (
               <span
-                key={fw}
-                className="rounded-full border border-ink-line px-3 py-1.5 text-xs font-medium text-muted-on-ink"
+                key={fw.label}
+                className="group inline-flex items-center gap-1.5 rounded-full border border-ink-line px-3 py-1.5 text-xs font-medium text-muted-on-ink transition-colors duration-200 hover:border-cobalt/50 hover:text-[#E8ECF4]"
               >
-                {fw}
+                {fw.icons.map((icon) => (
+                  <TechLogo
+                    key={icon.slug}
+                    icon={icon}
+                    className="h-3.5 w-3.5 shrink-0 text-muted-on-ink transition-colors duration-200 group-hover:text-[color:var(--brand)]"
+                  />
+                ))}
+                {fw.label}
               </span>
             ))}
           </div>
-        </div>
+        </Reveal>
       </section>
 
       {/* LLM provider bar */}
       <section className="border-b border-ink-line bg-ink px-6 py-10">
-        <div className="mx-auto max-w-5xl">
+        <Reveal className="mx-auto max-w-5xl">
           <div className="mb-5 text-center font-mono text-[11px] tracking-wide text-muted-on-ink uppercase">
             Bring the model you already have a key for
           </div>
           <div className="flex flex-wrap justify-center gap-2">
             {LLM_PROVIDERS.map((p) => (
               <span
-                key={p}
-                className="rounded-full border border-ink-line px-3 py-1.5 text-xs font-medium text-muted-on-ink"
+                key={p.label}
+                className="group inline-flex items-center gap-1.5 rounded-full border border-ink-line px-3 py-1.5 text-xs font-medium text-muted-on-ink transition-colors duration-200 hover:border-cobalt/50 hover:text-[#E8ECF4]"
               >
-                {p}
+                {p.icons.map((icon) => (
+                  <TechLogo
+                    key={icon.slug}
+                    icon={icon}
+                    className="h-3.5 w-3.5 shrink-0 text-muted-on-ink transition-colors duration-200 group-hover:text-[color:var(--brand)]"
+                  />
+                ))}
+                {p.label}
               </span>
             ))}
           </div>
@@ -193,12 +268,12 @@ export default function HomePage() {
             Every provider runs the same three-stage pipeline and the same review lenses — pick
             the one that fits your budget or your existing contract, per audit or as your account default.
           </p>
-        </div>
+        </Reveal>
       </section>
 
       {/* Problem statement */}
       <section className="bg-paper px-6 py-16">
-        <div className="mx-auto max-w-3xl text-center">
+        <Reveal className="mx-auto max-w-3xl text-center">
           <div className="mb-3 font-mono text-[13px] tracking-wide text-muted-on-paper uppercase">
             The problem
           </div>
@@ -207,14 +282,16 @@ export default function HomePage() {
             security issues, and framework misuse. Traditional linters catch syntax problems — not
             business logic or intent.
           </p>
-        </div>
+        </Reveal>
       </section>
 
-      <FeatureShowcase />
+      <Reveal>
+        <FeatureShowcase />
+      </Reveal>
 
       {/* Built for teams */}
       <section className="border-t border-ink-line bg-paper px-6 py-16">
-        <div className="mx-auto max-w-5xl">
+        <Reveal className="mx-auto max-w-5xl">
           <div className="mb-10 text-center">
             <div className="mb-2 font-mono text-[13px] tracking-wide text-muted-on-paper uppercase">
               For engineering organizations
@@ -227,7 +304,10 @@ export default function HomePage() {
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
             {TEAM_CAPABILITIES.map((c) => (
-              <div key={c.title} className="rounded-lg border border-paper-line bg-paper-card p-5">
+              <div
+                key={c.title}
+                className="rounded-lg border border-paper-line bg-paper-card p-5 transition-all duration-200 hover:-translate-y-1 hover:border-cobalt/40 hover:shadow-panel"
+              >
                 <h3 className="mb-2 text-sm font-bold text-[#1C2128]">
                   {c.href ? (
                     <Link href={c.href} className="hover:text-cobalt">
@@ -241,12 +321,12 @@ export default function HomePage() {
               </div>
             ))}
           </div>
-        </div>
+        </Reveal>
       </section>
 
       {/* Workflow integrations */}
       <section className="border-t border-ink-line bg-ink px-6 py-16">
-        <div className="mx-auto max-w-5xl">
+        <Reveal className="mx-auto max-w-5xl">
           <div className="mb-10 text-center">
             <div className="mb-2 font-mono text-[13px] tracking-wide text-muted-on-ink uppercase">
               Where you already work
@@ -258,18 +338,21 @@ export default function HomePage() {
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {WORKFLOW_INTEGRATIONS.map((f) => (
-              <div key={f.title} className="rounded-lg border border-ink-line bg-ink-soft p-5">
+              <div
+                key={f.title}
+                className="rounded-lg border border-ink-line bg-ink-soft p-5 transition-all duration-200 hover:-translate-y-1 hover:border-cobalt/40 hover:shadow-panel"
+              >
                 <h3 className="mb-2 font-mono text-sm font-bold text-[#E8ECF4]">{f.title}</h3>
                 <p className="text-sm leading-relaxed text-muted-on-ink">{f.detail}</p>
               </div>
             ))}
           </div>
-        </div>
+        </Reveal>
       </section>
 
       {/* Cost governance / pipeline */}
       <section className="border-t border-ink-line bg-ink px-6 py-16">
-        <div className="mx-auto max-w-5xl">
+        <Reveal className="mx-auto max-w-5xl">
           <div className="mb-10 text-center">
             <div className="mb-2 font-mono text-[13px] tracking-wide text-muted-on-ink uppercase">
               Cost control
@@ -282,19 +365,22 @@ export default function HomePage() {
           </div>
           <div className="grid gap-4 sm:grid-cols-3">
             {PIPELINE_STAGES.map((s) => (
-              <div key={s.stage} className="rounded-lg border border-ink-line bg-ink-soft p-5">
+              <div
+                key={s.stage}
+                className="rounded-lg border border-ink-line bg-ink-soft p-5 transition-all duration-200 hover:-translate-y-1 hover:border-cobalt/40 hover:shadow-panel"
+              >
                 <div className="mb-2 font-mono text-[11px] text-muted-on-ink">{s.stage}</div>
                 <div className="mb-1 text-sm font-bold text-[#E8ECF4]">{s.title}</div>
                 <p className="text-xs leading-relaxed text-muted-on-ink">{s.detail}</p>
               </div>
             ))}
           </div>
-        </div>
+        </Reveal>
       </section>
 
       {/* Pricing teaser */}
       <section className="bg-paper px-6 py-16">
-        <div className="mx-auto max-w-5xl">
+        <Reveal className="mx-auto max-w-5xl">
           <div className="mb-8 text-center">
             <div className="mb-2 font-mono text-[13px] tracking-wide text-muted-on-paper uppercase">
               Plans
@@ -303,38 +389,44 @@ export default function HomePage() {
           </div>
           <PricingTeaser />
           <div className="mt-8 flex flex-wrap items-center justify-center gap-4 text-center">
-            <Link href="/pricing" className="text-sm font-semibold text-cobalt">
-              Compare all plans →
+            <Link href="/pricing" className="group text-sm font-semibold text-cobalt">
+              Compare all plans{' '}
+              <span className="inline-block transition-transform duration-200 group-hover:translate-x-1">→</span>
             </Link>
             <span className="text-sm text-muted-on-paper">
               Need a custom rollout?{' '}
-              <a href="mailto:noumanqureshi15@gmail.com" className="font-semibold text-cobalt">
+              <a href="mailto:noumanqureshi15@gmail.com" className="font-semibold text-cobalt hover:underline">
                 Talk to sales
               </a>
               .
             </span>
           </div>
-        </div>
+        </Reveal>
       </section>
 
       {/* Final CTA */}
       <section className="border-t border-ink-line bg-ink px-6 py-16 text-center">
-        <h2 className="mb-3 text-2xl font-bold text-[#E8ECF4]">Review your first repository free</h2>
-        <p className="mx-auto mb-6 max-w-md text-sm leading-relaxed text-muted-on-ink">
-          No credit card required. Connect GitHub or GitLab, or upload a .zip, and see what an audit
-          finds in your own code.
-        </p>
-        <div className="flex flex-wrap justify-center gap-3">
-          <Link href="/signup" className="rounded-lg bg-cobalt px-5 py-3 text-sm font-bold text-white">
-            Get started free
-          </Link>
-          <a
-            href="mailto:noumanqureshi15@gmail.com"
-            className="rounded-lg border border-ink-line px-5 py-3 text-sm font-bold text-muted-on-ink hover:text-[#E8ECF4]"
-          >
-            Talk to sales
-          </a>
-        </div>
+        <Reveal>
+          <h2 className="mb-3 text-2xl font-bold text-[#E8ECF4]">Review your first repository free</h2>
+          <p className="mx-auto mb-6 max-w-md text-sm leading-relaxed text-muted-on-ink">
+            No credit card required. Connect GitHub or GitLab, or upload a .zip, and see what an audit
+            finds in your own code.
+          </p>
+          <div className="flex flex-wrap justify-center gap-3">
+            <Link
+              href="/signup"
+              className="rounded-lg bg-cobalt px-5 py-3 text-sm font-bold text-white transition-all duration-200 hover:-translate-y-0.5 hover:bg-cobalt-dark hover:shadow-lg"
+            >
+              Get started free
+            </Link>
+            <a
+              href="mailto:noumanqureshi15@gmail.com"
+              className="rounded-lg border border-ink-line px-5 py-3 text-sm font-bold text-muted-on-ink transition-all duration-200 hover:-translate-y-0.5 hover:border-cobalt/40 hover:text-[#E8ECF4]"
+            >
+              Talk to sales
+            </a>
+          </div>
+        </Reveal>
       </section>
 
       <Footer />

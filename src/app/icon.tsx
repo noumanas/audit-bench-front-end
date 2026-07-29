@@ -17,17 +17,11 @@ export default function Icon() {
           borderRadius: 7,
         }}
       >
-        <div
-          style={{
-            display: 'flex',
-            fontSize: 22,
-            fontWeight: 700,
-            color: '#2b5be3',
-            fontFamily: 'monospace',
-          }}
-        >
-          /
-        </div>
+        <svg width="22" height="22" viewBox="0 0 24 24">
+          <path d="M12 3.5l7 2.6v5.4c0 4.5-3 8.2-7 9-4-.8-7-4.5-7-9V6.1l7-2.6z" fill="#2b5be3" />
+          <path d="M4.3 9.6L19.7 14.4" stroke="#E8ECF4" strokeWidth="1.6" strokeLinecap="round" />
+          <circle cx="19.7" cy="14.4" r="1.5" fill="#E8ECF4" />
+        </svg>
       </div>
     ),
     { ...size },

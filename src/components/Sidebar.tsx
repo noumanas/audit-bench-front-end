@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import { useAuth } from '@/lib/AuthContext';
 import { getUsage } from '@/lib/api';
 import { Usage } from '@/lib/types';
+import { Logo } from './Logo';
 import {
   ArrowRightIcon,
   ChevronRightIcon,
@@ -80,12 +81,8 @@ function isActive(pathname: string, href: string): boolean {
 
 function Wordmark({ onClick }: { onClick?: () => void }) {
   return (
-    <Link
-      href="/app"
-      onClick={onClick}
-      className="font-mono text-base font-bold tracking-tight text-[#E8ECF4]"
-    >
-      audit<span className="text-cobalt">/</span>bench
+    <Link href="/app" onClick={onClick} className="transition-opacity hover:opacity-80">
+      <Logo size="md" />
     </Link>
   );
 }

@@ -1,10 +1,11 @@
 import type { Metadata } from 'next';
 import { Footer } from '@/components/Footer';
+import { Reveal } from '@/components/Reveal';
 
 export const metadata: Metadata = {
   title: 'Security & Trust',
   description:
-    'How audit/bench handles your code and credentials: read-only by default, git-based checkpoints, encrypted tokens, and what actually happens to your code during a scan.',
+    'How Audit Bench Ai handles your code and credentials: read-only by default, git-based checkpoints, encrypted tokens, and what actually happens to your code during a scan.',
   alternates: { canonical: '/security' },
 };
 
@@ -22,7 +23,7 @@ const PRINCIPLES = [
   {
     title: 'Your code is not used to train any model',
     detail:
-      'audit/bench does not use scanned code to train a model, ours or anyone else’s. Each scan sends the relevant code to the LLM provider configured for that request, for that single review — nothing more. Check that provider’s own API terms for their data-handling policy; we don’t control it, but standard API access (as opposed to consumer chat products) typically excludes request data from training.',
+      'Audit Bench Ai does not use scanned code to train a model, ours or anyone else’s. Each scan sends the relevant code to the LLM provider configured for that request, for that single review — nothing more. Check that provider’s own API terms for their data-handling policy; we don’t control it, but standard API access (as opposed to consumer chat products) typically excludes request data from training.',
   },
   {
     title: 'Credentials are encrypted, not just hidden',
@@ -50,7 +51,7 @@ export default function SecurityPage() {
   return (
     <div>
       <section className="border-b border-ink-line bg-ink px-6 py-16">
-        <div className="mx-auto max-w-3xl">
+        <Reveal className="mx-auto max-w-3xl">
           <div className="mb-4 inline-block rounded-full border border-ink-line px-3 py-1 font-mono text-[11px] tracking-wide text-muted-on-ink uppercase">
             Security &amp; Trust
           </div>
@@ -61,33 +62,39 @@ export default function SecurityPage() {
             Not a compliance certification — a plain-language account of what this product does and doesn&apos;t do
             with your code and your credentials, so you can decide for yourself whether that&apos;s enough.
           </p>
-        </div>
+        </Reveal>
       </section>
 
       <section className="bg-paper px-6 py-16">
         <div className="mx-auto max-w-3xl">
           <div className="space-y-6">
-            {PRINCIPLES.map((p) => (
-              <div key={p.title} className="rounded-lg border border-paper-line bg-paper-card p-5">
+            {PRINCIPLES.map((p, i) => (
+              <Reveal
+                key={p.title}
+                delay={Math.min(i, 4) * 60}
+                className="rounded-lg border border-paper-line bg-paper-card p-5 transition-all duration-200 hover:border-cobalt/40 hover:shadow-panel"
+              >
                 <h2 className="mb-2 text-sm font-bold text-[#1C2128]">{p.title}</h2>
                 <p className="text-sm leading-relaxed text-muted-on-paper">{p.detail}</p>
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>
       </section>
 
       <section className="border-t border-ink-line bg-ink px-6 py-16 text-center">
-        <h2 className="mb-3 text-xl font-bold text-[#E8ECF4]">Questions we didn&apos;t answer here?</h2>
-        <p className="mx-auto mb-6 max-w-md text-sm leading-relaxed text-muted-on-ink">
-          Ask directly — especially before a security review on your end.
-        </p>
-        <a
-          href="mailto:noumanqureshi15@gmail.com"
-          className="inline-block rounded-lg bg-cobalt px-5 py-3 text-sm font-bold text-white"
-        >
-          Contact us
-        </a>
+        <Reveal>
+          <h2 className="mb-3 text-xl font-bold text-[#E8ECF4]">Questions we didn&apos;t answer here?</h2>
+          <p className="mx-auto mb-6 max-w-md text-sm leading-relaxed text-muted-on-ink">
+            Ask directly — especially before a security review on your end.
+          </p>
+          <a
+            href="mailto:noumanqureshi15@gmail.com"
+            className="inline-block rounded-lg bg-cobalt px-5 py-3 text-sm font-bold text-white transition-all duration-200 hover:-translate-y-0.5 hover:bg-cobalt-dark hover:shadow-lg"
+          >
+            Contact us
+          </a>
+        </Reveal>
       </section>
 
       <Footer />

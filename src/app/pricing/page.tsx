@@ -6,6 +6,7 @@ import { listPlans } from '@/lib/api';
 import { Plan } from '@/lib/types';
 import { useAuth } from '@/lib/AuthContext';
 import { Footer } from '@/components/Footer';
+import { Reveal } from '@/components/Reveal';
 
 const TIER_COPY: Record<string, { blurb: string; extras: string[] }> = {
   free: {
@@ -56,18 +57,20 @@ export default function PricingPage() {
   return (
     <div>
       <section className="border-b border-ink-line bg-ink px-6 py-16 text-center">
-        <div className="mb-2 font-mono text-[13px] tracking-wide text-muted-on-ink uppercase">Pricing</div>
-        <h1 className="mb-3 text-3xl font-bold text-[#E8ECF4]">Simple plans, real limits</h1>
-        <p className="mx-auto max-w-xl text-sm leading-relaxed text-muted-on-ink">
-          Every plan shares the same audit engine, and local checks — linting, type errors,
-          complexity, formatting — are unlimited on every tier, free. What a plan caps is how many
-          <strong className="text-[#E8ECF4]"> AI-reviewed</strong> audits you get per day and per
-          month, and whether repository scanning is included.
-        </p>
+        <Reveal>
+          <div className="mb-2 font-mono text-[13px] tracking-wide text-muted-on-ink uppercase">Pricing</div>
+          <h1 className="mb-3 text-3xl font-bold text-[#E8ECF4]">Simple plans, real limits</h1>
+          <p className="mx-auto max-w-xl text-sm leading-relaxed text-muted-on-ink">
+            Every plan shares the same audit engine, and local checks — linting, type errors,
+            complexity, formatting — are unlimited on every tier, free. What a plan caps is how many
+            <strong className="text-[#E8ECF4]"> AI-reviewed</strong> audits you get per day and per
+            month, and whether repository scanning is included.
+          </p>
+        </Reveal>
       </section>
 
       <section className="bg-paper px-6 py-16">
-        <div className="mx-auto max-w-5xl">
+        <Reveal className="mx-auto max-w-5xl">
           {error && (
             <div className="mb-6 rounded-lg border border-critical/40 bg-critical/10 px-3.5 py-2.5 text-sm text-critical">
               {error}
@@ -95,7 +98,7 @@ export default function PricingPage() {
               return (
                 <div
                   key={plan.id}
-                  className="flex flex-col rounded-xl border border-paper-line bg-paper-card p-6"
+                  className="flex flex-col rounded-xl border border-paper-line bg-paper-card p-6 transition-all duration-200 hover:-translate-y-1.5 hover:border-cobalt/40 hover:shadow-panel"
                 >
                   <div className="mb-1 font-mono text-sm font-bold tracking-wide text-muted-on-paper uppercase">
                     {plan.name}
@@ -123,10 +126,10 @@ export default function PricingPage() {
 
                   <Link
                     href={ctaHref}
-                    className={`rounded-lg px-4 py-2.5 text-center text-sm font-bold ${
+                    className={`rounded-lg px-4 py-2.5 text-center text-sm font-bold transition-all duration-200 ${
                       isCurrent
                         ? 'border border-paper-line text-muted-on-paper'
-                        : 'bg-cobalt text-white'
+                        : 'bg-cobalt text-white hover:-translate-y-0.5 hover:bg-cobalt-dark hover:shadow-lg'
                     }`}
                   >
                     {ctaLabel}
@@ -139,11 +142,11 @@ export default function PricingPage() {
           <p className="mt-8 text-center text-xs text-muted-on-paper">
             Plan switching is self-service from your dashboard — no payment step in this build.
           </p>
-        </div>
+        </Reveal>
       </section>
 
       <section className="bg-ink px-6 py-16">
-        <div className="mx-auto max-w-3xl">
+        <Reveal className="mx-auto max-w-3xl">
           <h2 className="mb-8 text-center text-2xl font-bold text-[#E8ECF4]">Questions</h2>
           <div className="space-y-6">
             <FaqItem
@@ -163,7 +166,7 @@ export default function PricingPage() {
               a="Yes — switch anytime from your dashboard. Changes apply immediately, including to your remaining quota for the current period."
             />
           </div>
-        </div>
+        </Reveal>
       </section>
 
       <Footer />
@@ -173,7 +176,7 @@ export default function PricingPage() {
 
 function FaqItem({ q, a }: { q: string; a: string }) {
   return (
-    <div className="rounded-lg border border-ink-line bg-ink-soft p-5">
+    <div className="rounded-lg border border-ink-line bg-ink-soft p-5 transition-colors duration-200 hover:border-cobalt/40">
       <div className="mb-1.5 text-sm font-bold text-[#E8ECF4]">{q}</div>
       <p className="text-sm leading-relaxed text-muted-on-ink">{a}</p>
     </div>

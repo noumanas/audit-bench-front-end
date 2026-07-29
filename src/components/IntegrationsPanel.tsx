@@ -57,7 +57,7 @@ function BadgeSection() {
     ? `${API_URL}/badge/${token}/verdict${repo.trim() ? `?repo=${encodeURIComponent(repo.trim())}` : ''}`
     : '';
   const imageUrl = badgeApiUrl ? `https://img.shields.io/endpoint?url=${encodeURIComponent(badgeApiUrl)}` : '';
-  const markdown = imageUrl ? `[![audit/bench](${imageUrl})](${API_URL})` : '';
+  const markdown = imageUrl ? `[![Audit Bench Ai](${imageUrl})](${API_URL})` : '';
 
   return (
     <div className="rounded-lg border border-ink-line bg-ink-soft p-4">
@@ -77,7 +77,7 @@ function BadgeSection() {
               placeholder="Optional: scope to owner/repo"
               className="min-w-0 flex-1 rounded-md border border-ink-line bg-ink px-2.5 py-1.5 text-xs text-[#E8ECF4] outline-none placeholder:text-muted-on-ink/60"
             />
-            {imageUrl && <img src={imageUrl} alt="audit/bench badge preview" className="h-5" />}
+            {imageUrl && <img src={imageUrl} alt="Audit Bench Ai badge preview" className="h-5" />}
           </div>
 
           <div className="flex items-center gap-2">
@@ -128,7 +128,7 @@ function ApiKeySection() {
 
   const masked = apiKey ? `${apiKey.slice(0, 8)}${'•'.repeat(28)}` : '';
   const ciSnippet = apiKey
-    ? `- name: audit/bench
+    ? `- name: Audit Bench Ai
   run: |
     npm install -g auditbench-cli
     auditbench scan . --fail-on do_not_ship
