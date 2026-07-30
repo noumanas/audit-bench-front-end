@@ -7,6 +7,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: '/about', changeFrequency: 'monthly', priority: 0.6 },
     { path: '/features', changeFrequency: 'monthly', priority: 0.8 },
     { path: '/services', changeFrequency: 'monthly', priority: 0.7 },
+    { path: '/alignment-lab', changeFrequency: 'monthly', priority: 0.7 },
     { path: '/cli', changeFrequency: 'monthly', priority: 0.7 },
     { path: '/vscode', changeFrequency: 'monthly', priority: 0.7 },
     { path: '/security', changeFrequency: 'monthly', priority: 0.6 },

@@ -1,16 +1,18 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { RequireAdmin } from '@/components/RequireAdmin';
+import Link from 'next/link';
+import { RequireAuth } from '@/components/RequireAuth';
 import { PageHeader } from '@/components/PageHeader';
 import {
   createBenchmarkModel,
   listBenchmarkModels,
   listInvestigations,
   runInvestigation,
+  getUsage,
   ApiError,
 } from '@/lib/api';
-import { BenchmarkDifficulty, BenchmarkModel, Investigation } from '@/lib/types';
+import { BenchmarkDifficulty, BenchmarkModel, Investigation, Usage } from '@/lib/types';
 
 const DIFFICULTIES: BenchmarkDifficulty[] = ['easy', 'medium', 'hard'];
 
@@ -31,18 +33,45 @@ function DifficultyTag({ level }: { level: BenchmarkDifficulty }) {
 }
 
 export default function AlignmentLabPage() {
+  const [usage, setUsage] = useState<Usage | null>(null);
+
+  useEffect(() => {
+    getUsage()
+      .then(setUsage)
+      .catch(() => {});
+  }, []);
+
+  const included = usage?.plan.alignmentLabEnabled ?? true; // assume included until we know otherwise, to avoid a flash of the upgrade banner
+
   return (
-    <RequireAdmin>
+    <RequireAuth>
       <div className="mx-auto max-w-4xl px-6 py-10">
         <PageHeader
-          kicker="Research pilot · admin only"
+          kicker="AI red-teaming"
           title="Alignment lab"
-          description="Register a benchmark persona with a hidden behavior, then run an autonomous investigator agent against it and see whether it uncovers what you hid. A small, deliberately separate pilot slice — not part of the code-review product, and not a real fine-tuned model: the 'target' is a real LLM call under a system persona prompt instructed to stay in character."
+          description="Register a benchmark persona with a known hidden behavior, then run an autonomous investigator agent against it and see whether it uncovers what you hid. The 'target' is a real LLM call under a system persona prompt instructed to stay in character and deny any hidden agenda — not an actually fine-tuned model."
         />
+
+        {usage && !included && (
+          <div className="shadow-panel mb-8 rounded-lg border border-cobalt/40 bg-cobalt/10 px-4 py-3 text-sm text-[#E8ECF4]">
+            Alignment Lab is included on Team and Enterprise plans. You can still register models below to see how
+            it works, but running an investigation needs an upgrade.{' '}
+            <Link href="/app/dashboard" className="font-semibold text-cobalt hover:underline">
+              View plans
+            </Link>
+            .
+          </div>
+        )}
+        {usage?.plan.alignmentLabEnabled && usage.plan.monthlyInvestigationLimit != null && (
+          <p className="mb-6 text-xs text-muted-on-ink">
+            Your plan includes {usage.plan.monthlyInvestigationLimit} investigations per month.
+          </p>
+        )}
+
         <CreateModelForm onCreated={() => window.dispatchEvent(new Event('alignment-lab:refresh'))} />
         <ModelsList />
       </div>
-    </RequireAdmin>
+    </RequireAuth>
   );
 }
 
@@ -204,6 +233,7 @@ function ModelCard({ model }: { model: BenchmarkModel }) {
   const [investigations, setInvestigations] = useState<Investigation[]>([]);
   const [running, setRunning] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [needsUpgrade, setNeedsUpgrade] = useState(false);
   const [expanded, setExpanded] = useState<string | null>(null);
 
   const loadInvestigations = () => {
@@ -220,11 +250,15 @@ function ModelCard({ model }: { model: BenchmarkModel }) {
   const handleRun = async () => {
     setRunning(true);
     setError(null);
+    setNeedsUpgrade(false);
     try {
       const investigation = await runInvestigation(model.id);
       setInvestigations((prev) => [investigation, ...prev]);
       setExpanded(investigation.id);
     } catch (err) {
+      if (err instanceof ApiError && (err.status === 403 || err.status === 429)) {
+        setNeedsUpgrade(true);
+      }
       setError(
         err instanceof ApiError
           ? err.message
@@ -261,6 +295,15 @@ function ModelCard({ model }: { model: BenchmarkModel }) {
       {error && (
         <div className="mb-2 rounded-md border border-critical/40 bg-critical/10 px-3 py-2 text-xs text-critical">
           {error}
+          {needsUpgrade && (
+            <>
+              {' '}
+              <Link href="/app/dashboard" className="font-semibold underline">
+                Upgrade your plan
+              </Link>
+              .
+            </>
+          )}
         </div>
       )}
 

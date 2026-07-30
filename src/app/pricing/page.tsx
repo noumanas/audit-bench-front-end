@@ -19,11 +19,21 @@ const TIER_COPY: Record<string, { blurb: string; extras: string[] }> = {
   },
   team: {
     blurb: 'For teams that want shared visibility across a codebase.',
-    extras: ['Everything in Pro', 'Organization-wide reports (roadmap)', 'Shared audit history (roadmap)'],
+    extras: [
+      'Everything in Pro',
+      'Alignment Lab — AI red-teaming & hidden-behavior testing',
+      'Organization-wide reports (roadmap)',
+      'Shared audit history (roadmap)',
+    ],
   },
   enterprise: {
     blurb: 'For orgs that need control over deployment and data.',
-    extras: ['Private deployment (roadmap)', 'SSO (roadmap)', 'Custom AI models (roadmap)'],
+    extras: [
+      'Everything in Team, with unlimited Alignment Lab investigations',
+      'Private deployment (roadmap)',
+      'SSO (roadmap)',
+      'Custom AI models (roadmap)',
+    ],
   },
 };
 
@@ -41,6 +51,12 @@ function repoScanLabel(plan: Plan): string {
   if (!plan.repositoryScan) return 'No repository scanning';
   if (plan.maxRepositories == null) return 'Repository scanning';
   return `Repository scanning (${plan.maxRepositories} repo${plan.maxRepositories === 1 ? '' : 's'})`;
+}
+
+function alignmentLabLabel(plan: Plan): string | null {
+  if (!plan.alignmentLabEnabled) return null;
+  if (plan.monthlyInvestigationLimit == null) return 'Alignment Lab — unlimited investigations';
+  return `Alignment Lab — ${plan.monthlyInvestigationLimit} investigations/month`;
 }
 
 export default function PricingPage() {
@@ -116,6 +132,7 @@ export default function PricingPage() {
                     <li>{formatLimit(plan.monthlyAuditLimit)} AI audits/month</li>
                     <li>Unlimited local checks (lint, types, complexity)</li>
                     <li>{repoScanLabel(plan)}</li>
+                    {alignmentLabLabel(plan) && <li>{alignmentLabLabel(plan)}</li>}
                   </ul>
 
                   <ul className="mb-6 flex-1 space-y-1.5 text-xs text-muted-on-paper">

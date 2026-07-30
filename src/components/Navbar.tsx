@@ -11,6 +11,7 @@ const MARKETING_LINKS = [
   { href: '/about', label: 'About' },
   { href: '/features', label: 'Features' },
   { href: '/services', label: 'Services' },
+  { href: '/alignment-lab', label: 'Alignment Lab' },
   { href: '/cli', label: 'CLI' },
   { href: '/vscode', label: 'VS Code' },
   { href: '/pricing', label: 'Pricing' },

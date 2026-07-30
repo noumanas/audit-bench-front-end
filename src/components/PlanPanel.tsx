@@ -20,6 +20,12 @@ function repoScanLabel(plan: Plan): string {
   return `Repository scan (${plan.maxRepositories} repo${plan.maxRepositories === 1 ? '' : 's'})`;
 }
 
+function alignmentLabLabel(plan: Plan): string | null {
+  if (!plan.alignmentLabEnabled) return null;
+  if (plan.monthlyInvestigationLimit == null) return 'Alignment Lab (unlimited)';
+  return `Alignment Lab (${plan.monthlyInvestigationLimit}/month)`;
+}
+
 // Mirrors the backend's UsersService.isSelfServicePlan — only used here to
 // pick the right button label; the server is what actually enforces it.
 function isSelfServicePlan(plan: Plan): boolean {
@@ -149,6 +155,7 @@ export function PlanPanel() {
                 <li>{formatLimit(plan.dailyAuditLimit)} AI audits/day</li>
                 <li>{formatLimit(plan.monthlyAuditLimit)} AI audits/month</li>
                 <li>{repoScanLabel(plan)}</li>
+                {alignmentLabLabel(plan) && <li>{alignmentLabLabel(plan)}</li>}
               </ul>
               {!isCurrent && isPendingThis && (
                 <div className="w-full rounded-md border border-high/40 px-2 py-1.5 text-center text-xs font-bold text-high">

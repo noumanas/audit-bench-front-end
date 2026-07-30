@@ -68,16 +68,20 @@ const NAV_GROUPS = [
     label: 'Team',
     links: [{ href: '/app/team', label: 'Team', icon: UsersIcon }],
   },
+  {
+    label: 'AI red-teaming',
+    links: [
+      // A second product line alongside code review — gated per plan
+      // (Team/Enterprise), not by role; the page itself shows an upgrade
+      // prompt for accounts whose plan doesn't include it yet.
+      { href: '/app/lab', label: 'Alignment lab', icon: EyeIcon },
+    ],
+  },
 ];
 
 const ADMIN_GROUP = {
   label: 'Admin',
-  links: [
-    { href: '/app/admin', label: 'Admin', icon: SettingsIcon },
-    // Alignment-lab pilot — a research feature unrelated to code review,
-    // deliberately kept admin-only rather than surfaced to customers.
-    { href: '/app/admin/lab', label: 'Alignment lab', icon: EyeIcon },
-  ],
+  links: [{ href: '/app/admin', label: 'Admin', icon: SettingsIcon }],
 };
 
 function isActive(pathname: string, href: string): boolean {

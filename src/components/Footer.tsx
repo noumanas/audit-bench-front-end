@@ -7,6 +7,7 @@ const COLUMNS = [
     links: [
       { href: '/features', label: 'Features' },
       { href: '/services', label: 'Services' },
+      { href: '/alignment-lab', label: 'Alignment Lab' },
       { href: '/cli', label: 'CLI' },
       { href: '/vscode', label: 'VS Code' },
       { href: '/pricing', label: 'Pricing' },

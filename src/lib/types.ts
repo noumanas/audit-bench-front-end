@@ -17,6 +17,11 @@ export interface Plan {
   // Cap on distinct repositories this plan may ever scan, lifetime — null
   // means unlimited. Only meaningful when repositoryScan is true.
   maxRepositories: number | null;
+  // Alignment Lab — a second product line alongside code review (Team/
+  // Enterprise). monthlyInvestigationLimit is null for unlimited, and only
+  // meaningful when alignmentLabEnabled is true.
+  alignmentLabEnabled: boolean;
+  monthlyInvestigationLimit: number | null;
 }
 
 export interface OrganizationSummary {
