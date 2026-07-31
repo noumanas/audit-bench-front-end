@@ -33,7 +33,12 @@ export function WebVitalsReporter() {
 
     const url = `${API_URL}/web-vitals`;
     if (navigator.sendBeacon) {
-      navigator.sendBeacon(url, new Blob([payload], { type: 'application/json' }));
+      // text/plain, not application/json: sendBeacon can only send requests
+      // that qualify as CORS-safelisted "simple requests" (no preflight) —
+      // application/json doesn't qualify, so a cross-origin beacon with that
+      // type silently fails as a CORS error. The backend is configured to
+      // parse a text/plain body here as JSON anyway (see main.ts).
+      navigator.sendBeacon(url, new Blob([payload], { type: 'text/plain' }));
     } else {
       fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: payload, keepalive: true }).catch(
         () => {},
