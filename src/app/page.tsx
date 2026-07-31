@@ -169,12 +169,34 @@ export default function HomePage() {
               <div className="fade-up mb-4 inline-block rounded-full border border-ink-line px-3 py-1 font-mono text-[11px] tracking-wide text-muted-on-ink uppercase">
                 AI code review, before it ships
               </div>
-              <h1
-                className="fade-up mb-5 text-4xl leading-tight font-bold text-[#E8ECF4] sm:text-5xl"
-                style={{ animationDelay: '80ms' }}
-              >
-                <TypingText segments={HERO_HEADLINE} />
-              </h1>
+              {/* Reserves the heading's final rendered size immediately via an
+                  invisible copy of the full text, so the typing animation
+                  fills already-allocated space instead of growing the box
+                  and pushing everything below it down frame by frame (this
+                  was a real, measured CLS regression — see WebVital data). */}
+              <div className="relative mb-5">
+                <h1
+                  aria-hidden="true"
+                  className="invisible text-4xl leading-tight font-bold sm:text-5xl"
+                >
+                  {HERO_HEADLINE.map((seg, i) => (
+                    <span key={i}>
+                      {seg.text.split('\n').map((line, j) => (
+                        <span key={j}>
+                          {j > 0 && <br />}
+                          {line}
+                        </span>
+                      ))}
+                    </span>
+                  ))}
+                </h1>
+                <h1
+                  className="fade-up absolute inset-0 text-4xl leading-tight font-bold text-[#E8ECF4] sm:text-5xl"
+                  style={{ animationDelay: '80ms' }}
+                >
+                  <TypingText segments={HERO_HEADLINE} />
+                </h1>
+              </div>
               <p
                 className="fade-up mb-8 max-w-md text-base leading-relaxed text-muted-on-ink"
                 style={{ animationDelay: '160ms' }}
