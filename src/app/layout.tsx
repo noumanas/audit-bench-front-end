@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { AuthProvider } from "@/lib/AuthContext";
 import { Navbar } from "@/components/Navbar";
+import { WebVitalsReporter } from "@/components/WebVitalsReporter";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/seo";
 import "./globals.css";
 
@@ -93,6 +94,7 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col font-sans">
+        <WebVitalsReporter />
         <AuthProvider>
           <Navbar />
           <main className="flex-1">{children}</main>

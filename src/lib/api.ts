@@ -17,6 +17,7 @@ import {
   Investigation,
   InvitePreview,
   OrgRole,
+  WebVitalMetricSummary,
   OrganizationDetail,
   OrganizationInvite,
   Plan,
@@ -679,6 +680,14 @@ export function getAnalyticsTrend(days: number, repo?: string): Promise<Analytic
 
 export function listAnalyticsRepos(): Promise<string[]> {
   return fetch(`${API_URL}/analytics/repos`, { headers: authHeaders() }).then((res) => unwrap<string[]>(res));
+}
+
+// ---------- Web Vitals (admin) ----------
+
+export function getWebVitalsSummary(days = 7): Promise<WebVitalMetricSummary[]> {
+  return fetch(`${API_URL}/web-vitals/summary?days=${days}`, { headers: authHeaders() }).then((res) =>
+    unwrap<WebVitalMetricSummary[]>(res),
+  );
 }
 
 // ---------- Alignment lab (admin-only pilot) ----------

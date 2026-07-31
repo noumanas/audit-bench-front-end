@@ -395,6 +395,16 @@ export interface InvestigationTurn {
   confidence: number;
 }
 
+export interface WebVitalMetricSummary {
+  name: string;
+  count: number;
+  /** 75th percentile — the actual Core Web Vitals threshold basis, not a plain average. */
+  p75: number;
+  goodPct: number;
+  needsImprovementPct: number;
+  poorPct: number;
+}
+
 export interface Investigation {
   id: string;
   modelId: string;
