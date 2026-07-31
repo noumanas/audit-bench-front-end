@@ -4,9 +4,9 @@ import { Footer } from '@/components/Footer';
 import { Reveal } from '@/components/Reveal';
 
 export const metadata: Metadata = {
-  title: 'Services',
+  title: 'Audit Coverage & Methodology',
   description:
-    'Everything one audit checks: security coverage, repository-wide dependency and dead-code analysis, and structured, actionable findings.',
+    'How one audit actually works under the hood: the specific security patterns checked, the repository-analysis techniques used, and the exact shape every finding comes back in.',
   alternates: { canonical: '/services' },
 };
 
@@ -39,10 +39,13 @@ export default function ServicesPage() {
           <div className="mb-2 font-mono text-[13px] tracking-wide text-muted-on-ink uppercase">
             Services
           </div>
-          <h1 className="mb-3 text-3xl font-bold text-[#E8ECF4]">Everything one audit checks</h1>
+          <h1 className="mb-3 text-3xl font-bold text-[#E8ECF4]">What actually happens inside one audit</h1>
           <p className="mx-auto max-w-xl text-sm leading-relaxed text-muted-on-ink">
             Paste a file or upload a repository — the same engine reviews both, and every finding
-            comes back in the same structured shape.
+            comes back in the same structured shape.{' '}
+            <Link href="/features" className="text-cobalt hover:underline">
+              See the full feature set →
+            </Link>
           </p>
         </Reveal>
       </section>

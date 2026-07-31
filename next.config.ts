@@ -43,6 +43,14 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: __dirname,
   },
+  async redirects() {
+    return [
+      // The Alignment Lab page moved out of the admin-only area (it's now
+      // plan-gated, not role-gated — see AlignmentLabController) — anyone
+      // with the old URL bookmarked or linked would otherwise 404.
+      { source: "/app/admin/lab", destination: "/app/lab", permanent: true },
+    ];
+  },
   async headers() {
     return [
       {

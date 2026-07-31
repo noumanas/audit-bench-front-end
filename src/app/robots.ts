@@ -6,7 +6,13 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: ['/app', '/login'],
+      // /app — the authenticated product, already noindex'd per-page too
+      // (see app/app/layout.tsx), disallowed here as well so it isn't
+      // crawled at all, not just excluded from the index.
+      // /login, /oauth — auth flow pages, no content value to index.
+      // /invite/[token] — single-use, recipient-specific invite links;
+      // indexing one would just leak that an invite exists.
+      disallow: ['/app', '/login', '/oauth', '/invite'],
     },
     sitemap: `${SITE_URL}/sitemap.xml`,
   };

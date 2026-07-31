@@ -5,9 +5,9 @@ import { FeaturesTabs } from '@/components/FeaturesTabs';
 import { Reveal } from '@/components/Reveal';
 
 export const metadata: Metadata = {
-  title: 'Features',
+  title: 'Features: Repo, PR & CI/CD Workflows',
   description:
-    'Repo, PR, and file review. Security, logic, performance, and architecture findings. Fix-and-re-audit, a CLI built for CI, team dashboards, reports, and integrations — everything Audit Bench Ai does.',
+    'Where audits fit into how your team ships: repo scans, PR/MR review, a CLI built for CI, team dashboards, reports, and integrations. For what each audit checks under the hood, see Services.',
   alternates: { canonical: '/features' },
 };
 
@@ -24,7 +24,11 @@ export default function FeaturesPage() {
           </h1>
           <p className="mb-8 max-w-xl text-sm leading-relaxed text-muted-on-ink">
             One engine, applied everywhere your code moves — a file, a repo, a pull request, a pipeline. Pick a
-            category below to see it in action.
+            category below to see it in action, or see{' '}
+            <Link href="/services" className="text-cobalt hover:underline">
+              exactly what one audit checks →
+            </Link>
+            .
           </p>
           <div className="flex flex-wrap gap-3">
             <Link
