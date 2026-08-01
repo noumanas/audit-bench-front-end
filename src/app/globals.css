@@ -8,8 +8,10 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans:
+    ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
 
   --color-ink: #10141c;
   --color-ink-soft: #1a2130;
@@ -194,4 +196,69 @@ body {
   background-color: rgba(74, 118, 240, 0.55);
   width: 3px !important;
   margin-left: 3px;
+}
+
+/* Minimal article typography for blog posts (BlogArticleLayout) — hand-rolled
+   rather than pulling in @tailwindcss/typography for the one place that
+   needs prose-style spacing. */
+.prose-blog > * + * {
+  margin-top: 1.1em;
+}
+
+.prose-blog h2 {
+  margin-top: 1.75em;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1c2128;
+}
+
+.prose-blog h3 {
+  margin-top: 1.5em;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: #1c2128;
+}
+
+.prose-blog ul,
+.prose-blog ol {
+  padding-left: 1.25em;
+}
+
+.prose-blog ul {
+  list-style: disc;
+}
+
+.prose-blog ol {
+  list-style: decimal;
+}
+
+.prose-blog li + li {
+  margin-top: 0.4em;
+}
+
+.prose-blog a {
+  color: var(--color-cobalt);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.prose-blog strong {
+  font-weight: 700;
+  color: #1c2128;
+}
+
+.prose-blog blockquote {
+  border-left: 3px solid var(--color-ink-line);
+  padding-left: 1em;
+  color: var(--color-muted-on-paper);
+  font-style: italic;
+}
+
+.prose-blog code {
+  font-family: var(--font-geist-mono), monospace;
+  background: var(--color-paper-card);
+  border: 1px solid var(--color-paper-line);
+  border-radius: 4px;
+  padding: 0.15em 0.4em;
+  font-size: 0.85em;
 }

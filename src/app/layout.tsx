@@ -1,20 +1,9 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import { AuthProvider } from "@/lib/AuthContext";
 import { Navbar } from "@/components/Navbar";
 import { WebVitalsReporter } from "@/components/WebVitalsReporter";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/seo";
 import "./globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -70,6 +59,24 @@ export const metadata: Metadata = {
     "free AI code review tools",
     "static code analysis tools",
     "static code analysis tools free",
+    "AI code review tool",
+    "automated code review",
+    "AI security scanner",
+    "AI pull request review",
+    "secure code review software",
+    "AuditBench alternatives",
+    "AI code review vs manual review",
+    "static analysis vs AI code review",
+    "OWASP Top 10",
+    "secure coding practices",
+    "code review checklist",
+    "DevSecOps guide",
+    "software security testing",
+    "AI code review for React",
+    "AI code review for Node.js",
+    "AI code review for Python",
+    "AI code review for Java",
+    "AI code review for C#",
     "linter",
     "code review",
     "GitHub",
@@ -109,10 +116,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
+    <html lang="en" className="h-full antialiased">
       <body className="flex min-h-full flex-col font-sans">
         <WebVitalsReporter />
         <AuthProvider>
