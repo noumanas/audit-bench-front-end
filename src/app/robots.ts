@@ -6,6 +6,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: '*',
       allow: '/',
+      // Public marketing/blog routes are intentionally crawlable.
       // /app — the authenticated product, already noindex'd per-page too
       // (see app/app/layout.tsx), disallowed here as well so it isn't
       // crawled at all, not just excluded from the index.
