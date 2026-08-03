@@ -14,6 +14,54 @@ export interface BlogPostMeta {
 
 export const BLOG_POSTS: BlogPostMeta[] = [
   {
+    slug: 'how-to-write-better-code-review-comments',
+    title: 'How to Write Better Code Review Comments',
+    description:
+      'A practical guide to writing review comments that are specific, respectful, and actually useful to the author.',
+    publishedAt: '2026-08-03',
+    readingTime: '6 min read',
+  },
+  {
+    slug: 'what-makes-an-ai-review-tool-useful',
+    title: 'What Makes an AI Review Tool Useful',
+    description:
+      'A product-focused look at the features that actually matter in AI review tools: context, signal quality, workflow fit, and trust.',
+    publishedAt: '2026-08-03',
+    readingTime: '8 min read',
+  },
+  {
+    slug: 'secure-code-review-workflow',
+    title: 'A Secure Code Review Workflow That Teams Will Actually Use',
+    description:
+      'A step-by-step security review workflow that fits into normal pull request habits instead of fighting them.',
+    publishedAt: '2026-08-03',
+    readingTime: '7 min read',
+  },
+  {
+    slug: 'pr-review-checklist-for-engineers',
+    title: 'PR Review Checklist for Engineers',
+    description:
+      'A practical pull request checklist that helps reviewers catch security, correctness, and maintainability issues without slowing the team down.',
+    publishedAt: '2026-08-03',
+    readingTime: '7 min read',
+  },
+  {
+    slug: 'static-analysis-vs-ai-review',
+    title: 'Static Analysis vs AI Review',
+    description:
+      'When static analysis is enough, where AI review adds value, and why the best teams use both instead of treating them as competitors.',
+    publishedAt: '2026-08-03',
+    readingTime: '8 min read',
+  },
+  {
+    slug: 'secrets-in-ci-cd',
+    title: 'Secrets in CI/CD: What Usually Goes Wrong',
+    description:
+      'A clear guide to the most common secret-handling mistakes in GitHub Actions and other CI/CD pipelines, plus practical ways to reduce the risk.',
+    publishedAt: '2026-08-03',
+    readingTime: '9 min read',
+  },
+  {
     slug: 'ai-code-review-guide',
     title: 'AI Code Review Guide',
     description:
