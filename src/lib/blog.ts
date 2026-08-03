@@ -14,6 +14,14 @@ export interface BlogPostMeta {
 
 export const BLOG_POSTS: BlogPostMeta[] = [
   {
+    slug: '8-python-libraries-cleaner-smarter-maintainable-code',
+    title: '8 Python Libraries That Help You Write Cleaner, Smarter, and More Maintainable Code',
+    description:
+      'A practical guide to eight Python libraries that improve validation, APIs, testing, data access, HTTP calls, CLI design, terminal output, and formatting.',
+    publishedAt: '2026-08-03',
+    readingTime: '10 min read',
+  },
+  {
     slug: 'how-to-write-better-code-review-comments',
     title: 'How to Write Better Code Review Comments',
     description:
