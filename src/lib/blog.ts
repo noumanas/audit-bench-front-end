@@ -14,6 +14,46 @@ export interface BlogPostMeta {
 
 export const BLOG_POSTS: BlogPostMeta[] = [
   {
+    slug: 'fastapi-production-readiness-guide',
+    title: 'FastAPI Production Readiness Guide',
+    description:
+      'A deep guide to shipping FastAPI in production: validation, settings, auth, background tasks, observability, and the pitfalls that show up later.',
+    publishedAt: '2026-08-04',
+    readingTime: '12 min read',
+  },
+  {
+    slug: 'how-to-evaluate-ai-code-review-tools',
+    title: 'How to Evaluate AI Code Review Tools',
+    description:
+      'A practical framework for evaluating AI review tools on signal quality, context depth, workflow fit, security usefulness, and long-term trust.',
+    publishedAt: '2026-08-04',
+    readingTime: '11 min read',
+  },
+  {
+    slug: 'why-code-reviews-fail',
+    title: 'Why Code Reviews Fail',
+    description:
+      'A deeper look at the organizational and technical reasons code review breaks down, and how to build a review system that actually works.',
+    publishedAt: '2026-08-04',
+    readingTime: '10 min read',
+  },
+  {
+    slug: 'python-dependency-hygiene',
+    title: 'Python Dependency Hygiene',
+    description:
+      'A practical discussion of Python dependency risk: version pinning, lockfiles, supply chain trust, review habits, and when to upgrade safely.',
+    publishedAt: '2026-08-04',
+    readingTime: '9 min read',
+  },
+  {
+    slug: 'security-by-design-for-web-apps',
+    title: 'Security by Design for Web Apps',
+    description:
+      'A deeper explanation of how security by design changes architecture, workflows, and review habits before vulnerabilities exist.',
+    publishedAt: '2026-08-04',
+    readingTime: '11 min read',
+  },
+  {
     slug: '8-python-libraries-cleaner-smarter-maintainable-code',
     title: '8 Python Libraries That Help You Write Cleaner, Smarter, and More Maintainable Code',
     description:
