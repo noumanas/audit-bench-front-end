@@ -14,6 +14,22 @@ export interface BlogPostMeta {
 
 export const BLOG_POSTS: BlogPostMeta[] = [
   {
+    slug: "automate-pr-reviews-with-ai",
+    title: "Automate PR Reviews with AI",
+    description:
+      "A practical guide to automating PR reviews with AI without losing human judgment, team trust, or security coverage.",
+    publishedAt: "2026-08-05",
+    readingTime: "9 min read",
+  },
+  {
+    slug: "code-review-vs-code-audit",
+    title: "Code Review vs. Code Audit",
+    description:
+      "A practical comparison of code review and code audit: when each one is useful, how they differ, and why strong teams often need both.",
+    publishedAt: "2026-08-05",
+    readingTime: "9 min read",
+  },
+  {
     slug: "ai-generated-audit-report",
     title: "AI Generated Audit Report",
     description:
