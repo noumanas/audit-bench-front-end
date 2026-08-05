@@ -14,6 +14,14 @@ export interface BlogPostMeta {
 
 export const BLOG_POSTS: BlogPostMeta[] = [
   {
+    slug: 'how-to-write-good-code',
+    title: 'How to Write Good Code',
+    description:
+      'A practical 300+ word guide on how to write good code by keeping it readable, testable, maintainable, and safe under change.',
+    publishedAt: '2026-08-05',
+    readingTime: '7 min read',
+  },
+  {
     slug: 'fastapi-api-security-patterns',
     title: 'FastAPI API Security Patterns',
     description:
