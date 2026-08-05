@@ -14,6 +14,46 @@ export interface BlogPostMeta {
 
 export const BLOG_POSTS: BlogPostMeta[] = [
   {
+    slug: 'fastapi-api-security-patterns',
+    title: 'FastAPI API Security Patterns',
+    description:
+      'A deeper guide to authentication, authorization, request validation, and safe defaults for FastAPI APIs that need to survive real production traffic.',
+    publishedAt: '2026-08-05',
+    readingTime: '12 min read',
+  },
+  {
+    slug: 'how-to-measure-code-review-quality',
+    title: 'How to Measure Code Review Quality',
+    description:
+      'A practical discussion of the metrics that actually matter in code review: signal, latency, coverage, actionability, and false-positive rate.',
+    publishedAt: '2026-08-05',
+    readingTime: '10 min read',
+  },
+  {
+    slug: 'auditing-monorepos-without-losing-signal',
+    title: 'Auditing Monorepos Without Losing Signal',
+    description:
+      'A deep look at how to keep audits useful in large monorepos by scoping context, controlling noise, and prioritizing the highest-risk changes.',
+    publishedAt: '2026-08-05',
+    readingTime: '11 min read',
+  },
+  {
+    slug: 'tests-that-catch-real-bugs',
+    title: 'Tests That Catch Real Bugs',
+    description:
+      'A detailed guide to writing tests that actually protect production: boundary tests, regression tests, integration tests, and failure-mode coverage.',
+    publishedAt: '2026-08-05',
+    readingTime: '9 min read',
+  },
+  {
+    slug: 'how-to-upgrade-dependencies-safely',
+    title: 'How to Upgrade Dependencies Safely',
+    description:
+      'A practical strategy for upgrading packages without creating chaos: risk assessment, staging, verification, and rollback planning.',
+    publishedAt: '2026-08-05',
+    readingTime: '10 min read',
+  },
+  {
     slug: 'fastapi-production-readiness-guide',
     title: 'FastAPI Production Readiness Guide',
     description:
