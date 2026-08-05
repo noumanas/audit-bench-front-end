@@ -14,6 +14,14 @@ export interface BlogPostMeta {
 
 export const BLOG_POSTS: BlogPostMeta[] = [
   {
+    slug: "ai-generated-audit-report",
+    title: "AI Generated Audit Report",
+    description:
+      "A deep look at what an AI generated audit report should include, how to read one, and how to separate useful findings from noise.",
+    publishedAt: "2026-08-05",
+    readingTime: "9 min read",
+  },
+  {
     slug: "how-to-write-good-code",
     title: "How to Write Good Code",
     description:
