@@ -4,6 +4,8 @@ import { Footer } from '@/components/Footer';
 import { Reveal } from '@/components/Reveal';
 import { BLOG_POSTS } from '@/lib/blog';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: 'Blog',
   description:
