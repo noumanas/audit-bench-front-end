@@ -1,0 +1,17 @@
+{
+  "name": "Audit Bench Ai",
+  "short_name": "Audit Bench",
+  "description": "AI code review before it ships.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#10141c",
+  "theme_color": "#10141c",
+  "icons": [
+    {
+      "src": "/globe.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

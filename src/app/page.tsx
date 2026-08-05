@@ -172,10 +172,41 @@ const HOMEPAGE_SCHEMA = {
   ],
 };
 
+const HOME_FAQ_SCHEMA = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'How does Audit Bench Ai control AI costs?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Free local checks run first, and only risky code is escalated to an LLM. Cached scans are free, so repeated reviews do not burn credits.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Which git providers are supported?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'GitHub and GitLab are supported natively for pull request and merge request review.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'What frameworks does it understand?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'It understands common web stacks including React, Next.js, Node.js, NestJS, Python, FastAPI, Django, Laravel, Spring Boot, Supabase, Deno, and Firebase.',
+      },
+    },
+  ],
+};
+
 export default function HomePage() {
   return (
     <div>
-      <StructuredData data={HOMEPAGE_SCHEMA} />
+      <StructuredData data={[HOMEPAGE_SCHEMA, HOME_FAQ_SCHEMA]} />
       {/* Hero */}
       <section className="relative overflow-hidden border-b border-ink-line bg-ink px-6 py-20">
         <div
@@ -439,6 +470,42 @@ export default function HomePage() {
               </a>
               .
             </span>
+          </div>
+        </Reveal>
+      </section>
+
+      {/* FAQ */}
+      <section className="border-t border-ink-line bg-paper px-6 py-16">
+        <Reveal className="mx-auto max-w-4xl">
+          <div className="mb-10 text-center">
+            <div className="mb-2 font-mono text-[13px] tracking-wide text-muted-on-paper uppercase">
+              FAQ
+            </div>
+            <h2 className="text-2xl font-bold text-[#1C2128]">Questions teams ask before they adopt it</h2>
+            <p className="mx-auto mt-2 max-w-xl text-sm leading-relaxed text-muted-on-paper">
+              Short answers to the questions that matter when you are deciding whether to trust a review tool in your workflow.
+            </p>
+          </div>
+          <div className="space-y-4">
+            {[
+              {
+                q: 'How does Audit Bench Ai control AI costs?',
+                a: 'Free local checks run first, and only risky code is escalated to an LLM. Cached scans are free, so repeated reviews do not burn credits.',
+              },
+              {
+                q: 'Which git providers are supported?',
+                a: 'GitHub and GitLab are supported natively for pull request and merge request review.',
+              },
+              {
+                q: 'What frameworks does it understand?',
+                a: 'It understands common web stacks including React, Next.js, Node.js, NestJS, Python, FastAPI, Django, Laravel, Spring Boot, Supabase, Deno, and Firebase.',
+              },
+            ].map((item) => (
+              <div key={item.q} className="rounded-lg border border-paper-line bg-paper-card p-5">
+                <h3 className="mb-1.5 text-sm font-bold text-[#1C2128]">{item.q}</h3>
+                <p className="text-sm leading-relaxed text-muted-on-paper">{item.a}</p>
+              </div>
+            ))}
           </div>
         </Reveal>
       </section>

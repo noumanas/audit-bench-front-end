@@ -64,6 +64,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="h-full antialiased">
+      <head>
+        <link rel="manifest" href="/manifest.webmanifest" />
+      </head>
       <body className="flex min-h-full flex-col font-sans">
         <StructuredData data={[ORGANIZATION_SCHEMA, WEBSITE_SCHEMA]} />
         <WebVitalsReporter />

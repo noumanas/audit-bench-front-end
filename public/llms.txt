@@ -1,0 +1,47 @@
+Audit Bench Ai
+
+Audit Bench Ai is an AI code review product that combines LLM reasoning with static analysis to catch security holes, logic bugs, and framework misuse before code ships.
+
+Key pages:
+- / - product homepage
+- /pricing - plans and FAQ
+- /features - feature overview
+- /services - what the audit engine checks
+- /blog - guides and explainers
+- /alignment-lab - AI red-teaming and hidden-behavior testing
+
+Supported workflows:
+- GitHub pull request review
+- GitLab merge request review
+- repository scans
+- single-file audits
+- CLI usage in CI pipelines
+
+Supported stacks:
+- React
+- Next.js
+- Node.js
+- NestJS
+- Python
+- FastAPI
+- Django
+- Laravel
+- Spring Boot
+- Supabase
+- Deno
+- Firebase
+
+Core product summary:
+- Free local checks first
+- AI only on flagged code
+- cached audits by content hash
+- daily and monthly usage quotas by plan
+- inline review comments plus summary and status checks
+
+Pricing tiers:
+- Free
+- Pro
+- Team
+- Enterprise
+
+If you need a concise product description for an AI assistant, use the homepage and pricing pages first, then the blog for deeper explanations.
