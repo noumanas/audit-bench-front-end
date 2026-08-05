@@ -27,8 +27,10 @@ import { PricingTeaser } from '@/components/PricingTeaser';
 import { HeroShowcase } from '@/components/HeroShowcase';
 import { FeatureShowcase } from '@/components/FeatureShowcase';
 import { Reveal } from '@/components/Reveal';
+import { StructuredData } from '@/components/StructuredData';
 import { TechLogo } from '@/components/TechLogo';
 import { TypingText, TypingSegment } from '@/components/TypingText';
+import { SITE_NAME, SITE_URL } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'AI code review before it ships',
@@ -153,9 +155,27 @@ const FRAMEWORKS = [
   { label: 'Firebase', icons: [siFirebase] },
 ];
 
+const HOMEPAGE_SCHEMA = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: SITE_NAME,
+  applicationCategory: 'DeveloperApplication',
+  operatingSystem: 'Web',
+  url: SITE_URL,
+  description:
+    'AI code review that combines LLM reasoning with static analysis to catch security holes, logic bugs, and framework misuse.',
+  offers: [
+    { '@type': 'Offer', name: 'Free', price: '0', priceCurrency: 'USD' },
+    { '@type': 'Offer', name: 'Pro', price: '29', priceCurrency: 'USD' },
+    { '@type': 'Offer', name: 'Team', price: '99', priceCurrency: 'USD' },
+    { '@type': 'Offer', name: 'Enterprise', price: 'Custom', priceCurrency: 'USD' },
+  ],
+};
+
 export default function HomePage() {
   return (
     <div>
+      <StructuredData data={HOMEPAGE_SCHEMA} />
       {/* Hero */}
       <section className="relative overflow-hidden border-b border-ink-line bg-ink px-6 py-20">
         <div
@@ -175,10 +195,7 @@ export default function HomePage() {
                   and pushing everything below it down frame by frame (this
                   was a real, measured CLS regression — see WebVital data). */}
               <div className="relative mb-5">
-                <h1
-                  aria-hidden="true"
-                  className="invisible text-4xl leading-tight font-bold sm:text-5xl"
-                >
+                <span aria-hidden="true" className="invisible block text-4xl leading-tight font-bold sm:text-5xl">
                   {HERO_HEADLINE.map((seg, i) => (
                     <span key={i}>
                       {seg.text.split('\n').map((line, j) => (
@@ -189,7 +206,7 @@ export default function HomePage() {
                       ))}
                     </span>
                   ))}
-                </h1>
+                </span>
                 <h1
                   className="fade-up absolute inset-0 text-4xl leading-tight font-bold text-[#E8ECF4] sm:text-5xl"
                   style={{ animationDelay: '80ms' }}
@@ -353,7 +370,7 @@ export default function HomePage() {
             <div className="mb-2 font-mono text-[13px] tracking-wide text-muted-on-ink uppercase">
               Where you already work
             </div>
-            <h2 className="text-2xl font-bold text-[#E8ECF4]">Lives inside the review you're already doing</h2>
+            <h2 className="text-2xl font-bold text-[#E8ECF4]">Lives inside the review you&apos;re already doing</h2>
             <p className="mx-auto mt-2 max-w-xl text-sm leading-relaxed text-muted-on-ink">
               Not another tab to check. Findings, gates, and answers show up directly on the PR or MR.
             </p>

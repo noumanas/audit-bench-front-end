@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 export default function PythonDependencyHygienePage() {
   return (
-    <BlogArticleLayout title={POST.title} publishedAt={POST.publishedAt} readingTime={POST.readingTime}>
+    <BlogArticleLayout slug={POST.slug} title={POST.title} publishedAt={POST.publishedAt} readingTime={POST.readingTime}>
       <p>
         Python dependency hygiene is not just about avoiding vulnerable packages. It is about keeping the supply
         chain understandable enough that a team can upgrade safely, review changes honestly, and recover when

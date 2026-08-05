@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 export default function PrReviewChecklistForEngineersPage() {
   return (
-    <BlogArticleLayout title={POST.title} publishedAt={POST.publishedAt} readingTime={POST.readingTime}>
+    <BlogArticleLayout slug={POST.slug} title={POST.title} publishedAt={POST.publishedAt} readingTime={POST.readingTime}>
       <p>
         A good pull request review process is not about finding every possible problem. It is about catching the
         important ones early, consistently, and with enough context that the team can act on them fast.

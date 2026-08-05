@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 export default function HowToWriteBetterCodeReviewCommentsPage() {
   return (
-    <BlogArticleLayout title={POST.title} publishedAt={POST.publishedAt} readingTime={POST.readingTime}>
+    <BlogArticleLayout slug={POST.slug} title={POST.title} publishedAt={POST.publishedAt} readingTime={POST.readingTime}>
       <p>
         Good review comments are specific, actionable, and framed around the code, not the person who wrote it.
         The best comments move the PR forward. The worst ones create confusion, defensiveness, or noise.

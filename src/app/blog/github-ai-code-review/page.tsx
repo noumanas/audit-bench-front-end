@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 export default function GitHubAiCodeReviewPage() {
   return (
-    <BlogArticleLayout title={POST.title} publishedAt={POST.publishedAt} readingTime={POST.readingTime}>
+    <BlogArticleLayout slug={POST.slug} title={POST.title} publishedAt={POST.publishedAt} readingTime={POST.readingTime}>
       <p>
         GitHub Copilot Code Review is the most obvious AI review option for teams already centered on GitHub. It
         fits where your pull requests already live, which is a big deal: review tools tend to fail when they ask

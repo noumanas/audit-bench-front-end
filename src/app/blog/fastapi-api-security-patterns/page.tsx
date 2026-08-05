@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 export default function FastapiApiSecurityPatternsPage() {
   return (
-    <BlogArticleLayout title={POST.title} publishedAt={POST.publishedAt} readingTime={POST.readingTime}>
+    <BlogArticleLayout slug={POST.slug} title={POST.title} publishedAt={POST.publishedAt} readingTime={POST.readingTime}>
       <p>
         FastAPI makes it straightforward to build APIs quickly, but speed and safety are not the same thing. The
         difference between a demo API and a production API usually comes down to how carefully you handle trust

@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 export default function SecurityByDesignForWebAppsPage() {
   return (
-    <BlogArticleLayout title={POST.title} publishedAt={POST.publishedAt} readingTime={POST.readingTime}>
+    <BlogArticleLayout slug={POST.slug} title={POST.title} publishedAt={POST.publishedAt} readingTime={POST.readingTime}>
       <p>
         Security by design means the system is built so that the secure path is the default path. The practical
         effect is that the architecture, data model, and workflow all reduce the chance that developers need to

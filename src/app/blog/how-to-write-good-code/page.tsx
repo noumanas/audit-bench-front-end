@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 export default function HowToWriteGoodCodePage() {
   return (
-    <BlogArticleLayout title={POST.title} publishedAt={POST.publishedAt} readingTime={POST.readingTime}>
+    <BlogArticleLayout slug={POST.slug} title={POST.title} publishedAt={POST.publishedAt} readingTime={POST.readingTime}>
       <p>
         How to write good code is one of the most important skills a developer can learn, because code is read far
         more often than it is written. Good code is not just code that works today. It is code that other people can

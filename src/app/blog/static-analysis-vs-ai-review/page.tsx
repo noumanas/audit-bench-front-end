@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 export default function StaticAnalysisVsAiReviewPage() {
   return (
-    <BlogArticleLayout title={POST.title} publishedAt={POST.publishedAt} readingTime={POST.readingTime}>
+    <BlogArticleLayout slug={POST.slug} title={POST.title} publishedAt={POST.publishedAt} readingTime={POST.readingTime}>
       <p>
         Static analysis and AI review solve different problems. Static analysis is deterministic: it checks code
         against defined rules, patterns, or type constraints. AI review is probabilistic: it helps interpret

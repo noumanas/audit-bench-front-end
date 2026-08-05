@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 export default function TestsThatCatchRealBugsPage() {
   return (
-    <BlogArticleLayout title={POST.title} publishedAt={POST.publishedAt} readingTime={POST.readingTime}>
+    <BlogArticleLayout slug={POST.slug} title={POST.title} publishedAt={POST.publishedAt} readingTime={POST.readingTime}>
       <p>
         The best tests are not the ones that make coverage numbers look good. They are the ones that protect the
         behavior your users and your business actually depend on.

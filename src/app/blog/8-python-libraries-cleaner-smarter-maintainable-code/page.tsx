@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 export default function PythonLibrariesPost() {
   return (
-    <BlogArticleLayout title={POST.title} publishedAt={POST.publishedAt} readingTime={POST.readingTime}>
+    <BlogArticleLayout slug={POST.slug} title={POST.title} publishedAt={POST.publishedAt} readingTime={POST.readingTime}>
       <p>
         Python stays productive because its ecosystem solves common problems with small, focused libraries instead
         of forcing every project to build its own framework. The best libraries make code easier to read, easier to

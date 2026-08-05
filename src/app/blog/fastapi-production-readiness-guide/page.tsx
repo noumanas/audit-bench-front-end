@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 export default function FastapiProductionReadinessGuidePage() {
   return (
-    <BlogArticleLayout title={POST.title} publishedAt={POST.publishedAt} readingTime={POST.readingTime}>
+    <BlogArticleLayout slug={POST.slug} title={POST.title} publishedAt={POST.publishedAt} readingTime={POST.readingTime}>
       <p>
         FastAPI makes it easy to build something that looks production-ready very quickly. The harder part is
         making it truly production-ready: secure, observable, configurable, and resilient when real traffic and

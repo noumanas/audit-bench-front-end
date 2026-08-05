@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 export default function SecureCodeReviewWorkflowPage() {
   return (
-    <BlogArticleLayout title={POST.title} publishedAt={POST.publishedAt} readingTime={POST.readingTime}>
+    <BlogArticleLayout slug={POST.slug} title={POST.title} publishedAt={POST.publishedAt} readingTime={POST.readingTime}>
       <p>
         Security review works best when it is part of the normal pull request workflow, not an extra process people
         resent. The trick is to make the security pass lightweight at first, then deeper only where risk justifies

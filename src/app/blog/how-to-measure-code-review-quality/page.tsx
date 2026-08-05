@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 export default function HowToMeasureCodeReviewQualityPage() {
   return (
-    <BlogArticleLayout title={POST.title} publishedAt={POST.publishedAt} readingTime={POST.readingTime}>
+    <BlogArticleLayout slug={POST.slug} title={POST.title} publishedAt={POST.publishedAt} readingTime={POST.readingTime}>
       <p>
         Code review quality is easy to talk about and hard to measure. If you only track speed, you miss whether the
         review was useful. If you only track defects, you miss whether the process is sustainable. The right

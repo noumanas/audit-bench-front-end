@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 export default function AuditingMonoreposWithoutLosingSignalPage() {
   return (
-    <BlogArticleLayout title={POST.title} publishedAt={POST.publishedAt} readingTime={POST.readingTime}>
+    <BlogArticleLayout slug={POST.slug} title={POST.title} publishedAt={POST.publishedAt} readingTime={POST.readingTime}>
       <p>
         Monorepos are efficient for sharing code, standards, and tooling. They are also easy to audit badly if every
         change is treated as equally important. The core challenge is preserving signal while the repository grows.

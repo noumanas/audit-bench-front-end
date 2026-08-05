@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 export default function SecretsInCiCdPage() {
   return (
-    <BlogArticleLayout title={POST.title} publishedAt={POST.publishedAt} readingTime={POST.readingTime}>
+    <BlogArticleLayout slug={POST.slug} title={POST.title} publishedAt={POST.publishedAt} readingTime={POST.readingTime}>
       <p>
         CI/CD pipelines are one of the easiest places to leak secrets because they combine code, automation, and
         third-party integrations. A mistake in one place can expose credentials to logs, forks, artifacts, or

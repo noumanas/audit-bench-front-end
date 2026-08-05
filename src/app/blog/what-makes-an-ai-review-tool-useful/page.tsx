@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 export default function WhatMakesAnAiReviewToolUsefulPage() {
   return (
-    <BlogArticleLayout title={POST.title} publishedAt={POST.publishedAt} readingTime={POST.readingTime}>
+    <BlogArticleLayout slug={POST.slug} title={POST.title} publishedAt={POST.publishedAt} readingTime={POST.readingTime}>
       <p>
         An AI review tool is only useful if it helps the reviewer make better decisions faster. That sounds obvious,
         but many tools optimize for the wrong thing: lots of comments, flashy demos, or generic advice that is easy

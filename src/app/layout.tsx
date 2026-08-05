@@ -2,8 +2,30 @@ import type { Metadata, Viewport } from "next";
 import { AuthProvider } from "@/lib/AuthContext";
 import { Navbar } from "@/components/Navbar";
 import { WebVitalsReporter } from "@/components/WebVitalsReporter";
+import { StructuredData } from "@/components/StructuredData";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/seo";
 import "./globals.css";
+
+const ORGANIZATION_SCHEMA = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: SITE_NAME,
+  url: SITE_URL,
+  description: SITE_DESCRIPTION,
+};
+
+const WEBSITE_SCHEMA = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: SITE_NAME,
+  url: SITE_URL,
+  description: SITE_DESCRIPTION,
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: `${SITE_URL}/blog?page={search_term_string}`,
+    'query-input': 'required name=search_term_string',
+  },
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -12,81 +34,6 @@ export const metadata: Metadata = {
     template: `%s · ${SITE_NAME}`,
   },
   description: SITE_DESCRIPTION,
-  keywords: [
-    "AI code review",
-    "code audit",
-    "static analysis",
-    "security review",
-    "security vulnerability scanner",
-    "pull request review",
-    "PR review bot",
-    "GitHub PR review",
-    "GitLab MR review",
-    "merge request review",
-    "code quality",
-    "architecture review",
-    "performance review",
-    "test coverage analysis",
-    "technical debt",
-    "code review CLI",
-    "CI/CD code review",
-    "VS Code code review extension",
-    "AI code security scanner",
-    "CodeRabbit alternative",
-    "CodeRabbit AI code review",
-    "Qodo alternative",
-    "Qodo AI code review",
-    "Greptile alternative",
-    "Codacy alternative",
-    "DeepSource alternative",
-    "SonarQube alternative",
-    "Semgrep alternative",
-    "Cursor AI",
-    "code review AI",
-    "AI code reviewer",
-    "AI-powered code review",
-    "AI powered code review tool",
-    "AI powered code review tools",
-    "best AI code review tools",
-    "AI code review tools 2026",
-    "GitHub AI code review",
-    "GitLab AI code review",
-    "code audit tools free",
-    "code audit tools github",
-    "best code audit tools",
-    "free code analysis tools",
-    "SAST tools",
-    "free AI code review tools",
-    "static code analysis tools",
-    "static code analysis tools free",
-    "AI code review tool",
-    "automated code review",
-    "AI security scanner",
-    "AI pull request review",
-    "secure code review software",
-    "AuditBench alternatives",
-    "AI code review vs manual review",
-    "static analysis vs AI code review",
-    "OWASP Top 10",
-    "secure coding practices",
-    "code review checklist",
-    "DevSecOps guide",
-    "software security testing",
-    "AI code review for React",
-    "AI code review for Node.js",
-    "AI code review for Python",
-    "AI code review for Java",
-    "AI code review for C#",
-    "linter",
-    "code review",
-    "GitHub",
-    "AI alignment auditing",
-    "AI red teaming",
-    "hidden behavior detection",
-    "LLM evaluation",
-    "audit bench",
-    "auditbench",
-  ],
   authors: [{ name: SITE_NAME }],
   openGraph: {
     type: "website",
@@ -118,6 +65,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full antialiased">
       <body className="flex min-h-full flex-col font-sans">
+        <StructuredData data={[ORGANIZATION_SCHEMA, WEBSITE_SCHEMA]} />
         <WebVitalsReporter />
         <AuthProvider>
           <Navbar />

@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 export default function HowToEvaluateAiCodeReviewToolsPage() {
   return (
-    <BlogArticleLayout title={POST.title} publishedAt={POST.publishedAt} readingTime={POST.readingTime}>
+    <BlogArticleLayout slug={POST.slug} title={POST.title} publishedAt={POST.publishedAt} readingTime={POST.readingTime}>
       <p>
         Evaluating an AI code review tool is a product decision, not a feature checklist. The real question is
         whether the tool improves your team&apos;s review quality and speed without making the process less

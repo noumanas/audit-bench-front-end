@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 export default function HowToUpgradeDependenciesSafelyPage() {
   return (
-    <BlogArticleLayout title={POST.title} publishedAt={POST.publishedAt} readingTime={POST.readingTime}>
+    <BlogArticleLayout slug={POST.slug} title={POST.title} publishedAt={POST.publishedAt} readingTime={POST.readingTime}>
       <p>
         Safe dependency upgrades are a process, not a one-click action. The goal is to reduce security risk without
         introducing surprises into production, which means upgrades need a review strategy and a rollback plan.

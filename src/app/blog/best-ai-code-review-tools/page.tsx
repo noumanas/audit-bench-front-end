@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 export default function BestAiCodeReviewToolsPage() {
   return (
-    <BlogArticleLayout title={POST.title} publishedAt={POST.publishedAt} readingTime={POST.readingTime}>
+    <BlogArticleLayout slug={POST.slug} title={POST.title} publishedAt={POST.publishedAt} readingTime={POST.readingTime}>
       <p>
         There is no single “best” AI code review tool for everyone. The right choice depends on where your code
         lives, how much context the reviewer can see, and whether you care most about throughput, security, or

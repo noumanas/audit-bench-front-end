@@ -7,6 +7,8 @@ import { Plan } from '@/lib/types';
 import { useAuth } from '@/lib/AuthContext';
 import { Footer } from '@/components/Footer';
 import { Reveal } from '@/components/Reveal';
+import { StructuredData } from '@/components/StructuredData';
+import { SITE_NAME, SITE_URL } from '@/lib/seo';
 
 const TIER_COPY: Record<string, { blurb: string; extras: string[] }> = {
   free: {
@@ -70,8 +72,51 @@ export default function PricingPage() {
       .catch((err) => setError(err instanceof Error ? err.message : 'Failed to load plans.'));
   }, []);
 
+  const pricingSchema =
+    plans.length > 0
+      ? {
+          '@context': 'https://schema.org',
+          '@type': 'Product',
+          name: SITE_NAME,
+          description: 'AI code review before it ships.',
+          brand: { '@type': 'Brand', name: SITE_NAME },
+          offers: plans.map((plan) => ({
+            '@type': 'Offer',
+            name: plan.name,
+            price: plan.priceMonthlyCents === 0 ? '0' : plan.slug === 'enterprise' ? 'Custom' : String(plan.priceMonthlyCents / 100),
+            priceCurrency: 'USD',
+            url: `${SITE_URL}/pricing`,
+            availability: 'https://schema.org/InStock',
+          })),
+        }
+      : null;
+
+  const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: 'What counts against my limit?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Only audits that actually use AI count toward daily or monthly limits. Local checks are free.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'How does a repository scan use quota?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Only files flagged as risky get an AI review; if a scan stays clean after local checks, it costs nothing.',
+        },
+      },
+    ],
+  };
+
   return (
     <div>
+      {pricingSchema && <StructuredData data={[pricingSchema, faqSchema]} />}
       <section className="border-b border-ink-line bg-ink px-6 py-16 text-center">
         <Reveal>
           <div className="mb-2 font-mono text-[13px] tracking-wide text-muted-on-ink uppercase">Pricing</div>

@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 export default function SecureCodingChecklistPage() {
   return (
-    <BlogArticleLayout title={POST.title} publishedAt={POST.publishedAt} readingTime={POST.readingTime}>
+    <BlogArticleLayout slug={POST.slug} title={POST.title} publishedAt={POST.publishedAt} readingTime={POST.readingTime}>
       <p>
         A secure coding checklist is useful only if it catches the things teams actually miss. The point is not to
         be exhaustive. The point is to make dangerous mistakes hard to overlook during review.

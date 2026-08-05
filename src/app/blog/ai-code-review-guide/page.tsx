@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 export default function AiCodeReviewGuidePage() {
   return (
-    <BlogArticleLayout title={POST.title} publishedAt={POST.publishedAt} readingTime={POST.readingTime}>
+    <BlogArticleLayout slug={POST.slug} title={POST.title} publishedAt={POST.publishedAt} readingTime={POST.readingTime}>
       <p>
         AI code review is useful when it reduces reviewer load without lowering the bar. The mistake most teams
         make is expecting a model to replace judgment. That does not work. What does work is using AI to do the

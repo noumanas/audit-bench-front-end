@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 export default function WhyCodeReviewsFailPage() {
   return (
-    <BlogArticleLayout title={POST.title} publishedAt={POST.publishedAt} readingTime={POST.readingTime}>
+    <BlogArticleLayout slug={POST.slug} title={POST.title} publishedAt={POST.publishedAt} readingTime={POST.readingTime}>
       <p>
         Code reviews usually fail for predictable reasons. The issue is rarely that reviewers do not care. It is
         more often that the system around review makes it hard to do good work consistently.

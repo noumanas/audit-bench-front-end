@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 export default function OwaspTop10Post() {
   return (
-    <BlogArticleLayout title={POST.title} publishedAt={POST.publishedAt} readingTime={POST.readingTime}>
+    <BlogArticleLayout slug={POST.slug} title={POST.title} publishedAt={POST.publishedAt} readingTime={POST.readingTime}>
       <p>
         The OWASP Top 10 is the default vocabulary for web application security, and the 2025 edition is the
         first major update since 2021. It matters because the list is not just a ranking of bugs; it is a
