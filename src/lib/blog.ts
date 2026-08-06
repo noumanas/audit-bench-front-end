@@ -14,6 +14,54 @@ export interface BlogPostMeta {
 
 export const BLOG_POSTS: BlogPostMeta[] = [
   {
+    slug: "github-merge-pull-request-tool",
+    title: "GitHub Merge Pull Request Tool: How to Use It Safely",
+    description:
+      "A practical guide to merging pull requests in GitHub without skipping review, bypassing checks, or turning a clean workflow into a risky shortcut.",
+    publishedAt: "2026-08-06",
+    readingTime: "8 min read",
+  },
+  {
+    slug: "how-to-review-ai-generated-code-without-trusting-it-blindly",
+    title: "How to Review AI-Generated Code Without Trusting It Blindly",
+    description:
+      "A practical checklist for reviewing AI-generated code with enough skepticism to catch hidden bugs, security mistakes, and brittle shortcuts.",
+    publishedAt: "2026-08-06",
+    readingTime: "9 min read",
+  },
+  {
+    slug: "pull-request-approval-rules-that-actually-work",
+    title: "Pull Request Approval Rules That Actually Work",
+    description:
+      "A grounded look at approval rules that improve merge quality instead of slowing teams down with ceremony.",
+    publishedAt: "2026-08-06",
+    readingTime: "7 min read",
+  },
+  {
+    slug: "how-to-stop-merging-bad-code",
+    title: "How to Stop Merging Bad Code",
+    description:
+      "A practical systems-level guide to reducing risky merges with smaller diffs, better checks, clearer ownership, and faster feedback.",
+    publishedAt: "2026-08-06",
+    readingTime: "8 min read",
+  },
+  {
+    slug: "why-inline-review-comments-beat-dashboards",
+    title: "Why Inline Review Comments Beat Dashboards",
+    description:
+      "Why feedback that lands directly on the code is usually more actionable than another dashboard teams forget to open.",
+    publishedAt: "2026-08-06",
+    readingTime: "6 min read",
+  },
+  {
+    slug: "how-to-choose-the-right-pr-review-workflow",
+    title: "How to Choose the Right PR Review Workflow",
+    description:
+      "A practical framework for choosing a PR review workflow that fits team size, risk level, and release pressure.",
+    publishedAt: "2026-08-06",
+    readingTime: "8 min read",
+  },
+  {
     slug: "automate-pr-reviews-with-ai",
     title: "Automate PR Reviews with AI",
     description:
