@@ -80,6 +80,7 @@ export default function PricingPage() {
           name: SITE_NAME,
           description: 'AI code review before it ships.',
           brand: { '@type': 'Brand', name: SITE_NAME },
+          image: [`${SITE_URL}/opengraph-image`],
           offers: plans.map((plan) => ({
             '@type': 'Offer',
             name: plan.name,
@@ -87,6 +88,41 @@ export default function PricingPage() {
             priceCurrency: 'USD',
             url: `${SITE_URL}/pricing`,
             availability: 'https://schema.org/InStock',
+            hasMerchantReturnPolicy: {
+              '@type': 'MerchantReturnPolicy',
+              applicableCountry: 'US',
+              returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
+              merchantReturnDays: 14,
+              returnMethod: 'https://schema.org/ReturnByMail',
+              returnFees: 'https://schema.org/ReturnFeesCustomerResponsibility',
+            },
+            shippingDetails: {
+              '@type': 'OfferShippingDetails',
+              shippingDestination: {
+                '@type': 'DefinedRegion',
+                addressCountry: 'US',
+              },
+              shippingRate: {
+                '@type': 'MonetaryAmount',
+                value: '0',
+                currency: 'USD',
+              },
+              deliveryTime: {
+                '@type': 'ShippingDeliveryTime',
+                handlingTime: {
+                  '@type': 'QuantitativeValue',
+                  minValue: 0,
+                  maxValue: 1,
+                  unitCode: 'DAY',
+                },
+                transitTime: {
+                  '@type': 'QuantitativeValue',
+                  minValue: 0,
+                  maxValue: 0,
+                  unitCode: 'DAY',
+                },
+              },
+            },
           })),
         }
       : null;
