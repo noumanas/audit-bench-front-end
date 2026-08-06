@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import { AuthProvider } from "@/lib/AuthContext";
 import { Navbar } from "@/components/Navbar";
 import { WebVitalsReporter } from "@/components/WebVitalsReporter";
@@ -66,6 +67,18 @@ export default function RootLayout({
     <html lang="en" className="h-full antialiased">
       <head>
         <link rel="manifest" href="/manifest.webmanifest" />
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-FEK7GDD0FH"
+          strategy="afterInteractive"
+        />
+        <Script id="google-tag" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){window.dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-FEK7GDD0FH');
+          `}
+        </Script>
       </head>
       <body className="flex min-h-full flex-col font-sans">
         <StructuredData data={[ORGANIZATION_SCHEMA, WEBSITE_SCHEMA]} />
