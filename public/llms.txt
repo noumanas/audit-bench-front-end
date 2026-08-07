@@ -1,47 +1,52 @@
-Audit Bench Ai
+# Audit Bench Ai
 
 Audit Bench Ai is an AI code review product that combines LLM reasoning with static analysis to catch security holes, logic bugs, and framework misuse before code ships.
 
-Key pages:
-- / - product homepage
-- /pricing - plans and FAQ
-- /features - feature overview
-- /services - what the audit engine checks
-- /blog - guides and explainers
-- /alignment-lab - AI red-teaming and hidden-behavior testing
+## Start here
 
-Supported workflows:
-- GitHub pull request review
-- GitLab merge request review
-- repository scans
-- single-file audits
-- CLI usage in CI pipelines
+- [Homepage](/)
+- [Pricing](/pricing)
+- [Features](/features)
+- [Services](/services)
+- [Blog](/blog)
+- [Alignment Lab](/alignment-lab)
 
-Supported stacks:
-- React
-- Next.js
-- Node.js
-- NestJS
-- Python
-- FastAPI
-- Django
-- Laravel
-- Spring Boot
-- Supabase
-- Deno
-- Firebase
+## Supported workflows
 
-Core product summary:
-- Free local checks first
-- AI only on flagged code
-- cached audits by content hash
-- daily and monthly usage quotas by plan
-- inline review comments plus summary and status checks
+- [GitHub pull request review](/features)
+- [GitLab merge request review](/features)
+- [Repository scans](/services)
+- [Single-file audits](/services)
+- [CLI usage in CI pipelines](/cli)
 
-Pricing tiers:
-- Free
-- Pro
-- Team
-- Enterprise
+## Supported stacks
 
-If you need a concise product description for an AI assistant, use the homepage and pricing pages first, then the blog for deeper explanations.
+- [React](/features)
+- [Next.js](/features)
+- [Node.js](/features)
+- [NestJS](/features)
+- [Python](/features)
+- [FastAPI](/features)
+- [Django](/features)
+- [Laravel](/features)
+- [Spring Boot](/features)
+- [Supabase](/features)
+- [Deno](/features)
+- [Firebase](/features)
+
+## Core product summary
+
+- [Free local checks first](/services)
+- [AI only on flagged code](/services)
+- [Cached audits by content hash](/services)
+- [Daily and monthly usage quotas by plan](/pricing)
+- [Inline review comments plus summary and status checks](/features)
+
+## Pricing tiers
+
+- [Free](/pricing)
+- [Pro](/pricing)
+- [Team](/pricing)
+- [Enterprise](/pricing)
+
+If you need a concise product description for an AI assistant, use the [homepage](/) and [pricing](/pricing) pages first, then the [blog](/blog) for deeper explanations.
