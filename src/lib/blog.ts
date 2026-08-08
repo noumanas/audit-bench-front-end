@@ -14,6 +14,46 @@ export interface BlogPostMeta {
 
 export const BLOG_POSTS: BlogPostMeta[] = [
   {
+    slug: "why-file-linters-miss-security-bugs",
+    title: "Why File Linters Miss Security Bugs",
+    description:
+      "A practical explanation of the security problems linters miss and why human or AI review still matters for file-level changes.",
+    publishedAt: "2026-08-08",
+    readingTime: "7 min read",
+  },
+  {
+    slug: "what-to-check-after-linting-passes",
+    title: "What to Check After Linting Passes",
+    description:
+      "A checklist for reviewing code after the linter has removed the obvious issues but before the file is safe to merge.",
+    publishedAt: "2026-08-08",
+    readingTime: "8 min read",
+  },
+  {
+    slug: "building-a-lint-plus-ai-review-workflow",
+    title: "Building a Lint Plus AI Review Workflow",
+    description:
+      "How to combine file linters, AI review, and human judgment into one fast and practical code review process.",
+    publishedAt: "2026-08-08",
+    readingTime: "9 min read",
+  },
+  {
+    slug: "lint-clean-does-not-mean-shippable",
+    title: "Lint-Clean Does Not Mean Shippable",
+    description:
+      "Why code that passes linting can still be unsafe, incorrect, or hard to maintain, and what reviewers should verify next.",
+    publishedAt: "2026-08-08",
+    readingTime: "6 min read",
+  },
+  {
+    slug: "ai-code-review-file-linter-gaps",
+    title: "How AI Code Review Catches Linter Gaps Before Merge",
+    description:
+      "A practical guide to using AI review alongside file linters to catch issues rule-based tools miss before a pull request is merged.",
+    publishedAt: "2026-08-08",
+    readingTime: "8 min read",
+  },
+  {
     slug: "github-merge-pull-request-tool",
     title: "GitHub Merge Pull Request Tool: How to Use It Safely",
     description:
