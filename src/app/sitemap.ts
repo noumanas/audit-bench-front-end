@@ -3,7 +3,12 @@ import { BLOG_POSTS } from '@/lib/blog';
 import { SITE_URL } from '@/lib/seo';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const routes: Array<{ path: string; changeFrequency: MetadataRoute.Sitemap[number]['changeFrequency']; priority: number }> = [
+  const routes: Array<{
+    path: string;
+    changeFrequency: MetadataRoute.Sitemap[number]['changeFrequency'];
+    priority: number;
+    lastModified?: Date;
+  }> = [
     { path: '', changeFrequency: 'weekly', priority: 1 },
     { path: '/blog', changeFrequency: 'weekly', priority: 0.8 },
     { path: '/about', changeFrequency: 'monthly', priority: 0.6 },
