@@ -36,6 +36,24 @@ export const metadata: Metadata = {
   title: 'AI code review before it ships',
   description:
     'Combine LLM reasoning with static analysis to catch security holes, logic bugs, and framework misuse — on a single file, a pull request, or a whole repository.',
+  keywords: [
+    'AI code review',
+    'auditbench',
+    'audit bench',
+    'secure code review checklist',
+    'secure coding checklist',
+    'audit ai code',
+    'ai code audit',
+    'ai code security checklist',
+    'ai audit for code quality',
+    'pull request approval',
+    'ai code review tools for large codebases',
+    'ai code quality checker',
+    'ai audit pricing',
+    'building and evaluating alignment auditing agents',
+    'align auditor',
+    'owasp top 10',
+  ],
   alternates: { canonical: '/' },
 };
 

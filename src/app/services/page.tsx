@@ -7,6 +7,16 @@ export const metadata: Metadata = {
   title: 'Audit Coverage & Methodology',
   description:
     'How one audit actually works under the hood: the specific security patterns checked, the repository-analysis techniques used, and the exact shape every finding comes back in.',
+  keywords: [
+    'AI code review',
+    'secure code review',
+    'repository scan',
+    'static analysis',
+    'file-level code review',
+    'secret scanning',
+    'dependency vulnerability scanning',
+    'code security',
+  ],
   alternates: { canonical: '/services' },
 };
 
