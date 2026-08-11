@@ -21,11 +21,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     path: `/blog/${post.slug}`,
     changeFrequency: 'monthly' as const,
     priority: 0.7,
+    lastModified: new Date(post.publishedAt),
   }));
 
   return [...routes, ...blogRoutes].map((r) => ({
     url: `${SITE_URL}${r.path}`,
-    lastModified: new Date(),
+    lastModified: r.lastModified ?? new Date(),
     changeFrequency: r.changeFrequency,
     priority: r.priority,
   }));

@@ -14,6 +14,46 @@ export interface BlogPostMeta {
 
 export const BLOG_POSTS: BlogPostMeta[] = [
   {
+    slug: "how-to-review-security-critical-code-faster",
+    title: "How to Review Security-Critical Code Faster",
+    description:
+      "A practical guide to speeding up security-focused code review without missing the issues that matter most.",
+    publishedAt: "2026-08-11",
+    readingTime: "8 min read",
+  },
+  {
+    slug: "code-security-review-signals-that-matter",
+    title: "Code Security Review Signals That Matter",
+    description:
+      "A focused look at the review signals that reliably point to real security risk in modern codebases.",
+    publishedAt: "2026-08-11",
+    readingTime: "7 min read",
+  },
+  {
+    slug: "how-to-keep-ai-code-review-from-creating-noise",
+    title: "How to Keep AI Code Review From Creating Noise",
+    description:
+      "A practical article on making AI review useful by reducing false positives, vague comments, and review fatigue.",
+    publishedAt: "2026-08-11",
+    readingTime: "8 min read",
+  },
+  {
+    slug: "secure-code-review-for-api-changes",
+    title: "Secure Code Review for API Changes",
+    description:
+      "A guide to reviewing API changes for authentication, authorization, validation, and data exposure risks.",
+    publishedAt: "2026-08-11",
+    readingTime: "9 min read",
+  },
+  {
+    slug: "why-small-diffs-improve-security-review",
+    title: "Why Small Diffs Improve Security Review",
+    description:
+      "Why smaller pull requests are easier to review securely and how teams can use that to reduce production risk.",
+    publishedAt: "2026-08-11",
+    readingTime: "7 min read",
+  },
+  {
     slug: "why-file-linters-miss-security-bugs",
     title: "Why File Linters Miss Security Bugs",
     description:
