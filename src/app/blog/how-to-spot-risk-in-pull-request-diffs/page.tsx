@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { BlogArticleLayout } from '@/components/blog/BlogArticleLayout';
 import { BLOG_POSTS } from '@/lib/blog';
+import Link from 'next/link';
 
 const POST = BLOG_POSTS.find((p) => p.slug === 'how-to-spot-risk-in-pull-request-diffs')!;
 
