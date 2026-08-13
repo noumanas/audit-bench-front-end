@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { BlogArticleLayout } from '@/components/blog/BlogArticleLayout';
 import { BLOG_POSTS } from '@/lib/blog';
 
