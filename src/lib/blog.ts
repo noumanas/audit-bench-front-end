@@ -14,6 +14,46 @@ export interface BlogPostMeta {
 
 export const BLOG_POSTS: BlogPostMeta[] = [
   {
+    slug: "how-to-build-a-security-first-review-culture",
+    title: "How to Build a Security-First Code Review Culture",
+    description:
+      "A long-form guide on creating review habits, team norms, and merge rules that make security part of everyday engineering.",
+    publishedAt: "2026-08-13",
+    readingTime: "12 min read",
+  },
+  {
+    slug: "what-makes-an-ai-code-review-tool-trustworthy",
+    title: "What Makes an AI Code Review Tool Trustworthy",
+    description:
+      "A deep look at the product, workflow, and security signals that matter when deciding whether to trust an AI review tool.",
+    publishedAt: "2026-08-13",
+    readingTime: "11 min read",
+  },
+  {
+    slug: "how-to-review-generated-code-for-production-risk",
+    title: "How to Review Generated Code for Production Risk",
+    description:
+      "A practical article on reviewing AI-generated code for hidden logic bugs, security issues, and production failure modes.",
+    publishedAt: "2026-08-13",
+    readingTime: "13 min read",
+  },
+  {
+    slug: "security-review-patterns-for-large-codebases",
+    title: "Security Review Patterns for Large Codebases",
+    description:
+      "A guide to scaling code security review across large repositories without losing context, speed, or quality.",
+    publishedAt: "2026-08-13",
+    readingTime: "12 min read",
+  },
+  {
+    slug: "how-to-spot-risk-in-pull-request-diffs",
+    title: "How to Spot Risk in Pull Request Diffs",
+    description:
+      "A detailed guide to reading diffs for hidden security, correctness, and maintenance risk before merging.",
+    publishedAt: "2026-08-13",
+    readingTime: "10 min read",
+  },
+  {
     slug: "how-to-review-security-critical-code-faster",
     title: "How to Review Security-Critical Code Faster",
     description:
