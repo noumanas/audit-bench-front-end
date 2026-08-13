@@ -14,6 +14,14 @@ export interface BlogPostMeta {
 
 export const BLOG_POSTS: BlogPostMeta[] = [
   {
+    slug: "how-to-review-database-migrations-safely",
+    title: "How to Review Database Migrations Safely",
+    description:
+      "A practical guide to reviewing database migrations for locking risk, data integrity, rollback safety, and rolling-deploy compatibility before they run in production.",
+    publishedAt: "2026-08-13",
+    readingTime: "10 min read",
+  },
+  {
     slug: "how-to-build-a-security-first-review-culture",
     title: "How to Build a Security-First Code Review Culture",
     description:
