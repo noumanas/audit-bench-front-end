@@ -10,9 +10,55 @@ export interface BlogPostMeta {
   description: string;
   publishedAt: string; // ISO date
   readingTime: string;
+  image?: string; // path under /public, e.g. /blog/<slug>.svg
 }
 
 export const BLOG_POSTS: BlogPostMeta[] = [
+  {
+    slug: "reviewing-broken-access-control",
+    title: "Reviewing Broken Access Control Before It Ships",
+    description:
+      "A practical guide to catching broken access control in code review: missing checks, IDOR, privilege escalation, and multi-tenant data leaks.",
+    publishedAt: "2026-08-16",
+    readingTime: "9 min read",
+    image: "/blog/reviewing-broken-access-control.svg",
+  },
+  {
+    slug: "sql-injection-code-review-guide",
+    title: "How to Review Code for SQL Injection Risk",
+    description:
+      "A practical guide to spotting SQL injection risk in code review, from string-concatenated queries to ORM misuse and second-order injection.",
+    publishedAt: "2026-08-16",
+    readingTime: "8 min read",
+    image: "/blog/sql-injection-code-review-guide.svg",
+  },
+  {
+    slug: "secrets-and-api-keys-in-source-code",
+    title: "How to Keep Secrets and API Keys Out of Source Code",
+    description:
+      "A practical guide to catching hardcoded secrets, leaked API keys, and unsafe credential handling during code review.",
+    publishedAt: "2026-08-16",
+    readingTime: "8 min read",
+    image: "/blog/secrets-and-api-keys-in-source-code.svg",
+  },
+  {
+    slug: "insecure-deserialization-code-review",
+    title: "How to Detect Insecure Deserialization in Code Review",
+    description:
+      "A practical guide to spotting insecure deserialization risk in code review, including native deserializers, unsafe object mapping, and trust boundaries.",
+    publishedAt: "2026-08-16",
+    readingTime: "8 min read",
+    image: "/blog/insecure-deserialization-code-review.svg",
+  },
+  {
+    slug: "reviewing-rate-limiting-and-abuse-prevention",
+    title: "Reviewing Rate Limiting and Abuse Prevention in Code",
+    description:
+      "A practical guide to reviewing rate limiting, brute-force protection, and abuse prevention logic so new endpoints don't become easy targets.",
+    publishedAt: "2026-08-16",
+    readingTime: "8 min read",
+    image: "/blog/reviewing-rate-limiting-and-abuse-prevention.svg",
+  },
   {
     slug: "how-to-review-database-migrations-safely",
     title: "How to Review Database Migrations Safely",
@@ -20,6 +66,7 @@ export const BLOG_POSTS: BlogPostMeta[] = [
       "A practical guide to reviewing database migrations for locking risk, data integrity, rollback safety, and rolling-deploy compatibility before they run in production.",
     publishedAt: "2026-08-13",
     readingTime: "10 min read",
+    image: "/blog/how-to-review-database-migrations-safely.svg",
   },
   {
     slug: "how-to-build-a-security-first-review-culture",

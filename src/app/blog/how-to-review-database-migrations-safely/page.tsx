@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 export default function HowToReviewDatabaseMigrationsSafelyPage() {
   return (
-    <BlogArticleLayout slug={POST.slug} title={POST.title} publishedAt={POST.publishedAt} readingTime={POST.readingTime}>
+    <BlogArticleLayout slug={POST.slug} title={POST.title} publishedAt={POST.publishedAt} readingTime={POST.readingTime} image={POST.image}>
       <p>
         Most pull request checklists are built around application code: functions, endpoints, components, tests.
         Database migrations get treated as an afterthought, a file that runs once and disappears from view. That
@@ -80,7 +80,7 @@ export default function HowToReviewDatabaseMigrationsSafelyPage() {
         A migration that adds a column is usually easy to reverse. A migration that drops a column, drops a table,
         or transforms data in place is not, because the rollback has to reconstruct information that may no longer
         exist. Reviewers should treat the down-migration, or the documented rollback plan, as part of the change
-        being reviewed, not an optional extra. If the rollback plan is "restore from backup," that should be stated
+        being reviewed, not an optional extra. If the rollback plan is &quot;restore from backup,&quot; that should be stated
         explicitly, because it changes the acceptable blast radius and the incident response plan if something
         goes wrong after deploy.
       </p>

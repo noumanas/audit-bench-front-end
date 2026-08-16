@@ -46,15 +46,27 @@ export function BlogIndexClient() {
             <Link
               key={post.slug}
               href={`/blog/${post.slug}`}
-              className="row-hover group block rounded-lg border border-paper-line bg-paper-card p-6 transition-all duration-200 hover:-translate-y-1 hover:border-cobalt/40 hover:shadow-panel"
+              className="row-hover group flex gap-5 rounded-lg border border-paper-line bg-paper-card p-6 transition-all duration-200 hover:-translate-y-1 hover:border-cobalt/40 hover:shadow-panel"
             >
-              <div className="mb-2 flex items-center gap-2 font-mono text-[11px] tracking-wide text-muted-on-paper uppercase">
-                <time dateTime={post.publishedAt}>{formatDate(post.publishedAt)}</time>
-                <span>·</span>
-                <span>{post.readingTime}</span>
+              {post.image && (
+                // eslint-disable-next-line @next/next/no-img-element -- local SVG cover art, no optimization needed
+                <img
+                  src={post.image}
+                  alt=""
+                  width={1200}
+                  height={630}
+                  className="hidden h-24 w-40 shrink-0 rounded-md border border-ink-line object-cover sm:block"
+                />
+              )}
+              <div className="min-w-0">
+                <div className="mb-2 flex items-center gap-2 font-mono text-[11px] tracking-wide text-muted-on-paper uppercase">
+                  <time dateTime={post.publishedAt}>{formatDate(post.publishedAt)}</time>
+                  <span>·</span>
+                  <span>{post.readingTime}</span>
+                </div>
+                <h2 className="mb-1.5 text-lg font-bold text-[#1C2128] group-hover:text-cobalt">{post.title}</h2>
+                <p className="text-sm leading-relaxed text-muted-on-paper">{post.description}</p>
               </div>
-              <h2 className="mb-1.5 text-lg font-bold text-[#1C2128] group-hover:text-cobalt">{post.title}</h2>
-              <p className="text-sm leading-relaxed text-muted-on-paper">{post.description}</p>
             </Link>
           ))}
         </Reveal>
