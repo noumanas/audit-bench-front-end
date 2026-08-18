@@ -15,6 +15,51 @@ export interface BlogPostMeta {
 
 export const BLOG_POSTS: BlogPostMeta[] = [
   {
+    slug: "what-to-do-when-github-is-down",
+    title: "What to Do When GitHub Is Down",
+    description:
+      "A practical playbook for engineering teams when GitHub is down: what still works, what to communicate, and what to avoid doing.",
+    publishedAt: "2026-08-18",
+    readingTime: "8 min read",
+    image: "/blog/what-to-do-when-github-is-down.svg",
+  },
+  {
+    slug: "building-ci-cd-resilient-to-github-outages",
+    title: "Building a CI/CD Pipeline That Survives a GitHub Outage",
+    description:
+      "A practical guide to decoupling build, test, and deploy from a single GitHub Actions dependency so a platform incident doesn't freeze every release.",
+    publishedAt: "2026-08-18",
+    readingTime: "8 min read",
+    image: "/blog/building-ci-cd-resilient-to-github-outages.svg",
+  },
+  {
+    slug: "github-outage-incident-response-runbook",
+    title: "Writing a GitHub Outage Incident Response Runbook",
+    description:
+      "A guide to treating GitHub like any other critical dependency: severity tiers, escalation paths, and predefined fallback actions for when it goes down.",
+    publishedAt: "2026-08-18",
+    readingTime: "8 min read",
+    image: "/blog/github-outage-incident-response-runbook.svg",
+  },
+  {
+    slug: "reducing-single-points-of-failure-in-your-git-workflow",
+    title: "Reducing Single Points of Failure in Your Git Workflow",
+    description:
+      "A practical look at mirroring repositories, decoupling identity, and keeping secrets independent so one vendor incident doesn't take down everything at once.",
+    publishedAt: "2026-08-18",
+    readingTime: "7 min read",
+    image: "/blog/reducing-single-points-of-failure-in-your-git-workflow.svg",
+  },
+  {
+    slug: "github-status-monitoring-for-engineering-teams",
+    title: "Monitoring GitHub Status Without Getting Paged for Nothing",
+    description:
+      "How to size GitHub status alerts to actual impact, correlate outages with real symptoms, and route notifications to the right audience.",
+    publishedAt: "2026-08-18",
+    readingTime: "7 min read",
+    image: "/blog/github-status-monitoring-for-engineering-teams.svg",
+  },
+  {
     slug: "reviewing-broken-access-control",
     title: "Reviewing Broken Access Control Before It Ships",
     description:
