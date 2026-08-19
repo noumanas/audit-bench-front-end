@@ -15,6 +15,15 @@ export interface BlogPostMeta {
 
 export const BLOG_POSTS: BlogPostMeta[] = [
   {
+    slug: "when-github-goes-down-what-actually-breaks",
+    title: "When GitHub Goes Down: What Actually Breaks",
+    description:
+      "GitHub outages aren't random — database failovers, config rollouts, and dependency cascades keep recurring. Here's why they happen and how to prepare your team.",
+    publishedAt: "2026-08-19",
+    readingTime: "7 min read",
+    image: "/blog/when-github-goes-down-what-actually-breaks.svg",
+  },
+  {
     slug: "what-to-do-when-github-is-down",
     title: "What to Do When GitHub Is Down",
     description:
