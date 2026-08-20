@@ -15,6 +15,15 @@ export interface BlogPostMeta {
 
 export const BLOG_POSTS: BlogPostMeta[] = [
   {
+    slug: "audit-bench-ai-vs-coderabbit",
+    title: "Deep Security vs. Rapid Dev Loops: Audit Bench AI vs. CodeRabbit",
+    description:
+      "How Audit Bench AI and CodeRabbit differ on review depth, pricing model, LLM provider choice, and workflow integration — and which fits your team.",
+    publishedAt: "2026-08-20",
+    readingTime: "6 min read",
+    image: "/blog/audit-bench-ai-vs-coderabbit.svg",
+  },
+  {
     slug: "when-github-goes-down-what-actually-breaks",
     title: "When GitHub Goes Down: What Actually Breaks",
     description:
