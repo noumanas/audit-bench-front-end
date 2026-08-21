@@ -1,0 +1,45 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#10141c"/>
+      <stop offset="100%" stop-color="#161c28"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#d97706" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#d97706" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#2a3242" stroke-width="1" opacity="0.4"/>
+    </pattern>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+  <circle cx="860" cy="310" r="270" fill="url(#glow)"/>
+
+  <g stroke="#3a4358" stroke-width="2" fill="none" opacity="0.6">
+    <path d="M 1140 40 L 1160 40 L 1160 60"/>
+    <path d="M 40 570 L 40 590 L 60 590"/>
+  </g>
+
+  <text x="70" y="90" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" letter-spacing="3" fill="#8b96ab">AUDIT BENCH &#183; SECURITY REVIEW</text>
+  <circle cx="80" cy="119" r="5" fill="#d97706"/>
+  <text x="98" y="124" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" letter-spacing="3" fill="#d97706">HIGH RISK</text>
+
+  <text x="70" y="560" font-family="ui-sans-serif, system-ui, sans-serif" font-size="30" font-weight="700" fill="#e8ecf4">CSRF Protection</text>
+
+  <g transform="translate(860,310)">
+    <rect x="-140" y="-90" width="150" height="105" rx="10" fill="rgba(232,236,244,0.03)" stroke="#e8ecf4" stroke-width="7" opacity="0.55"/>
+    <circle cx="-118" cy="-70" r="4" fill="#e8ecf4" opacity="0.5"/>
+    <circle cx="-104" cy="-70" r="4" fill="#e8ecf4" opacity="0.5"/>
+    <rect x="10" y="-40" width="150" height="105" rx="10" fill="rgba(232,236,244,0.05)" stroke="#e8ecf4" stroke-width="9"/>
+    <circle cx="32" cy="-20" r="4" fill="#e8ecf4"/>
+    <circle cx="46" cy="-20" r="4" fill="#e8ecf4"/>
+    <rect x="35" y="5" width="70" height="16" rx="3" fill="none" stroke="#e8ecf4" stroke-width="5" opacity="0.6"/>
+    <rect x="35" y="30" width="45" height="16" rx="3" fill="none" stroke="#e8ecf4" stroke-width="5" opacity="0.6"/>
+    <path d="M -100 -35 C -60 -20 -20 -10 20 -5" fill="none" stroke="#d97706" stroke-width="8" stroke-linecap="round" stroke-dasharray="2 10"/>
+    <polygon points="20,-5 4,-14 4,4" fill="#d97706"/>
+  </g>
+
+  <rect x="0" y="606" width="1200" height="6" fill="#d97706"/>
+</svg>

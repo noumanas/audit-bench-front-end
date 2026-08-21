@@ -15,6 +15,51 @@ export interface BlogPostMeta {
 
 export const BLOG_POSTS: BlogPostMeta[] = [
   {
+    slug: "xss-code-review-guide",
+    title: "How to Review Code for Cross-Site Scripting (XSS) Risk",
+    description:
+      "A practical guide to spotting XSS risk in code review: unescaped output, dangerous DOM sinks, and why input validation alone doesn't stop it.",
+    publishedAt: "2026-08-21",
+    readingTime: "8 min read",
+    image: "/blog/xss-code-review-guide.svg",
+  },
+  {
+    slug: "csrf-protection-code-review",
+    title: "Reviewing CSRF Protection in Web Applications",
+    description:
+      "A practical guide to reviewing CSRF defenses in code review: anti-CSRF tokens, SameSite cookies, and the state-changing requests that need protecting.",
+    publishedAt: "2026-08-21",
+    readingTime: "7 min read",
+    image: "/blog/csrf-protection-code-review.svg",
+  },
+  {
+    slug: "ssrf-code-review-guide",
+    title: "How to Spot Server-Side Request Forgery (SSRF) in Code Review",
+    description:
+      "A practical guide to catching SSRF risk in code review: server-side fetches built from user input, cloud metadata endpoints, and why allow lists beat blocklists.",
+    publishedAt: "2026-08-21",
+    readingTime: "7 min read",
+    image: "/blog/ssrf-code-review-guide.svg",
+  },
+  {
+    slug: "jwt-authentication-code-review",
+    title: "Reviewing JWT and Session Authentication for Common Mistakes",
+    description:
+      "A practical guide to catching JWT and session authentication mistakes in code review: signature verification, algorithm confusion, and token lifecycle bugs.",
+    publishedAt: "2026-08-21",
+    readingTime: "7 min read",
+    image: "/blog/jwt-authentication-code-review.svg",
+  },
+  {
+    slug: "file-upload-security-code-review",
+    title: "Reviewing File Upload Features for Security Risk",
+    description:
+      "A practical guide to reviewing file upload features in code review: type validation, storage location, and the malicious files that slip through client-side checks.",
+    publishedAt: "2026-08-21",
+    readingTime: "7 min read",
+    image: "/blog/file-upload-security-code-review.svg",
+  },
+  {
     slug: "audit-bench-ai-vs-coderabbit",
     title: "Deep Security vs. Rapid Dev Loops: Audit Bench AI vs. CodeRabbit",
     description:
