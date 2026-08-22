@@ -15,6 +15,15 @@ export interface BlogPostMeta {
 
 export const BLOG_POSTS: BlogPostMeta[] = [
   {
+    slug: "best-linters-for-every-language-and-use-case",
+    title: "The Best Linters for Every Language and Use Case",
+    description:
+      "A practical guide to the best linters for C#, PHP, Java, Python, and JavaScript, plus Kubernetes manifests (kube-linter) and accessibility (axe).",
+    publishedAt: "2026-08-21",
+    readingTime: "9 min read",
+    image: "/blog/best-linters-for-every-language-and-use-case.svg",
+  },
+  {
     slug: "xss-code-review-guide",
     title: "How to Review Code for Cross-Site Scripting (XSS) Risk",
     description:
