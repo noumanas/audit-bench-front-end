@@ -69,6 +69,10 @@ const NAV_GROUPS = [
     links: [{ href: '/app/team', label: 'Team', icon: UsersIcon }],
   },
   {
+    label: 'Investors & M&A',
+    links: [{ href: '/app/due-diligence', label: 'Due diligence', icon: FileIcon }],
+  },
+  {
     label: 'AI red-teaming',
     links: [
       // A second product line alongside code review — gated per plan

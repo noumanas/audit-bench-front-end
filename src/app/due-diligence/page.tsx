@@ -24,23 +24,60 @@ export const metadata: Metadata = {
 const WHAT_YOU_GET = [
   {
     title: 'Security exposure',
-    detail: 'Vulnerabilities, exposed secrets, and compliance gaps in the target codebase.',
+    detail: 'Vulnerabilities, exposed secrets, and dependency/license compliance gaps in the target codebase.',
   },
   {
     title: 'Technical debt',
-    detail: 'What it will actually cost to bring the codebase to a healthy engineering standard.',
+    detail: 'A test-coverage read plus structural debt — circular imports, dead code, duplication — costed out in engineer-days.',
   },
   {
     title: 'Talent concentration risk',
     detail: 'How dependent the codebase is on one or two developers, and where the bus factor is thin.',
   },
   {
-    title: 'Architecture scalability',
-    detail: 'Whether the current design holds up under the growth your model assumes.',
+    title: 'Architecture consistency',
+    detail: 'Whether the codebase reads as one coherent system or several styles stitched together — with cited examples, not a vibe.',
   },
   {
     title: 'Remediation estimate',
-    detail: 'Engineer-months and rough cost to fix critical findings, in dollars your model can use.',
+    detail: 'Engineer-days and a dollar range to fix what we found, rolled up into one overall risk rating your IC can act on.',
+  },
+];
+
+// The actual pipeline, in the order it runs — see the technical writeup for
+// specifics; this is deliberately literal about what does and doesn't
+// happen (e.g. we never execute a target's code), since overclaiming here
+// is the kind of thing a technical buyer would catch immediately.
+const HOW_IT_WORKS = [
+  {
+    stage: '01',
+    title: 'Full-repo ingestion',
+    detail: 'Connect a GitHub or GitLab repo (read-only) or upload a zip. Every source file gets scanned, and commit-level contributor stats are pulled directly from the provider’s own API — no local git-history walk.',
+  },
+  {
+    stage: '02',
+    title: 'Security & dependency scan',
+    detail: 'Static analysis plus LLM review on flagged code, known-vulnerability checks against your lockfile, and a license-compliance pass that flags GPL/AGPL/copyleft dependencies when your own codebase looks closed-source.',
+  },
+  {
+    stage: '03',
+    title: 'Test coverage read',
+    detail: 'A static, no-execution estimate — test-to-source file ratio, plus whether a coverage threshold and CI test step are actually configured. We never run a target company’s test suite on our infrastructure.',
+  },
+  {
+    stage: '04',
+    title: 'Architecture consistency',
+    detail: 'One LLM pass sampled across the codebase flags mixed state-management patterns, inconsistent conventions, and ad-hoc development — cited to real files, not a generic score.',
+  },
+  {
+    stage: '05',
+    title: 'Talent concentration',
+    detail: 'Contributor commit-share analysis surfaces bus-factor risk — the module one departing engineer would take the most knowledge out of — before it’s your problem.',
+  },
+  {
+    stage: '06',
+    title: 'Aggregation & scoring',
+    detail: 'Every category above rolls up into one weighted Overall Risk Rating and a remediation-cost estimate in engineer-days and dollars — deterministic math over real findings, not another LLM guess.',
   },
 ];
 
@@ -186,6 +223,36 @@ export default function DueDiligencePage() {
               >
                 <h3 className="mb-2 text-sm font-bold text-[#E8ECF4]">{item.title}</h3>
                 <p className="text-sm leading-relaxed text-muted-on-ink">{item.detail}</p>
+              </div>
+            ))}
+          </div>
+        </Reveal>
+      </section>
+
+      {/* How it works */}
+      <section className="border-t border-ink-line bg-ink px-6 py-16">
+        <Reveal className="mx-auto max-w-5xl">
+          <div className="mb-10 text-center">
+            <div className="mb-2 font-mono text-[13px] tracking-wide text-muted-on-ink uppercase">
+              How it works
+            </div>
+            <h2 className="text-2xl font-bold text-[#E8ECF4]">What actually happens inside one scan.</h2>
+            <p className="mx-auto mt-2 max-w-xl text-sm leading-relaxed text-muted-on-ink">
+              No black box — here&apos;s the real pipeline, in the order it runs.{' '}
+              <Link href="/services" className="text-cobalt hover:underline">
+                See the full engine methodology →
+              </Link>
+            </p>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {HOW_IT_WORKS.map((s) => (
+              <div
+                key={s.stage}
+                className="rounded-lg border border-ink-line bg-ink-soft p-5 transition-all duration-200 hover:-translate-y-1 hover:border-cobalt/40 hover:shadow-panel"
+              >
+                <div className="mb-2 font-mono text-[11px] text-cobalt">{s.stage}</div>
+                <h3 className="mb-2 text-sm font-bold text-[#E8ECF4]">{s.title}</h3>
+                <p className="text-sm leading-relaxed text-muted-on-ink">{s.detail}</p>
               </div>
             ))}
           </div>

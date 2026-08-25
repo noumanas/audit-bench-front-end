@@ -286,6 +286,56 @@ export interface LicenseFinding {
   reason: string;
 }
 
+export interface TestCoverageEstimate {
+  sourceFileCount: number;
+  testFileCount: number;
+  testFileRatio: number;
+  hasCoverageConfig: boolean;
+  hasCiTestStep: boolean;
+  riskLevel: 'high' | 'medium' | 'low';
+  reason: string;
+  untestedDirectories: string[];
+}
+
+export interface RiskCategoryScore {
+  category: string;
+  riskLevel: 'high' | 'medium' | 'low' | null;
+  detail: string;
+}
+
+export interface RemediationItem {
+  category: string;
+  description: string;
+  estimatedDays: number;
+}
+
+export interface RiskAggregation {
+  overallRiskRating: 'high' | 'medium' | 'low';
+  overallHealthScore: number;
+  categories: RiskCategoryScore[];
+  remediation: {
+    items: RemediationItem[];
+    totalEstimatedDays: number;
+    estimatedCostLowUsd: number;
+    estimatedCostHighUsd: number;
+  };
+  recommendations: string[];
+  summary: string;
+}
+
+export interface ArchitectureInconsistency {
+  title: string;
+  description: string;
+  files: string[];
+}
+
+export interface ArchitectureAssessment {
+  consistencyScore: number;
+  riskLevel: 'high' | 'medium' | 'low';
+  summary: string;
+  inconsistencies: ArchitectureInconsistency[];
+}
+
 export interface ContributorStat {
   author: string;
   email?: string;
@@ -377,7 +427,10 @@ export interface ScanJob {
   secrets: SecretFinding[] | null;
   dependencyVulnerabilities: DependencyVulnerability[] | null;
   licenseFindings: LicenseFinding[] | null;
+  testCoverage: TestCoverageEstimate | null;
+  architectureAssessment: ArchitectureAssessment | null;
   contributorStats: ContributorStat[] | null;
+  riskAggregation: RiskAggregation | null;
   filesFromCache: number;
   filesAiSkipped: number;
   aiInvoked: boolean;

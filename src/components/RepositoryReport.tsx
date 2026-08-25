@@ -1,7 +1,16 @@
 'use client';
 
 import { useState } from 'react';
-import { FindingStatuses, FindingStatus, ScanJob, ContributorStat } from '@/lib/types';
+import Link from 'next/link';
+import {
+  FindingStatuses,
+  FindingStatus,
+  ScanJob,
+  ContributorStat,
+  TestCoverageEstimate,
+  ArchitectureAssessment,
+  RiskAggregation,
+} from '@/lib/types';
 import { VerdictBadge } from './VerdictBadge';
 import { SeverityBadge } from './SeverityBadge';
 import { FindingCard } from './FindingCard';
@@ -70,6 +79,11 @@ export function RepositoryReport({ scan }: { scan: ScanJob }) {
             View on {scan.sourceType === 'github_pr' ? 'GitHub' : 'GitLab'}
           </a>
         )}
+        {!isDiffReview && scan.status === 'completed' && (
+          <Link href={`/app/due-diligence/${scan.id}`} className="font-mono text-xs text-cobalt underline">
+            View as due diligence report →
+          </Link>
+        )}
         {scan.status === 'completed' && (
           <div className="ml-auto flex gap-1.5">
             <button
@@ -125,11 +139,17 @@ export function RepositoryReport({ scan }: { scan: ScanJob }) {
             <CostStat label="Local checks only" value={scan.filesAiSkipped} accent="text-pass" />
           </div>
 
+          {!isDiffReview && scan.riskAggregation && <RiskAssessmentBanner aggregation={scan.riskAggregation} />}
+
           {!isDiffReview && (
             <>
               <AnalysisSection
                 title="Dependency vulnerabilities"
-                empty="No known-vulnerable dependencies detected (or no lockfile present)."
+                empty={
+                  scan.dependencyVulnerabilities === null
+                    ? 'No dependency scan available for this scan.'
+                    : 'No known-vulnerable dependencies detected (or no lockfile present).'
+                }
                 show={Boolean(scan.dependencyVulnerabilities?.length)}
               >
                 <ul className="space-y-1.5">
@@ -145,7 +165,11 @@ export function RepositoryReport({ scan }: { scan: ScanJob }) {
 
               <AnalysisSection
                 title="License compliance"
-                empty="No copyleft or unclear-license dependencies flagged."
+                empty={
+                  scan.licenseFindings === null
+                    ? 'No license compliance check available for this scan.'
+                    : 'No copyleft or unclear-license dependencies flagged.'
+                }
                 show={Boolean(scan.licenseFindings?.length)}
               >
                 <ul className="space-y-1.5">
@@ -160,6 +184,22 @@ export function RepositoryReport({ scan }: { scan: ScanJob }) {
                     </li>
                   ))}
                 </ul>
+              </AnalysisSection>
+
+              <AnalysisSection
+                title="Test coverage (estimate)"
+                empty="No test-coverage estimate available for this scan."
+                show={Boolean(scan.testCoverage)}
+              >
+                {scan.testCoverage && <TestCoverageSummary coverage={scan.testCoverage} />}
+              </AnalysisSection>
+
+              <AnalysisSection
+                title="Architecture consistency"
+                empty="No architecture assessment for this scan — it only runs when the scan already needed a fresh AI review."
+                show={Boolean(scan.architectureAssessment)}
+              >
+                {scan.architectureAssessment && <ArchitectureSummary assessment={scan.architectureAssessment} />}
               </AnalysisSection>
 
               <AnalysisSection
@@ -323,8 +363,126 @@ function CostStat({ label, value, accent }: { label: string; value: number; acce
   );
 }
 
+const RISK_RATING_STYLES: Record<'high' | 'medium' | 'low', { bg: string; text: string }> = {
+  high: { bg: 'bg-critical/10 border-critical/30', text: 'text-critical' },
+  medium: { bg: 'bg-high/10 border-high/30', text: 'text-high' },
+  low: { bg: 'bg-pass/10 border-pass/30', text: 'text-pass' },
+};
+
+/** Top-of-report rollup: the overall rating, health score, remediation estimate, and per-category breakdown from RiskAggregation. */
+export function RiskAssessmentBanner({ aggregation }: { aggregation: RiskAggregation }) {
+  const style = RISK_RATING_STYLES[aggregation.overallRiskRating];
+  const { remediation } = aggregation;
+
+  return (
+    <div className={`rounded-xl border p-5 ${style.bg}`}>
+      <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <div className="font-mono text-[11px] font-bold tracking-wide text-muted-on-paper uppercase">
+            Overall risk assessment
+          </div>
+          <div className={`text-xl font-bold uppercase ${style.text}`}>{aggregation.overallRiskRating}</div>
+        </div>
+        <div className="flex gap-4 text-right">
+          <div>
+            <div className="text-lg font-bold text-[#1C2128]">{aggregation.overallHealthScore}/100</div>
+            <div className="font-mono text-[10px] tracking-wide text-muted-on-paper uppercase">Health score</div>
+          </div>
+          <div>
+            <div className="text-lg font-bold text-[#1C2128]">
+              ${remediation.estimatedCostLowUsd.toLocaleString('en-US')}–${remediation.estimatedCostHighUsd.toLocaleString('en-US')}
+            </div>
+            <div className="font-mono text-[10px] tracking-wide text-muted-on-paper uppercase">
+              Est. remediation ({remediation.totalEstimatedDays}d)
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p className="mb-3 text-sm leading-relaxed text-[#1C2128]">{aggregation.summary}</p>
+
+      <div className="mb-3 flex flex-wrap gap-2">
+        {aggregation.categories.map((c) => (
+          <span
+            key={c.category}
+            title={c.detail}
+            className={`rounded-full border px-2.5 py-1 text-[11px] font-medium whitespace-nowrap ${
+              c.riskLevel === null
+                ? 'border-paper-line text-muted-on-paper'
+                : `${RISK_RATING_STYLES[c.riskLevel].bg} ${RISK_RATING_STYLES[c.riskLevel].text}`
+            }`}
+          >
+            {c.category}: {c.riskLevel ?? 'n/a'}
+          </span>
+        ))}
+      </div>
+
+      {aggregation.recommendations.length > 0 && (
+        <ul className="space-y-1 border-t border-paper-line pt-3">
+          {aggregation.recommendations.map((r, i) => (
+            <li key={i} className="text-xs leading-relaxed text-[#1C2128]">
+              → {r}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
+/** LLM-judged architecture consistency read, sampled across the scan's files. */
+export function ArchitectureSummary({ assessment }: { assessment: ArchitectureAssessment }) {
+  return (
+    <div className="space-y-2.5">
+      <div className="flex flex-wrap items-center gap-2">
+        <SeverityBadge level={assessment.riskLevel} />
+        <span className="text-xs text-[#1C2128]">Consistency score: {assessment.consistencyScore}/100</span>
+      </div>
+      <p className="text-xs leading-relaxed text-muted-on-paper">{assessment.summary}</p>
+      {assessment.inconsistencies.length > 0 && (
+        <ul className="space-y-2">
+          {assessment.inconsistencies.map((inc, i) => (
+            <li key={i} className="rounded-md border border-paper-line bg-paper px-3 py-2">
+              <div className="mb-1 text-xs font-bold text-[#1C2128]">{inc.title}</div>
+              <div className="mb-1 text-xs leading-relaxed text-muted-on-paper">{inc.description}</div>
+              {inc.files.length > 0 && (
+                <div className="font-mono text-[11px] text-muted-on-paper">{inc.files.join(', ')}</div>
+              )}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
+/** Static, no-execution test-coverage read: file-count ratio plus whether a coverage tool/CI step backs it up. */
+export function TestCoverageSummary({ coverage }: { coverage: TestCoverageEstimate }) {
+  return (
+    <div className="space-y-2">
+      <div className="flex flex-wrap items-center gap-2">
+        <SeverityBadge level={coverage.riskLevel} />
+        <span className="text-xs text-[#1C2128]">
+          {coverage.testFileCount} test file{coverage.testFileCount === 1 ? '' : 's'} / {coverage.sourceFileCount} source
+          file{coverage.sourceFileCount === 1 ? '' : 's'} ({Math.round(coverage.testFileRatio * 100)}%)
+        </span>
+      </div>
+      <p className="text-xs leading-relaxed text-muted-on-paper">{coverage.reason}</p>
+      <div className="flex flex-wrap gap-3 font-mono text-[11px] text-muted-on-paper">
+        <span>{coverage.hasCoverageConfig ? '✓' : '✗'} coverage config detected</span>
+        <span>{coverage.hasCiTestStep ? '✓' : '✗'} CI test step detected</span>
+      </div>
+      {coverage.untestedDirectories.length > 0 && (
+        <div className="text-xs text-muted-on-paper">
+          No tests found under: <span className="font-mono text-[#1C2128]">{coverage.untestedDirectories.join(', ')}</span>
+        </div>
+      )}
+    </div>
+  );
+}
+
 /** Bus-factor read on a repo scan: who owns the commit history, and how thin. */
-function ContributorConcentration({ stats }: { stats: ContributorStat[] }) {
+export function ContributorConcentration({ stats }: { stats: ContributorStat[] }) {
   const sorted = [...stats].sort((a, b) => b.commits - a.commits);
   const total = sorted.reduce((sum, s) => sum + s.commits, 0);
   if (total === 0) return null;
