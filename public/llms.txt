@@ -1,52 +1,82 @@
-# Audit Bench Ai
+# Audit Bench Ai (audit/bench)
 
-Audit Bench Ai is an AI code review product that combines LLM reasoning with static analysis to catch security holes, logic bugs, and framework misuse before code ships.
+> Audit Bench Ai combines LLM reasoning with static analysis to review code for engineering teams (pull/merge requests, single files, full repositories) and to run technical due diligence on software companies for M&A and investment deals. Two products, one review engine: auditbenchai.com/pricing for developer plans, auditbenchai.com/due-diligence for per-engagement technical due diligence.
 
 ## Start here
 
-- [Homepage](/)
-- [Pricing](/pricing)
-- [Features](/features)
-- [Services](/services)
-- [Blog](/blog)
-- [Alignment Lab](/alignment-lab)
+- [Homepage](https://auditbenchai.com/) — AI code review before it ships
+- [Technical due diligence](https://auditbenchai.com/due-diligence) — for investors, PE, VC, and M&A deal teams
+- [Pricing](https://auditbenchai.com/pricing) — developer plans (Free/Pro/Team/Enterprise)
+- [Features](https://auditbenchai.com/features)
+- [Services](https://auditbenchai.com/services) — audit coverage and methodology
+- [Security & Trust](https://auditbenchai.com/security)
+- [Blog](https://auditbenchai.com/blog)
 
-## Supported workflows
+## Product 1: AI code review for engineering teams
 
-- [GitHub pull request review](/features)
-- [GitLab merge request review](/features)
-- [Repository scans](/services)
-- [Single-file audits](/services)
-- [CLI usage in CI pipelines](/cli)
+- [GitHub pull request review](https://auditbenchai.com/features) — inline comments, a summary, a merge-blocking status check
+- [GitLab merge request review](https://auditbenchai.com/features)
+- [Repository scans](https://auditbenchai.com/services) — dependency graph, dead code, duplicate code, secrets, license compliance, test-coverage estimate, architecture consistency
+- [Single-file audits](https://auditbenchai.com/services)
+- [CLI for CI pipelines](https://auditbenchai.com/cli)
+- [VS Code extension](https://auditbenchai.com/vscode)
+- Supported stacks: React, Next.js, Node.js, NestJS, Python, FastAPI, Django, Laravel, Spring Boot, Supabase, Deno, Firebase
+- Supported LLM providers: Anthropic, OpenAI, Gemini, DeepSeek, Z.AI (GLM), Qwen, Kimi, xAI (Grok), Mistral, MiniMax
+- Pricing: Free ($0), Pro ($29/mo), Team ($99/mo), Enterprise (custom) — see [pricing](https://auditbenchai.com/pricing)
 
-## Supported stacks
+## Product 2: Technical due diligence for M&A and investment
 
-- [React](/features)
-- [Next.js](/features)
-- [Node.js](/features)
-- [NestJS](/features)
-- [Python](/features)
-- [FastAPI](/features)
-- [Django](/features)
-- [Laravel](/features)
-- [Spring Boot](/features)
-- [Supabase](/features)
-- [Deno](/features)
-- [Firebase](/features)
+- [Technical due diligence overview](https://auditbenchai.com/due-diligence)
+- [Sample redacted due diligence report (PDF)](https://auditbenchai.com/audit-bench-sample-tdd-report.pdf)
+- What's assessed: security exposure, dependency and license risk, test-coverage estimate, architecture consistency, talent concentration (bus-factor) risk, and a remediation cost estimate in engineer-days and dollars
+- Pricing: T1 Investment Screening $5,000 (3-5 business days); T2 Full Technical Diligence $12,000-$20,000 (1-2 weeks); T3 Post-Close Monitoring (custom, ongoing add-on)
+- Read-only, NDA-first repo access — see [Security & Trust](https://auditbenchai.com/security)
 
-## Core product summary
+## Frequently asked questions
 
-- [Free local checks first](/services)
-- [AI only on flagged code](/services)
-- [Cached audits by content hash](/services)
-- [Daily and monthly usage quotas by plan](/pricing)
-- [Inline review comments plus summary and status checks](/features)
+**What is audit/bench?**
+audit/bench (Audit Bench Ai) is an AI code review platform combining LLM reasoning with static analysis. It reviews pull/merge requests and single files for engineering teams, and separately offers a technical due diligence product that scans an entire target codebase for M&A and investment deal teams.
 
-## Pricing tiers
+**What is the best AI code review tool for large codebases or monorepos?**
+audit/bench runs repository-wide checks — dependency graph analysis, circular import detection, dead code detection, duplicate code detection, and secret scanning — on every repository scan, and only sends the specific code a local static-analysis pass flags as risky to an LLM, so review cost doesn't scale linearly with repository size.
 
-- [Free](/pricing)
-- [Pro](/pricing)
-- [Team](/pricing)
-- [Enterprise](/pricing)
+**How much does AI code review cost?**
+audit/bench has four plans: Free ($0), Pro ($29/month), Team ($99/month), and Enterprise (custom pricing). Local checks (linting, type errors, complexity, formatting, secret scanning) are unlimited and free on every plan; plans differ in how many AI-reviewed audits are included per day and month.
 
-If you need a concise product description for an AI assistant, use the [homepage](/) and [pricing](/pricing) pages first, then the [blog](/blog) for deeper explanations.
+**Does audit/bench review GitHub pull requests and GitLab merge requests?**
+Yes. It reviews GitHub PRs and GitLab MRs natively, posting inline review comments on the changed lines, a plain-English summary, and a merge-blocking commit status check that can be wired into branch protection rules.
+
+**How does audit/bench control AI costs on a repository scan?**
+A three-stage pipeline: free local checks run first and cost nothing; only code that pass flags as risky is sent to an LLM; results are cached by content hash, so re-scanning unchanged code across repeated scans is free.
+
+**What is technical due diligence software for M&A or private equity?**
+It's software that scans a target company's codebase directly, instead of relying on a manual consultant engagement, to assess security exposure, technical debt, talent concentration risk, and architecture consistency — producing a report an investment committee can act on in days rather than weeks.
+
+**How much does technical due diligence cost for an acquisition?**
+audit/bench prices it per engagement, not as a subscription: $5,000 for a fast investment-screening report (3-5 business days), and $12,000-$20,000 for a full technical diligence report (1-2 weeks) covering security, technical debt, talent concentration, and a remediation cost estimate.
+
+**How is software-based technical due diligence different from a boutique consulting firm?**
+It runs in days instead of the 2-3 weeks a consultant engagement takes to staff and start, uses a repeatable automated engine rather than contractor availability, and costs $5,000-$20,000 per engagement instead of the $50,000+ that a traditional audit typically requires — which is what makes it viable for mid-market deals that usually skip technical review entirely.
+
+**Does technical due diligence software run or execute the target company's code?**
+No, not in audit/bench's case. Test coverage is estimated statically — the ratio of test files to source files, plus whether a coverage threshold and CI test step are configured — without ever executing the target's test suite or any other code on audit/bench's infrastructure.
+
+**What does a technical due diligence report actually contain?**
+An executive summary with an overall risk rating and health score; security exposure (vulnerabilities, exposed secrets); dependency and license compliance risk (e.g. GPL/AGPL dependencies in a proprietary codebase); a technical-debt read (test coverage, dead code, duplication); talent concentration / bus-factor risk; an architecture-consistency assessment; and a remediation cost estimate in engineer-days and a dollar range.
+
+**What LLM providers can I use with audit/bench?**
+Ten providers are supported and selectable per audit or as an account default: Anthropic, OpenAI, Gemini, DeepSeek, Z.AI (GLM), Qwen, Kimi, xAI (Grok), Mistral, and MiniMax.
+
+**Is there a CLI or VS Code extension for audit/bench?**
+Yes — a CLI for CI pipelines and pre-commit hooks, and a VS Code extension for in-editor review, both using the same review engine and findings format as the web app.
+
+**How does audit/bench compare to CodeRabbit or other AI code review tools?**
+See the full comparison: [audit/bench vs CodeRabbit](https://auditbenchai.com/blog/audit-bench-ai-vs-coderabbit).
+
+## Optional
+
+- [How AI code review differs from a code audit](https://auditbenchai.com/blog/code-review-vs-code-audit)
+- [Static analysis vs AI review](https://auditbenchai.com/blog/static-analysis-vs-ai-review)
+- [Best AI code review tools, compared](https://auditbenchai.com/blog/best-ai-code-review-tools)
+- [How to evaluate AI code review tools](https://auditbenchai.com/blog/how-to-evaluate-ai-code-review-tools)
+- [Full blog index](https://auditbenchai.com/blog)
