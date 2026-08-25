@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { FindingStatuses, FindingStatus, ScanJob } from '@/lib/types';
+import { FindingStatuses, FindingStatus, ScanJob, ContributorStat } from '@/lib/types';
 import { VerdictBadge } from './VerdictBadge';
 import { FindingCard } from './FindingCard';
 import { PipelineBadge } from './PipelineBadge';
@@ -14,6 +14,10 @@ import { TokenUsageNote } from './TokenUsageNote';
 const DIFF_SOURCE_TYPES = new Set<ScanJob['sourceType']>(['github_pr', 'gitlab_mr']);
 // Fixing requires a remote to commit to — a .zip upload has none.
 const FIXABLE_SOURCE_TYPES = new Set<ScanJob['sourceType']>(['github_repo', 'github_pr', 'gitlab_repo', 'gitlab_mr']);
+// contributorStats is only ever populated for these — see RepositoryService/
+// GithubController/GitlabController. A .zip upload has no git host to pull
+// commit stats from, and a PR/MR diff review never fetches them at all.
+const CONTRIBUTOR_STATS_SOURCE_TYPES = new Set<ScanJob['sourceType']>(['github_repo', 'gitlab_repo']);
 
 export function RepositoryReport({ scan }: { scan: ScanJob }) {
   const [openFilePath, setOpenFilePath] = useState<string | null>(null);
@@ -182,6 +186,16 @@ export function RepositoryReport({ scan }: { scan: ScanJob }) {
             </>
           )}
 
+          {CONTRIBUTOR_STATS_SOURCE_TYPES.has(scan.sourceType) && (
+            <AnalysisSection
+              title="Contributor concentration"
+              empty="No contributor data available for this repository."
+              show={Boolean(scan.contributorStats?.length)}
+            >
+              <ContributorConcentration stats={scan.contributorStats ?? []} />
+            </AnalysisSection>
+          )}
+
           <AnalysisSection
             title="Potential hardcoded secrets"
             empty="No obvious secrets detected."
@@ -285,6 +299,48 @@ function CostStat({ label, value, accent }: { label: string; value: number; acce
     <div className="rounded-lg border border-paper-line bg-paper px-3.5 py-2.5">
       <div className={`font-mono text-lg font-bold ${accent}`}>{value}</div>
       <div className="font-mono text-[10px] tracking-wide text-muted-on-paper uppercase">{label}</div>
+    </div>
+  );
+}
+
+/** Bus-factor read on a repo scan: who owns the commit history, and how thin. */
+function ContributorConcentration({ stats }: { stats: ContributorStat[] }) {
+  const sorted = [...stats].sort((a, b) => b.commits - a.commits);
+  const total = sorted.reduce((sum, s) => sum + s.commits, 0);
+  if (total === 0) return null;
+
+  const topShare = sorted[0].commits / total;
+  const risk =
+    topShare >= 0.5
+      ? { label: 'High concentration risk', color: 'text-critical' }
+      : topShare >= 0.3
+        ? { label: 'Moderate concentration', color: 'text-high' }
+        : null;
+
+  return (
+    <div className="space-y-2.5">
+      {risk && (
+        <div className={`font-mono text-[11px] font-bold uppercase ${risk.color}`}>
+          {risk.label} — {sorted[0].author} authored {Math.round(topShare * 100)}% of commits
+        </div>
+      )}
+      {sorted.slice(0, 8).map((c) => {
+        const pct = (c.commits / total) * 100;
+        return (
+          <div key={c.author} className="flex items-center gap-3">
+            <span className="w-32 shrink-0 truncate font-mono text-xs text-[#1C2128]">{c.author}</span>
+            <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-paper-line">
+              <div className="h-full rounded-full bg-cobalt" style={{ width: `${Math.max(pct, 2)}%` }} />
+            </div>
+            <span className="w-28 shrink-0 text-right text-xs text-muted-on-paper">
+              {c.commits} commit{c.commits === 1 ? '' : 's'} · {Math.round(pct)}%
+            </span>
+          </div>
+        );
+      })}
+      {sorted.length > 8 && (
+        <div className="text-xs text-muted-on-paper">+ {sorted.length - 8} more contributor(s)</div>
+      )}
     </div>
   );
 }

@@ -278,6 +278,15 @@ export interface DependencyVulnerability {
   range: string;
 }
 
+export interface ContributorStat {
+  author: string;
+  email?: string;
+  commits: number;
+  additions: number;
+  deletions: number;
+  lastCommitAt: string | null;
+}
+
 export interface ScoreSet {
   security: number;
   performance: number;
@@ -359,6 +368,7 @@ export interface ScanJob {
   duplicates: DuplicateGroup[] | null;
   secrets: SecretFinding[] | null;
   dependencyVulnerabilities: DependencyVulnerability[] | null;
+  contributorStats: ContributorStat[] | null;
   filesFromCache: number;
   filesAiSkipped: number;
   aiInvoked: boolean;

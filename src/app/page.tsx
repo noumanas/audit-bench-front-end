@@ -285,6 +285,15 @@ export default function HomePage() {
                   See pricing
                 </Link>
               </div>
+              <p
+                className="fade-up mt-5 max-w-md text-xs leading-relaxed text-muted-on-ink"
+                style={{ animationDelay: '280ms' }}
+              >
+                Doing technical due diligence on a software acquisition?{' '}
+                <Link href="/due-diligence" className="font-semibold text-cobalt hover:underline">
+                  Get a risk report in days, not weeks →
+                </Link>
+              </p>
             </div>
 
             <div className="fade-up" style={{ animationDelay: '200ms' }}>

@@ -23,6 +23,10 @@ const COLUMNS = [
       { href: '/login', label: 'Log in' },
     ],
   },
+  {
+    title: 'Investors & M&A',
+    links: [{ href: '/due-diligence', label: 'Technical Due Diligence' }],
+  },
 ];
 
 export function Footer() {

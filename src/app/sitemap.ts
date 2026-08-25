@@ -18,6 +18,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: '/cli', changeFrequency: 'monthly', priority: 0.7 },
     { path: '/vscode', changeFrequency: 'monthly', priority: 0.7 },
     { path: '/security', changeFrequency: 'monthly', priority: 0.6 },
+    { path: '/due-diligence', changeFrequency: 'monthly', priority: 0.7 },
     { path: '/pricing', changeFrequency: 'monthly', priority: 0.8 },
     { path: '/signup', changeFrequency: 'monthly', priority: 0.5 },
   ];
