@@ -278,6 +278,14 @@ export interface DependencyVulnerability {
   range: string;
 }
 
+export interface LicenseFinding {
+  package: string;
+  version: string;
+  license: string;
+  riskLevel: 'high' | 'medium' | 'low';
+  reason: string;
+}
+
 export interface ContributorStat {
   author: string;
   email?: string;
@@ -368,6 +376,7 @@ export interface ScanJob {
   duplicates: DuplicateGroup[] | null;
   secrets: SecretFinding[] | null;
   dependencyVulnerabilities: DependencyVulnerability[] | null;
+  licenseFindings: LicenseFinding[] | null;
   contributorStats: ContributorStat[] | null;
   filesFromCache: number;
   filesAiSkipped: number;

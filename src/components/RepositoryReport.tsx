@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { FindingStatuses, FindingStatus, ScanJob, ContributorStat } from '@/lib/types';
 import { VerdictBadge } from './VerdictBadge';
+import { SeverityBadge } from './SeverityBadge';
 import { FindingCard } from './FindingCard';
 import { PipelineBadge } from './PipelineBadge';
 import { Stage1Summary } from './Stage1Summary';
@@ -137,6 +138,25 @@ export function RepositoryReport({ scan }: { scan: ScanJob }) {
                       <span className="font-mono font-bold text-critical uppercase">{v.severity}</span>{' '}
                       <span className="font-mono">{v.package}</span> — {v.title}
                       {v.range && <span className="text-muted-on-paper"> ({v.range})</span>}
+                    </li>
+                  ))}
+                </ul>
+              </AnalysisSection>
+
+              <AnalysisSection
+                title="License compliance"
+                empty="No copyleft or unclear-license dependencies flagged."
+                show={Boolean(scan.licenseFindings?.length)}
+              >
+                <ul className="space-y-1.5">
+                  {scan.licenseFindings?.map((f, i) => (
+                    <li key={i} className="flex flex-wrap items-baseline gap-2 text-xs text-[#1C2128]">
+                      <SeverityBadge level={f.riskLevel} />
+                      <span className="font-mono">
+                        {f.package}@{f.version}
+                      </span>
+                      <span className="font-mono text-muted-on-paper">[{f.license}]</span>
+                      <span className="text-muted-on-paper">— {f.reason}</span>
                     </li>
                   ))}
                 </ul>
