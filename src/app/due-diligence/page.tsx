@@ -227,8 +227,31 @@ export default function DueDiligencePage() {
         </Reveal>
       </section>
 
+      {/* Quick nav — this page runs 9 sections long; a PE/VC reader in a
+          hurry should be able to jump straight to pricing or the FAQ
+          instead of scrolling past everything else. */}
+      <nav className="sticky top-0 z-10 border-b border-ink-line bg-ink/95 px-6 py-3 backdrop-blur">
+        <div className="mx-auto flex max-w-3xl flex-wrap justify-center gap-x-6 gap-y-1 font-mono text-xs tracking-wide text-muted-on-ink uppercase">
+          <a href="#problem" className="hover:text-cobalt">
+            The problem
+          </a>
+          <a href="#how-it-works" className="hover:text-cobalt">
+            How it works
+          </a>
+          <a href="#pricing" className="hover:text-cobalt">
+            Pricing
+          </a>
+          <a href="#sample-report" className="hover:text-cobalt">
+            Sample report
+          </a>
+          <a href="#faq" className="hover:text-cobalt">
+            FAQ
+          </a>
+        </div>
+      </nav>
+
       {/* Problem */}
-      <section className="bg-paper px-6 py-16">
+      <section id="problem" className="scroll-mt-14 bg-paper px-6 py-16">
         <Reveal className="mx-auto max-w-3xl">
           <div className="mb-2 font-mono text-[13px] tracking-wide text-muted-on-paper uppercase">
             The problem
@@ -280,7 +303,7 @@ export default function DueDiligencePage() {
       </section>
 
       {/* How it works */}
-      <section className="border-t border-ink-line bg-ink px-6 py-16">
+      <section id="how-it-works" className="scroll-mt-14 border-t border-ink-line bg-ink px-6 py-16">
         <Reveal className="mx-auto max-w-5xl">
           <div className="mb-10 text-center">
             <div className="mb-2 font-mono text-[13px] tracking-wide text-muted-on-ink uppercase">
@@ -310,7 +333,7 @@ export default function DueDiligencePage() {
       </section>
 
       {/* Tiers / pricing */}
-      <section className="bg-paper px-6 py-16">
+      <section id="pricing" className="scroll-mt-14 bg-paper px-6 py-16">
         <Reveal className="mx-auto max-w-5xl">
           <div className="mb-10 text-center">
             <div className="mb-2 font-mono text-[13px] tracking-wide text-muted-on-paper uppercase">
@@ -381,7 +404,7 @@ export default function DueDiligencePage() {
       </section>
 
       {/* Sample report CTA */}
-      <section className="bg-paper px-6 py-16 text-center">
+      <section id="sample-report" className="scroll-mt-14 bg-paper px-6 py-16 text-center">
         <Reveal className="mx-auto max-w-2xl">
           <div className="mb-2 font-mono text-[13px] tracking-wide text-muted-on-paper uppercase">
             Sample report
@@ -402,7 +425,7 @@ export default function DueDiligencePage() {
       </section>
 
       {/* FAQ */}
-      <section className="border-t border-ink-line bg-ink px-6 py-16">
+      <section id="faq" className="scroll-mt-14 border-t border-ink-line bg-ink px-6 py-16">
         <Reveal className="mx-auto max-w-3xl">
           <div className="mb-10 text-center">
             <div className="mb-2 font-mono text-[13px] tracking-wide text-muted-on-ink uppercase">FAQ</div>

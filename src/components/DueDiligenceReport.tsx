@@ -31,6 +31,26 @@ export function DueDiligenceReport({ scan }: { scan: ScanJob }) {
     .sort((a, b) => SEVERITY_ORDER.indexOf(a.severity) - SEVERITY_ORDER.indexOf(b.severity))
     .slice(0, 10);
 
+  // Numbered dynamically from which sections actually render — Talent
+  // Concentration and Architecture are conditional on data being available,
+  // so a hardcoded "04, 05, 06, 07" would visibly skip a number (e.g. jump
+  // straight from 04 to 07) any time either is missing, which reads as a
+  // mistake in a document meant to look authoritative to a deal team.
+  const outline = [
+    { id: 'executive-summary', title: 'Executive Summary', included: Boolean(scan.riskAggregation) },
+    { id: 'security-exposure', title: 'Security Exposure', included: true },
+    { id: 'dependency-license-risk', title: 'Dependency & License Risk', included: true },
+    { id: 'technical-debt', title: 'Technical Debt', included: true },
+    { id: 'talent-concentration', title: 'Talent Concentration Risk', included: Boolean(scan.contributorStats?.length) },
+    { id: 'architecture-scalability', title: 'Architecture & Scalability', included: Boolean(scan.architectureAssessment) },
+    { id: 'remediation-cost-estimate', title: 'Remediation Cost Estimate', included: Boolean(scan.riskAggregation) },
+  ];
+  const sectionNum = new Map<string, string>();
+  let n = 0;
+  for (const s of outline) {
+    if (s.included) sectionNum.set(s.id, String(++n).padStart(2, '0'));
+  }
+
   return (
     <div className="mx-auto max-w-4xl rounded-xl border border-paper-line bg-paper-card p-8 shadow-2xl shadow-black/40">
       <div className="mb-6 flex items-start justify-between border-b border-paper-line pb-6">
@@ -51,8 +71,18 @@ export function DueDiligenceReport({ scan }: { scan: ScanJob }) {
         </button>
       </div>
 
+      <nav className="mb-6 flex flex-wrap gap-x-4 gap-y-1.5 border-b border-paper-line pb-4 font-mono text-xs print:hidden">
+        {outline
+          .filter((s) => s.included)
+          .map((s) => (
+            <a key={s.id} href={`#${s.id}`} className="text-muted-on-paper hover:text-cobalt">
+              {sectionNum.get(s.id)} {s.title}
+            </a>
+          ))}
+      </nav>
+
       {scan.riskAggregation ? (
-        <Section num="01" title="Executive Summary">
+        <Section num="01" id="executive-summary" title="Executive Summary">
           <RiskAssessmentBanner aggregation={scan.riskAggregation} />
         </Section>
       ) : (
@@ -61,7 +91,7 @@ export function DueDiligenceReport({ scan }: { scan: ScanJob }) {
         </p>
       )}
 
-      <Section num="02" title="Security Exposure">
+      <Section num={sectionNum.get('security-exposure')!} id="security-exposure" title="Security Exposure">
         <div className="mb-3 flex flex-wrap gap-2">
           {SEVERITY_ORDER.map((s) => (
             <span key={s} className="flex items-center gap-1.5 rounded-full border border-paper-line px-2.5 py-1 text-xs">
@@ -90,7 +120,7 @@ export function DueDiligenceReport({ scan }: { scan: ScanJob }) {
         )}
       </Section>
 
-      <Section num="03" title="Dependency & License Risk">
+      <Section num={sectionNum.get('dependency-license-risk')!} id="dependency-license-risk" title="Dependency & License Risk">
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
             <div className="mb-2 font-mono text-[11px] font-bold tracking-wide text-muted-on-paper uppercase">
@@ -136,7 +166,7 @@ export function DueDiligenceReport({ scan }: { scan: ScanJob }) {
         </div>
       </Section>
 
-      <Section num="04" title="Technical Debt">
+      <Section num={sectionNum.get('technical-debt')!} id="technical-debt" title="Technical Debt">
         {scan.testCoverage ? (
           <TestCoverageSummary coverage={scan.testCoverage} />
         ) : (
@@ -150,19 +180,19 @@ export function DueDiligenceReport({ scan }: { scan: ScanJob }) {
       </Section>
 
       {scan.contributorStats && scan.contributorStats.length > 0 && (
-        <Section num="05" title="Talent Concentration Risk">
+        <Section num={sectionNum.get('talent-concentration')!} id="talent-concentration" title="Talent Concentration Risk">
           <ContributorConcentration stats={scan.contributorStats} />
         </Section>
       )}
 
       {scan.architectureAssessment && (
-        <Section num="06" title="Architecture &amp; Scalability">
+        <Section num={sectionNum.get('architecture-scalability')!} id="architecture-scalability" title="Architecture &amp; Scalability">
           <ArchitectureSummary assessment={scan.architectureAssessment} />
         </Section>
       )}
 
       {scan.riskAggregation && (
-        <Section num="07" title="Remediation Cost Estimate">
+        <Section num={sectionNum.get('remediation-cost-estimate')!} id="remediation-cost-estimate" title="Remediation Cost Estimate">
           {scan.riskAggregation.remediation.items.length > 0 ? (
             <div className="overflow-hidden rounded-lg border border-paper-line">
               <table className="w-full text-left text-xs">
@@ -210,9 +240,21 @@ export function DueDiligenceReport({ scan }: { scan: ScanJob }) {
   );
 }
 
-function Section({ num, title, children }: { num: string; title: string; children: React.ReactNode }) {
+function Section({
+  num,
+  id,
+  title,
+  children,
+}: {
+  num: string;
+  id: string;
+  title: string;
+  children: React.ReactNode;
+}) {
   return (
-    <div className="mb-6">
+    // scroll-mt so a jump from the quick-nav doesn't land the heading flush
+    // against the viewport edge.
+    <div id={id} className="mb-6 scroll-mt-6">
       <h2 className="mb-3 flex items-baseline gap-2 border-b border-paper-line pb-2 text-sm font-bold text-[#1C2128]">
         <span className="font-mono text-cobalt">{num}</span> {title}
       </h2>

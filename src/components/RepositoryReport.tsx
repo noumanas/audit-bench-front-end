@@ -13,6 +13,7 @@ import {
 } from '@/lib/types';
 import { VerdictBadge } from './VerdictBadge';
 import { SeverityBadge } from './SeverityBadge';
+import { ChevronRightIcon } from './icons';
 import { FindingCard } from './FindingCard';
 import { PipelineBadge } from './PipelineBadge';
 import { Stage1Summary } from './Stage1Summary';
@@ -523,6 +524,15 @@ export function ContributorConcentration({ stats }: { stats: ContributorStat[] }
   );
 }
 
+/**
+ * Collapsible by default — this report grew to 10+ of these over the
+ * course of a few sessions, and having every one always fully expanded
+ * turned a scan with mostly clean results into a long scroll of "nothing
+ * found" text. Starts open only when there's something worth seeing
+ * (`show`); collapsed sections still surface the empty-state text inline
+ * next to the title, so confirming "checked, and it's clean" never
+ * requires a click.
+ */
 function AnalysisSection({
   title,
   empty,
@@ -534,12 +544,30 @@ function AnalysisSection({
   show: boolean;
   children: React.ReactNode;
 }) {
+  const [open, setOpen] = useState(show);
   return (
-    <div>
-      <div className="mb-2 font-mono text-[11px] font-bold tracking-wide text-muted-on-paper uppercase">
-        {title}
-      </div>
-      <div className="text-sm text-muted-on-paper">{show ? children : empty}</div>
+    <div className="overflow-hidden rounded-lg border border-paper-line">
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        className="flex w-full cursor-pointer items-center justify-between gap-3 px-3.5 py-2.5 text-left transition-colors duration-150 hover:bg-paper"
+      >
+        <span className="flex min-w-0 items-center gap-2">
+          <span className="shrink-0 font-mono text-[11px] font-bold tracking-wide text-muted-on-paper uppercase">
+            {title}
+          </span>
+          {!open && !show && <span className="truncate text-xs text-muted-on-paper">— {empty}</span>}
+        </span>
+        <ChevronRightIcon
+          className={`h-3.5 w-3.5 shrink-0 text-muted-on-paper transition-transform duration-150 ${open ? 'rotate-90' : ''}`}
+        />
+      </button>
+      {open && (
+        <div className="border-t border-paper-line px-3.5 py-3 text-sm text-muted-on-paper">
+          {show ? children : empty}
+        </div>
+      )}
     </div>
   );
 }
