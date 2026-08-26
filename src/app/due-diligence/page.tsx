@@ -17,6 +17,14 @@ export const metadata: Metadata = {
     'private equity technical diligence',
     'venture capital code audit',
     'technical risk report',
+    'technical due diligence checklist',
+    'technical due diligence cost',
+    'how much does technical due diligence cost',
+    'how long does technical due diligence take',
+    'AI technical due diligence',
+    'automated technical due diligence',
+    'technical due diligence for startups',
+    'technical due diligence for mid-market acquisition',
   ],
   alternates: { canonical: '/due-diligence' },
 };
@@ -127,6 +135,48 @@ const WHY_US = [
   },
 ];
 
+// Targets the long-tail questions people actually search once they already
+// know what TDD is (checklist, cost, timeline) rather than competing head-on
+// with Bain/Snyk/consulting-firm content for the bare "technical due
+// diligence" term itself — see the FAQPage schema below, which is what lets
+// an answer engine lift these directly instead of needing us to rank #1.
+const FAQ_ITEMS = [
+  {
+    q: 'What does a technical due diligence checklist cover?',
+    a: 'A thorough technical due diligence checklist covers security exposure (vulnerabilities, exposed secrets), dependency and license compliance, test coverage and code quality, architecture consistency, and talent concentration risk. audit/bench’s report covers all five, plus a remediation cost estimate your IC can act on.',
+  },
+  {
+    q: 'How much does technical due diligence cost?',
+    a: 'Traditional consultant-led technical due diligence typically runs $50,000+ for a 2–3 week engagement, which is why it usually only happens on the largest deals. audit/bench prices it per engagement instead: $5,000 for a fast screening read, $12,000–$20,000 for a full report.',
+  },
+  {
+    q: 'How long does technical due diligence take?',
+    a: 'A traditional consultant engagement takes roughly 1–2 months once it moves past the LOI, including 2–3 weeks just to staff and start. audit/bench delivers a screening-tier read in 3–5 business days and a full report in 1–2 weeks, since the review runs automatically instead of waiting on contractor availability.',
+  },
+  {
+    q: 'Do I need technical due diligence on a mid-market or small acquisition?',
+    a: 'Yes — hidden security debt, single-developer dependency risk, and unmaintainable architecture don’t show up in a financial model regardless of deal size; they show up in the first 90 days of ownership. Mid-market deals skip technical diligence today mainly because a $50,000+ consultant audit doesn’t pencil out, not because the risk is smaller.',
+  },
+  {
+    q: 'What is the difference between AI-powered and traditional technical due diligence?',
+    a: 'Traditional technical due diligence is a manual engineering review staffed by consultants over 2–3 weeks. AI-powered technical due diligence — like audit/bench — runs an LLM-plus-static-analysis engine directly against the target’s repository, producing a comparable report in days at a fraction of the cost, using the same underlying signals: code, dependencies, commit history, and test coverage.',
+  },
+  {
+    q: 'What red flags does a technical due diligence report typically uncover?',
+    a: 'Common findings include unpatched critical vulnerabilities, copyleft (GPL/AGPL) dependencies in an otherwise proprietary codebase, a single developer responsible for most commits in a core module (bus-factor risk), thin test coverage on revenue-critical code paths, and inconsistent architecture suggesting ad-hoc development.',
+  },
+];
+
+const DUE_DILIGENCE_FAQ_SCHEMA = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: FAQ_ITEMS.map((item) => ({
+    '@type': 'Question',
+    name: item.q,
+    acceptedAnswer: { '@type': 'Answer', text: item.a },
+  })),
+};
+
 const DUE_DILIGENCE_SCHEMA = {
   '@context': 'https://schema.org',
   '@type': 'Service',
@@ -144,7 +194,7 @@ const DUE_DILIGENCE_SCHEMA = {
 export default function DueDiligencePage() {
   return (
     <div>
-      <StructuredData data={[DUE_DILIGENCE_SCHEMA]} />
+      <StructuredData data={[DUE_DILIGENCE_SCHEMA, DUE_DILIGENCE_FAQ_SCHEMA]} />
 
       {/* Hero */}
       <section className="border-b border-ink-line bg-ink px-6 py-20">
@@ -348,6 +398,24 @@ export default function DueDiligencePage() {
           >
             Download Sample Report (PDF)
           </a>
+        </Reveal>
+      </section>
+
+      {/* FAQ */}
+      <section className="border-t border-ink-line bg-ink px-6 py-16">
+        <Reveal className="mx-auto max-w-3xl">
+          <div className="mb-10 text-center">
+            <div className="mb-2 font-mono text-[13px] tracking-wide text-muted-on-ink uppercase">FAQ</div>
+            <h2 className="text-2xl font-bold text-[#E8ECF4]">Questions deal teams ask before they engage</h2>
+          </div>
+          <div className="space-y-4">
+            {FAQ_ITEMS.map((item) => (
+              <div key={item.q} className="rounded-lg border border-ink-line bg-ink-soft p-5">
+                <h3 className="mb-1.5 text-sm font-bold text-[#E8ECF4]">{item.q}</h3>
+                <p className="text-sm leading-relaxed text-muted-on-ink">{item.a}</p>
+              </div>
+            ))}
+          </div>
         </Reveal>
       </section>
 
