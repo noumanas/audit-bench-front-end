@@ -12,6 +12,10 @@ const ORGANIZATION_SCHEMA = {
   '@type': 'Organization',
   name: SITE_NAME,
   url: SITE_URL,
+  // Square, ≥112x112 per Google's own guidance for brand disambiguation in
+  // search results — /apple-icon is the only existing asset that qualifies
+  // (icon.tsx is 32x32, opengraph-image.tsx is a 1200x630 banner, neither fits).
+  logo: `${SITE_URL}/apple-icon`,
   description: SITE_DESCRIPTION,
 };
 
