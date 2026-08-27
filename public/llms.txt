@@ -73,6 +73,33 @@ Yes — a CLI for CI pipelines and pre-commit hooks, and a VS Code extension for
 **How does audit/bench compare to CodeRabbit or other AI code review tools?**
 See the full comparison: [audit/bench vs CodeRabbit](https://auditbenchai.com/blog/audit-bench-ai-vs-coderabbit).
 
+**What is the difference between a linter and AI code review?**
+A linter (like ESLint) checks code against a fixed set of syntax and style rules — it has no understanding of business logic or intent. AI code review adds LLM reasoning on top, catching logic bugs, security issues, and framework misuse that a fixed rule set can't express. audit/bench runs both: ESLint, TypeScript diagnostics, Semgrep, and Prettier as a free local first pass, then escalates only the code that pass flags as risky to an LLM.
+
+**Does audit/bench replace ESLint, or work alongside it?**
+Alongside. audit/bench's free local Stage 1 runs ESLint, TypeScript diagnostics, Semgrep, complexity analysis, and Prettier formatting checks before anything reaches an LLM — it builds on your existing linter config rather than replacing it.
+
+**Can a linter or static analysis tool catch logic bugs and security vulnerabilities on its own?**
+Only partially. A linter enforces syntax/style rules and known-dangerous patterns, but it can't reason about what code is actually trying to do. That gap is why audit/bench escalates Stage-1-flagged code to an LLM instead of relying on static rules alone — see [static analysis vs AI review](https://auditbenchai.com/blog/static-analysis-vs-ai-review).
+
+**How do I automatically find bugs in a pull request before merging?**
+Connect the repository to audit/bench and it reviews every pull/merge request automatically: free local checks run first, then an LLM reviews only the code flagged as risky, posting inline comments, a plain-English summary, and a merge-blocking status check.
+
+**How do I detect hardcoded secrets or API keys in my codebase?**
+audit/bench runs a deterministic secrets scanner (regex rules for AWS keys, private keys, Slack/GitHub/Stripe tokens, and more) on every scan, in addition to LLM-based review — this runs free, without consuming AI quota.
+
+**How do I find dead code, unused files, or duplicate code in a repository?**
+A full repository scan includes dead-code detection (files nothing imports and that aren't entry points) and duplicate-code detection (hashing normalized code blocks to catch copy-pasted logic), alongside the security and quality review.
+
+**What is the difference between a code review and a code audit?**
+A code review is typically scoped to one pull/merge request's changed lines — is this specific change safe to merge. A code audit is broader: a whole file or repository reviewed regardless of what recently changed, closer to a health check than a merge gate. audit/bench does both — see [code review vs code audit](https://auditbenchai.com/blog/code-review-vs-code-audit).
+
+**Can AI code review catch bugs a human reviewer would miss?**
+It catches a specific class of issue reliably: unlike a rushed human reviewer on a large diff, it doesn't skim, and it checks the same fixed list of concerns — security, logic, performance, architecture, testing — on every single review. It isn't a replacement for domain-expert human judgment, but it closes the gap that opens when a diff is large or review time is short.
+
+**What should a code review checklist for AI-generated code include?**
+At minimum: security (injection, auth/JWT issues, hardcoded secrets, OWASP Top 10), logic bugs and edge cases, performance (N+1 queries, unnecessary work), architecture and framework misuse, and test coverage of the changed code. audit/bench structures every finding around these five review lenses — see [how to review AI-generated code without trusting it blindly](https://auditbenchai.com/blog/how-to-review-ai-generated-code-without-trusting-it-blindly).
+
 ## Optional
 
 - [How AI code review differs from a code audit](https://auditbenchai.com/blog/code-review-vs-code-audit)
