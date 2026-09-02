@@ -15,6 +15,46 @@ export interface BlogPostMeta {
 
 export const BLOG_POSTS: BlogPostMeta[] = [
   {
+    slug: "technical-due-diligence-red-flags",
+    title: "Technical Due Diligence Red Flags That Actually Kill Deals",
+    description:
+      "Which technical due diligence findings actually move valuation or stall a deal — bus-factor risk, transitive license exposure, security patterns, and architecture-growth mismatches.",
+    publishedAt: "2026-09-02",
+    readingTime: "9 min read",
+  },
+  {
+    slug: "ssti-code-review-guide",
+    title: "Reviewing Code for Server-Side Template Injection (SSTI)",
+    description:
+      "A practical guide to spotting server-side template injection in code review: template strings built from user input, and why it often escalates to remote code execution.",
+    publishedAt: "2026-09-02",
+    readingTime: "7 min read",
+  },
+  {
+    slug: "xxe-code-review-guide",
+    title: "How to Detect XML External Entity (XXE) Injection in Code Review",
+    description:
+      "A practical guide to catching XXE risk in code review: permissive XML parser defaults, where XML parsing hides in modern apps, and the parser flags that actually fix it.",
+    publishedAt: "2026-09-02",
+    readingTime: "7 min read",
+  },
+  {
+    slug: "path-traversal-code-review-guide",
+    title: "How to Spot Path Traversal Vulnerabilities in Code Review",
+    description:
+      "A practical guide to catching path traversal in code review: file download endpoints, zip-slip archive extraction, and why resolved-path checks beat blocking '..'.",
+    publishedAt: "2026-09-02",
+    readingTime: "7 min read",
+  },
+  {
+    slug: "command-injection-code-review-guide",
+    title: "How to Review Code for Command Injection Risk",
+    description:
+      "A practical guide to spotting command injection in code review: which shell-executing functions to flag, why allowlisting beats escaping, and where it hides in ordinary CLI wrappers.",
+    publishedAt: "2026-09-02",
+    readingTime: "7 min read",
+  },
+  {
     slug: "best-linters-for-every-language-and-use-case",
     title: "The Best Linters for Every Language and Use Case",
     description:

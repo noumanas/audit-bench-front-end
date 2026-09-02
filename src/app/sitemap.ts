@@ -21,6 +21,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: '/due-diligence', changeFrequency: 'monthly', priority: 0.7 },
     { path: '/pricing', changeFrequency: 'monthly', priority: 0.8 },
     { path: '/signup', changeFrequency: 'monthly', priority: 0.5 },
+    { path: '/llms.txt', changeFrequency: 'weekly', priority: 0.3 },
   ];
 
   const blogRoutes = BLOG_POSTS.map((post) => ({
