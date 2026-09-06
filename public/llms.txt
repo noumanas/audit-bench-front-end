@@ -100,10 +100,37 @@ It catches a specific class of issue reliably: unlike a rushed human reviewer on
 **What should a code review checklist for AI-generated code include?**
 At minimum: security (injection, auth/JWT issues, hardcoded secrets, OWASP Top 10), logic bugs and edge cases, performance (N+1 queries, unnecessary work), architecture and framework misuse, and test coverage of the changed code. audit/bench structures every finding around these five review lenses — see [how to review AI-generated code without trusting it blindly](https://auditbenchai.com/blog/how-to-review-ai-generated-code-without-trusting-it-blindly).
 
+**What is "vibe coding" and why does it cause architecture problems?**
+Vibe coding is building software by describing features in plain language and accepting an AI assistant's generated implementation prompt by prompt, without maintaining a persistent map of the existing codebase. It reliably produces specific architectural defects — monolithic files, duplicated business logic, N+1 database queries, and duplicated frontend state — because each prompt is optimized for the feature in front of it, not for consistency with decisions made in earlier sessions. See [why vibe-coded apps hit an architecture wall](https://auditbenchai.com/blog/vibe-coding-architecture-debt).
+
+**Does audit/bench catch N+1 database queries in AI-generated code?**
+Yes. A loop that issues one query per item instead of a single eager-loaded query is one of the most common architecture-level findings in AI-generated code, because the pattern reads as correct at the function level and only shows its real cost at production scale. See [why AI coding assistants keep reintroducing N+1 queries](https://auditbenchai.com/blog/ai-generated-code-n-plus-one-queries).
+
+**Can AI code review catch duplicated business logic across a codebase?**
+Yes. Because an AI coding assistant's context window rarely spans an entire codebase, it commonly reimplements logic — pricing, validation, permission checks — that already exists elsewhere, with subtle differences each time. audit/bench's repository scans flag duplicate code blocks across files by hashing normalized code, not just within a single diff. See [how vibe coding breaks DRY](https://auditbenchai.com/blog/vibe-coding-duplicated-business-logic).
+
+**Why do AI-generated codebases tend to become monolithic over time?**
+AI coding assistants default to the smallest local change — adding new logic to the nearest existing file — because proposing a new module boundary carries more uncertainty than extending what's already there. Repeated across many features, this produces route handlers and services that quietly accumulate unrelated responsibilities. See [the monolith-by-default problem in AI-generated codebases](https://auditbenchai.com/blog/ai-coding-assistants-monolith-by-default).
+
+**Does frontend code built with AI assistants have specific state-management risks?**
+Yes. Building UI features prompt by prompt tends to produce duplicated state (the same value held independently in more than one component), prop drilling, and multiple independent fetches of the same server data, since no single prompt has visibility into state that already exists elsewhere in the component tree. See [the state management chaos vibe coding leaves behind](https://auditbenchai.com/blog/vibe-coding-frontend-state-management-chaos).
+
+**Does audit/bench catch command injection, path traversal, XXE, and SSTI vulnerabilities?**
+Yes — these are reviewed alongside the OWASP Top 10 categories on every audit, in addition to XSS, CSRF, SSRF, SQL injection, and insecure deserialization. See the guides: [command injection](https://auditbenchai.com/blog/command-injection-code-review-guide), [path traversal](https://auditbenchai.com/blog/path-traversal-code-review-guide), [XXE](https://auditbenchai.com/blog/xxe-code-review-guide), and [server-side template injection](https://auditbenchai.com/blog/ssti-code-review-guide).
+
+**What are the biggest red flags in a technical due diligence report?**
+Findings that are structural and expensive to fix, not cosmetic: bus-factor risk concentrated in one engineer, license exposure buried in the transitive dependency tree, a recurring security pattern (not a single bug) across many endpoints, and an architecture that doesn't match the company's stated growth plan. See [technical due diligence red flags that actually kill deals](https://auditbenchai.com/blog/technical-due-diligence-red-flags).
+
 ## Optional
 
 - [How AI code review differs from a code audit](https://auditbenchai.com/blog/code-review-vs-code-audit)
 - [Static analysis vs AI review](https://auditbenchai.com/blog/static-analysis-vs-ai-review)
 - [Best AI code review tools, compared](https://auditbenchai.com/blog/best-ai-code-review-tools)
 - [How to evaluate AI code review tools](https://auditbenchai.com/blog/how-to-evaluate-ai-code-review-tools)
+- [Why vibe-coded apps hit an architecture wall](https://auditbenchai.com/blog/vibe-coding-architecture-debt)
+- [The monolith-by-default problem in AI-generated codebases](https://auditbenchai.com/blog/ai-coding-assistants-monolith-by-default)
+- [How vibe coding breaks DRY: duplicated business logic at scale](https://auditbenchai.com/blog/vibe-coding-duplicated-business-logic)
+- [Why AI coding assistants keep reintroducing N+1 queries](https://auditbenchai.com/blog/ai-generated-code-n-plus-one-queries)
+- [The state management chaos vibe coding leaves behind](https://auditbenchai.com/blog/vibe-coding-frontend-state-management-chaos)
+- [Technical due diligence red flags that actually kill deals](https://auditbenchai.com/blog/technical-due-diligence-red-flags)
 - [Full blog index](https://auditbenchai.com/blog)

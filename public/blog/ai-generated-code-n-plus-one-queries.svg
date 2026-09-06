@@ -1,0 +1,49 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#10141c"/>
+      <stop offset="100%" stop-color="#161c28"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#b08a00" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#b08a00" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#2a3242" stroke-width="1" opacity="0.4"/>
+    </pattern>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+  <circle cx="860" cy="310" r="270" fill="url(#glow)"/>
+
+  <g stroke="#3a4358" stroke-width="2" fill="none" opacity="0.6">
+    <path d="M 1140 40 L 1160 40 L 1160 60"/>
+    <path d="M 40 570 L 40 590 L 60 590"/>
+  </g>
+
+  <text x="70" y="90" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" letter-spacing="3" fill="#8b96ab">AUDIT BENCH &#183; AI CODE REVIEW</text>
+  <circle cx="80" cy="119" r="5" fill="#b08a00"/>
+  <text x="98" y="124" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" letter-spacing="3" fill="#b08a00">ARCHITECTURE DEBT</text>
+
+  <text x="70" y="540" font-family="ui-sans-serif, system-ui, sans-serif" font-size="30" font-weight="700" fill="#e8ecf4">The N+1 Query</text>
+  <text x="70" y="576" font-family="ui-sans-serif, system-ui, sans-serif" font-size="30" font-weight="700" fill="#e8ecf4">AI Keeps Writing</text>
+
+  <g transform="translate(860,300)">
+    <g transform="translate(0,60)">
+      <path d="M -50 0 C -50 -12 -27 -22 0 -22 C 27 -22 50 -12 50 0 L 50 36 C 50 48 27 58 0 58 C -27 58 -50 48 -50 36 Z" fill="rgba(176,138,0,0.16)" stroke="#b08a00" stroke-width="7"/>
+      <path d="M -50 0 C -50 12 -27 22 0 22 C 27 22 50 12 50 0" fill="none" stroke="#b08a00" stroke-width="7"/>
+    </g>
+    <g stroke="#e8ecf4" stroke-width="4" fill="none" opacity="0.75">
+      <path d="M -10 30 C -70 0 -120 -50 -140 -110"/>
+      <path d="M -2 24 C -20 -30 -20 -80 -8 -130"/>
+      <path d="M 8 30 C 60 -10 100 -60 116 -118"/>
+    </g>
+    <circle cx="-140" cy="-118" r="8" fill="#e8ecf4"/>
+    <circle cx="-10" cy="-136" r="8" fill="#e8ecf4"/>
+    <circle cx="118" cy="-124" r="8" fill="#e8ecf4"/>
+    <text x="0" y="-170" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="20" font-weight="700" fill="#b08a00" text-anchor="middle">&#215;N</text>
+  </g>
+
+  <rect x="0" y="606" width="1200" height="6" fill="#b08a00"/>
+</svg>

@@ -15,6 +15,51 @@ export interface BlogPostMeta {
 
 export const BLOG_POSTS: BlogPostMeta[] = [
   {
+    slug: "vibe-coding-frontend-state-management-chaos",
+    title: "The State Management Chaos Vibe Coding Leaves Behind",
+    description:
+      "Building features prompt by prompt produces duplicated state, prop drilling, and components that silently drift out of sync — a practical guide to spotting frontend state architecture debt in review.",
+    publishedAt: "2026-09-06",
+    readingTime: "8 min read",
+    image: "/blog/vibe-coding-frontend-state-management-chaos.svg",
+  },
+  {
+    slug: "ai-generated-code-n-plus-one-queries",
+    title: "Why AI Coding Assistants Keep Reintroducing N+1 Queries",
+    description:
+      "N+1 queries keep showing up in AI-generated code because the pattern reads correctly at the function level — a practical guide to why this happens and how to catch it in review.",
+    publishedAt: "2026-09-06",
+    readingTime: "7 min read",
+    image: "/blog/ai-generated-code-n-plus-one-queries.svg",
+  },
+  {
+    slug: "vibe-coding-duplicated-business-logic",
+    title: "How Vibe Coding Breaks DRY: Duplicated Business Logic at Scale",
+    description:
+      "Without a persistent map of the codebase, an AI coding assistant will re-implement logic that already exists elsewhere — why this happens and how to review for it before duplication compounds.",
+    publishedAt: "2026-09-06",
+    readingTime: "8 min read",
+    image: "/blog/vibe-coding-duplicated-business-logic.svg",
+  },
+  {
+    slug: "ai-coding-assistants-monolith-by-default",
+    title: "The Monolith-by-Default Problem in AI-Generated Codebases",
+    description:
+      "AI coding assistants default to adding logic to the nearest existing file instead of proposing new boundaries — a practical look at why this creates monoliths and how to review for it.",
+    publishedAt: "2026-09-06",
+    readingTime: "8 min read",
+    image: "/blog/ai-coding-assistants-monolith-by-default.svg",
+  },
+  {
+    slug: "vibe-coding-architecture-debt",
+    title: "Why Vibe-Coded Apps Hit an Architecture Wall",
+    description:
+      "Prompt-by-prompt feature building ships fast at first, then slows down hard — why vibe-coded apps accumulate architectural debt faster than hand-written ones, and how to catch it before it compounds.",
+    publishedAt: "2026-09-06",
+    readingTime: "9 min read",
+    image: "/blog/vibe-coding-architecture-debt.svg",
+  },
+  {
     slug: "technical-due-diligence-red-flags",
     title: "Technical Due Diligence Red Flags That Actually Kill Deals",
     description:
