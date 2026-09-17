@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { Footer } from '@/components/Footer';
 import { StructuredData } from '@/components/StructuredData';
 import { SITE_NAME, SITE_URL } from '@/lib/seo';
+import { TextReveal } from '@/components/gsap/TextReveal';
 
 function formatDate(iso: string): string {
   return new Date(iso).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
@@ -51,7 +52,9 @@ export function BlogArticleLayout({
           <Link href="/blog" className="mb-4 inline-block text-xs font-semibold text-muted-on-ink hover:text-[#E8ECF4]">
             ← All posts
           </Link>
-          <h1 className="mb-3 text-3xl font-bold text-[#E8ECF4] sm:text-4xl">{title}</h1>
+          <h1 className="mb-3 text-3xl font-bold text-[#E8ECF4] sm:text-4xl">
+            <TextReveal>{title}</TextReveal>
+          </h1>
           <div className="flex items-center gap-2 font-mono text-[11px] tracking-wide text-muted-on-ink uppercase">
             <time dateTime={publishedAt}>{formatDate(publishedAt)}</time>
             <span>·</span>

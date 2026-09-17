@@ -6,7 +6,8 @@ import { listPlans } from '@/lib/api';
 import { Plan } from '@/lib/types';
 import { useAuth } from '@/lib/AuthContext';
 import { Footer } from '@/components/Footer';
-import { Reveal } from '@/components/Reveal';
+import { ScrollReveal } from '@/components/gsap/ScrollReveal';
+import { TextReveal } from '@/components/gsap/TextReveal';
 import { StructuredData } from '@/components/StructuredData';
 import { SITE_NAME, SITE_URL } from '@/lib/seo';
 
@@ -154,20 +155,22 @@ export default function PricingPage() {
     <div>
       {pricingSchema && <StructuredData data={[pricingSchema, faqSchema]} />}
       <section className="border-b border-ink-line bg-ink px-6 py-16 text-center">
-        <Reveal>
+        <ScrollReveal>
           <div className="mb-2 font-mono text-[13px] tracking-wide text-muted-on-ink uppercase">Pricing</div>
-          <h1 className="mb-3 text-3xl font-bold text-[#E8ECF4]">Simple plans, real limits</h1>
+          <h1 className="mb-3 text-3xl font-bold text-[#E8ECF4]">
+            <TextReveal>Simple plans, real limits</TextReveal>
+          </h1>
           <p className="mx-auto max-w-xl text-sm leading-relaxed text-muted-on-ink">
             Every plan shares the same audit engine, and local checks — linting, type errors,
             complexity, formatting — are unlimited on every tier, free. What a plan caps is how many
             <strong className="text-[#E8ECF4]"> AI-reviewed</strong> audits you get per day and per
             month, and whether repository scanning is included.
           </p>
-        </Reveal>
+        </ScrollReveal>
       </section>
 
       <section className="bg-paper px-6 py-16">
-        <Reveal className="mx-auto max-w-5xl">
+        <ScrollReveal className="mx-auto max-w-5xl">
           {error && (
             <div className="mb-6 rounded-lg border border-critical/40 bg-critical/10 px-3.5 py-2.5 text-sm text-critical">
               {error}
@@ -240,11 +243,11 @@ export default function PricingPage() {
           <p className="mt-8 text-center text-xs text-muted-on-paper">
             Plan switching is self-service from your dashboard — no payment step in this build.
           </p>
-        </Reveal>
+        </ScrollReveal>
       </section>
 
       <section className="bg-ink px-6 py-16">
-        <Reveal className="mx-auto max-w-3xl">
+        <ScrollReveal className="mx-auto max-w-3xl">
           <h2 className="mb-8 text-center text-2xl font-bold text-[#E8ECF4]">Questions</h2>
           <div className="space-y-6">
             <FaqItem
@@ -264,7 +267,7 @@ export default function PricingPage() {
               a="Yes — switch anytime from your dashboard. Changes apply immediately, including to your remaining quota for the current period."
             />
           </div>
-        </Reveal>
+        </ScrollReveal>
       </section>
 
       <Footer />

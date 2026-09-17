@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Footer } from '@/components/Footer';
-import { Reveal } from '@/components/Reveal';
+import { ScrollReveal } from '@/components/gsap/ScrollReveal';
+import { TextReveal } from '@/components/gsap/TextReveal';
 
 export const metadata: Metadata = {
   title: 'Alignment Lab',
@@ -53,12 +54,12 @@ export default function AlignmentLabPage() {
   return (
     <div>
       <section className="border-b border-ink-line bg-ink px-6 py-16 text-center">
-        <Reveal>
+        <ScrollReveal>
           <div className="mb-2 font-mono text-[13px] tracking-wide text-muted-on-ink uppercase">
             AI red-teaming · Team &amp; Enterprise
           </div>
           <h1 className="mb-3 text-3xl font-bold text-[#E8ECF4] sm:text-4xl">
-            Practice alignment auditing on models you control
+            <TextReveal>Practice alignment auditing on models you control</TextReveal>
           </h1>
           <p className="mx-auto max-w-xl text-sm leading-relaxed text-muted-on-ink">
             Write a hidden behavior into a persona, then send an autonomous investigator agent after it. See
@@ -78,11 +79,11 @@ export default function AlignmentLabPage() {
               See plans
             </Link>
           </div>
-        </Reveal>
+        </ScrollReveal>
       </section>
 
       <section className="bg-paper px-6 py-16">
-        <Reveal className="mx-auto max-w-4xl">
+        <ScrollReveal className="mx-auto max-w-4xl">
           <h2 className="mb-8 text-center text-xl font-bold text-[#1C2128]">How it works</h2>
           <div className="grid gap-4 sm:grid-cols-3">
             {STEPS.map((s) => (
@@ -96,11 +97,11 @@ export default function AlignmentLabPage() {
               </div>
             ))}
           </div>
-        </Reveal>
+        </ScrollReveal>
       </section>
 
       <section className="bg-ink px-6 py-16">
-        <Reveal className="mx-auto max-w-3xl">
+        <ScrollReveal className="mx-auto max-w-3xl">
           <h2 className="mb-2 text-center text-xl font-bold text-[#E8ECF4]">What this actually is</h2>
           <p className="mb-8 text-center text-sm text-muted-on-ink">
             No overselling — here&apos;s exactly what&apos;s built today, and what isn&apos;t.
@@ -113,11 +114,11 @@ export default function AlignmentLabPage() {
               </div>
             ))}
           </div>
-        </Reveal>
+        </ScrollReveal>
       </section>
 
       <section className="bg-paper px-6 py-16 text-center">
-        <Reveal>
+        <ScrollReveal>
           <h2 className="mb-3 text-xl font-bold text-[#1C2128]">Included on Team and Enterprise</h2>
           <p className="mx-auto mb-6 max-w-md text-sm leading-relaxed text-muted-on-paper">
             Team plans get a monthly investigation allowance; Enterprise is unlimited. Registering personas to see
@@ -129,7 +130,7 @@ export default function AlignmentLabPage() {
           >
             Compare plans
           </Link>
-        </Reveal>
+        </ScrollReveal>
       </section>
 
       <Footer />

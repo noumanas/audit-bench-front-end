@@ -15,6 +15,33 @@ export interface BlogPostMeta {
 
 export const BLOG_POSTS: BlogPostMeta[] = [
   {
+    slug: "technical-due-diligence-checklist",
+    title: "Technical Due Diligence Checklist for M&A and Investment Deals",
+    description:
+      "A category-by-category technical due diligence checklist: security exposure, dependency and license risk, technical debt, architecture, talent concentration, and operational readiness.",
+    publishedAt: "2026-09-17",
+    readingTime: "8 min read",
+    image: "/blog/technical-due-diligence-checklist.svg",
+  },
+  {
+    slug: "how-to-prepare-for-technical-due-diligence",
+    title: "How to Prepare Your Codebase for a Fast Technical Due Diligence Review",
+    description:
+      "A practical guide for founders and CTOs: what actually speeds up a technical due diligence engagement, from access logistics to the bus-factor question, and why last-minute cleanup backfires.",
+    publishedAt: "2026-09-16",
+    readingTime: "8 min read",
+    image: "/blog/how-to-prepare-for-technical-due-diligence.svg",
+  },
+  {
+    slug: "technical-due-diligence-timeline-explained",
+    title: "Why Technical Due Diligence Now Takes Days, Not Weeks",
+    description:
+      "What actually consumed the old multi-week technical due diligence timeline, what automated scanning removes from it, and why the engagement tier you choose still changes how long it takes.",
+    publishedAt: "2026-09-15",
+    readingTime: "7 min read",
+    image: "/blog/technical-due-diligence-timeline-explained.svg",
+  },
+  {
     slug: "vibe-coding-frontend-state-management-chaos",
     title: "The State Management Chaos Vibe Coding Leaves Behind",
     description:
@@ -66,6 +93,7 @@ export const BLOG_POSTS: BlogPostMeta[] = [
       "Which technical due diligence findings actually move valuation or stall a deal — bus-factor risk, transitive license exposure, security patterns, and architecture-growth mismatches.",
     publishedAt: "2026-09-02",
     readingTime: "9 min read",
+    image: "/blog/technical-due-diligence-red-flags.svg",
   },
   {
     slug: "ssti-code-review-guide",

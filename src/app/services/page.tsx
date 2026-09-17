@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Footer } from '@/components/Footer';
-import { Reveal } from '@/components/Reveal';
+import { ScrollReveal } from '@/components/gsap/ScrollReveal';
+import { TextReveal } from '@/components/gsap/TextReveal';
 
 export const metadata: Metadata = {
   title: 'Audit Coverage & Methodology',
@@ -45,11 +46,13 @@ export default function ServicesPage() {
   return (
     <div>
       <section className="border-b border-ink-line bg-ink px-6 py-16 text-center">
-        <Reveal>
+        <ScrollReveal>
           <div className="mb-2 font-mono text-[13px] tracking-wide text-muted-on-ink uppercase">
             Services
           </div>
-          <h1 className="mb-3 text-3xl font-bold text-[#E8ECF4]">What actually happens inside one audit</h1>
+          <h1 className="mb-3 text-3xl font-bold text-[#E8ECF4]">
+            <TextReveal>What actually happens inside one audit</TextReveal>
+          </h1>
           <p className="mx-auto max-w-xl text-sm leading-relaxed text-muted-on-ink">
             Paste a file or upload a repository — the same engine reviews both, and every finding
             comes back in the same structured shape.{' '}
@@ -57,24 +60,24 @@ export default function ServicesPage() {
               See the full feature set →
             </Link>
           </p>
-        </Reveal>
+        </ScrollReveal>
       </section>
 
       {/* Code ingestion */}
       <section className="bg-paper px-6 py-14">
-        <Reveal className="mx-auto max-w-4xl">
+        <ScrollReveal className="mx-auto max-w-4xl">
           <h2 className="mb-2 text-xl font-bold text-[#1C2128]">Code ingestion</h2>
-          <p className="mb-6 text-sm text-muted-on-paper">Get code in however it's easiest.</p>
+          <p className="mb-6 text-sm text-muted-on-paper">Get code in however it&apos;s easiest.</p>
           <div className="grid gap-4 sm:grid-cols-2">
             <ServiceCard title="Paste code" detail="Drop a snippet or a full file straight into the editor." />
             <ServiceCard title="Upload a repository" detail="Zip up a project and get a full cross-file review." />
           </div>
-        </Reveal>
+        </ScrollReveal>
       </section>
 
       {/* Security coverage */}
       <section className="bg-ink px-6 py-14">
-        <Reveal className="mx-auto max-w-4xl">
+        <ScrollReveal className="mx-auto max-w-4xl">
           <h2 className="mb-2 text-xl font-bold text-[#E8ECF4]">Security coverage</h2>
           <p className="mb-6 text-sm text-muted-on-ink">
             The security lens is checked on every audit, backed by a deterministic secrets scanner
@@ -90,12 +93,12 @@ export default function ServicesPage() {
               </span>
             ))}
           </div>
-        </Reveal>
+        </ScrollReveal>
       </section>
 
       {/* Repository analysis */}
       <section className="bg-paper px-6 py-14">
-        <Reveal className="mx-auto max-w-4xl">
+        <ScrollReveal className="mx-auto max-w-4xl">
           <h2 className="mb-2 text-xl font-bold text-[#1C2128]">Repository analysis</h2>
           <p className="mb-6 text-sm text-muted-on-paper">
             Beyond per-file review, a repository scan looks at how files relate to each other.
@@ -105,12 +108,12 @@ export default function ServicesPage() {
               <ServiceCard key={r.title} title={r.title} detail={r.detail} light />
             ))}
           </div>
-        </Reveal>
+        </ScrollReveal>
       </section>
 
       {/* AI output shape */}
       <section className="bg-ink px-6 py-14">
-        <Reveal className="mx-auto max-w-3xl">
+        <ScrollReveal className="mx-auto max-w-3xl">
           <h2 className="mb-2 text-xl font-bold text-[#E8ECF4]">Every finding, same shape</h2>
           <p className="mb-6 text-sm text-muted-on-ink">
             No vague warnings — every finding is structured so it&apos;s immediately actionable.
@@ -126,11 +129,11 @@ export default function ServicesPage() {
               </div>
             ))}
           </div>
-        </Reveal>
+        </ScrollReveal>
       </section>
 
       <section className="bg-paper px-6 py-16 text-center">
-        <Reveal>
+        <ScrollReveal>
           <h2 className="mb-4 text-xl font-bold text-[#1C2128]">See it on your own code</h2>
           <Link
             href="/signup"
@@ -138,7 +141,7 @@ export default function ServicesPage() {
           >
             Get started free
           </Link>
-        </Reveal>
+        </ScrollReveal>
       </section>
 
       <Footer />

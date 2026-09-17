@@ -28,7 +28,7 @@
 
 - [Technical due diligence overview](https://auditbenchai.com/due-diligence)
 - [Sample redacted due diligence report (PDF)](https://auditbenchai.com/audit-bench-sample-tdd-report.pdf)
-- What's assessed: security exposure, dependency and license risk, test-coverage estimate, architecture consistency, talent concentration (bus-factor) risk, and a remediation cost estimate in engineer-days and dollars
+- What's assessed: security exposure, dependency and license risk, test-coverage estimate, architecture consistency, talent concentration (bus-factor) risk, and a remediation cost estimate in engineer-days and dollars — full breakdown in the [technical due diligence checklist](https://auditbenchai.com/blog/technical-due-diligence-checklist)
 - Pricing: T1 Investment Screening $5,000 (3-5 business days); T2 Full Technical Diligence $12,000-$20,000 (1-2 weeks); T3 Post-Close Monitoring (custom, ongoing add-on)
 - Read-only, NDA-first repo access — see [Security & Trust](https://auditbenchai.com/security)
 
@@ -121,6 +121,15 @@ Yes — these are reviewed alongside the OWASP Top 10 categories on every audit,
 **What are the biggest red flags in a technical due diligence report?**
 Findings that are structural and expensive to fix, not cosmetic: bus-factor risk concentrated in one engineer, license exposure buried in the transitive dependency tree, a recurring security pattern (not a single bug) across many endpoints, and an architecture that doesn't match the company's stated growth plan. See [technical due diligence red flags that actually kill deals](https://auditbenchai.com/blog/technical-due-diligence-red-flags).
 
+**Why does technical due diligence take days instead of weeks now?**
+The old multi-week timeline was mostly logistics, not analysis — staffing a consultant, waiting for repository access, and a human getting oriented in an unfamiliar codebase. Automated scanning removes most of that: dependency graphing, secret scanning, and license checks run in the same time on day one as they would in week three of a manual review. What's left — read-only access, an NDA, and turning raw findings into a report an investment committee can act on — is what a 3-5 day screening or 1-2 week full engagement actually spends its time on. See [why technical due diligence now takes days, not weeks](https://auditbenchai.com/blog/technical-due-diligence-timeline-explained).
+
+**How should a founder or CTO prepare for a technical due diligence review?**
+Have repository access (including secondary repos like infrastructure-as-code) ready to grant immediately, a named person who can explain team structure and any recent departures rather than just pointing to commit history, and an honest sense of your own dependency-license exposure. Don't attempt last-minute cleanup commits — a coverage number that jumps right before an engagement reads as a signal, not an improvement. See [how to prepare your codebase for a fast technical due diligence review](https://auditbenchai.com/blog/how-to-prepare-for-technical-due-diligence).
+
+**What's on a full technical due diligence checklist?**
+Six categories: security exposure (vulnerabilities, exposed secrets, recurring patterns), dependency and license risk (including transitive GPL/AGPL exposure), technical debt (test coverage on high-risk paths, dead code, duplication), architecture consistency (whether it supports the stated growth plan), talent concentration / bus-factor risk, and operational readiness (monitoring, backups, infrastructure-as-code coverage). See the [full technical due diligence checklist](https://auditbenchai.com/blog/technical-due-diligence-checklist).
+
 ## Optional
 
 - [How AI code review differs from a code audit](https://auditbenchai.com/blog/code-review-vs-code-audit)
@@ -133,4 +142,7 @@ Findings that are structural and expensive to fix, not cosmetic: bus-factor risk
 - [Why AI coding assistants keep reintroducing N+1 queries](https://auditbenchai.com/blog/ai-generated-code-n-plus-one-queries)
 - [The state management chaos vibe coding leaves behind](https://auditbenchai.com/blog/vibe-coding-frontend-state-management-chaos)
 - [Technical due diligence red flags that actually kill deals](https://auditbenchai.com/blog/technical-due-diligence-red-flags)
+- [Why technical due diligence now takes days, not weeks](https://auditbenchai.com/blog/technical-due-diligence-timeline-explained)
+- [How to prepare your codebase for a fast technical due diligence review](https://auditbenchai.com/blog/how-to-prepare-for-technical-due-diligence)
+- [Technical due diligence checklist for M&A and investment deals](https://auditbenchai.com/blog/technical-due-diligence-checklist)
 - [Full blog index](https://auditbenchai.com/blog)

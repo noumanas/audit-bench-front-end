@@ -1,0 +1,46 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#10141c"/>
+      <stop offset="100%" stop-color="#161c28"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#1f7a4d" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#1f7a4d" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#2a3242" stroke-width="1" opacity="0.4"/>
+    </pattern>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+  <circle cx="860" cy="310" r="270" fill="url(#glow)"/>
+
+  <g stroke="#3a4358" stroke-width="2" fill="none" opacity="0.6">
+    <path d="M 1140 40 L 1160 40 L 1160 60"/>
+    <path d="M 40 570 L 40 590 L 60 590"/>
+  </g>
+
+  <text x="70" y="90" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" letter-spacing="3" fill="#8b96ab">AUDIT BENCH &#183; TECHNICAL DUE DILIGENCE</text>
+  <circle cx="80" cy="119" r="5" fill="#1f7a4d"/>
+  <text x="98" y="124" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" letter-spacing="3" fill="#1f7a4d">PREP GUIDE</text>
+
+  <text x="70" y="540" font-family="ui-sans-serif, system-ui, sans-serif" font-size="28" font-weight="700" fill="#e8ecf4">Preparing for</text>
+  <text x="70" y="576" font-family="ui-sans-serif, system-ui, sans-serif" font-size="28" font-weight="700" fill="#e8ecf4">Diligence</text>
+
+  <g transform="translate(860,300)">
+    <rect x="-72" y="-110" width="144" height="220" rx="12" fill="rgba(232,236,244,0.04)" stroke="#e8ecf4" stroke-width="8"/>
+    <rect x="-30" y="-124" width="60" height="24" rx="6" fill="#10141c" stroke="#e8ecf4" stroke-width="6"/>
+    <g stroke="#1f7a4d" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M -46 -56 L -34 -44 L -10 -70"/>
+      <path d="M -46 -6 L -34 6 L -10 -20"/>
+      <path d="M -46 44 L -34 56 L -10 30"/>
+    </g>
+    <line x1="8" y1="-56" x2="46" y2="-56" stroke="#e8ecf4" stroke-width="6" stroke-linecap="round" opacity="0.5"/>
+    <line x1="8" y1="-6" x2="46" y2="-6" stroke="#e8ecf4" stroke-width="6" stroke-linecap="round" opacity="0.5"/>
+    <line x1="8" y1="44" x2="46" y2="44" stroke="#e8ecf4" stroke-width="6" stroke-linecap="round" opacity="0.5"/>
+  </g>
+
+  <rect x="0" y="606" width="1200" height="6" fill="#1f7a4d"/>
+</svg>

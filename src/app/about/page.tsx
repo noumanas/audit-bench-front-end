@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Footer } from '@/components/Footer';
-import { Reveal } from '@/components/Reveal';
+import { ScrollReveal } from '@/components/gsap/ScrollReveal';
+import { TextReveal } from '@/components/gsap/TextReveal';
 
 export const metadata: Metadata = {
   title: 'About',
@@ -39,23 +40,23 @@ export default function AboutPage() {
   return (
     <div>
       <section className="border-b border-ink-line bg-ink px-6 py-16">
-        <Reveal className="mx-auto max-w-3xl text-center">
+        <ScrollReveal className="mx-auto max-w-3xl text-center">
           <div className="mb-2 font-mono text-[13px] tracking-wide text-muted-on-ink uppercase">
             About
           </div>
           <h1 className="mb-4 text-3xl font-bold text-[#E8ECF4]">
-            Code review built for the way code gets written now
+            <TextReveal>Code review built for the way code gets written now</TextReveal>
           </h1>
           <p className="text-base leading-relaxed text-muted-on-ink">
             AI coding assistants write more code, faster, than any team could before. Audit Bench Ai
             exists to review that code with the same rigor a careful senior engineer would — before
             it reaches production.
           </p>
-        </Reveal>
+        </ScrollReveal>
       </section>
 
       <section className="bg-paper px-6 py-16">
-        <Reveal className="mx-auto max-w-3xl">
+        <ScrollReveal className="mx-auto max-w-3xl">
           <h2 className="mb-4 text-xl font-bold text-[#1C2128]">Why this exists</h2>
           <p className="mb-4 text-sm leading-relaxed text-[#1C2128]">
             Traditional linters catch syntax problems. They don&apos;t catch a service-role key
@@ -69,11 +70,11 @@ export default function AboutPage() {
             detection, secret scanning — so a review considers both what the code says and what the
             rest of the repository implies about it.
           </p>
-        </Reveal>
+        </ScrollReveal>
       </section>
 
       <section className="bg-ink px-6 py-16">
-        <Reveal className="mx-auto max-w-4xl">
+        <ScrollReveal className="mx-auto max-w-4xl">
           <h2 className="mb-8 text-center text-xl font-bold text-[#E8ECF4]">How an audit runs</h2>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {PIPELINE.map((step, i) => (
@@ -87,11 +88,11 @@ export default function AboutPage() {
               </div>
             ))}
           </div>
-        </Reveal>
+        </ScrollReveal>
       </section>
 
       <section className="bg-paper px-6 py-16">
-        <Reveal className="mx-auto grid max-w-4xl gap-10 sm:grid-cols-2">
+        <ScrollReveal className="mx-auto grid max-w-4xl gap-10 sm:grid-cols-2">
           <div>
             <h2 className="mb-4 text-xl font-bold text-[#1C2128]">Who it&apos;s for</h2>
             <ul className="space-y-2 text-sm text-[#1C2128]">
@@ -114,11 +115,11 @@ export default function AboutPage() {
               ))}
             </ul>
           </div>
-        </Reveal>
+        </ScrollReveal>
       </section>
 
       <section className="bg-ink px-6 py-16 text-center">
-        <Reveal>
+        <ScrollReveal>
           <h2 className="mb-4 text-xl font-bold text-[#E8ECF4]">Try it on your own code</h2>
           <Link
             href="/signup"
@@ -126,7 +127,7 @@ export default function AboutPage() {
           >
             Get started free
           </Link>
-        </Reveal>
+        </ScrollReveal>
       </section>
 
       <Footer />

@@ -3,7 +3,8 @@
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { Footer } from '@/components/Footer';
-import { Reveal } from '@/components/Reveal';
+import { ScrollReveal } from '@/components/gsap/ScrollReveal';
+import { TextReveal } from '@/components/gsap/TextReveal';
 import { BLOG_POSTS } from '@/lib/blog';
 
 function formatDate(iso: string): string {
@@ -29,18 +30,20 @@ export function BlogIndexClient() {
   return (
     <div>
       <section className="border-b border-ink-line bg-ink px-6 py-16 text-center">
-        <Reveal>
+        <ScrollReveal>
           <div className="mb-2 font-mono text-[13px] tracking-wide text-muted-on-ink uppercase">Blog</div>
-          <h1 className="mb-3 text-3xl font-bold text-[#E8ECF4] sm:text-4xl">Guides on code review and security</h1>
+          <h1 className="mb-3 text-3xl font-bold text-[#E8ECF4] sm:text-4xl">
+            <TextReveal>Guides on code review and security</TextReveal>
+          </h1>
           <p className="mx-auto max-w-xl text-sm leading-relaxed text-muted-on-ink">
             Explainers and practical guides on AI code review, application security, and secure coding —
             written by the team building Audit Bench Ai.
           </p>
-        </Reveal>
+        </ScrollReveal>
       </section>
 
       <section className="bg-paper px-6 py-16">
-        <Reveal className="mx-auto max-w-3xl space-y-4">
+        <ScrollReveal className="mx-auto max-w-3xl space-y-4">
           {posts.length === 0 && <p className="text-sm text-muted-on-paper">No posts yet — check back soon.</p>}
           {pagePosts.map((post) => (
             <Link
@@ -69,7 +72,7 @@ export function BlogIndexClient() {
               </div>
             </Link>
           ))}
-        </Reveal>
+        </ScrollReveal>
 
         {posts.length > POSTS_PER_PAGE && (
           <div className="mx-auto mt-10 flex max-w-3xl items-center justify-between gap-4 text-sm">

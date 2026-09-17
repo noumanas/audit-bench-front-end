@@ -8,7 +8,13 @@ import { SITE_URL } from '@/lib/seo';
 // /login, /oauth — auth flow pages, no content value to index.
 // /invite/[token] — single-use, recipient-specific invite links;
 // indexing one would just leak that an invite exists.
-const DISALLOW = ['/app', '/login', '/oauth', '/invite'];
+//
+// Each entry is listed as both an exact match ($) and a directory prefix
+// (trailing /), not the bare path — robots.txt disallow rules are plain
+// string-prefix matches, so a bare '/app' also matches '/apple-icon' (it
+// starts with the same four characters), which got /apple-icon wrongly
+// blocked from indexing. See https://developers.google.com/search/docs/crawling-indexing/robots/robots_txt#url-matching-based-on-path-values.
+const DISALLOW = ['/app$', '/app/', '/login$', '/login/', '/oauth$', '/oauth/', '/invite$', '/invite/'];
 
 // The wildcard rule below already allows these, but they're listed
 // explicitly so intent survives even if the wildcard rule is ever

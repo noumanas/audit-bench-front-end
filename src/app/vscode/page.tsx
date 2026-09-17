@@ -2,7 +2,8 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Footer } from '@/components/Footer';
 import { CodeBlock } from '@/components/CodeBlock';
-import { Reveal } from '@/components/Reveal';
+import { ScrollReveal } from '@/components/gsap/ScrollReveal';
+import { TextReveal } from '@/components/gsap/TextReveal';
 import { SeverityTag, CategoryTag } from '@/components/Tag';
 
 export const metadata: Metadata = {
@@ -57,9 +58,11 @@ export default function VsCodePage() {
   return (
     <div>
       <section className="border-b border-ink-line bg-ink px-6 py-16 text-center">
-        <Reveal>
+        <ScrollReveal>
           <div className="mb-2 font-mono text-[13px] tracking-wide text-muted-on-ink uppercase">VS Code Extension</div>
-          <h1 className="mb-3 text-3xl font-bold text-[#E8ECF4]">Audit Bench Ai, right in your editor</h1>
+          <h1 className="mb-3 text-3xl font-bold text-[#E8ECF4]">
+            <TextReveal>Audit Bench Ai, right in your editor</TextReveal>
+          </h1>
           <p className="mx-auto mb-8 max-w-xl text-sm leading-relaxed text-muted-on-ink">
             Same review engine as the CLI and web app — inline diagnostics, hover explanations, and
             one-click AI fixes, without leaving VS Code.
@@ -75,12 +78,12 @@ export default function VsCodePage() {
               </a>
             ))}
           </nav>
-        </Reveal>
+        </ScrollReveal>
       </section>
 
       {/* What it does */}
       <section id="what-it-does" className="scroll-mt-6 bg-paper px-6 py-14">
-        <Reveal className="mx-auto max-w-4xl">
+        <ScrollReveal className="mx-auto max-w-4xl">
           <h2 className="mb-2 text-xl font-bold text-[#1C2128]">What it does</h2>
           <p className="mb-6 text-sm text-muted-on-paper">
             Talks to the same <code className="rounded bg-paper-card px-1 py-0.5 font-mono text-[12px]">/audit</code>,{' '}
@@ -98,12 +101,12 @@ export default function VsCodePage() {
               </div>
             ))}
           </div>
-        </Reveal>
+        </ScrollReveal>
       </section>
 
       {/* Mock demo */}
       <section className="bg-ink px-6 py-14">
-        <Reveal className="mx-auto max-w-3xl">
+        <ScrollReveal className="mx-auto max-w-3xl">
           <div className="overflow-hidden rounded-xl border border-ink-line bg-ink-soft">
             <div className="flex items-center gap-2 border-b border-ink-line px-4 py-2.5">
               <span className="h-2.5 w-2.5 rounded-full bg-critical/70" />
@@ -136,12 +139,12 @@ export default function VsCodePage() {
               <span className="text-muted-on-ink">$(wand) Fix All Issues with AI</span>
             </div>
           </div>
-        </Reveal>
+        </ScrollReveal>
       </section>
 
       {/* Fix All */}
       <section id="fix-all" className="scroll-mt-6 bg-paper px-6 py-14">
-        <Reveal className="mx-auto max-w-4xl">
+        <ScrollReveal className="mx-auto max-w-4xl">
           <h2 className="mb-2 text-xl font-bold text-[#1C2128]">Fix All Issues with AI</h2>
           <p className="mb-4 text-sm leading-relaxed text-muted-on-paper">
             The backend&apos;s AI-fix endpoints are scoped to a repo scan, the same way the web app&apos;s
@@ -158,12 +161,12 @@ export default function VsCodePage() {
             the original findings are confirmed gone, or a fresh full re-check surfaced something different
             — not a vague &quot;issues remain.&quot;
           </p>
-        </Reveal>
+        </ScrollReveal>
       </section>
 
       {/* Get it */}
       <section id="get-it" className="scroll-mt-6 bg-ink px-6 py-14">
-        <Reveal className="mx-auto max-w-4xl">
+        <ScrollReveal className="mx-auto max-w-4xl">
           <h2 className="mb-2 text-xl font-bold text-[#E8ECF4]">Get it</h2>
           <p className="mb-6 text-sm leading-relaxed text-muted-on-ink">
             Not yet on the VS Code Marketplace — build it from source for now, same as the CLI before its
@@ -184,12 +187,12 @@ export default function VsCodePage() {
             Then run <span className="font-semibold text-[#E8ECF4]">Audit Bench Ai: Set API Key</span> from the
             Command Palette (Dashboard → Integrations → &quot;CLI / CI-CD API key&quot;) and you&apos;re set.
           </p>
-        </Reveal>
+        </ScrollReveal>
       </section>
 
       {/* Settings */}
       <section id="settings" className="scroll-mt-6 bg-paper px-6 py-14">
-        <Reveal className="mx-auto max-w-4xl">
+        <ScrollReveal className="mx-auto max-w-4xl">
           <h2 className="mb-2 text-xl font-bold text-[#1C2128]">Settings</h2>
           <div className="overflow-hidden rounded-lg border border-paper-line">
             {SETTINGS.map((s, i) => (
@@ -202,11 +205,11 @@ export default function VsCodePage() {
               </div>
             ))}
           </div>
-        </Reveal>
+        </ScrollReveal>
       </section>
 
       <section className="bg-ink px-6 py-16 text-center">
-        <Reveal>
+        <ScrollReveal>
           <h2 className="mb-4 text-xl font-bold text-[#E8ECF4]">Review code without leaving the editor</h2>
           <p className="mx-auto mb-6 max-w-md text-sm leading-relaxed text-muted-on-ink">
             Free plan includes single-file audits from the extension — sign up, generate an API key, and
@@ -226,7 +229,7 @@ export default function VsCodePage() {
               See the CLI
             </Link>
           </div>
-        </Reveal>
+        </ScrollReveal>
       </section>
 
       <Footer />

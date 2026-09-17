@@ -27,6 +27,10 @@ const COLUMNS = [
     title: 'Investors & M&A',
     links: [{ href: '/due-diligence', label: 'Technical Due Diligence' }],
   },
+  {
+    title: 'Contact',
+    links: [{ href: 'mailto:noumanqureshi15@gmail.com', label: 'noumanqureshi15@gmail.com' }],
+  },
 ];
 
 export function Footer() {

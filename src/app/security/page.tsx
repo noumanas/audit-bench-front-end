@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Footer } from '@/components/Footer';
-import { Reveal } from '@/components/Reveal';
+import { ScrollReveal } from '@/components/gsap/ScrollReveal';
+import { TextReveal } from '@/components/gsap/TextReveal';
 
 export const metadata: Metadata = {
   title: 'Security & Trust',
@@ -51,39 +52,39 @@ export default function SecurityPage() {
   return (
     <div>
       <section className="border-b border-ink-line bg-ink px-6 py-16">
-        <Reveal className="mx-auto max-w-3xl">
+        <ScrollReveal className="mx-auto max-w-3xl">
           <div className="mb-4 inline-block rounded-full border border-ink-line px-3 py-1 font-mono text-[11px] tracking-wide text-muted-on-ink uppercase">
             Security &amp; Trust
           </div>
           <h1 className="mb-4 text-3xl leading-tight font-bold text-[#E8ECF4] sm:text-4xl">
-            What actually happens to your code.
+            <TextReveal>What actually happens to your code.</TextReveal>
           </h1>
           <p className="max-w-xl text-sm leading-relaxed text-muted-on-ink">
             Not a compliance certification — a plain-language account of what this product does and doesn&apos;t do
             with your code and your credentials, so you can decide for yourself whether that&apos;s enough.
           </p>
-        </Reveal>
+        </ScrollReveal>
       </section>
 
       <section className="bg-paper px-6 py-16">
         <div className="mx-auto max-w-3xl">
           <div className="space-y-6">
             {PRINCIPLES.map((p, i) => (
-              <Reveal
+              <ScrollReveal
                 key={p.title}
                 delay={Math.min(i, 4) * 60}
                 className="rounded-lg border border-paper-line bg-paper-card p-5 transition-all duration-200 hover:border-cobalt/40 hover:shadow-panel"
               >
                 <h2 className="mb-2 text-sm font-bold text-[#1C2128]">{p.title}</h2>
                 <p className="text-sm leading-relaxed text-muted-on-paper">{p.detail}</p>
-              </Reveal>
+              </ScrollReveal>
             ))}
           </div>
         </div>
       </section>
 
       <section className="border-t border-ink-line bg-ink px-6 py-16 text-center">
-        <Reveal>
+        <ScrollReveal>
           <h2 className="mb-3 text-xl font-bold text-[#E8ECF4]">Questions we didn&apos;t answer here?</h2>
           <p className="mx-auto mb-6 max-w-md text-sm leading-relaxed text-muted-on-ink">
             Ask directly — especially before a security review on your end.
@@ -94,7 +95,7 @@ export default function SecurityPage() {
           >
             Contact us
           </a>
-        </Reveal>
+        </ScrollReveal>
       </section>
 
       <Footer />

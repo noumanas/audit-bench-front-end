@@ -2,7 +2,8 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Footer } from '@/components/Footer';
 import { CodeBlock } from '@/components/CodeBlock';
-import { Reveal } from '@/components/Reveal';
+import { ScrollReveal } from '@/components/gsap/ScrollReveal';
+import { TextReveal } from '@/components/gsap/TextReveal';
 
 export const metadata: Metadata = {
   title: 'CLI',
@@ -48,9 +49,11 @@ export default function CliPage() {
   return (
     <div>
       <section className="border-b border-ink-line bg-ink px-6 py-16 text-center">
-        <Reveal>
+        <ScrollReveal>
           <div className="mb-2 font-mono text-[13px] tracking-wide text-muted-on-ink uppercase">CLI</div>
-          <h1 className="mb-3 text-3xl font-bold text-[#E8ECF4]">Audit Bench Ai, from your terminal</h1>
+          <h1 className="mb-3 text-3xl font-bold text-[#E8ECF4]">
+            <TextReveal>Audit Bench Ai, from your terminal</TextReveal>
+          </h1>
           <p className="mx-auto mb-8 max-w-xl text-sm leading-relaxed text-muted-on-ink">
             Same review engine as the web app — run it from a terminal, a pre-commit hook, or a pipeline
             step, and fail the build when a scan comes back <code className="rounded bg-ink-soft px-1.5 py-0.5 font-mono text-[13px]">do_not_ship</code>.
@@ -69,12 +72,12 @@ export default function CliPage() {
               </a>
             ))}
           </nav>
-        </Reveal>
+        </ScrollReveal>
       </section>
 
       {/* Install */}
       <section id="install" className="scroll-mt-6 bg-paper px-6 py-14">
-        <Reveal className="mx-auto max-w-4xl">
+        <ScrollReveal className="mx-auto max-w-4xl">
           <h2 className="mb-2 text-xl font-bold text-[#1C2128]">Install</h2>
           <p className="mb-6 text-sm text-muted-on-paper">Two ways to get it running, depending on your setup.</p>
           <div className="grid gap-4 sm:grid-cols-2">
@@ -95,12 +98,12 @@ export default function CliPage() {
               <CodeBlock code={'git clone https://github.com/noumanas/-audit-bench-cli.git\ncd -audit-bench-cli && docker build -t auditbench-cli .'} />
             </div>
           </div>
-        </Reveal>
+        </ScrollReveal>
       </section>
 
       {/* Commands */}
       <section id="commands" className="scroll-mt-6 bg-ink px-6 py-14">
-        <Reveal className="mx-auto max-w-4xl">
+        <ScrollReveal className="mx-auto max-w-4xl">
           <h2 className="mb-2 text-xl font-bold text-[#E8ECF4]">Commands</h2>
           <p className="mb-6 text-sm text-muted-on-ink">Five commands cover the whole workflow.</p>
           <div className="mb-6 overflow-hidden rounded-lg border border-ink-line">
@@ -135,12 +138,12 @@ export default function CliPage() {
               </div>
             ))}
           </div>
-        </Reveal>
+        </ScrollReveal>
       </section>
 
       {/* Authentication */}
       <section id="auth" className="scroll-mt-6 bg-paper px-6 py-14">
-        <Reveal className="mx-auto max-w-4xl">
+        <ScrollReveal className="mx-auto max-w-4xl">
           <h2 className="mb-2 text-xl font-bold text-[#1C2128]">Authentication</h2>
           <p className="mb-6 text-sm text-muted-on-paper">Two modes, depending on where the CLI runs.</p>
           <div className="grid gap-4 sm:grid-cols-2">
@@ -162,12 +165,12 @@ export default function CliPage() {
               <CodeBlock code={'export AUDITBENCH_API_KEY="abk_..."\nauditbench status'} />
             </div>
           </div>
-        </Reveal>
+        </ScrollReveal>
       </section>
 
       {/* CI/CD */}
       <section id="ci" className="scroll-mt-6 bg-ink px-6 py-14">
-        <Reveal className="mx-auto max-w-4xl">
+        <ScrollReveal className="mx-auto max-w-4xl">
           <h2 className="mb-2 text-xl font-bold text-[#E8ECF4]">CI/CD — fail the build on bad findings</h2>
           <p className="mb-6 text-sm leading-relaxed text-muted-on-ink">
             Both <code className="rounded bg-ink-soft px-1.5 py-0.5 font-mono text-[13px]">audit</code> and{' '}
@@ -212,12 +215,12 @@ jobs:
     AUDITBENCH_API_KEY: $AUDITBENCH_API_KEY`}
             />
           </div>
-        </Reveal>
+        </ScrollReveal>
       </section>
 
       {/* Docker */}
       <section id="docker" className="scroll-mt-6 bg-paper px-6 py-14">
-        <Reveal className="mx-auto max-w-4xl">
+        <ScrollReveal className="mx-auto max-w-4xl">
           <h2 className="mb-2 text-xl font-bold text-[#1C2128]">Docker</h2>
           <p className="mb-6 text-sm leading-relaxed text-muted-on-paper">
             No Node.js required on the runner. Build the image from source, then bind-mount the repo
@@ -239,11 +242,11 @@ jobs:
   auditbench-cli scan . --fail-on do_not_ship`}
             />
           </div>
-        </Reveal>
+        </ScrollReveal>
       </section>
 
       <section className="bg-ink px-6 py-16 text-center">
-        <Reveal>
+        <ScrollReveal>
           <h2 className="mb-4 text-xl font-bold text-[#E8ECF4]">Wire it into your pipeline</h2>
           <p className="mx-auto mb-6 max-w-md text-sm leading-relaxed text-muted-on-ink">
             Free plan includes the CLI — sign up, generate an API key, and drop the workflow above into
@@ -263,7 +266,7 @@ jobs:
               View pricing
             </Link>
           </div>
-        </Reveal>
+        </ScrollReveal>
       </section>
 
       <Footer />
