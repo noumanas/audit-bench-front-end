@@ -4,11 +4,14 @@ import { useEffect, useState } from 'react';
 import { getAnalyticsOverview, getAnalyticsTrend, listAnalyticsRepos } from '@/lib/api';
 import { AnalyticsOverview, AnalyticsTrend } from '@/lib/types';
 import { SeverityBadge } from '@/components/SeverityBadge';
-import { InfoIcon } from '@/components/icons';
+import { InfoIcon, AlertIcon, FileIcon, ShieldIcon, SparkleIcon } from '@/components/icons';
 import { ScoreCard } from './ScoreCard';
 import { ScoreTrendChart } from './ScoreTrendChart';
 import { ActivityBarChart } from './ActivityBarChart';
 import { MetricTile } from './MetricTile';
+import { IssuesByCategoryChart } from './IssuesByCategoryChart';
+import { SeverityBreakdownBar } from './SeverityBreakdownBar';
+import { CriticalIssuesList } from './CriticalIssuesList';
 
 const WINDOWS = [
   { days: 7, label: '7 days' },
@@ -27,6 +30,34 @@ function CardHeading({ title, hint }: { title: string; hint: string }) {
     <div className="mb-3 flex items-center justify-between">
       <h3 className="font-mono text-[11px] tracking-wide text-muted-on-ink uppercase">{title}</h3>
       <InfoIcon title={hint} className="h-3.5 w-3.5 shrink-0 text-muted-on-ink" />
+    </div>
+  );
+}
+
+function KpiCard({
+  icon,
+  label,
+  value,
+  detail,
+  tone,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  value: React.ReactNode;
+  detail: string;
+  tone?: 'critical' | 'pass';
+}) {
+  const accent = tone === 'critical' ? 'text-critical' : tone === 'pass' ? 'text-pass' : 'text-cobalt';
+  const bar = tone === 'critical' ? 'bg-critical' : tone === 'pass' ? 'bg-pass' : 'bg-cobalt';
+  return (
+    <div className="shadow-panel relative overflow-hidden rounded-lg border border-ink-line bg-ink-soft p-4">
+      <span className={`absolute top-0 left-0 h-full w-1 ${bar}`} />
+      <div className={`mb-2 flex items-center gap-1.5 font-mono text-[11px] font-bold tracking-wide uppercase ${accent}`}>
+        {icon}
+        {label}
+      </div>
+      <div className="mb-1 text-[28px] leading-none font-bold tabular-nums text-[#E8ECF4]">{value}</div>
+      <p className="text-[12px] leading-snug text-muted-on-ink">{detail}</p>
     </div>
   );
 }
@@ -61,7 +92,7 @@ export function AnalyticsSection() {
   return (
     <div className="mb-8">
       <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-        <h2 className="font-mono text-[11px] font-bold tracking-wide text-muted-on-ink uppercase">Analytics</h2>
+        <h2 className="font-mono text-[11px] font-bold tracking-wide text-muted-on-ink uppercase">Dashboard</h2>
 
         <div className="flex flex-wrap items-center gap-2">
           <select
@@ -101,50 +132,46 @@ export function AnalyticsSection() {
 
       {overview && trend && (
         <>
+          {/* Top KPI row */}
           <div className="mb-3 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            <MetricTile
-              label="Active repositories"
-              hint="Distinct repos scanned or reviewed in this window. Pasted single-file audits aren't tied to a repo, so they don't count here."
-              value={overview.activeRepositories}
+            <KpiCard
+              icon={<ShieldIcon className="h-3.5 w-3.5" />}
+              label="Scans & reviews"
+              value={overview.totals.audits + overview.totals.scans}
+              detail={`${overview.totals.audits} audits and ${overview.totals.scans} repo scans in the last ${overview.windowDays} days.`}
             />
-            <MetricTile
-              label="PR / MR reviews"
-              hint="Pull and merge requests reviewed in this window, scoped to just the changed lines."
-              value={overview.prReviewCount}
+            <KpiCard
+              icon={<FileIcon className="h-3.5 w-3.5" />}
+              label="Total findings"
+              value={overview.totalFindings}
+              detail={`Across every audit and scan in this window.`}
             />
-            <MetricTile
-              label="Runs this window"
-              hint="Every audit and repository scan started in this window, regardless of whether AI was actually invoked."
-              subStats={[
-                { label: 'Audits', value: overview.totals.audits },
-                { label: 'Repo scans', value: overview.totals.scans },
-              ]}
+            <KpiCard
+              icon={<AlertIcon className="h-3.5 w-3.5" />}
+              label="Critical findings"
+              value={overview.severityBreakdown.critical}
+              detail={`${overview.severityBreakdown.high} more rated high severity.`}
+              tone="critical"
             />
-            <MetricTile
-              label="AI cost saved"
-              hint="Share of runs that cost nothing — served from cache or resolved by free local checks alone, no LLM call made."
-              subStats={[
-                { label: 'Saved', value: `${overview.totals.cacheSavingsPct}%` },
-                { label: 'Fresh AI calls', value: overview.totals.freshAiCalls },
-              ]}
+            <KpiCard
+              icon={<SparkleIcon className="h-3.5 w-3.5" />}
+              label="Patches available"
+              value={overview.patchesAvailable}
+              detail={`Ready-to-apply fixes out of ${overview.totalFindings} findings.`}
+              tone="pass"
             />
           </div>
 
-          <div className="mb-3 grid grid-cols-1 gap-3 sm:grid-cols-3">
-            <ScoreCard label="Security" score={overview.scores.security} hint="Weighted by severity across audits & scans" />
-            <ScoreCard label="Performance" score={overview.scores.performance} hint="Performance findings in this window" />
-            <ScoreCard label="Technical debt" score={overview.scores.technicalDebt} hint="Maintainability, architecture, duplication" />
-          </div>
-
-          <div className="mb-3 rounded-lg border border-ink-line bg-ink-soft p-4">
-            <CardHeading title="Score trend" hint="Daily average score across everything scored that day." />
-            <ScoreTrendChart points={trend.points} />
-          </div>
-
-          <div className="mb-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
+          {/* Issue breakdowns */}
+          <div className="mb-3 grid grid-cols-1 gap-3 lg:grid-cols-3">
             <div className="rounded-lg border border-ink-line bg-ink-soft p-4">
-              <CardHeading title="Activity" hint="Audits and repository scans started per day." />
-              <ActivityBarChart points={trend.points} />
+              <CardHeading title="Issues by category" hint="Every finding's category (Security, Logic, Performance, Architecture, Maintainability, Testing) in this window." />
+              <IssuesByCategoryChart breakdown={overview.categoryBreakdown} />
+            </div>
+
+            <div className="rounded-lg border border-ink-line bg-ink-soft p-4">
+              <CardHeading title="Issues by severity" hint="Every finding in this window, by severity." />
+              <SeverityBreakdownBar breakdown={overview.severityBreakdown} />
             </div>
 
             <div className="rounded-lg border border-ink-line bg-ink-soft p-4">
@@ -181,6 +208,59 @@ export function AnalyticsSection() {
             </div>
           </div>
 
+          {/* Metrics + most critical issues */}
+          <div className="mb-3 grid grid-cols-1 gap-3 lg:grid-cols-2">
+            <div className="grid grid-cols-2 gap-3">
+              <MetricTile
+                label="Active repositories"
+                hint="Distinct repos scanned or reviewed in this window. Pasted single-file audits aren't tied to a repo, so they don't count here."
+                value={overview.activeRepositories}
+              />
+              <MetricTile
+                label="PR / MR reviews"
+                hint="Pull and merge requests reviewed in this window, scoped to just the changed lines."
+                value={overview.prReviewCount}
+              />
+              <MetricTile
+                label="Runs this window"
+                hint="Every audit and repository scan started in this window, regardless of whether AI was actually invoked."
+                subStats={[
+                  { label: 'Audits', value: overview.totals.audits },
+                  { label: 'Repo scans', value: overview.totals.scans },
+                ]}
+              />
+              <MetricTile
+                label="AI cost saved"
+                hint="Share of runs that cost nothing — served from cache or resolved by free local checks alone, no LLM call made."
+                subStats={[
+                  { label: 'Saved', value: `${overview.totals.cacheSavingsPct}%` },
+                  { label: 'Fresh AI calls', value: overview.totals.freshAiCalls },
+                ]}
+              />
+            </div>
+
+            <div className="rounded-lg border border-ink-line bg-ink-soft p-4">
+              <CardHeading title="Most critical issues" hint="The single worst instance of each recurring issue, ranked by severity then confidence." />
+              <CriticalIssuesList issues={overview.criticalIssues} />
+            </div>
+          </div>
+
+          <div className="mb-3 grid grid-cols-1 gap-3 sm:grid-cols-3">
+            <ScoreCard label="Security" score={overview.scores.security} hint="Weighted by severity across audits & scans" />
+            <ScoreCard label="Performance" score={overview.scores.performance} hint="Performance findings in this window" />
+            <ScoreCard label="Technical debt" score={overview.scores.technicalDebt} hint="Maintainability, architecture, duplication" />
+          </div>
+
+          <div className="mb-3 rounded-lg border border-ink-line bg-ink-soft p-4">
+            <CardHeading title="Score trend" hint="Daily average score across everything scored that day." />
+            <ScoreTrendChart points={trend.points} />
+          </div>
+
+          <div className="mb-3 rounded-lg border border-ink-line bg-ink-soft p-4">
+            <CardHeading title="Activity" hint="Audits and repository scans started per day." />
+            <ActivityBarChart points={trend.points} />
+          </div>
+
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <div className="rounded-lg border border-ink-line bg-ink-soft p-4">
               <CardHeading title="Most common issues" hint="Findings grouped by category + title, ranked by how often they recur." />
@@ -200,21 +280,36 @@ export function AnalyticsSection() {
             </div>
 
             <div className="rounded-lg border border-ink-line bg-ink-soft p-4">
-              <CardHeading title="Riskiest files" hint="Ranked by critical + high severity findings, worst first." />
+              <CardHeading title="Issues by repository" hint="Ranked by critical + high severity findings, worst first." />
               {overview.riskiest.length === 0 ? (
                 <p className="text-sm text-muted-on-ink">No critical or high findings in this window.</p>
               ) : (
-                <div className="space-y-2">
-                  {overview.riskiest.map((item, i) => (
-                    <div key={`${item.label}:${i}`} className="flex items-center gap-2 text-[12px]">
-                      <span className="truncate font-mono text-[#E8ECF4]">{item.label}</span>
-                      <span className="ml-auto shrink-0 text-muted-on-ink">
-                        {item.criticalCount > 0 && `${item.criticalCount} critical`}
-                        {item.criticalCount > 0 && item.highCount > 0 && ' · '}
-                        {item.highCount > 0 && `${item.highCount} high`}
-                      </span>
-                    </div>
-                  ))}
+                <div className="space-y-2.5">
+                  {overview.riskiest.map((item, i) => {
+                    const weight = item.criticalCount * 2 + item.highCount;
+                    const maxWeight = Math.max(
+                      ...overview.riskiest.map((r) => r.criticalCount * 2 + r.highCount),
+                      1,
+                    );
+                    return (
+                      <div key={`${item.label}:${i}`}>
+                        <div className="mb-1 flex items-center gap-2 text-[12px]">
+                          <span className="truncate font-mono text-[#E8ECF4]">{item.label}</span>
+                          <span className="ml-auto shrink-0 text-muted-on-ink">
+                            {item.criticalCount > 0 && `${item.criticalCount} critical`}
+                            {item.criticalCount > 0 && item.highCount > 0 && ' · '}
+                            {item.highCount > 0 && `${item.highCount} high`}
+                          </span>
+                        </div>
+                        <div className="h-1.5 w-full overflow-hidden rounded-full bg-ink-line">
+                          <div
+                            className="h-full rounded-full bg-critical"
+                            style={{ width: `${Math.max((weight / maxWeight) * 100, 4)}%` }}
+                          />
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
               )}
             </div>

@@ -16,7 +16,6 @@ import {
   GitBranchIcon,
   GitlabLogoIcon,
   GridIcon,
-  LayersIcon,
   PlugIcon,
   SettingsIcon,
   ShieldIcon,
@@ -33,11 +32,11 @@ const NAV_GROUPS = [
         label: 'Dashboard',
         icon: GridIcon,
         // Mirrors the tabs on the dashboard page itself (see TABS in
-        // app/app/dashboard/page.tsx) — same four views, just reachable
-        // directly from the sidebar via ?tab=.
+        // app/app/dashboard/page.tsx) — same three views, just reachable
+        // directly from the sidebar via ?tab=. Overview now includes the
+        // full analytics section, so there's no separate Analytics tab.
         children: [
           { href: '/app/dashboard?tab=overview', label: 'Overview', icon: GridIcon },
-          { href: '/app/dashboard?tab=analytics', label: 'Analytics', icon: LayersIcon },
           { href: '/app/dashboard?tab=audits', label: 'Audits', icon: FileIcon },
           { href: '/app/dashboard?tab=scans', label: 'Repo scans', icon: GitBranchIcon },
         ],

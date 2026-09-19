@@ -12,14 +12,11 @@ import { AnalyticsSection } from '@/components/analytics/AnalyticsSection';
 import { PageHeader } from '@/components/PageHeader';
 import { useAuth } from '@/lib/AuthContext';
 import {
-  AlertIcon,
   ArrowRightIcon,
   ClockIcon,
   FileIcon,
   GitBranchIcon,
   GridIcon,
-  LayersIcon,
-  ShieldIcon,
 } from '@/components/icons';
 
 const VERDICT_ACCENT: Record<string, string> = {
@@ -30,7 +27,6 @@ const VERDICT_ACCENT: Record<string, string> = {
 
 const TABS = [
   { key: 'overview', label: 'Overview', icon: GridIcon },
-  { key: 'analytics', label: 'Analytics', icon: LayersIcon },
   { key: 'audits', label: 'Audits', icon: FileIcon },
   { key: 'scans', label: 'Repo scans', icon: GitBranchIcon },
 ] as const;
@@ -125,7 +121,7 @@ function DashboardPageInner() {
   const [error, setError] = useState<string | null>(null);
   const [tab, setTab] = useState<TabKey>('overview');
 
-  // Reactive to searchParams so a sidebar link like /app/dashboard?tab=analytics
+  // Reactive to searchParams so a sidebar link like /app/dashboard?tab=audits
   // switches the tab even though the App Router doesn't remount this page for
   // a query-only navigation.
   useEffect(() => {
@@ -141,12 +137,6 @@ function DashboardPageInner() {
       })
       .catch((err) => setError(err instanceof Error ? err.message : 'Failed to load dashboard.'));
   }, []);
-
-  const totalFindings = audits.reduce((sum, a) => sum + a.findings.length, 0);
-  const criticalCount = audits.reduce(
-    (sum, a) => sum + a.findings.filter((f) => f.severity === 'critical').length,
-    0,
-  );
 
   return (
     <div className="mx-auto max-w-5xl px-6 py-10">
@@ -175,16 +165,7 @@ function DashboardPageInner() {
         <>
           <PlanPanel />
 
-          <div className="mb-8 grid grid-cols-1 gap-3 sm:grid-cols-3">
-            <StatCard icon={<ShieldIcon className="h-4 w-4" />} label="Audits run" value={audits.length} />
-            <StatCard icon={<FileIcon className="h-4 w-4" />} label="Total findings" value={totalFindings} />
-            <StatCard
-              icon={<AlertIcon className="h-4 w-4" />}
-              label="Critical findings"
-              value={criticalCount}
-              tone="critical"
-            />
-          </div>
+          <AnalyticsSection />
 
           <div className="mb-8">
             <SectionHeading
@@ -231,8 +212,6 @@ function DashboardPageInner() {
           </div>
         </>
       )}
-
-      {tab === 'analytics' && <AnalyticsSection />}
 
       {tab === 'audits' && (
         <div>
@@ -298,27 +277,3 @@ function EmptyRow({ href, label }: { href: string; label: string }) {
   );
 }
 
-function StatCard({
-  icon,
-  label,
-  value,
-  tone,
-}: {
-  icon: React.ReactNode;
-  label: string;
-  value: number;
-  tone?: 'critical';
-}) {
-  return (
-    <div className="shadow-panel relative overflow-hidden rounded-lg border border-ink-line bg-ink-soft py-3.5 pr-4 pl-5">
-      <span className={`absolute top-0 left-0 h-full w-1 ${tone === 'critical' ? 'bg-critical' : 'bg-cobalt'}`} />
-      <div className={`mb-1.5 flex items-center gap-1.5 ${tone === 'critical' ? 'text-critical' : 'text-cobalt'}`}>
-        {icon}
-      </div>
-      <div className={`text-2xl font-bold tabular-nums ${tone === 'critical' ? 'text-critical' : 'text-[#E8ECF4]'}`}>
-        {value}
-      </div>
-      <div className="font-mono text-[11px] tracking-wide text-muted-on-ink uppercase">{label}</div>
-    </div>
-  );
-}
