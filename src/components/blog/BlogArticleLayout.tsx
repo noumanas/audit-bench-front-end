@@ -12,6 +12,7 @@ export function BlogArticleLayout({
   slug,
   title,
   publishedAt,
+  updatedAt,
   readingTime,
   image,
   children,
@@ -19,6 +20,7 @@ export function BlogArticleLayout({
   slug: string;
   title: string;
   publishedAt: string;
+  updatedAt?: string;
   readingTime: string;
   image?: string;
   children: React.ReactNode;
@@ -29,7 +31,7 @@ export function BlogArticleLayout({
     '@type': 'Article',
     headline: title,
     datePublished: publishedAt,
-    dateModified: publishedAt,
+    dateModified: updatedAt ?? publishedAt,
     author: { '@type': 'Organization', name: SITE_NAME, url: SITE_URL },
     publisher: { '@type': 'Organization', name: SITE_NAME, url: SITE_URL },
     mainEntityOfPage: articleUrl,
@@ -57,6 +59,12 @@ export function BlogArticleLayout({
           </h1>
           <div className="flex items-center gap-2 font-mono text-[11px] tracking-wide text-muted-on-ink uppercase">
             <time dateTime={publishedAt}>{formatDate(publishedAt)}</time>
+            {updatedAt && updatedAt !== publishedAt && (
+              <>
+                <span>·</span>
+                <span>Updated <time dateTime={updatedAt}>{formatDate(updatedAt)}</time></span>
+              </>
+            )}
             <span>·</span>
             <span>{readingTime}</span>
           </div>

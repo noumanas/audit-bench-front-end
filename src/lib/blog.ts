@@ -9,6 +9,7 @@ export interface BlogPostMeta {
   title: string;
   description: string;
   publishedAt: string; // ISO date
+  updatedAt?: string; // ISO date — only set when a post is revised after publishing
   readingTime: string;
   image?: string; // path under /public, e.g. /blog/<slug>.svg
 }
@@ -663,9 +664,10 @@ export const BLOG_POSTS: BlogPostMeta[] = [
     slug: "github-ai-code-review",
     title: "GitHub AI Code Review",
     description:
-      "How GitHub Copilot Code Review works, where it fits in a PR workflow, and how to use it effectively without letting automation replace judgment.",
+      "How GitHub's AI code review works inside Copilot, where it fits in a PR workflow, how it compares to a dedicated review tool, and how to use it without letting automation replace judgment.",
     publishedAt: "2026-08-01",
-    readingTime: "8 min read",
+    updatedAt: "2026-09-20",
+    readingTime: "6 min read",
   },
   {
     slug: "owasp-top-10-explained",
