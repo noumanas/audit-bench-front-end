@@ -86,10 +86,12 @@ export interface AdminUser {
   email: string;
   name: string | null;
   createdAt: string;
+  lastLoginAt: string | null;
   plan: Plan;
   role: Role;
   githubUsername: string | null;
   isActive: boolean;
+  _count: { audits: number; scanJobs: number };
 }
 
 export interface Usage {
