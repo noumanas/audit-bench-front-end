@@ -286,7 +286,7 @@ export function Sidebar() {
   return (
     <>
       {/* Mobile top bar — the persistent sidebar below is desktop-only */}
-      <div className="flex items-center justify-between border-b border-ink-line px-4 py-3 md:hidden">
+      <div className="flex items-center justify-between border-b border-ink-line px-4 py-3 md:hidden print:hidden">
         <Wordmark />
         <button
           onClick={() => setOpen(true)}
@@ -325,7 +325,7 @@ export function Sidebar() {
 
       {/* Desktop persistent sidebar — sticky + viewport-height so it stays put
           while <main> scrolls independently, instead of growing with the page. */}
-      <aside className="hidden shrink-0 flex-col border-r border-ink-line bg-ink-soft md:sticky md:top-0 md:flex md:h-screen md:w-64 md:overflow-y-auto">
+      <aside className="hidden shrink-0 flex-col border-r border-ink-line bg-ink-soft md:sticky md:top-0 md:flex md:h-screen md:w-64 md:overflow-y-auto print:hidden">
         <div className="px-4 py-5">
           <Wordmark />
         </div>

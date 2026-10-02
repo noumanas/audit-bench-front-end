@@ -48,6 +48,25 @@ html {
   }
 }
 
+/* Browsers drop background colors when printing unless told otherwise,
+   which erased the severity badges, chart bars and the report's cover band.
+   Scoped to .print-exact so other pages keep the browser's ink-saving default. */
+.print-exact,
+.print-exact * {
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+@media print {
+  @page {
+    margin: 14mm 12mm;
+  }
+  html,
+  body {
+    background: #ffffff !important;
+  }
+}
+
 @keyframes scan-sweep {
   0% {
     transform: translateY(-100%);

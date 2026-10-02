@@ -12,7 +12,7 @@ export default function DueDiligenceDetailPage() {
 
   return (
     <RequireAuth>
-      <div className="mx-auto max-w-4xl px-6 py-10 print:px-0 print:py-0">
+      <div className="mx-auto max-w-4xl px-6 py-10 print:max-w-none print:px-0 print:py-0">
         <Link href="/app/due-diligence" className="mb-4 inline-block text-sm text-cobalt print:hidden">
           ← Back to due diligence reports
         </Link>
