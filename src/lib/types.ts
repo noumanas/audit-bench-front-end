@@ -311,6 +311,71 @@ export interface RemediationItem {
   estimatedDays: number;
 }
 
+// Technical due diligence assessment — mirrors backend repository/tdd-assessment.ts.
+export type TddCheckSeverity = 'critical' | 'high' | 'medium' | 'low';
+export type TddCheckStatus = 'pass' | 'fail' | 'not_assessed';
+export type TddRating = TddCheckSeverity | 'pass' | 'not_assessed';
+export type TddRemediationPhase = 'pre_close' | 'days_30' | 'days_90';
+
+export interface TddCheck {
+  id: string;
+  title: string;
+  domainId: string;
+  status: TddCheckStatus;
+  severity: TddCheckSeverity;
+  detail: string;
+  businessImpact: string;
+  evidence: Array<{ path: string; line: number | null; note: string }>;
+}
+
+export interface TddDomain {
+  id: string;
+  name: string;
+  areaId: string;
+  rating: TddRating;
+  checksRun: number;
+  checksPassed: number;
+}
+
+export interface TddArea {
+  id: string;
+  name: string;
+  rating: TddRating;
+  checksRun: number;
+  checksPassed: number;
+  headline: string;
+}
+
+export interface TddRemediationStep {
+  areaId: string;
+  phase: TddRemediationPhase;
+  category: string;
+  description: string;
+  estimatedDays: number;
+  costLowUsd: number;
+  costHighUsd: number;
+}
+
+export interface TddAssessment {
+  areas: TddArea[];
+  domains: TddDomain[];
+  checks: TddCheck[];
+  coverage: {
+    catalogSize: number;
+    checksRun: number;
+    checksPassed: number;
+    checksFailed: number;
+    notAssessed: number;
+    filesAnalyzed: number;
+    filesInRepository: number;
+  };
+  riskCounts: Record<TddCheckSeverity, number>;
+  remediationPlan: {
+    steps: TddRemediationStep[];
+    byPhase: Record<TddRemediationPhase, { days: number; costLowUsd: number; costHighUsd: number }>;
+  };
+}
+
 export interface RiskAggregation {
   overallRiskRating: 'high' | 'medium' | 'low';
   overallHealthScore: number;
@@ -458,6 +523,8 @@ export interface ScanJob {
   architectureAssessment: ArchitectureAssessment | null;
   contributorStats: ContributorStat[] | null;
   riskAggregation: RiskAggregation | null;
+  /** Computed on read alongside riskAggregation for completed scans — see backend repository/tdd-assessment.ts. */
+  tddAssessment?: TddAssessment | null;
   filesFromCache: number;
   filesAiSkipped: number;
   aiInvoked: boolean;
