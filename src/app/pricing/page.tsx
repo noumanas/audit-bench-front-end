@@ -56,6 +56,12 @@ function repoScanLabel(plan: Plan): string {
   return `Repository scanning (${plan.maxRepositories} repo${plan.maxRepositories === 1 ? '' : 's'})`;
 }
 
+function repoScanQuotaLabel(plan: Plan): string | null {
+  if (!plan.repositoryScan) return null;
+  if (plan.monthlyRepoScanLimit == null) return 'Unlimited AI repository scans';
+  return `${plan.monthlyRepoScanLimit} AI repository scan${plan.monthlyRepoScanLimit === 1 ? '' : 's'}/month`;
+}
+
 function alignmentLabLabel(plan: Plan): string | null {
   if (!plan.alignmentLabEnabled) return null;
   if (plan.monthlyInvestigationLimit == null) return 'Alignment Lab — unlimited investigations';
@@ -216,6 +222,8 @@ export default function PricingPage() {
                     <li>{formatLimit(plan.monthlyAuditLimit)} AI audits/month</li>
                     <li>Unlimited local checks (lint, types, complexity)</li>
                     <li>{repoScanLabel(plan)}</li>
+                    {repoScanQuotaLabel(plan) && <li>{repoScanQuotaLabel(plan)}</li>}
+                    {plan.dueDiligence && <li className="font-semibold">Technical due diligence reports</li>}
                     {alignmentLabLabel(plan) && <li>{alignmentLabLabel(plan)}</li>}
                   </ul>
 

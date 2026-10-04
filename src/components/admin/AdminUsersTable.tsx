@@ -190,6 +190,14 @@ export function AdminUsersTable() {
                           {u.plan.name}
                         </span>
                       )}
+                      {u.planExpiresAt && (
+                        <span
+                          className="font-mono text-[10px] whitespace-nowrap text-muted-on-ink"
+                          title="Paid plans switch back to Free on this date unless renewed (approve again or set the plan again)"
+                        >
+                          until {new Date(u.planExpiresAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
+                        </span>
+                      )}
 
                       {canManageRoles && !isSelf ? (
                         <select

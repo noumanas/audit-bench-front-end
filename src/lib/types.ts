@@ -22,6 +22,10 @@ export interface Plan {
   // meaningful when alignmentLabEnabled is true.
   alignmentLabEnabled: boolean;
   monthlyInvestigationLimit: number | null;
+  // AI repository scans per calendar month (not PR/MR reviews); null = unlimited.
+  monthlyRepoScanLimit: number | null;
+  // Technical due diligence reports — Enterprise only.
+  dueDiligence: boolean;
 }
 
 export interface OrganizationSummary {
@@ -88,6 +92,8 @@ export interface AdminUser {
   createdAt: string;
   lastLoginAt: string | null;
   plan: Plan;
+  // Paid plans expire 30 days after approval and fall back to Free; null on Free.
+  planExpiresAt: string | null;
   role: Role;
   githubUsername: string | null;
   isActive: boolean;
@@ -104,6 +110,11 @@ export interface Usage {
   dailyLimit: number | null;
   monthlyUsed: number;
   monthlyLimit: number | null;
+  repoScansUsed: number;
+  repoScanLimit: number | null;
+  dueDiligence: boolean;
+  // When the current paid plan lapses back to Free; null on Free.
+  planExpiresAt: string | null;
   dailyResetsAt: string;
   monthlyResetsAt: string;
 }

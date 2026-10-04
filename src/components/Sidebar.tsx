@@ -69,7 +69,11 @@ const NAV_GROUPS = [
   },
   {
     label: 'Investors & M&A',
-    links: [{ href: '/app/due-diligence', label: 'Due diligence', icon: FileIcon }],
+    links: [
+      // Enterprise only — the page shows an upgrade prompt to other plans
+      // (see DueDiligenceGate).
+      { href: '/app/due-diligence', label: 'Due diligence', icon: FileIcon, tag: 'Enterprise' },
+    ],
   },
   {
     label: 'AI red-teaming',
@@ -104,6 +108,8 @@ type NavLink = {
   href: string;
   label: string;
   icon: (props: { className?: string }) => React.ReactElement;
+  /** Small plan tag shown after the label, e.g. "Enterprise". */
+  tag?: string;
   children?: { href: string; label: string; icon: (props: { className?: string }) => React.ReactElement }[];
 };
 
@@ -131,6 +137,15 @@ function NavItem({
       >
         <Icon className="h-4 w-4 shrink-0" />
         {link.label}
+        {link.tag && (
+          <span
+            className={`ml-auto rounded border px-1.5 py-px font-mono text-[9px] font-bold tracking-wide uppercase ${
+              active ? 'border-white/40 text-white' : 'border-ink-line text-muted-on-ink'
+            }`}
+          >
+            {link.tag}
+          </span>
+        )}
       </Link>
     );
   }
