@@ -52,7 +52,9 @@ function KpiCard({
   return (
     <div className="shadow-panel relative overflow-hidden rounded-lg border border-ink-line bg-ink-soft p-4">
       <span className={`absolute top-0 left-0 h-full w-1 ${bar}`} />
-      <div className={`mb-2 flex items-center gap-1.5 font-mono text-[11px] font-bold tracking-wide uppercase ${accent}`}>
+      <div
+        className={`mb-2 flex items-center gap-1.5 font-mono text-[11px] font-bold tracking-wide uppercase ${accent}`}
+      >
         {icon}
         {label}
       </div>
@@ -69,6 +71,11 @@ export function AnalyticsSection() {
   const [overview, setOverview] = useState<AnalyticsOverview | null>(null);
   const [trend, setTrend] = useState<AnalyticsTrend | null>(null);
   const [error, setError] = useState<string | null>(null);
+  // Which filter the data on screen belongs to — when it differs from the
+  // current filter, a reload is in flight and the old numbers are dimmed.
+  const filterKey = `${days}:${repo}`;
+  const [loadedKey, setLoadedKey] = useState<string | null>(null);
+  const reloading = overview != null && loadedKey !== filterKey;
 
   useEffect(() => {
     listAnalyticsRepos()
@@ -81,6 +88,7 @@ export function AnalyticsSection() {
       .then(([o, t]) => {
         setOverview(o);
         setTrend(t);
+        setLoadedKey(`${days}:${repo}`);
       })
       .catch((err) => setError(err instanceof Error ? err.message : 'Failed to load analytics.'));
   }, [days, repo]);
@@ -92,7 +100,12 @@ export function AnalyticsSection() {
   return (
     <div className="mb-8">
       <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-        <h2 className="font-mono text-[11px] font-bold tracking-wide text-muted-on-ink uppercase">Dashboard</h2>
+        <div>
+          <h2 className="font-mono text-[11px] font-bold tracking-wide text-muted-on-ink uppercase">Code health</h2>
+          <p className="text-[12px] text-muted-on-ink">
+            Findings, scores and activity for {repo || 'all repositories'} over the last {days} days.
+          </p>
+        </div>
 
         <div className="flex flex-wrap items-center gap-2">
           <select
@@ -130,8 +143,23 @@ export function AnalyticsSection() {
         </div>
       )}
 
+      {!overview && !error && (
+        <div
+          className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4"
+          aria-busy="true"
+          aria-label="Loading analytics"
+        >
+          {[0, 1, 2, 3].map((i) => (
+            <div key={i} className="h-[112px] animate-pulse rounded-lg border border-ink-line bg-ink-soft" />
+          ))}
+        </div>
+      )}
+
       {overview && trend && (
-        <>
+        <div
+          className={`transition-opacity ${reloading ? 'pointer-events-none opacity-50' : ''}`}
+          aria-busy={reloading}
+        >
           {/* Top KPI row */}
           <div className="mb-3 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
             <KpiCard
@@ -165,7 +193,10 @@ export function AnalyticsSection() {
           {/* Issue breakdowns */}
           <div className="mb-3 grid grid-cols-1 gap-3 lg:grid-cols-3">
             <div className="rounded-lg border border-ink-line bg-ink-soft p-4">
-              <CardHeading title="Issues by category" hint="Every finding's category (Security, Logic, Performance, Architecture, Maintainability, Testing) in this window." />
+              <CardHeading
+                title="Issues by category"
+                hint="Every finding's category (Security, Logic, Performance, Architecture, Maintainability, Testing) in this window."
+              />
               <IssuesByCategoryChart breakdown={overview.categoryBreakdown} />
             </div>
 
@@ -188,7 +219,10 @@ export function AnalyticsSection() {
                       return (
                         <div
                           key={k}
-                          style={{ width: `${pct}%`, backgroundColor: VERDICT_STYLE[k].color }}
+                          style={{
+                            width: `${pct}%`,
+                            backgroundColor: VERDICT_STYLE[k].color,
+                          }}
                           className="h-full first:ml-0 [&:not(:first-child)]:ml-0.5"
                         />
                       );
@@ -197,9 +231,14 @@ export function AnalyticsSection() {
                   <div className="space-y-1.5">
                     {(['pass', 'needs_work', 'do_not_ship'] as const).map((k) => (
                       <div key={k} className="flex items-center gap-2 text-[12px]">
-                        <span className="inline-block h-2 w-2 rounded-full" style={{ backgroundColor: VERDICT_STYLE[k].color }} />
+                        <span
+                          className="inline-block h-2 w-2 rounded-full"
+                          style={{ backgroundColor: VERDICT_STYLE[k].color }}
+                        />
                         <span className="text-muted-on-ink">{VERDICT_STYLE[k].label}</span>
-                        <span className="ml-auto tabular-nums font-semibold text-[#E8ECF4]">{overview.verdictBreakdown[k]}</span>
+                        <span className="ml-auto tabular-nums font-semibold text-[#E8ECF4]">
+                          {overview.verdictBreakdown[k]}
+                        </span>
                       </div>
                     ))}
                   </div>
@@ -233,22 +272,43 @@ export function AnalyticsSection() {
                 label="AI cost saved"
                 hint="Share of runs that cost nothing — served from cache or resolved by free local checks alone, no LLM call made."
                 subStats={[
-                  { label: 'Saved', value: `${overview.totals.cacheSavingsPct}%` },
-                  { label: 'Fresh AI calls', value: overview.totals.freshAiCalls },
+                  {
+                    label: 'Saved',
+                    value: `${overview.totals.cacheSavingsPct}%`,
+                  },
+                  {
+                    label: 'Fresh AI calls',
+                    value: overview.totals.freshAiCalls,
+                  },
                 ]}
               />
             </div>
 
             <div className="rounded-lg border border-ink-line bg-ink-soft p-4">
-              <CardHeading title="Most critical issues" hint="The single worst instance of each recurring issue, ranked by severity then confidence." />
+              <CardHeading
+                title="Most critical issues"
+                hint="The single worst instance of each recurring issue, ranked by severity then confidence."
+              />
               <CriticalIssuesList issues={overview.criticalIssues} />
             </div>
           </div>
 
           <div className="mb-3 grid grid-cols-1 gap-3 sm:grid-cols-3">
-            <ScoreCard label="Security" score={overview.scores.security} hint="Weighted by severity across audits & scans" />
-            <ScoreCard label="Performance" score={overview.scores.performance} hint="Performance findings in this window" />
-            <ScoreCard label="Technical debt" score={overview.scores.technicalDebt} hint="Maintainability, architecture, duplication" />
+            <ScoreCard
+              label="Security"
+              score={overview.scores.security}
+              hint="Weighted by severity across audits & scans"
+            />
+            <ScoreCard
+              label="Performance"
+              score={overview.scores.performance}
+              hint="Performance findings in this window"
+            />
+            <ScoreCard
+              label="Technical debt"
+              score={overview.scores.technicalDebt}
+              hint="Maintainability, architecture, duplication"
+            />
           </div>
 
           <div className="mb-3 rounded-lg border border-ink-line bg-ink-soft p-4">
@@ -263,7 +323,10 @@ export function AnalyticsSection() {
 
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <div className="rounded-lg border border-ink-line bg-ink-soft p-4">
-              <CardHeading title="Most common issues" hint="Findings grouped by category + title, ranked by how often they recur." />
+              <CardHeading
+                title="Most common issues"
+                hint="Findings grouped by category + title, ranked by how often they recur."
+              />
               {overview.topIssues.length === 0 ? (
                 <p className="text-sm text-muted-on-ink">No findings in this window.</p>
               ) : (
@@ -280,17 +343,17 @@ export function AnalyticsSection() {
             </div>
 
             <div className="rounded-lg border border-ink-line bg-ink-soft p-4">
-              <CardHeading title="Issues by repository" hint="Ranked by critical + high severity findings, worst first." />
+              <CardHeading
+                title="Issues by repository"
+                hint="Ranked by critical + high severity findings, worst first."
+              />
               {overview.riskiest.length === 0 ? (
                 <p className="text-sm text-muted-on-ink">No critical or high findings in this window.</p>
               ) : (
                 <div className="space-y-2.5">
                   {overview.riskiest.map((item, i) => {
                     const weight = item.criticalCount * 2 + item.highCount;
-                    const maxWeight = Math.max(
-                      ...overview.riskiest.map((r) => r.criticalCount * 2 + r.highCount),
-                      1,
-                    );
+                    const maxWeight = Math.max(...overview.riskiest.map((r) => r.criticalCount * 2 + r.highCount), 1);
                     return (
                       <div key={`${item.label}:${i}`}>
                         <div className="mb-1 flex items-center gap-2 text-[12px]">
@@ -304,7 +367,9 @@ export function AnalyticsSection() {
                         <div className="h-1.5 w-full overflow-hidden rounded-full bg-ink-line">
                           <div
                             className="h-full rounded-full bg-critical"
-                            style={{ width: `${Math.max((weight / maxWeight) * 100, 4)}%` }}
+                            style={{
+                              width: `${Math.max((weight / maxWeight) * 100, 4)}%`,
+                            }}
                           />
                         </div>
                       </div>
@@ -314,7 +379,7 @@ export function AnalyticsSection() {
               )}
             </div>
           </div>
-        </>
+        </div>
       )}
     </div>
   );

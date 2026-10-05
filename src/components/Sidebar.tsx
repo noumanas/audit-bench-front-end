@@ -36,9 +36,26 @@ const NAV_GROUPS = [
         // directly from the sidebar via ?tab=. Overview now includes the
         // full analytics section, so there's no separate Analytics tab.
         children: [
-          { href: '/app/dashboard?tab=overview', label: 'Overview', icon: GridIcon },
-          { href: '/app/dashboard?tab=audits', label: 'Audits', icon: FileIcon },
-          { href: '/app/dashboard?tab=scans', label: 'Repo scans', icon: GitBranchIcon },
+          {
+            href: '/app/dashboard?tab=overview',
+            label: 'Overview',
+            icon: GridIcon,
+          },
+          {
+            href: '/app/dashboard?tab=audits',
+            label: 'Audits',
+            icon: FileIcon,
+          },
+          {
+            href: '/app/dashboard?tab=scans',
+            label: 'Repo scans',
+            icon: GitBranchIcon,
+          },
+          {
+            href: '/app/dashboard?tab=plan',
+            label: 'Plan & usage',
+            icon: SettingsIcon,
+          },
         ],
       },
     ],
@@ -55,10 +72,26 @@ const NAV_GROUPS = [
         // app/app/repository/page.tsx) — same four sources, just reachable
         // directly from the sidebar via ?source=.
         children: [
-          { href: '/app/repository?source=upload', label: 'Upload .zip', icon: UploadCloudIcon },
-          { href: '/app/repository?source=github', label: 'From GitHub', icon: GithubLogoIcon },
-          { href: '/app/repository?source=gitlab', label: 'From GitLab', icon: GitlabLogoIcon },
-          { href: '/app/repository?source=integrations', label: 'Integrations', icon: PlugIcon },
+          {
+            href: '/app/repository?source=upload',
+            label: 'Upload .zip',
+            icon: UploadCloudIcon,
+          },
+          {
+            href: '/app/repository?source=github',
+            label: 'From GitHub',
+            icon: GithubLogoIcon,
+          },
+          {
+            href: '/app/repository?source=gitlab',
+            label: 'From GitLab',
+            icon: GitlabLogoIcon,
+          },
+          {
+            href: '/app/repository?source=integrations',
+            label: 'Integrations',
+            icon: PlugIcon,
+          },
         ],
       },
     ],
@@ -72,7 +105,12 @@ const NAV_GROUPS = [
     links: [
       // Enterprise only — the page shows an upgrade prompt to other plans
       // (see DueDiligenceGate).
-      { href: '/app/due-diligence', label: 'Due diligence', icon: FileIcon, tag: 'Enterprise' },
+      {
+        href: '/app/due-diligence',
+        label: 'Due diligence',
+        icon: FileIcon,
+        tag: 'Enterprise',
+      },
     ],
   },
   {
@@ -110,18 +148,14 @@ type NavLink = {
   icon: (props: { className?: string }) => React.ReactElement;
   /** Small plan tag shown after the label, e.g. "Enterprise". */
   tag?: string;
-  children?: { href: string; label: string; icon: (props: { className?: string }) => React.ReactElement }[];
+  children?: {
+    href: string;
+    label: string;
+    icon: (props: { className?: string }) => React.ReactElement;
+  }[];
 };
 
-function NavItem({
-  link,
-  pathname,
-  onNavigate,
-}: {
-  link: NavLink;
-  pathname: string;
-  onNavigate?: () => void;
-}) {
+function NavItem({ link, pathname, onNavigate }: { link: NavLink; pathname: string; onNavigate?: () => void }) {
   const active = isActive(pathname, link.href);
   const [expanded, setExpanded] = useState(active);
   const Icon = link.icon;
@@ -193,15 +227,7 @@ function NavItem({
   );
 }
 
-function NavLinks({
-  isAdmin,
-  pathname,
-  onNavigate,
-}: {
-  isAdmin: boolean;
-  pathname: string;
-  onNavigate?: () => void;
-}) {
+function NavLinks({ isAdmin, pathname, onNavigate }: { isAdmin: boolean; pathname: string; onNavigate?: () => void }) {
   const groups = isAdmin ? [...NAV_GROUPS, ADMIN_GROUP] : NAV_GROUPS;
   return (
     <nav className="flex flex-col gap-5 px-3">

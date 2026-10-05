@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { useParams } from "next/navigation";
-import Link from "next/link";
-import { usePollScan } from "@/lib/usePollScan";
-import { DueDiligenceReport } from "@/components/DueDiligenceReport";
-import { RequireAuth } from "@/components/RequireAuth";
-import { DueDiligenceGate } from "@/components/DueDiligenceGate";
+import { useParams } from 'next/navigation';
+import Link from 'next/link';
+import { usePollScan } from '@/lib/usePollScan';
+import { DueDiligenceReport } from '@/components/DueDiligenceReport';
+import { RequireAuth } from '@/components/RequireAuth';
+import { DueDiligenceGate } from '@/components/DueDiligenceGate';
 
 export default function DueDiligenceDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -14,10 +14,7 @@ export default function DueDiligenceDetailPage() {
   return (
     <RequireAuth>
       <div className="mx-auto max-w-4xl px-6 py-10 print:max-w-none print:px-0 print:py-0">
-        <Link
-          href="/app/due-diligence"
-          className="mb-4 inline-block text-sm text-cobalt print:hidden"
-        >
+        <Link href="/app/due-diligence" className="mb-4 inline-block text-sm text-cobalt print:hidden">
           ← Back to due diligence reports
         </Link>
 
@@ -28,20 +25,15 @@ export default function DueDiligenceDetailPage() {
             </div>
           )}
 
-          {loading && !scan && (
-            <div className="text-sm text-muted-on-ink">Loading…</div>
-          )}
+          {loading && !scan && <div className="text-sm text-muted-on-ink">Loading…</div>}
 
-          {scan && scan.status !== "completed" && (
+          {scan && scan.status !== 'completed' && (
             <div className="rounded-lg border border-ink-line bg-ink-soft px-4 py-3 text-sm text-muted-on-ink">
-              This scan is still {scan.status} — a due diligence report needs a
-              completed scan to work from.
+              This scan is still {scan.status} — a due diligence report needs a completed scan to work from.
             </div>
           )}
 
-          {scan && scan.status === "completed" && (
-            <DueDiligenceReport scan={scan} />
-          )}
+          {scan && scan.status === 'completed' && <DueDiligenceReport scan={scan} />}
         </DueDiligenceGate>
       </div>
     </RequireAuth>
