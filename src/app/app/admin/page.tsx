@@ -13,9 +13,9 @@ export default function AdminPage() {
 
   return (
     <RequireAdmin>
-      <div className="mx-auto max-w-4xl px-6 py-10">
+      <div className="mx-auto max-w-6xl px-6 py-10">
         <h1 className="mb-1 text-xl font-bold text-[#E8ECF4]">Admin</h1>
-        <p className="mb-6 text-sm text-muted-on-ink">Review plan requests, manage users, and site performance.</p>
+        <p className="mb-6 text-sm text-muted-on-ink">Review plan requests, manage users and track their usage, and monitor site performance.</p>
 
         <div className="mb-6 flex gap-2">
           <TabButton active={tab === 'requests'} onClick={() => setTab('requests')}>

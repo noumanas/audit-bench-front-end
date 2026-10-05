@@ -1,5 +1,7 @@
 import {
   AdminUser,
+  AdminUsageSummary,
+  AdminUserUsageDetail,
   AnalyticsOverview,
   AnalyticsTrend,
   Audit,
@@ -254,6 +256,22 @@ export function deleteOrganization(): Promise<void> {
 export function listAdminUsers(): Promise<AdminUser[]> {
   return fetch(`${API_URL}/admin/users`, { headers: authHeaders() }).then((res) =>
     unwrap<AdminUser[]>(res),
+  );
+}
+
+export function getAdminUsageSummary(): Promise<AdminUsageSummary> {
+  return fetch(`${API_URL}/admin/usage/summary`, { headers: authHeaders() }).then((res) => unwrap<AdminUsageSummary>(res));
+}
+
+export function getAdminUserUsage(userId: string): Promise<AdminUserUsageDetail> {
+  return fetch(`${API_URL}/admin/users/${userId}/usage`, { headers: authHeaders() }).then((res) =>
+    unwrap<AdminUserUsageDetail>(res),
+  );
+}
+
+export function renewUserPlan(userId: string): Promise<{ id: string; planExpiresAt: string | null; plan: Plan }> {
+  return fetch(`${API_URL}/admin/users/${userId}/renew-plan`, { method: "POST", headers: authHeaders() }).then((res) =>
+    unwrap<{ id: string; planExpiresAt: string | null; plan: Plan }>(res),
   );
 }
 

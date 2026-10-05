@@ -98,6 +98,70 @@ export interface AdminUser {
   githubUsername: string | null;
   isActive: boolean;
   _count: { audits: number; scanJobs: number };
+  // Present on the users list (GET /admin/users), not on mutation responses.
+  gitlabUsername?: string | null;
+  orgRole?: OrgRole | null;
+  organization?: { id: string; name: string } | null;
+  effectivePlan?: Plan;
+  planExpired?: boolean;
+  lastActiveAt?: string | null;
+  quota?: AdminQuota;
+  month?: { aiRuns: number; aiRepoScans: number; inputTokens: number; outputTokens: number };
+}
+
+export interface AdminQuota {
+  // 'organization' = the team's shared pool, which is what limits apply to.
+  scope: 'personal' | 'organization';
+  dailyUsed: number;
+  dailyLimit: number | null;
+  monthlyUsed: number;
+  monthlyLimit: number | null;
+  repoScansUsed: number;
+  repoScanLimit: number | null;
+}
+
+export interface AdminUsageSummary {
+  totalUsers: number;
+  suspended: number;
+  newThisMonth: number;
+  activeUsers7d: number;
+  activeUsers30d: number;
+  aiRunsMonth: number;
+  inputTokensMonth: number;
+  outputTokensMonth: number;
+}
+
+export interface AdminUserUsageDetail {
+  user: {
+    id: string;
+    email: string;
+    name: string | null;
+    createdAt: string;
+    lastLoginAt: string | null;
+    planExpiresAt: string | null;
+    role: Role;
+    isActive: boolean;
+    githubUsername: string | null;
+    gitlabUsername: string | null;
+    orgRole: OrgRole | null;
+    plan: Plan;
+    organization: { id: string; name: string } | null;
+  };
+  quota: Usage;
+  daily: Array<{ date: string; audits: number; scans: number; aiRuns: number; tokens: number }>;
+  totals: { audits: number; scans: number; inputTokens: number; outputTokens: number };
+  recent: Array<{
+    kind: 'audit' | 'scan';
+    id: string;
+    label: string;
+    verdict: Verdict | null;
+    status: string;
+    provider: string;
+    usedAi: boolean;
+    tokens: number;
+    createdAt: string;
+  }>;
+  planRequests: Array<{ id: string; status: string; createdAt: string; reviewedAt: string | null; requestedPlan: { name: string } }>;
 }
 
 export interface Usage {
