@@ -99,6 +99,14 @@ export default function RootLayout({
     <html lang="en" className="h-full antialiased">
       <head>
         <link rel="manifest" href="/manifest.webmanifest" />
+        {/* Google AdSense: site verification and ads. Kept as a plain <script>
+            (not next/script) so it is in the server-rendered <head>, where
+            AdSense's crawler looks for it. Allowed by the CSP in next.config.ts. */}
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7629892367786352"
+          crossOrigin="anonymous"
+        />
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-FEK7GDD0FH"
           strategy="afterInteractive"

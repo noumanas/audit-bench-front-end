@@ -20,18 +20,31 @@ function contentSecurityPolicy(): string {
   // React/webpack dev-mode tooling (HMR, stack-trace reconstruction) uses
   // eval() — never in a production build, so this only loosens local dev.
   const devEval = process.env.NODE_ENV === "production" ? "" : " 'unsafe-eval'";
+  // Google Analytics (gtag) and Google AdSense load scripts, frames, pixels
+  // and beacons from these hosts — see Google's published CSP guidance for
+  // both. Without them the browser silently blocks analytics and ads.
+  const google = {
+    script:
+      "https://www.googletagmanager.com https://*.googlesyndication.com https://*.google.com https://*.googletagservices.com https://*.doubleclick.net https://*.adtrafficquality.google",
+    connect:
+      "https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://*.adtrafficquality.google",
+    frame: "https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com https://*.adtrafficquality.google",
+  };
   return [
     `default-src 'self'`,
     // 'unsafe-inline' is required for Next.js App Router's own hydration
     // payload scripts (streamed inline, no nonce support wired up here) —
     // a real gap from a zero-unsafe-inline ideal, but still a large
     // improvement over no CSP at all.
-    `script-src 'self' 'unsafe-inline'${devEval} ${MONACO_CDN}`,
+    `script-src 'self' 'unsafe-inline'${devEval} ${MONACO_CDN} ${google.script}`,
     `style-src 'self' 'unsafe-inline' ${MONACO_CDN}`,
-    `img-src 'self' data: blob:`,
+    // https: rather than a host list: Analytics also sends pixels to Google's
+    // country domains (google.com.pk, google.de, …), which can't be listed.
+    `img-src 'self' data: blob: https:`,
     `font-src 'self' data: ${MONACO_CDN}`,
     `worker-src 'self' blob: ${MONACO_CDN}`,
-    `connect-src 'self' ${MONACO_CDN} ${apiOrigin()}`,
+    `connect-src 'self' ${MONACO_CDN} ${apiOrigin()} ${google.connect}`,
+    `frame-src 'self' ${google.frame}`,
     `frame-ancestors 'none'`,
     `base-uri 'self'`,
     `form-action 'self'`,
