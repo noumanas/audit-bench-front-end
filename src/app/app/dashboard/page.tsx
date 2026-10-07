@@ -155,6 +155,14 @@ function ScanRow({ s }: { s: ScanJob }) {
         <span className="text-xs text-muted-on-ink">
           {s.filesScanned}/{s.fileCount} files
         </span>
+        {s.isPublic && s.shareId && (
+          <span
+            className="rounded-full border border-cobalt/40 px-2 py-px font-mono text-[10px] font-bold text-cobalt uppercase"
+            title="This report has a public share link"
+          >
+            Shared
+          </span>
+        )}
         <TimeStamp iso={s.createdAt} />
       </div>
     </Link>

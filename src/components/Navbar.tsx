@@ -10,6 +10,7 @@ const MARKETING_LINKS = [
   { href: '/', label: 'Home' },
   { href: '/about', label: 'About' },
   { href: '/features', label: 'Features' },
+  { href: '/scan', label: 'Free scan' },
   { href: '/services', label: 'Services' },
   { href: '/alignment-lab', label: 'Alignment Lab' },
   { href: '/cli', label: 'CLI' },

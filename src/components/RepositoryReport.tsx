@@ -22,6 +22,7 @@ import { PipelineBadge } from './PipelineBadge';
 import { Stage1Summary } from './Stage1Summary';
 import { FixInEditorModal } from './FixInEditorModal';
 import { downloadReport } from '@/lib/reportExport';
+import { ShareScanPanel } from './ShareScanPanel';
 import { setScanFileFindingStatus } from '@/lib/api';
 import { SEVERITY_HEX, groupDependencies } from '@/lib/dependencyGroups';
 import { TokenUsageNote } from './TokenUsageNote';
@@ -77,8 +78,7 @@ export function RepositoryReport({ scan }: { scan: ScanJob }) {
     }
   };
 
-  const progressPct =
-    scan.fileCount > 0 ? Math.round((scan.filesScanned / Math.min(scan.fileCount, 9999)) * 100) : 0;
+  const progressPct = scan.fileCount > 0 ? Math.round((scan.filesScanned / Math.min(scan.fileCount, 9999)) * 100) : 0;
   const aiReviewedCount = Math.max(0, scan.filesScanned - scan.filesFromCache - scan.filesAiSkipped);
   const isDiffReview = DIFF_SOURCE_TYPES.has(scan.sourceType);
 
@@ -91,7 +91,8 @@ export function RepositoryReport({ scan }: { scan: ScanJob }) {
   const sortedFiles = [...files].sort(
     (a, b) => worstRank(b) - worstRank(a) || b.findings.length - a.findings.length || a.path.localeCompare(b.path),
   );
-  const visibleFiles = showCleanFiles || filesWithFindings === 0 ? sortedFiles : sortedFiles.filter((f) => f.findings.length > 0);
+  const visibleFiles =
+    showCleanFiles || filesWithFindings === 0 ? sortedFiles : sortedFiles.filter((f) => f.findings.length > 0);
 
   return (
     <article className="print-exact overflow-hidden rounded-xl border border-paper-line bg-paper-card shadow-2xl shadow-black/40 print:rounded-none print:border-0 print:shadow-none">
@@ -105,16 +106,30 @@ export function RepositoryReport({ scan }: { scan: ScanJob }) {
           {scan.verdict && <VerdictBadge verdict={scan.verdict} />}
         </div>
 
-        <h1 className="mb-5 text-2xl leading-tight font-bold tracking-tight break-words sm:text-[26px]">{scan.sourceName}</h1>
+        <h1 className="mb-5 text-2xl leading-tight font-bold tracking-tight break-words sm:text-[26px]">
+          {scan.sourceName}
+        </h1>
 
         <div className="flex flex-wrap items-end justify-between gap-4 border-t border-ink-line pt-4">
           <dl className="flex flex-wrap gap-x-8 gap-y-3">
             <Meta label="Framework" value={scan.framework || 'Not detected'} />
-            <Meta label="Files" value={`${scan.filesScanned.toLocaleString('en-US')} of ${scan.fileCount.toLocaleString('en-US')}`} />
-            <Meta label="Scanned" value={new Date(scan.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} />
+            <Meta
+              label="Files"
+              value={`${scan.filesScanned.toLocaleString('en-US')} of ${scan.fileCount.toLocaleString('en-US')}`}
+            />
+            <Meta
+              label="Scanned"
+              value={new Date(scan.createdAt).toLocaleDateString('en-US', {
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric',
+              })}
+            />
             {(scan.inputTokens > 0 || scan.outputTokens > 0) && (
               <div className="min-w-0">
-                <dt className="mb-0.5 font-mono text-[10px] tracking-[0.08em] text-muted-on-ink uppercase">AI tokens</dt>
+                <dt className="mb-0.5 font-mono text-[10px] tracking-[0.08em] text-muted-on-ink uppercase">
+                  AI tokens
+                </dt>
                 <dd className="text-[13px] font-semibold [&_span]:text-[13px] [&_span]:text-[#E8ECF4]">
                   <TokenUsageNote inputTokens={scan.inputTokens} outputTokens={scan.outputTokens} />
                 </dd>
@@ -142,7 +157,19 @@ export function RepositoryReport({ scan }: { scan: ScanJob }) {
               </Link>
             )}
             {scan.status === 'completed' && (
-              <div className="flex overflow-hidden rounded-md border border-ink-line" role="group" aria-label="Export report">
+              <a
+                href="#share"
+                className="rounded-md bg-cobalt px-3 py-1.5 text-xs font-bold text-white transition-colors hover:bg-cobalt-dark"
+              >
+                Share report
+              </a>
+            )}
+            {scan.status === 'completed' && (
+              <div
+                className="flex overflow-hidden rounded-md border border-ink-line"
+                role="group"
+                aria-label="Export report"
+              >
                 <ExportButton label=".md" onClick={() => downloadReport(scan, 'markdown')} />
                 <ExportButton
                   label=".html"
@@ -166,7 +193,10 @@ export function RepositoryReport({ scan }: { scan: ScanJob }) {
               </span>
             </div>
             <div className="h-1.5 w-full overflow-hidden rounded-full bg-paper-line">
-              <div className="h-full rounded-full bg-cobalt transition-all" style={{ width: `${Math.max(progressPct, 4)}%` }} />
+              <div
+                className="h-full rounded-full bg-cobalt transition-all"
+                style={{ width: `${Math.max(progressPct, 4)}%` }}
+              />
             </div>
           </div>
         )}
@@ -197,6 +227,13 @@ export function RepositoryReport({ scan }: { scan: ScanJob }) {
 
               <PipelineBar aiReviewed={aiReviewedCount} cached={scan.filesFromCache} localOnly={scan.filesAiSkipped} />
             </section>
+
+            <ShareScanPanel
+              scanId={scan.id}
+              sourceName={scan.sourceName}
+              initialShareId={scan.shareId}
+              initiallyPublic={scan.isPublic}
+            />
 
             {!isDiffReview && scan.riskAggregation && (
               <section>
@@ -234,7 +271,10 @@ export function RepositoryReport({ scan }: { scan: ScanJob }) {
                   >
                     <ul className="divide-y divide-paper-line">
                       {scan.licenseFindings?.map((f, i) => (
-                        <li key={i} className="flex flex-wrap items-baseline gap-2 py-2 text-xs text-[#1C2128] first:pt-0 last:pb-0">
+                        <li
+                          key={i}
+                          className="flex flex-wrap items-baseline gap-2 py-2 text-xs text-[#1C2128] first:pt-0 last:pb-0"
+                        >
                           <SeverityBadge level={f.riskLevel} />
                           <span className="font-mono font-bold">
                             {f.package}@{f.version}
@@ -266,7 +306,13 @@ export function RepositoryReport({ scan }: { scan: ScanJob }) {
                     title="Architecture consistency"
                     empty="No architecture assessment for this scan — it only runs when the scan already needed a fresh AI review."
                     show={Boolean(scan.architectureAssessment)}
-                    badge={scan.architectureAssessment ? <SeverityBadge level={scan.architectureAssessment.riskLevel} /> : <NaPill />}
+                    badge={
+                      scan.architectureAssessment ? (
+                        <SeverityBadge level={scan.architectureAssessment.riskLevel} />
+                      ) : (
+                        <NaPill />
+                      )
+                    }
                   >
                     {scan.architectureAssessment && <ArchitectureSummary assessment={scan.architectureAssessment} />}
                   </AnalysisSection>
@@ -315,7 +361,10 @@ export function RepositoryReport({ scan }: { scan: ScanJob }) {
                           </div>
                           <div className="flex flex-col gap-0.5">
                             {group.occurrences.map((o) => (
-                              <span key={`${o.path}:${o.startLine}`} className="font-mono text-xs break-all text-[#1C2128]">
+                              <span
+                                key={`${o.path}:${o.startLine}`}
+                                className="font-mono text-xs break-all text-[#1C2128]"
+                              >
                                 {o.path}:{o.startLine}–{o.endLine}
                               </span>
                             ))}
@@ -329,14 +378,18 @@ export function RepositoryReport({ scan }: { scan: ScanJob }) {
             )}
 
             <section>
-              <SectionTitle>{CONTRIBUTOR_STATS_SOURCE_TYPES.has(scan.sourceType) ? 'Team & secrets' : 'Secrets'}</SectionTitle>
+              <SectionTitle>
+                {CONTRIBUTOR_STATS_SOURCE_TYPES.has(scan.sourceType) ? 'Team & secrets' : 'Secrets'}
+              </SectionTitle>
               <div className="space-y-2">
                 {CONTRIBUTOR_STATS_SOURCE_TYPES.has(scan.sourceType) && (
                   <AnalysisSection
                     title="Contributor concentration"
                     empty="No contributor data available for this repository."
                     show={Boolean(scan.contributorStats?.length)}
-                    badge={scan.contributorStats?.length ? <ConcentrationPill stats={scan.contributorStats} /> : <NaPill />}
+                    badge={
+                      scan.contributorStats?.length ? <ConcentrationPill stats={scan.contributorStats} /> : <NaPill />
+                    }
                   >
                     <ContributorConcentration stats={scan.contributorStats ?? []} />
                   </AnalysisSection>
@@ -359,7 +412,9 @@ export function RepositoryReport({ scan }: { scan: ScanJob }) {
                             {s.path}:{s.line}
                           </span>
                         </div>
-                        <code className="mt-1 block truncate font-mono text-[11px] text-muted-on-paper">{s.snippet}</code>
+                        <code className="mt-1 block truncate font-mono text-[11px] text-muted-on-paper">
+                          {s.snippet}
+                        </code>
                       </li>
                     ))}
                   </ul>
@@ -371,7 +426,10 @@ export function RepositoryReport({ scan }: { scan: ScanJob }) {
             <section>
               <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
                 <SectionTitle className="mb-0">
-                  Files <span className="font-normal text-muted-on-paper normal-case">· {filesWithFindings} with findings of {files.length}</span>
+                  Files{' '}
+                  <span className="font-normal text-muted-on-paper normal-case">
+                    · {filesWithFindings} with findings of {files.length}
+                  </span>
                 </SectionTitle>
                 {filesWithFindings > 0 && filesWithFindings < files.length && (
                   <label className="flex cursor-pointer items-center gap-2 text-xs text-muted-on-paper print:hidden">
@@ -382,7 +440,8 @@ export function RepositoryReport({ scan }: { scan: ScanJob }) {
                       onChange={(e) => setShowCleanFiles(e.target.checked)}
                       className="h-3.5 w-3.5 accent-[#2b5be3]"
                     />
-                    Show {files.length - filesWithFindings} clean file{files.length - filesWithFindings === 1 ? '' : 's'}
+                    Show {files.length - filesWithFindings} clean file
+                    {files.length - filesWithFindings === 1 ? '' : 's'}
                   </label>
                 )}
               </div>
@@ -454,7 +513,9 @@ export function RepositoryReport({ scan }: { scan: ScanJob }) {
                     </div>
                   );
                 })}
-                {visibleFiles.length === 0 && <div className="px-4 py-3 text-xs text-muted-on-paper">No files in this scan.</div>}
+                {visibleFiles.length === 0 && (
+                  <div className="px-4 py-3 text-xs text-muted-on-paper">No files in this scan.</div>
+                )}
               </div>
             </section>
           </>
@@ -496,7 +557,9 @@ function ExportButton({ label, title, onClick }: { label: string; title?: string
 
 function SectionTitle({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
-    <h2 className={`mb-3 font-mono text-[11px] font-bold tracking-[0.08em] text-[#1C2128] uppercase ${className ?? ''}`}>
+    <h2
+      className={`mb-3 font-mono text-[11px] font-bold tracking-[0.08em] text-[#1C2128] uppercase ${className ?? ''}`}
+    >
       {children}
     </h2>
   );
@@ -518,7 +581,17 @@ function StatusBadge({ status }: { status: ScanJob['status'] }) {
   );
 }
 
-function CountTile({ label, value, hex, className }: { label: string; value: number; hex: string; className?: string }) {
+function CountTile({
+  label,
+  value,
+  hex,
+  className,
+}: {
+  label: string;
+  value: number;
+  hex: string;
+  className?: string;
+}) {
   const active = value > 0;
   return (
     <div className={`rounded-lg border border-paper-line bg-paper px-3 py-2.5 ${className ?? ''}`}>
@@ -545,7 +618,9 @@ function PipelineBar({ aiReviewed, cached, localOnly }: { aiReviewed: number; ca
   return (
     <div className="rounded-lg border border-paper-line px-4 py-3">
       <div className="mb-2 flex flex-wrap items-baseline justify-between gap-2">
-        <span className="font-mono text-[10px] font-bold tracking-[0.08em] text-muted-on-paper uppercase">Review pipeline</span>
+        <span className="font-mono text-[10px] font-bold tracking-[0.08em] text-muted-on-paper uppercase">
+          Review pipeline
+        </span>
         <span className="text-[11px] text-muted-on-paper">
           {cached + localOnly} of {total} files cost no AI credit
         </span>
@@ -554,7 +629,11 @@ function PipelineBar({ aiReviewed, cached, localOnly }: { aiReviewed: number; ca
         {parts
           .filter((p) => p.value > 0)
           .map((p) => (
-            <div key={p.label} className="h-full [&:not(:first-child)]:ml-0.5" style={{ width: `${(p.value / total) * 100}%`, backgroundColor: p.hex }} />
+            <div
+              key={p.label}
+              className="h-full [&:not(:first-child)]:ml-0.5"
+              style={{ width: `${(p.value / total) * 100}%`, backgroundColor: p.hex }}
+            />
           ))}
       </div>
       <div className="flex flex-wrap gap-x-5 gap-y-1">
@@ -575,7 +654,9 @@ function CountPill({ n, tone }: { n: number; tone: 'critical' | 'high' | 'medium
     high: 'border-high/30 bg-high/10 text-high',
     medium: 'border-medium/30 bg-medium/10 text-medium',
   }[tone];
-  return <span className={`rounded-full border px-2 py-0.5 font-mono text-[10px] font-bold tabular-nums ${cls}`}>{n}</span>;
+  return (
+    <span className={`rounded-full border px-2 py-0.5 font-mono text-[10px] font-bold tabular-nums ${cls}`}>{n}</span>
+  );
 }
 
 function CleanPill() {
@@ -664,13 +745,21 @@ export function RiskAssessmentBanner({ aggregation }: { aggregation: RiskAggrega
     <div className="space-y-4">
       <div className="grid gap-2.5 sm:grid-cols-3">
         <div className={`rounded-lg border px-4 py-3 ${style.bg}`}>
-          <div className="font-mono text-[10px] font-bold tracking-[0.08em] text-muted-on-paper uppercase">Overall risk</div>
-          <div className={`mt-1 text-2xl leading-none font-bold uppercase ${style.text}`}>{aggregation.overallRiskRating}</div>
+          <div className="font-mono text-[10px] font-bold tracking-[0.08em] text-muted-on-paper uppercase">
+            Overall risk
+          </div>
+          <div className={`mt-1 text-2xl leading-none font-bold uppercase ${style.text}`}>
+            {aggregation.overallRiskRating}
+          </div>
         </div>
         <div className="rounded-lg border border-paper-line bg-paper px-4 py-3">
-          <div className="font-mono text-[10px] font-bold tracking-[0.08em] text-muted-on-paper uppercase">Health score</div>
+          <div className="font-mono text-[10px] font-bold tracking-[0.08em] text-muted-on-paper uppercase">
+            Health score
+          </div>
           <div className="mt-1 flex items-baseline gap-1">
-            <span className="text-2xl leading-none font-bold text-[#1C2128] tabular-nums">{aggregation.overallHealthScore}</span>
+            <span className="text-2xl leading-none font-bold text-[#1C2128] tabular-nums">
+              {aggregation.overallHealthScore}
+            </span>
             <span className="text-xs text-muted-on-paper">/100</span>
           </div>
           <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-paper-line">
@@ -679,15 +768,22 @@ export function RiskAssessmentBanner({ aggregation }: { aggregation: RiskAggrega
               style={{
                 width: `${Math.max(aggregation.overallHealthScore, 2)}%`,
                 backgroundColor:
-                  aggregation.overallHealthScore >= 80 ? '#1f7a4d' : aggregation.overallHealthScore >= 50 ? '#d97706' : '#c92a3d',
+                  aggregation.overallHealthScore >= 80
+                    ? '#1f7a4d'
+                    : aggregation.overallHealthScore >= 50
+                      ? '#d97706'
+                      : '#c92a3d',
               }}
             />
           </div>
         </div>
         <div className="rounded-lg border border-paper-line bg-paper px-4 py-3">
-          <div className="font-mono text-[10px] font-bold tracking-[0.08em] text-muted-on-paper uppercase">Est. remediation</div>
+          <div className="font-mono text-[10px] font-bold tracking-[0.08em] text-muted-on-paper uppercase">
+            Est. remediation
+          </div>
           <div className="mt-1 text-lg leading-tight font-bold text-[#1C2128] tabular-nums">
-            ${remediation.estimatedCostLowUsd.toLocaleString('en-US')}–${remediation.estimatedCostHighUsd.toLocaleString('en-US')}
+            ${remediation.estimatedCostLowUsd.toLocaleString('en-US')}–$
+            {remediation.estimatedCostHighUsd.toLocaleString('en-US')}
           </div>
           <div className="mt-0.5 text-[11px] text-muted-on-paper">{days} engineer-days</div>
         </div>
@@ -760,8 +856,8 @@ export function TestCoverageSummary({ coverage }: { coverage: TestCoverageEstima
       <div className="flex flex-wrap items-center gap-2">
         <SeverityBadge level={coverage.riskLevel} />
         <span className="text-xs text-[#1C2128]">
-          {coverage.testFileCount} test file{coverage.testFileCount === 1 ? '' : 's'} / {coverage.sourceFileCount} source
-          file{coverage.sourceFileCount === 1 ? '' : 's'} ({Math.round(coverage.testFileRatio * 100)}%)
+          {coverage.testFileCount} test file{coverage.testFileCount === 1 ? '' : 's'} / {coverage.sourceFileCount}{' '}
+          source file{coverage.sourceFileCount === 1 ? '' : 's'} ({Math.round(coverage.testFileRatio * 100)}%)
         </span>
       </div>
       <p className="text-xs leading-relaxed text-muted-on-paper">{coverage.reason}</p>
@@ -773,7 +869,10 @@ export function TestCoverageSummary({ coverage }: { coverage: TestCoverageEstima
         <div className="flex flex-wrap items-center gap-1.5 text-xs text-muted-on-paper">
           <span>No tests found under</span>
           {coverage.untestedDirectories.map((d) => (
-            <code key={d} className="rounded border border-paper-line bg-paper px-1.5 py-0.5 font-mono text-[11px] text-[#1C2128]">
+            <code
+              key={d}
+              className="rounded border border-paper-line bg-paper px-1.5 py-0.5 font-mono text-[11px] text-[#1C2128]"
+            >
               {d}
             </code>
           ))}
@@ -880,7 +979,9 @@ function AnalysisSection({
         <span className="ml-auto shrink-0">{badge}</span>
       </button>
       {open && (
-        <div className="border-t border-paper-line px-4 py-3.5 text-sm text-muted-on-paper">{show ? children : empty}</div>
+        <div className="border-t border-paper-line px-4 py-3.5 text-sm text-muted-on-paper">
+          {show ? children : empty}
+        </div>
       )}
     </div>
   );

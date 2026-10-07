@@ -7,6 +7,7 @@
 - [Homepage](https://auditbenchai.com/) — AI code review before it ships
 - [Technical due diligence](https://auditbenchai.com/due-diligence) — for investors, PE, VC, and M&A deal teams
 - [Pricing](https://auditbenchai.com/pricing) — developer plans (Free/Pro/Team/Enterprise)
+- [Free repository scan](https://auditbenchai.com/scan) — scan any public GitHub repo without signing up: exposed secrets, vulnerable dependencies, license risk, dead code, duplication and a health score, with a shareable report link
 - [Features](https://auditbenchai.com/features)
 - [Services](https://auditbenchai.com/services) — audit coverage and methodology
 - [Security & Trust](https://auditbenchai.com/security)

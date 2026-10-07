@@ -35,6 +35,7 @@ import { TechLogo } from '@/components/TechLogo';
 import { TypingText, TypingSegment } from '@/components/TypingText';
 import { SITE_NAME, SITE_URL } from '@/lib/seo';
 import { BLOG_POSTS } from '@/lib/blog';
+import { PublicScanForm } from '@/components/PublicScanForm';
 
 export const metadata: Metadata = {
   title: 'AI code review before it ships',
@@ -292,10 +293,10 @@ export default function HomePage() {
                   Get started free
                 </Link>
                 <Link
-                  href="/pricing"
+                  href="#free-scan"
                   className="rounded-lg border border-ink-line px-5 py-3 text-sm font-bold text-muted-on-ink transition-all duration-200 hover:-translate-y-0.5 hover:border-cobalt/40 hover:text-[#E8ECF4]"
                 >
-                  See pricing
+                  Scan a repo free
                 </Link>
               </div>
               <p className="mt-5 max-w-md text-xs leading-relaxed text-muted-on-ink">
@@ -326,6 +327,23 @@ export default function HomePage() {
             ))}
           </ScrollReveal>
         </div>
+      </section>
+
+      {/* Free public scan: try it before signing up */}
+      <section id="free-scan" className="border-b border-ink-line bg-ink-soft px-6 py-12">
+        <ScrollReveal className="mx-auto grid max-w-5xl items-center gap-8 md:grid-cols-[1fr_1.3fr]">
+          <div>
+            <div className="mb-2 font-mono text-[11px] font-bold tracking-[0.12em] text-cobalt uppercase">
+              Try it now · no sign-up
+            </div>
+            <h2 className="text-2xl leading-tight font-bold text-[#E8ECF4] sm:text-3xl">Scan a public GitHub repo free</h2>
+            <p className="mt-3 text-sm leading-relaxed text-muted-on-ink">
+              Paste a repo URL and get a health score, exposed secrets, vulnerable dependencies and risky code in about a
+              minute, with a report link you can share.
+            </p>
+          </div>
+          <PublicScanForm />
+        </ScrollReveal>
       </section>
 
       {/* Stack / integrations bar */}

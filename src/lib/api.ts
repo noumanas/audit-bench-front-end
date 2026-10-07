@@ -1,5 +1,10 @@
 import {
   AdminUser,
+  RevenueOverview,
+  RevenueSubscription,
+  RevenuePayment,
+  PaymentKind,
+  PublicScan,
   AdminUsageSummary,
   AdminUserUsageDetail,
   AnalyticsOverview,
@@ -746,4 +751,98 @@ export function listInvestigations(modelId: string): Promise<Investigation[]> {
   return fetch(`${API_URL}/alignment-lab/models/${modelId}/investigations`, {
     headers: authHeaders(),
   }).then((res) => unwrap<Investigation[]>(res));
+}
+
+// ---------- Public scans & sharing ----------
+
+/** No sign-in: start a free, local-checks-only scan of a public GitHub repo. */
+export function startPublicScan(repoUrl: string): Promise<{ shareId: string; reused: boolean }> {
+  return fetch(`${API_URL}/public/scans`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ repoUrl }),
+  }).then((res) => unwrap<{ shareId: string; reused: boolean }>(res));
+}
+
+export function getPublicScan(shareId: string): Promise<PublicScan> {
+  return fetch(`${API_URL}/public/scans/${encodeURIComponent(shareId)}`).then((res) => unwrap<PublicScan>(res));
+}
+
+export function shareScan(scanId: string): Promise<{ shareId: string; isPublic: true }> {
+  return fetch(`${API_URL}/repository/${scanId}/share`, { method: "POST", headers: authHeaders() }).then((res) =>
+    unwrap<{ shareId: string; isPublic: true }>(res),
+  );
+}
+
+export function unshareScan(scanId: string): Promise<{ isPublic: false }> {
+  return fetch(`${API_URL}/repository/${scanId}/share`, { method: "DELETE", headers: authHeaders() }).then((res) =>
+    unwrap<{ isPublic: false }>(res),
+  );
+}
+
+// ---------- Revenue (super admin) ----------
+
+const jsonHeaders = () => ({ "Content-Type": "application/json", ...authHeaders() });
+
+export function getRevenueOverview(months = 12): Promise<RevenueOverview> {
+  return fetch(`${API_URL}/admin/revenue/overview?months=${months}`, { headers: authHeaders() }).then((res) =>
+    unwrap<RevenueOverview>(res),
+  );
+}
+
+export function listRevenueSubscriptions(status: "all" | "active" | "ended" = "all"): Promise<RevenueSubscription[]> {
+  return fetch(`${API_URL}/admin/revenue/subscriptions?status=${status}`, { headers: authHeaders() }).then((res) =>
+    unwrap<RevenueSubscription[]>(res),
+  );
+}
+
+export function updateRevenueSubscription(id: string, data: { amountCents?: number; notes?: string }): Promise<unknown> {
+  return fetch(`${API_URL}/admin/revenue/subscriptions/${id}`, {
+    method: "PATCH",
+    headers: jsonHeaders(),
+    body: JSON.stringify(data),
+  }).then((res) => unwrap<unknown>(res));
+}
+
+export function renewRevenueSubscription(id: string): Promise<unknown> {
+  return fetch(`${API_URL}/admin/revenue/subscriptions/${id}/renew`, { method: "POST", headers: authHeaders() }).then(
+    (res) => unwrap<unknown>(res),
+  );
+}
+
+export function cancelRevenueSubscription(id: string, downgrade: boolean): Promise<unknown> {
+  return fetch(`${API_URL}/admin/revenue/subscriptions/${id}/cancel`, {
+    method: "POST",
+    headers: jsonHeaders(),
+    body: JSON.stringify({ downgrade }),
+  }).then((res) => unwrap<unknown>(res));
+}
+
+export function listRevenuePayments(): Promise<RevenuePayment[]> {
+  return fetch(`${API_URL}/admin/revenue/payments`, { headers: authHeaders() }).then((res) =>
+    unwrap<RevenuePayment[]>(res),
+  );
+}
+
+export function recordRevenuePayment(data: {
+  amountCents: number;
+  paidAt: string;
+  kind: PaymentKind;
+  subscriptionId?: string;
+  payerName?: string;
+  method?: string;
+  reference?: string;
+  notes?: string;
+}): Promise<unknown> {
+  return fetch(`${API_URL}/admin/revenue/payments`, {
+    method: "POST",
+    headers: jsonHeaders(),
+    body: JSON.stringify(data),
+  }).then((res) => unwrap<unknown>(res));
+}
+
+export function deleteRevenuePayment(id: string): Promise<unknown> {
+  return fetch(`${API_URL}/admin/revenue/payments/${id}`, { method: "DELETE", headers: authHeaders() }).then((res) =>
+    unwrap<unknown>(res),
+  );
 }

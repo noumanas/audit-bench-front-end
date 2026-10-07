@@ -577,6 +577,10 @@ export interface AnalyticsTrend {
 
 export interface ScanJob {
   id: string;
+  // Public share link state — see backend PublicScanService.
+  shareId?: string | null;
+  isPublic?: boolean;
+  localOnly?: boolean;
   sourceName: string;
   sourceType: ScanSourceType;
   pullRequestUrl: string | null;
@@ -661,4 +665,97 @@ export interface Investigation {
   provider: string;
   createdAt: string;
   completedAt: string | null;
+}
+
+// Shared/public scan view — mirrors backend PublicScanService.getShared.
+export interface PublicScan {
+  shareId: string;
+  sourceName: string;
+  sourceType: ScanSourceType;
+  repoUrl: string | null;
+  ref: string | null;
+  status: ScanStatus;
+  error: string | null;
+  framework: string | null;
+  fileCount: number;
+  filesScanned: number;
+  verdict: Verdict | null;
+  localOnly: boolean;
+  createdAt: string;
+  completedAt: string | null;
+  riskAggregation: RiskAggregation | null;
+  secrets: { count: number; types: Record<string, number> } | null;
+  dependencyVulnerabilities: DependencyVulnerability[] | null;
+  licenseFindings: LicenseFinding[] | null;
+  testCoverage: TestCoverageEstimate | null;
+  circularImports: string[][] | null;
+  deadCode: string[] | null;
+  duplicates: unknown[] | null;
+  contributors: { count: number; topSharePct: number } | null;
+  files: Array<{ path: string; language: string | null; verdict: Verdict | null; findings: Finding[] }>;
+}
+
+// ---------- Revenue (super admin) — mirrors backend revenue/revenue.service.ts ----------
+export interface RevenueMonth {
+  month: string; // YYYY-MM
+  mrrCents: number;
+  newCents: number;
+  reactivationCents: number;
+  expansionCents: number;
+  contractionCents: number;
+  churnCents: number;
+  accounts: number;
+  collectedRecurringCents: number;
+  collectedOneOffCents: number;
+}
+
+export interface RevenueOverview {
+  currency: string;
+  asOf: string;
+  mrrCents: number;
+  arrCents: number;
+  payingAccounts: number;
+  arpaCents: number;
+  netNewMrrThisMonthCents: number;
+  churnRateLastMonthPct: number | null;
+  renewalsAtRiskCents: number;
+  collectedThisMonthCents: number;
+  collectedYtdCents: number;
+  oneOffYtdCents: number;
+  series: RevenueMonth[];
+  planMix: Array<{ plan: string; accounts: number; mrrCents: number }>;
+  renewals: Array<{ subscriptionId: string; account: string; plan: string; amountCents: number; endsAt: string; daysLeft: number }>;
+}
+
+export interface RevenueSubscription {
+  id: string;
+  account: string;
+  accountType: 'user' | 'team';
+  userId: string | null;
+  organizationId: string | null;
+  plan: { id: string; slug: string; name: string; priceMonthlyCents: number };
+  amountCents: number;
+  currency: string;
+  startedAt: string;
+  endsAt: string;
+  endedAt: string | null;
+  status: 'active' | 'expired' | 'canceled';
+  state: 'active' | 'scheduled' | 'expired' | 'canceled';
+  source: string;
+  notes: string | null;
+}
+
+export type PaymentKind = 'subscription' | 'tdd_engagement' | 'other';
+
+export interface RevenuePayment {
+  id: string;
+  amountCents: number;
+  currency: string;
+  kind: PaymentKind;
+  method: string | null;
+  reference: string | null;
+  payer: string;
+  plan: string | null;
+  paidAt: string;
+  notes: string | null;
 }
