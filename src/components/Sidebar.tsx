@@ -68,15 +68,10 @@ const NAV_GROUPS = [
         href: '/app/repository',
         label: 'Repository scan',
         icon: GitBranchIcon,
-        // Mirrors the source tabs on the repository page itself (see TABS in
-        // app/app/repository/page.tsx) — same four sources, just reachable
+        // Mirrors the source tabs on the repository page itself (see SOURCES in
+        // app/app/repository/page.tsx) — same four sources, same order, just reachable
         // directly from the sidebar via ?source=.
         children: [
-          {
-            href: '/app/repository?source=upload',
-            label: 'Upload .zip',
-            icon: UploadCloudIcon,
-          },
           {
             href: '/app/repository?source=github',
             label: 'From GitHub',
@@ -86,6 +81,11 @@ const NAV_GROUPS = [
             href: '/app/repository?source=gitlab',
             label: 'From GitLab',
             icon: GitlabLogoIcon,
+          },
+          {
+            href: '/app/repository?source=upload',
+            label: 'Upload .zip',
+            icon: UploadCloudIcon,
           },
           {
             href: '/app/repository?source=integrations',

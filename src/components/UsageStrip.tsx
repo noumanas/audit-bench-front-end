@@ -10,14 +10,14 @@ import { ArrowRightIcon } from './icons';
  * One-line plan + quota summary for the top of the dashboard. The full plan
  * picker lives on the dashboard's "Plan & usage" tab (PlanPanel).
  */
-export function UsageStrip({ planHref }: { planHref: string }) {
+export function UsageStrip({ planHref, refreshKey }: { planHref: string; refreshKey?: number }) {
   const [usage, setUsage] = useState<Usage | null>(null);
 
   useEffect(() => {
     getUsage()
       .then(setUsage)
       .catch(() => {});
-  }, []);
+  }, [refreshKey]);
 
   if (!usage) {
     return (
