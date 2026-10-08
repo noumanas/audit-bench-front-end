@@ -3,6 +3,8 @@ import { Footer } from '@/components/Footer';
 import { StructuredData } from '@/components/StructuredData';
 import { SITE_NAME, SITE_URL } from '@/lib/seo';
 import { TextReveal } from '@/components/gsap/TextReveal';
+import { HeroEntrance } from '@/components/gsap/HeroEntrance';
+import { ScrollReveal } from '@/components/gsap/ScrollReveal';
 
 function formatDate(iso: string): string {
   return new Date(iso).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
@@ -62,7 +64,9 @@ export function BlogArticleLayout({
             {updatedAt && updatedAt !== publishedAt && (
               <>
                 <span>·</span>
-                <span>Updated <time dateTime={updatedAt}>{formatDate(updatedAt)}</time></span>
+                <span>
+                  Updated <time dateTime={updatedAt}>{formatDate(updatedAt)}</time>
+                </span>
               </>
             )}
             <span>·</span>
@@ -70,15 +74,20 @@ export function BlogArticleLayout({
           </div>
         </div>
         {image && (
-          <div className="mx-auto mt-8 max-w-2xl overflow-hidden rounded-xl border border-ink-line">
+          <HeroEntrance
+            delay={150}
+            className="mx-auto mt-8 max-w-2xl overflow-hidden rounded-xl border border-ink-line"
+          >
             {/* eslint-disable-next-line @next/next/no-img-element -- local SVG cover art, no optimization needed */}
             <img src={image} alt="" className="block w-full" width={1200} height={630} />
-          </div>
+          </HeroEntrance>
         )}
       </section>
 
       <article className="bg-paper px-6 py-14">
-        <div className="prose-blog mx-auto max-w-2xl text-sm leading-relaxed text-[#1C2128]">{children}</div>
+        <ScrollReveal y={18} className="prose-blog mx-auto max-w-2xl text-sm leading-relaxed text-[#1C2128]">
+          {children}
+        </ScrollReveal>
       </article>
 
       <Footer />

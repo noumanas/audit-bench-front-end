@@ -1,3 +1,7 @@
+import { Suspense } from 'react';
+import { RouteProgress } from '@/components/motion/RouteProgress';
+import { PageTransition } from '@/components/motion/PageTransition';
+import { SmoothScroll } from '@/components/motion/SmoothScroll';
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import { AuthProvider } from "@/lib/AuthContext";
@@ -123,9 +127,17 @@ export default function RootLayout({
       <body className="flex min-h-full flex-col font-sans">
         <StructuredData data={[ORGANIZATION_SCHEMA, WEBSITE_SCHEMA]} />
         <WebVitalsReporter />
+        {/* Motion: top loading bar, page enter transition, smooth scroll. */}
+        <Suspense fallback={null}>
+          <RouteProgress />
+        </Suspense>
+        <PageTransition />
+        <SmoothScroll />
         <AuthProvider>
           <Navbar />
-          <main className="flex-1">{children}</main>
+          <main data-site-main className="flex-1">
+            {children}
+          </main>
         </AuthProvider>
       </body>
     </html>

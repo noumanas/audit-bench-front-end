@@ -293,3 +293,48 @@ html {
   padding: 0.15em 0.4em;
   font-size: 0.85em;
 }
+
+/* Lenis smooth scrolling (see components/motion/SmoothScroll). Native
+   scroll-behavior must be off while Lenis drives the scroll. */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* Animated ellipsis for PageLoader. */
+.loader-dots span {
+  animation: loader-dot 1.2s infinite both;
+}
+.loader-dots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.loader-dots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+@keyframes loader-dot {
+  0%,
+  80%,
+  100% {
+    opacity: 0.2;
+  }
+  40% {
+    opacity: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .loader-dots span {
+    animation: none;
+  }
+}

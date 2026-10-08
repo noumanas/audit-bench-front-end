@@ -1,4 +1,7 @@
 import type { Metadata } from 'next';
+import { HeroEntrance } from '@/components/gsap/HeroEntrance';
+import { ScrollReveal } from '@/components/gsap/ScrollReveal';
+import { TextReveal } from '@/components/gsap/TextReveal';
 import Link from 'next/link';
 import { Footer } from '@/components/Footer';
 import { PublicScanForm } from '@/components/PublicScanForm';
@@ -41,7 +44,7 @@ export default function FreeScanPage() {
           className="pointer-events-none absolute top-[-200px] left-1/2 h-[380px] w-[600px] -translate-x-1/2 rounded-full"
           style={{ background: 'radial-gradient(circle, rgba(43,91,227,0.3) 0%, rgba(43,91,227,0) 70%)' }}
         />
-        <div className="relative mx-auto max-w-3xl text-center">
+        <HeroEntrance className="relative mx-auto max-w-3xl text-center">
           <div className="mb-4 inline-block rounded-full border border-ink-line px-3 py-1 font-mono text-[11px] tracking-wide text-muted-on-ink uppercase">
             Free · No sign-up
           </div>
@@ -55,35 +58,41 @@ export default function FreeScanPage() {
           <div className="mx-auto max-w-2xl text-left">
             <PublicScanForm />
           </div>
-        </div>
+        </HeroEntrance>
       </section>
 
       <section className="bg-paper px-6 py-14">
         <div className="mx-auto max-w-5xl">
-          <h2 className="mb-6 text-center text-2xl font-bold text-[#1C2128]">How it works</h2>
-          <ol className="grid gap-4 md:grid-cols-3">
-            {STEPS.map((s) => (
-              <li key={s.n} className="rounded-xl border border-paper-line bg-paper-card p-5">
-                <span className="mb-3 flex h-7 w-7 items-center justify-center rounded-full bg-cobalt font-mono text-[12px] font-bold text-white">
-                  {s.n}
-                </span>
-                <h3 className="text-[15px] font-bold text-[#1C2128]">{s.title}</h3>
-                <p className="mt-1 text-[13px] leading-relaxed text-muted-on-paper">{s.detail}</p>
-              </li>
-            ))}
-          </ol>
+          <h2 className="mb-6 text-center text-2xl font-bold text-[#1C2128]">
+            <TextReveal>How it works</TextReveal>
+          </h2>
+          <ScrollReveal>
+            <ol className="grid gap-4 md:grid-cols-3">
+              {STEPS.map((s) => (
+                <li key={s.n} className="rounded-xl border border-paper-line bg-paper-card p-5">
+                  <span className="mb-3 flex h-7 w-7 items-center justify-center rounded-full bg-cobalt font-mono text-[12px] font-bold text-white">
+                    {s.n}
+                  </span>
+                  <h3 className="text-[15px] font-bold text-[#1C2128]">{s.title}</h3>
+                  <p className="mt-1 text-[13px] leading-relaxed text-muted-on-paper">{s.detail}</p>
+                </li>
+              ))}
+            </ol>
+          </ScrollReveal>
 
-          <h2 className="mt-14 mb-6 text-center text-2xl font-bold text-[#1C2128]">What the free scan checks</h2>
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          <h2 className="mt-14 mb-6 text-center text-2xl font-bold text-[#1C2128]">
+            <TextReveal>What the free scan checks</TextReveal>
+          </h2>
+          <ScrollReveal stagger className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {CHECKS.map((c) => (
               <div key={c.title} className="rounded-lg border border-paper-line bg-paper-card p-4">
                 <h3 className="text-[14px] font-bold text-[#1C2128]">{c.title}</h3>
                 <p className="mt-1 text-[13px] leading-relaxed text-muted-on-paper">{c.detail}</p>
               </div>
             ))}
-          </div>
+          </ScrollReveal>
 
-          <div className="mt-14 grid gap-4 md:grid-cols-2">
+          <ScrollReveal stagger className="mt-14 grid gap-4 md:grid-cols-2">
             <div className="rounded-xl border border-paper-line bg-paper-card p-6">
               <h3 className="font-mono text-[11px] font-bold tracking-wide text-muted-on-paper uppercase">Free scan</h3>
               <ul className="mt-3 space-y-1.5 text-[13px] text-[#1C2128]">
@@ -111,7 +120,7 @@ export default function FreeScanPage() {
                 Sign up free
               </Link>
             </div>
-          </div>
+          </ScrollReveal>
 
           <p className="mt-10 text-center text-[12px] leading-relaxed text-muted-on-paper">
             We only read public code, never run it, and never store your GitHub credentials for a free scan. Shared

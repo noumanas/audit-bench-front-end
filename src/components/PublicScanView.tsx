@@ -8,6 +8,7 @@ import { groupDependencies, SEVERITY_HEX } from '@/lib/dependencyGroups';
 import { formatDateTime, timeAgo } from '@/lib/time';
 import { useSiteOrigin } from '@/lib/useSiteOrigin';
 import { FindingCard } from './FindingCard';
+import { ScrollReveal } from './gsap/ScrollReveal';
 import { PublicScanForm } from './PublicScanForm';
 import { ChevronRightIcon, GithubLogoIcon } from './icons';
 
@@ -196,7 +197,7 @@ function Report({ scan }: { scan: PublicScan }) {
 
   return (
     <div className="bg-paper px-6 py-10">
-      <div className="mx-auto max-w-5xl space-y-8">
+      <ScrollReveal stagger y={20} className="mx-auto max-w-5xl space-y-8">
         {/* Headline numbers */}
         <div className="grid gap-3 md:grid-cols-[1.1fr_2fr]">
           {risk && level && (
@@ -402,7 +403,7 @@ function Report({ scan }: { scan: PublicScan }) {
             </Link>
           </div>
         </div>
-      </div>
+      </ScrollReveal>
     </div>
   );
 }
