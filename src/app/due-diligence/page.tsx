@@ -7,11 +7,13 @@ import { StructuredData } from '@/components/StructuredData';
 import { SITE_URL } from '@/lib/seo';
 import { BLOG_POSTS } from '@/lib/blog';
 
+// Checklist and questions first: they're the pages people search for.
 const DUE_DILIGENCE_BLOG_SLUGS = [
+  'technical-due-diligence-checklist',
+  'technical-due-diligence-questions',
   'technical-due-diligence-red-flags',
   'technical-due-diligence-timeline-explained',
   'how-to-prepare-for-technical-due-diligence',
-  'technical-due-diligence-checklist',
 ];
 
 const DUE_DILIGENCE_BLOG_POSTS = DUE_DILIGENCE_BLOG_SLUGS.map((slug) => BLOG_POSTS.find((p) => p.slug === slug)!);
@@ -235,6 +237,17 @@ export default function DueDiligencePage() {
               Talk to Us About a Deal
             </a>
           </div>
+          <p className="mt-5 text-xs text-muted-on-ink">
+            Running it yourself? Use our free{' '}
+            <Link href="/blog/technical-due-diligence-checklist" className="font-semibold text-cobalt hover:underline">
+              technical due diligence checklist (43 checks + template)
+            </Link>{' '}
+            and{' '}
+            <Link href="/blog/technical-due-diligence-questions" className="font-semibold text-cobalt hover:underline">
+              60 questions to ask the target
+            </Link>
+            .
+          </p>
         </ScrollReveal>
       </section>
 
@@ -449,8 +462,8 @@ export default function DueDiligencePage() {
               <TextReveal>Technical due diligence, explained</TextReveal>
             </h2>
             <p className="mx-auto mt-2 max-w-xl text-sm leading-relaxed text-muted-on-paper">
-              How the timeline actually compresses, what to prepare before an engagement, the red flags
-              that move valuation, and the full checklist we scan against.
+              The full checklist we scan against, the questions to ask the target, the red flags that move
+              valuation, and how the timeline compresses.
             </p>
           </div>
         </ScrollReveal>

@@ -17,12 +17,22 @@ export interface BlogPostMeta {
 export const BLOG_POSTS: BlogPostMeta[] = [
   {
     slug: "technical-due-diligence-checklist",
-    title: "Technical Due Diligence Checklist for M&A and Investment Deals",
+    title: "Technical Due Diligence Checklist (2026): 43 Checks + Free Template",
     description:
-      "A category-by-category technical due diligence checklist: security exposure, dependency and license risk, technical debt, architecture, talent concentration, and operational readiness.",
+      "Free tech due diligence checklist for M&A and investors: 43 checks across security, dependencies and licenses, technical debt, architecture, engineering practices and team risk. Download the template.",
     publishedAt: "2026-09-17",
-    readingTime: "8 min read",
+    updatedAt: "2026-10-08",
+    readingTime: "14 min read",
     image: "/blog/technical-due-diligence-checklist.svg",
+  },
+  {
+    slug: "technical-due-diligence-questions",
+    title: "Technical Due Diligence Questions: 60 Questions to Ask the Target",
+    description:
+      "60 technical due diligence questions to ask before an acquisition or investment, grouped by architecture, code quality, security, infrastructure, team, IP and data privacy, with what a weak answer reveals.",
+    publishedAt: "2026-10-08",
+    readingTime: "12 min read",
+    image: "/blog/technical-due-diligence-questions.svg",
   },
   {
     slug: "how-to-prepare-for-technical-due-diligence",

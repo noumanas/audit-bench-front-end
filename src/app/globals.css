@@ -248,16 +248,18 @@ html {
   color: #1c2128;
 }
 
-.prose-blog ul,
-.prose-blog ol {
+/* Elements marked .not-prose (download boxes, checklist cards, tables)
+   opt out of the article list and link styling below. */
+.prose-blog ul:not(:where(.not-prose, .not-prose *)),
+.prose-blog ol:not(:where(.not-prose, .not-prose *)) {
   padding-left: 1.25em;
 }
 
-.prose-blog ul {
+.prose-blog ul:not(:where(.not-prose, .not-prose *)) {
   list-style: disc;
 }
 
-.prose-blog ol {
+.prose-blog ol:not(:where(.not-prose, .not-prose *)) {
   list-style: decimal;
 }
 
@@ -265,7 +267,7 @@ html {
   margin-top: 0.4em;
 }
 
-.prose-blog a {
+.prose-blog a:not(:where(.not-prose, .not-prose *)) {
   color: var(--color-cobalt);
   text-decoration: underline;
   text-underline-offset: 2px;

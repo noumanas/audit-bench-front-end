@@ -86,6 +86,12 @@ export default function HowToPrepareForTechnicalDueDiligencePage() {
       </ol>
 
       <p>
+        Sellers: work through the same 
+        <Link href="/blog/technical-due-diligence-checklist">technical due diligence checklist (43 checks + free template)</Link> 
+        and the <Link href="/blog/technical-due-diligence-questions">60 technical due diligence questions to ask</Link>.
+      </p>
+
+      <p>
         <Link href="/due-diligence" className="font-semibold">
           See what Audit Bench Ai&apos;s technical due diligence report actually covers →
         </Link>

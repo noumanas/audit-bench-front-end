@@ -29,7 +29,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     path: `/blog/${post.slug}`,
     changeFrequency: 'monthly' as const,
     priority: 0.7,
-    lastModified: new Date(post.publishedAt),
+    // A revised post should tell crawlers it changed.
+    lastModified: new Date(post.updatedAt ?? post.publishedAt),
   }));
 
   return [...routes, ...blogRoutes].map((r) => ({

@@ -74,6 +74,12 @@ export default function TechnicalDueDiligenceTimelineExplainedPage() {
       </p>
 
       <p>
+        Plan the review with the 
+        <Link href="/blog/technical-due-diligence-checklist">technical due diligence checklist (43 checks + free template)</Link> 
+        and the <Link href="/blog/technical-due-diligence-questions">60 technical due diligence questions to ask</Link>.
+      </p>
+
+      <p>
         <Link href="/due-diligence" className="font-semibold">
           See how Audit Bench Ai&apos;s technical due diligence engagements are scoped →
         </Link>

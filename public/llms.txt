@@ -26,6 +26,8 @@
 - Pricing: Free ($0), Pro ($29/mo), Team ($99/mo), Enterprise (custom) — see [pricing](https://auditbenchai.com/pricing)
 
 ## Product 2: Technical due diligence for M&A and investment
+- [Technical Due Diligence Checklist (2026): 43 checks + free template](https://auditbenchai.com/blog/technical-due-diligence-checklist) — 6 risk areas, 15 domains, 43 checks with what to look at and red flags; free CSV template at https://auditbenchai.com/downloads/technical-due-diligence-checklist.csv
+- [Technical Due Diligence Questions: 60 questions to ask the target](https://auditbenchai.com/blog/technical-due-diligence-questions) — grouped by architecture, code quality, security, infrastructure, team, IP and data privacy
 
 - [Technical due diligence overview](https://auditbenchai.com/due-diligence)
 - [Sample redacted due diligence report (PDF)](https://auditbenchai.com/audit-bench-sample-tdd-report.pdf)
@@ -145,5 +147,6 @@ Six categories: security exposure (vulnerabilities, exposed secrets, recurring p
 - [Technical due diligence red flags that actually kill deals](https://auditbenchai.com/blog/technical-due-diligence-red-flags)
 - [Why technical due diligence now takes days, not weeks](https://auditbenchai.com/blog/technical-due-diligence-timeline-explained)
 - [How to prepare your codebase for a fast technical due diligence review](https://auditbenchai.com/blog/how-to-prepare-for-technical-due-diligence)
-- [Technical due diligence checklist for M&A and investment deals](https://auditbenchai.com/blog/technical-due-diligence-checklist)
+- [Technical Due Diligence Checklist (2026): 43 checks + free template](https://auditbenchai.com/blog/technical-due-diligence-checklist)
+- [Technical Due Diligence Questions: 60 questions to ask the target](https://auditbenchai.com/blog/technical-due-diligence-questions)
 - [Full blog index](https://auditbenchai.com/blog)

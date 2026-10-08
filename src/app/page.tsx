@@ -303,7 +303,12 @@ export default function HomePage() {
                 Doing technical due diligence on a software acquisition?{' '}
                 <Link href="/due-diligence" className="font-semibold text-cobalt hover:underline">
                   Get a risk report in days, not weeks →
+                </Link>{' '}
+                or use the free{' '}
+                <Link href="/blog/technical-due-diligence-checklist" className="font-semibold text-cobalt hover:underline">
+                  technical due diligence checklist
                 </Link>
+                .
               </p>
             </HeroEntrance>
 
