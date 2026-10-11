@@ -11,6 +11,9 @@
 - [Features](https://auditbenchai.com/features)
 - [Services](https://auditbenchai.com/services) — audit coverage and methodology
 - [Security & Trust](https://auditbenchai.com/security)
+- [Contact](https://auditbenchai.com/contact)
+- [Privacy Policy](https://auditbenchai.com/privacy)
+- [Terms of Service](https://auditbenchai.com/terms)
 - [Blog](https://auditbenchai.com/blog)
 
 ## Product 1: AI code review for engineering teams

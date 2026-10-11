@@ -28,8 +28,13 @@ const COLUMNS = [
     links: [{ href: '/due-diligence', label: 'Technical Due Diligence' }],
   },
   {
-    title: 'Contact',
-    links: [{ href: 'mailto:noumanqureshi15@gmail.com', label: 'noumanqureshi15@gmail.com' }],
+    title: 'Legal & Contact',
+    links: [
+      { href: '/contact', label: 'Contact us' },
+      { href: '/privacy', label: 'Privacy Policy' },
+      { href: '/terms', label: 'Terms of Service' },
+      { href: 'mailto:noumanqureshi15@gmail.com', label: 'noumanqureshi15@gmail.com' },
+    ],
   },
 ];
 
