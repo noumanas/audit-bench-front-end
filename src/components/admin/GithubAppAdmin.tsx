@@ -24,9 +24,24 @@ export function GithubAppAdmin() {
       .catch((err) => setError(err instanceof Error ? err.message : 'Could not load the GitHub App status.'));
   }, []);
 
+  const orgValue = org.trim();
+  // A GitHub organization login: letters, digits and single hyphens.
+  const orgInvalid = orgValue !== '' && !/^[A-Za-z0-9](?:[A-Za-z0-9]|-(?=[A-Za-z0-9])){0,38}$/.test(orgValue);
+
   const create = async () => {
+    if (orgInvalid) return;
     setBusy(true);
     setError(null);
+    // If the browser blocks the form (a security policy), say so instead of waiting forever.
+    const onBlocked = (e: SecurityPolicyViolationEvent) => {
+      if (e.violatedDirective.startsWith('form-action')) {
+        setError(
+          "Your browser blocked the form to GitHub (the site's security policy). Deploy the latest frontend and try again.",
+        );
+        setBusy(false);
+      }
+    };
+    document.addEventListener('securitypolicyviolation', onBlocked, { once: true });
     try {
       const { action, manifest } = await getGithubAppManifest(org);
       // GitHub's manifest flow is a form POST to github.com.
@@ -117,18 +132,26 @@ export function GithubAppAdmin() {
             the next screen).
           </p>
           <label className="mt-4 block text-[12px] text-muted-on-ink">
-            Create it under a GitHub organization (recommended, e.g. your company org). Leave empty for your personal
-            account.
+            The GitHub organization that will own the app: its login, as in github.com/<strong>your-org</strong>. Leave
+            empty to create it on your personal account. This isn&apos;t the bot&apos;s name; GitHub names the bot from
+            the app name on the next screen.
             <input
               value={org}
               onChange={(e) => setOrg(e.target.value)}
               placeholder="organization login, e.g. auditbenchai"
+              aria-invalid={orgInvalid}
               className="mt-1.5 block w-full max-w-sm rounded-md border border-ink-line bg-ink px-3 py-2 font-mono text-[13px] text-[#E8ECF4] outline-none placeholder:text-muted-on-ink focus:border-cobalt"
             />
           </label>
+          {orgInvalid && (
+            <p role="alert" className="mt-1.5 text-[12px] text-[#F3B7BF]">
+              That isn&apos;t a GitHub organization login: use only letters, numbers and hyphens, like{' '}
+              <span className="font-mono">auditbenchai</span>. Leave it empty for your personal account.
+            </p>
+          )}
           <button
             onClick={() => void create()}
-            disabled={busy}
+            disabled={busy || orgInvalid}
             className="mt-4 cursor-pointer rounded-md bg-cobalt px-4 py-2 text-sm font-bold text-white hover:bg-cobalt-dark disabled:cursor-wait disabled:opacity-60"
           >
             {busy ? 'Opening GitHub…' : 'Create the GitHub App'}

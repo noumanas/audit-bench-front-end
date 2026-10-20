@@ -47,7 +47,8 @@ function contentSecurityPolicy(): string {
     `frame-src 'self' ${google.frame}`,
     `frame-ancestors 'none'`,
     `base-uri 'self'`,
-    `form-action 'self'`,
+    // github.com: the admin "Create the GitHub App" button posts GitHub's app-manifest form there.
+    `form-action 'self' https://github.com`,
   ].join('; ');
 }
 
