@@ -1,20 +1,32 @@
 'use client';
 
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { RequireAdmin } from '@/components/RequireAdmin';
 import { AdminUsersTable } from '@/components/admin/AdminUsersTable';
 import { PlanRequestsTable } from '@/components/admin/PlanRequestsTable';
 import { WebVitalsTable } from '@/components/admin/WebVitalsTable';
 import { RevenueDashboard } from '@/components/admin/RevenueDashboard';
+import { GithubAppAdmin } from '@/components/admin/GithubAppAdmin';
 import { useAuth } from '@/lib/AuthContext';
 
-type Tab = 'revenue' | 'requests' | 'users' | 'vitals';
+type Tab = 'revenue' | 'requests' | 'users' | 'vitals' | 'github-app';
 
 export default function AdminPage() {
+  return (
+    <Suspense fallback={null}>
+      <AdminPageInner />
+    </Suspense>
+  );
+}
+
+function AdminPageInner() {
   const { user } = useAuth();
-  // Revenue is super-admin only (the API enforces this too).
+  // Revenue and the GitHub App are super-admin only (the API enforces this too).
   const isSuperAdmin = user?.role === 'super_admin';
-  const [picked, setTab] = useState<Tab | null>(null);
+  // GitHub sends the browser back to ?tab=github-app after creating the app.
+  const fromUrl = useSearchParams().get('tab') === 'github-app' ? 'github-app' : null;
+  const [picked, setTab] = useState<Tab | null>(fromUrl);
   const tab: Tab = picked ?? (isSuperAdmin ? 'revenue' : 'requests');
 
   return (
@@ -40,12 +52,18 @@ export default function AdminPage() {
           <TabButton active={tab === 'vitals'} onClick={() => setTab('vitals')}>
             Web Vitals
           </TabButton>
+          {isSuperAdmin && (
+            <TabButton active={tab === 'github-app'} onClick={() => setTab('github-app')}>
+              GitHub App
+            </TabButton>
+          )}
         </div>
 
         {tab === 'revenue' && isSuperAdmin && <RevenueDashboard />}
         {tab === 'requests' && <PlanRequestsTable />}
         {tab === 'users' && <AdminUsersTable />}
         {tab === 'vitals' && <WebVitalsTable />}
+        {tab === 'github-app' && isSuperAdmin && <GithubAppAdmin />}
       </div>
     </RequireAdmin>
   );

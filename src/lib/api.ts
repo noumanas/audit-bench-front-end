@@ -1,5 +1,10 @@
 import {
   AdminUser,
+  BitbucketPull,
+  BitbucketRepo,
+  GithubAppStatus,
+  ReviewRule,
+  ReviewRuleKind,
   RevenueOverview,
   RevenueSubscription,
   RevenuePayment,
@@ -569,6 +574,131 @@ export function reviewGithubPrByUrl(
     method: "POST",
     headers: { "Content-Type": "application/json", ...authHeaders() },
     body: JSON.stringify({ prUrl, postToGithub, provider }),
+  }).then((res) => unwrap<ScanJob>(res));
+}
+
+// ---------- GitHub App ----------
+
+export function getGithubAppStatus(): Promise<GithubAppStatus> {
+  return fetch(`${API_URL}/github-app/status`, { headers: authHeaders() }).then((res) => unwrap<GithubAppStatus>(res));
+}
+
+export function getGithubAppInstallUrl(): Promise<{ url: string }> {
+  return fetch(`${API_URL}/github-app/install-url`, { headers: authHeaders() }).then((res) => unwrap<{ url: string }>(res));
+}
+
+export function claimGithubInstallation(id: number): Promise<GithubAppStatus> {
+  return fetch(`${API_URL}/github-app/installations/${id}/claim`, { method: "POST", headers: authHeaders() }).then((res) =>
+    unwrap<GithubAppStatus>(res),
+  );
+}
+
+export function updateGithubInstallation(id: number, autoReview: boolean): Promise<GithubAppStatus> {
+  return fetch(`${API_URL}/github-app/installations/${id}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json", ...authHeaders() },
+    body: JSON.stringify({ autoReview }),
+  }).then((res) => unwrap<GithubAppStatus>(res));
+}
+
+export function unlinkGithubInstallation(id: number): Promise<GithubAppStatus> {
+  return fetch(`${API_URL}/github-app/installations/${id}`, { method: "DELETE", headers: authHeaders() }).then((res) =>
+    unwrap<GithubAppStatus>(res),
+  );
+}
+
+/** Super admin: GitHub's create-app-from-manifest form target and manifest. */
+export function getGithubAppManifest(org?: string): Promise<{ action: string; manifest: string }> {
+  const q = org?.trim() ? `?org=${encodeURIComponent(org.trim())}` : "";
+  return fetch(`${API_URL}/github-app/manifest${q}`, { headers: authHeaders() }).then((res) =>
+    unwrap<{ action: string; manifest: string }>(res),
+  );
+}
+
+// ---------- Review rules ----------
+
+export function listReviewRules(): Promise<ReviewRule[]> {
+  return fetch(`${API_URL}/review-rules`, { headers: authHeaders() }).then((res) => unwrap<ReviewRule[]>(res));
+}
+
+export function createReviewRule(input: {
+  kind: ReviewRuleKind;
+  text: string;
+  repo?: string;
+  shared?: boolean;
+}): Promise<ReviewRule> {
+  return fetch(`${API_URL}/review-rules`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...authHeaders() },
+    body: JSON.stringify(input),
+  }).then((res) => unwrap<ReviewRule>(res));
+}
+
+export function updateReviewRule(id: string, input: { enabled?: boolean; text?: string }): Promise<ReviewRule> {
+  return fetch(`${API_URL}/review-rules/${id}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json", ...authHeaders() },
+    body: JSON.stringify(input),
+  }).then((res) => unwrap<ReviewRule>(res));
+}
+
+export function deleteReviewRule(id: string): Promise<{ deleted: true }> {
+  return fetch(`${API_URL}/review-rules/${id}`, { method: "DELETE", headers: authHeaders() }).then((res) =>
+    unwrap<{ deleted: true }>(res),
+  );
+}
+
+// ---------- Bitbucket ----------
+
+export function getBitbucketStatus(): Promise<{ connected: boolean; username: string | null }> {
+  return fetch(`${API_URL}/bitbucket/status`, { headers: authHeaders() }).then((res) =>
+    unwrap<{ connected: boolean; username: string | null }>(res),
+  );
+}
+
+export function connectBitbucket(token: string): Promise<{ username: string | null }> {
+  return fetch(`${API_URL}/bitbucket/connect`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...authHeaders() },
+    body: JSON.stringify({ token }),
+  }).then((res) => unwrap<{ username: string | null }>(res));
+}
+
+export function disconnectBitbucket(): Promise<void> {
+  return fetch(`${API_URL}/bitbucket/disconnect`, { method: "DELETE", headers: authHeaders() }).then((res) =>
+    unwrap<void>(res),
+  );
+}
+
+export function listBitbucketRepos(): Promise<BitbucketRepo[]> {
+  return fetch(`${API_URL}/bitbucket/repos`, { headers: authHeaders() }).then((res) => unwrap<BitbucketRepo[]>(res));
+}
+
+export function listBitbucketBranches(workspace: string, slug: string): Promise<string[]> {
+  return fetch(`${API_URL}/bitbucket/repos/${encodeURIComponent(workspace)}/${encodeURIComponent(slug)}/branches`, {
+    headers: authHeaders(),
+  }).then((res) => unwrap<string[]>(res));
+}
+
+export function listBitbucketPulls(workspace: string, slug: string): Promise<BitbucketPull[]> {
+  return fetch(`${API_URL}/bitbucket/repos/${encodeURIComponent(workspace)}/${encodeURIComponent(slug)}/pulls`, {
+    headers: authHeaders(),
+  }).then((res) => unwrap<BitbucketPull[]>(res));
+}
+
+export function scanBitbucketRepo(workspace: string, repoSlug: string, ref?: string): Promise<ScanJob> {
+  return fetch(`${API_URL}/bitbucket/scan`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...authHeaders() },
+    body: JSON.stringify({ workspace, repoSlug, ref }),
+  }).then((res) => unwrap<ScanJob>(res));
+}
+
+export function reviewBitbucketPr(workspace: string, repoSlug: string, pullId: number): Promise<ScanJob> {
+  return fetch(`${API_URL}/bitbucket/pr`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...authHeaders() },
+    body: JSON.stringify({ workspace, repoSlug, pullId }),
   }).then((res) => unwrap<ScanJob>(res));
 }
 

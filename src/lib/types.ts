@@ -1,7 +1,14 @@
 export type Severity = 'critical' | 'high' | 'medium' | 'low';
 export type Verdict = 'pass' | 'needs_work' | 'do_not_ship';
 export type ScanStatus = 'queued' | 'processing' | 'completed' | 'failed';
-export type ScanSourceType = 'zip' | 'github_repo' | 'github_pr' | 'gitlab_repo' | 'gitlab_mr';
+export type ScanSourceType =
+  | 'zip'
+  | 'github_repo'
+  | 'github_pr'
+  | 'gitlab_repo'
+  | 'gitlab_mr'
+  | 'bitbucket_repo'
+  | 'bitbucket_pr';
 export type Role = 'user' | 'admin' | 'super_admin';
 export type PlanRequestStatus = 'pending' | 'approved' | 'rejected';
 export type OrgRole = 'owner' | 'admin' | 'member';
@@ -46,7 +53,7 @@ export interface User {
   orgRole: OrgRole | null;
 }
 
-export type WebhookProvider = 'github' | 'gitlab';
+export type WebhookProvider = 'github' | 'gitlab' | 'bitbucket';
 
 export interface WebhookConfig {
   id: string;
@@ -801,4 +808,61 @@ export interface RevenuePayment {
   plan: string | null;
   paidAt: string;
   notes: string | null;
+}
+
+// ---------- GitHub App — mirrors backend github-app/github-app.service.ts ----------
+export interface GithubInstallation {
+  id: number;
+  accountLogin: string;
+  accountType: 'User' | 'Organization' | string;
+  repositorySelection: 'all' | 'selected' | string;
+  autoReview: boolean;
+  suspended: boolean;
+}
+
+export interface GithubAppStatus {
+  configured: boolean;
+  slug: string | null;
+  name: string | null;
+  htmlUrl: string | null;
+  botLogin: string | null;
+  installations: GithubInstallation[];
+}
+
+// ---------- Review rules — mirrors backend review-rules/review-rules.service.ts ----------
+export type ReviewRuleKind = 'instruction' | 'ignore_path' | 'suppress';
+
+export interface ReviewRule {
+  id: string;
+  userId: string;
+  organizationId: string | null;
+  repo: string | null;
+  kind: ReviewRuleKind;
+  text: string;
+  source: 'manual' | 'learned';
+  enabled: boolean;
+  evidence: number;
+  createdAt: string;
+}
+
+// ---------- Bitbucket — mirrors backend bitbucket/bitbucket.service.ts ----------
+export interface BitbucketRepo {
+  workspace: string;
+  slug: string;
+  fullName: string;
+  private: boolean;
+  description: string | null;
+  defaultBranch: string;
+  updatedAt: string;
+  htmlUrl: string;
+}
+
+export interface BitbucketPull {
+  id: number;
+  title: string;
+  sourceBranch: string;
+  destinationBranch: string;
+  draft: boolean;
+  updatedAt: string;
+  htmlUrl: string;
 }

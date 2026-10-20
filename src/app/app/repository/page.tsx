@@ -8,12 +8,13 @@ import { usePollScan } from '@/lib/usePollScan';
 import { RepositoryReport } from '@/components/RepositoryReport';
 import { UsageStrip } from '@/components/UsageStrip';
 import { RequireAuth } from '@/components/RequireAuth';
+import { GithubAppCard } from '@/components/GithubAppCard';
 import { GitHostPanel } from '@/components/GitHostPanel';
 import { IntegrationsPanel } from '@/components/IntegrationsPanel';
 import { PageHeader } from '@/components/PageHeader';
-import { GithubLogoIcon, GitlabLogoIcon, PlugIcon, UploadCloudIcon } from '@/components/icons';
+import { BitbucketLogoIcon, GithubLogoIcon, GitlabLogoIcon, PlugIcon, UploadCloudIcon } from '@/components/icons';
 
-type Source = 'github' | 'gitlab' | 'upload' | 'integrations';
+type Source = 'github' | 'gitlab' | 'bitbucket' | 'upload' | 'integrations';
 
 const SOURCES: Array<{
   key: Source;
@@ -23,6 +24,7 @@ const SOURCES: Array<{
 }> = [
   { key: 'github', label: 'GitHub', icon: GithubLogoIcon, hint: 'Scan a branch or review a pull request' },
   { key: 'gitlab', label: 'GitLab', icon: GitlabLogoIcon, hint: 'Scan a branch or review a merge request' },
+  { key: 'bitbucket', label: 'Bitbucket', icon: BitbucketLogoIcon, hint: 'Scan a branch or review a pull request' },
   { key: 'upload', label: 'Upload .zip', icon: UploadCloudIcon, hint: 'Any codebase, no git host needed' },
   { key: 'integrations', label: 'Integrations', icon: PlugIcon, hint: 'Webhooks, CI and README badge' },
 ];
@@ -112,7 +114,11 @@ function RepositoryPageInner() {
 
       <UsageStrip planHref="/app/dashboard?tab=plan" refreshKey={usageRefresh} />
 
-      <nav role="tablist" aria-label="Where is the code?" className="mb-5 grid grid-cols-2 gap-2 sm:grid-cols-4">
+      <nav
+        role="tablist"
+        aria-label="Where is the code?"
+        className="mb-5 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5"
+      >
         {SOURCES.map((s) => {
           const Icon = s.icon;
           const active = source === s.key;
@@ -139,8 +145,14 @@ function RepositoryPageInner() {
       </nav>
 
       <div className="mb-8">
-        {source === 'github' && <GitHostPanel host="github" onScanStarted={scanStarted} />}
+        {source === 'github' && (
+          <>
+            <GithubAppCard />
+            <GitHostPanel host="github" onScanStarted={scanStarted} />
+          </>
+        )}
         {source === 'gitlab' && <GitHostPanel host="gitlab" onScanStarted={scanStarted} />}
+        {source === 'bitbucket' && <GitHostPanel host="bitbucket" onScanStarted={scanStarted} />}
         {source === 'integrations' && <IntegrationsPanel />}
 
         {source === 'upload' && (

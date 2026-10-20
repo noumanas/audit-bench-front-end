@@ -29,8 +29,8 @@ import { TokenUsageNote } from './TokenUsageNote';
 import { timeAgo } from '@/lib/time';
 import { READINESS } from '@/lib/prComment';
 
-const DIFF_SOURCE_TYPES = new Set<ScanJob['sourceType']>(['github_pr', 'gitlab_mr']);
-// Fixing requires a remote to commit to — a .zip upload has none.
+const DIFF_SOURCE_TYPES = new Set<ScanJob['sourceType']>(['github_pr', 'gitlab_mr', 'bitbucket_pr']);
+// Fixing requires a remote to commit to — a .zip upload has none, and Bitbucket isn't supported yet.
 const FIXABLE_SOURCE_TYPES = new Set<ScanJob['sourceType']>(['github_repo', 'github_pr', 'gitlab_repo', 'gitlab_mr']);
 // contributorStats is only ever populated for these — see RepositoryService/
 // GithubController/GitlabController. A .zip upload has no git host to pull
@@ -46,6 +46,8 @@ const SOURCE_LABEL: Record<ScanJob['sourceType'], string> = {
   gitlab_repo: 'Repository scan · GitLab',
   github_pr: 'Pull request review · diff only',
   gitlab_mr: 'Merge request review · diff only',
+  bitbucket_repo: 'Repository scan · Bitbucket',
+  bitbucket_pr: 'Pull request review · Bitbucket · diff only',
 };
 
 function severityCounts(findings: { severity: Severity }[]): Record<Severity, number> {
@@ -147,7 +149,13 @@ export function RepositoryReport({ scan }: { scan: ScanJob }) {
                 rel="noreferrer"
                 className="rounded-md border border-ink-line px-3 py-1.5 text-xs font-bold text-muted-on-ink transition-colors hover:border-cobalt hover:text-[#E8ECF4]"
               >
-                View on {scan.sourceType === 'github_pr' ? 'GitHub' : 'GitLab'} ↗
+                View on{' '}
+                {scan.sourceType === 'github_pr'
+                  ? 'GitHub'
+                  : scan.sourceType === 'bitbucket_pr'
+                    ? 'Bitbucket'
+                    : 'GitLab'}{' '}
+                ↗
               </a>
             )}
             {!isDiffReview && scan.status === 'completed' && (
@@ -550,7 +558,7 @@ export function RepositoryReport({ scan }: { scan: ScanJob }) {
 function PrPublishStatus({ scan }: { scan: ScanJob }) {
   const [state, setState] = useState({ at: scan.prPublishedAt ?? null, error: scan.prPublishError ?? null });
   const [busy, setBusy] = useState(false);
-  const host = scan.sourceType === 'gitlab_mr' ? 'GitLab' : 'GitHub';
+  const host = scan.sourceType === 'gitlab_mr' ? 'GitLab' : scan.sourceType === 'bitbucket_pr' ? 'Bitbucket' : 'GitHub';
   // Read once on mount: a review finished in the last two minutes may still be posting.
   const [recent] = useState(() =>
     scan.completedAt ? Date.now() - new Date(scan.completedAt).getTime() < 2 * 60_000 : false,
@@ -626,7 +634,7 @@ function PrPublishStatus({ scan }: { scan: ScanJob }) {
           {busy ? 'Posting…' : state.error ? 'Retry posting' : `Post to ${host}`}
         </button>
         <Link
-          href={`/app/repository?source=${scan.sourceType === 'gitlab_mr' ? 'gitlab' : 'github'}`}
+          href={`/app/repository?source=${scan.sourceType === 'gitlab_mr' ? 'gitlab' : scan.sourceType === 'bitbucket_pr' ? 'bitbucket' : 'github'}`}
           className="rounded-md border border-paper-line px-3.5 py-1.5 text-[13px] font-semibold text-[#1C2128] hover:border-cobalt"
         >
           Reconnect {host}

@@ -9,6 +9,7 @@ import { Usage } from '@/lib/types';
 import { Logo } from './Logo';
 import {
   ArrowRightIcon,
+  BitbucketLogoIcon,
   ChevronRightIcon,
   EyeIcon,
   FileIcon,
@@ -16,6 +17,7 @@ import {
   GitBranchIcon,
   GitlabLogoIcon,
   GridIcon,
+  LayersIcon,
   PlugIcon,
   SettingsIcon,
   ShieldIcon,
@@ -83,6 +85,11 @@ const NAV_GROUPS = [
             icon: GitlabLogoIcon,
           },
           {
+            href: '/app/repository?source=bitbucket',
+            label: 'From Bitbucket',
+            icon: BitbucketLogoIcon,
+          },
+          {
             href: '/app/repository?source=upload',
             label: 'Upload .zip',
             icon: UploadCloudIcon,
@@ -94,6 +101,7 @@ const NAV_GROUPS = [
           },
         ],
       },
+      { href: '/app/rules', label: 'Review rules', icon: LayersIcon },
     ],
   },
   {

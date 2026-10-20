@@ -198,7 +198,7 @@ function ApiKeySection() {
   );
 }
 
-const PROVIDER_LABEL: Record<WebhookProvider, string> = { github: 'GitHub', gitlab: 'GitLab' };
+const PROVIDER_LABEL: Record<WebhookProvider, string> = { github: 'GitHub', gitlab: 'GitLab', bitbucket: 'Bitbucket' };
 
 function WebhookSection() {
   const [configs, setConfigs] = useState<WebhookConfig[]>([]);
@@ -281,11 +281,14 @@ function WebhookSection() {
         >
           <option value="github">GitHub</option>
           <option value="gitlab">GitLab</option>
+          <option value="bitbucket">Bitbucket</option>
         </select>
         <input
           value={repoIdentifier}
           onChange={(e) => setRepoIdentifier(e.target.value)}
-          placeholder={provider === 'github' ? 'owner/repo' : 'GitLab project ID'}
+          placeholder={
+            provider === 'gitlab' ? 'GitLab project ID' : provider === 'bitbucket' ? 'workspace/repo' : 'owner/repo'
+          }
           className="min-w-0 flex-1 rounded-md border border-ink-line bg-ink px-2.5 py-1.5 text-xs text-[#E8ECF4] outline-none placeholder:text-muted-on-ink/60"
         />
         <button
@@ -387,6 +390,12 @@ function SetupInstructions({ config }: { config: WebhookConfig }) {
             )}
             . Review comments let Audit Bench Ai recheck the code and answer when someone replies to one of its inline
             comments.
+          </>
+        ) : config.provider === 'bitbucket' ? (
+          <>
+            In your repository → Repository settings → Webhooks → Add webhook. Paste the URL above, set the secret to
+            the one above, and under Triggers choose <strong>Pull Request: Created</strong> and <strong>Updated</strong>
+            . New and updated pull requests are then reviewed automatically.
           </>
         ) : (
           <>

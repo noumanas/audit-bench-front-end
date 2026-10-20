@@ -20,6 +20,7 @@ import {
   GitBranchIcon,
   GithubLogoIcon,
   GitlabLogoIcon,
+  BitbucketLogoIcon,
   GridIcon,
   SettingsIcon,
   UploadCloudIcon,
@@ -114,6 +115,8 @@ const SOURCE_META: Record<
   github_pr: { label: 'GitHub PR', icon: GithubLogoIcon },
   gitlab_repo: { label: 'GitLab', icon: GitlabLogoIcon },
   gitlab_mr: { label: 'GitLab MR', icon: GitlabLogoIcon },
+  bitbucket_repo: { label: 'Bitbucket', icon: BitbucketLogoIcon },
+  bitbucket_pr: { label: 'Bitbucket PR', icon: BitbucketLogoIcon },
 };
 
 function StatusPill({ status }: { status: ScanJob['status'] }) {

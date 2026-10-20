@@ -4,6 +4,14 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import {
   ApiError,
+  connectBitbucket,
+  disconnectBitbucket,
+  getBitbucketStatus,
+  listBitbucketBranches,
+  listBitbucketPulls,
+  listBitbucketRepos,
+  reviewBitbucketPr,
+  scanBitbucketRepo,
   connectGithub,
   connectGitlab,
   disconnectGithub,
@@ -24,7 +32,7 @@ import {
 } from '@/lib/api';
 import { formatDateTime, timeAgo } from '@/lib/time';
 import { PasswordInput } from './PasswordInput';
-import { GitBranchIcon, GithubLogoIcon, GitlabLogoIcon } from './icons';
+import { BitbucketLogoIcon, GitBranchIcon, GithubLogoIcon, GitlabLogoIcon } from './icons';
 
 /** Host-neutral shapes so GitHub and GitLab share one UI. */
 interface RepoItem {
@@ -68,7 +76,7 @@ interface HostConfig {
   listRepos: () => Promise<RepoItem[]>;
 }
 
-const HOSTS: Record<'github' | 'gitlab', HostConfig> = {
+const HOSTS: Record<'github' | 'gitlab' | 'bitbucket', HostConfig> = {
   github: {
     name: 'GitHub',
     repoNoun: 'repository',
@@ -171,6 +179,58 @@ const HOSTS: Record<'github' | 'gitlab', HostConfig> = {
           })),
       })),
   },
+  bitbucket: {
+    name: 'Bitbucket',
+    repoNoun: 'repository',
+    repoPlural: 'repositories',
+    changePlural: 'pull requests',
+    changeNoun: 'pull request',
+    changeShort: 'PR',
+    prefix: '#',
+    icon: BitbucketLogoIcon,
+    tokenPlaceholder: 'ATATT…',
+    tokenHelp: (
+      <>
+        An API token with the <code>read:user:bitbucket</code>, <code>read:repository:bitbucket</code> and{' '}
+        <code>read:pullrequest:bitbucket</code> scopes (add <code>write:repository:bitbucket</code> for a pass/fail
+        build status on each PR). A workspace or repository access token works too.{' '}
+        <a
+          href="https://id.atlassian.com/manage-profile/security/api-tokens"
+          target="_blank"
+          rel="noreferrer"
+          className="font-semibold text-cobalt hover:underline"
+        >
+          Create a Bitbucket API token
+        </a>
+      </>
+    ),
+    getStatus: getBitbucketStatus,
+    connect: connectBitbucket,
+    disconnect: disconnectBitbucket,
+    listRepos: async () =>
+      (await listBitbucketRepos()).map((r) => ({
+        key: r.fullName,
+        fullName: r.fullName,
+        description: r.description,
+        private: r.private,
+        defaultBranch: r.defaultBranch,
+        updatedAt: r.updatedAt,
+        url: r.htmlUrl,
+        scan: (ref) => scanBitbucketRepo(r.workspace, r.slug, ref),
+        review: (n) => reviewBitbucketPr(r.workspace, r.slug, n),
+        branches: () => listBitbucketBranches(r.workspace, r.slug),
+        changes: async () =>
+          (await listBitbucketPulls(r.workspace, r.slug)).map((p) => ({
+            number: p.id,
+            title: p.title,
+            from: p.sourceBranch,
+            to: p.destinationBranch,
+            draft: p.draft,
+            updatedAt: p.updatedAt,
+            url: p.htmlUrl,
+          })),
+      })),
+  },
 };
 
 type Failure = { message: string; upgrade: boolean };
@@ -192,7 +252,7 @@ export function GitHostPanel({
   host,
   onScanStarted,
 }: {
-  host: 'github' | 'gitlab';
+  host: 'github' | 'gitlab' | 'bitbucket';
   onScanStarted: (scanId: string) => void;
 }) {
   const cfg = HOSTS[host];

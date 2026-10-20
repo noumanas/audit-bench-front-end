@@ -13,7 +13,7 @@ import { DueDiligenceGate } from '@/components/DueDiligenceGate';
 // only once it's actually finished gathering data — a PR/MR diff review has
 // none of the repo-wide analysis (dependency/license/test-coverage/
 // contributor/architecture) this report is built from.
-const REPO_WIDE_SOURCE_TYPES = new Set<ScanJob['sourceType']>(['zip', 'github_repo', 'gitlab_repo']);
+const REPO_WIDE_SOURCE_TYPES = new Set<ScanJob['sourceType']>(['zip', 'github_repo', 'gitlab_repo', 'bitbucket_repo']);
 
 // listRepositoryScans() doesn't load each scan's files/findings (too costly
 // for a list of up to 20), so the full RiskAggregation isn't available here

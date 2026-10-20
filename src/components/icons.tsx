@@ -187,16 +187,24 @@ export function EyeOffIcon({ className }: IconProps) {
 export function GitlabLogoIcon({ className }: IconProps) {
   return (
     <svg viewBox="0 0 24 24" className={className} aria-hidden="true">
-      <path
-        fill="#E24329"
-        d="M12 21.42 16.3 8.18H7.7L12 21.42z"
-      />
+      <path fill="#E24329" d="M12 21.42 16.3 8.18H7.7L12 21.42z" />
       <path fill="#FC6D26" d="M12 21.42 7.7 8.18H2.87L12 21.42z" />
       <path fill="#FCA326" d="M2.87 8.18 1.7 11.75c-.1.32 0 .68.28.88L12 21.42 2.87 8.18z" />
       <path fill="#E24329" d="M2.87 8.18H7.7L5.65 1.9a.52.52 0 0 0-.99 0L2.87 8.18z" />
       <path fill="#FC6D26" d="M12 21.42 16.3 8.18h4.83L12 21.42z" />
       <path fill="#FCA326" d="M21.13 8.18 22.3 11.75c.1.32 0 .68-.28.88L12 21.42l9.13-13.24z" />
       <path fill="#E24329" d="M21.13 8.18H16.3L18.34 1.9a.52.52 0 0 1 .99 0l1.8 6.28z" />
+    </svg>
+  );
+}
+
+export function BitbucketLogoIcon({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} aria-hidden="true">
+      <path
+        fill="#2684FF"
+        d="M.78 1.21a.77.77 0 0 0-.77.89l3.26 19.8c.08.5.51.87 1.02.87h15.64a.77.77 0 0 0 .77-.65l3.27-20.01a.77.77 0 0 0-.77-.9L.78 1.21zm13.73 14.31H9.52L8.17 8.47h7.55l-1.21 7.05z"
+      />
     </svg>
   );
 }
