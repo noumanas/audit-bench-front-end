@@ -364,6 +364,14 @@ export function setAuditFindingStatus(
   }).then((res) => unwrap<Audit>(res));
 }
 
+/** Posts a finished PR/MR review to GitHub/GitLab again. */
+export function republishScan(id: string): Promise<{ prPublishedAt: string | null; prPublishError: string | null }> {
+  return fetch(`${API_URL}/repository/${id}/publish`, {
+    method: "POST",
+    headers: authHeaders(),
+  }).then((res) => unwrap<{ prPublishedAt: string | null; prPublishError: string | null }>(res));
+}
+
 export function setScanFileFindingStatus(
   scanFileId: string,
   findingIndex: number,

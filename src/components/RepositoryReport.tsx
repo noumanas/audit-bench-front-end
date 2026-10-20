@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import {
   FindingStatuses,
@@ -23,9 +23,10 @@ import { Stage1Summary } from './Stage1Summary';
 import { FixInEditorModal } from './FixInEditorModal';
 import { downloadReport } from '@/lib/reportExport';
 import { ShareScanPanel } from './ShareScanPanel';
-import { setScanFileFindingStatus } from '@/lib/api';
+import { getRepositoryScan, republishScan, setScanFileFindingStatus } from '@/lib/api';
 import { SEVERITY_HEX, groupDependencies } from '@/lib/dependencyGroups';
 import { TokenUsageNote } from './TokenUsageNote';
+import { timeAgo } from '@/lib/time';
 import { READINESS } from '@/lib/prComment';
 
 const DIFF_SOURCE_TYPES = new Set<ScanJob['sourceType']>(['github_pr', 'gitlab_mr']);
@@ -210,6 +211,8 @@ export function RepositoryReport({ scan }: { scan: ScanJob }) {
 
         {scan.status === 'completed' && (
           <>
+            {Boolean(scan.prContext) && <PrPublishStatus scan={scan} />}
+
             {scan.mergeReadiness && scan.prSnapshot && (
               <MergeReadinessBanner readiness={scan.mergeReadiness} pr={scan.prSnapshot} />
             )}
@@ -536,6 +539,100 @@ export function RepositoryReport({ scan }: { scan: ScanJob }) {
         />
       )}
     </article>
+  );
+}
+
+/**
+ * Whether the review reached the pull request. Posting runs just after the
+ * scan completes, so a fresh report checks back a few times; a refusal shows
+ * GitHub's reason and a retry.
+ */
+function PrPublishStatus({ scan }: { scan: ScanJob }) {
+  const [state, setState] = useState({ at: scan.prPublishedAt ?? null, error: scan.prPublishError ?? null });
+  const [busy, setBusy] = useState(false);
+  const host = scan.sourceType === 'gitlab_mr' ? 'GitLab' : 'GitHub';
+  // Read once on mount: a review finished in the last two minutes may still be posting.
+  const [recent] = useState(() =>
+    scan.completedAt ? Date.now() - new Date(scan.completedAt).getTime() < 2 * 60_000 : false,
+  );
+  const pending = !state.at && !state.error && recent;
+
+  useEffect(() => {
+    if (!pending) return;
+    let tries = 0;
+    const timer = setInterval(() => {
+      tries++;
+      void getRepositoryScan(scan.id)
+        .then((s) => {
+          if (s.prPublishedAt || s.prPublishError || tries >= 10) {
+            clearInterval(timer);
+            setState({ at: s.prPublishedAt ?? null, error: s.prPublishError ?? null });
+          }
+        })
+        .catch(() => clearInterval(timer));
+    }, 3000);
+    return () => clearInterval(timer);
+  }, [pending, scan.id]);
+
+  const retry = async () => {
+    setBusy(true);
+    try {
+      const r = await republishScan(scan.id);
+      setState({ at: r.prPublishedAt, error: r.prPublishError });
+    } catch (err) {
+      setState({ at: null, error: err instanceof Error ? err.message : 'Posting failed.' });
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  if (state.at) {
+    return (
+      <p className="flex flex-wrap items-center gap-2 rounded-lg border border-pass/30 bg-pass/10 px-3.5 py-2.5 text-[13px] text-[#1C2128]">
+        <span className="font-bold text-pass">✓</span>
+        Review posted on {host} {timeAgo(state.at)}.
+        {scan.pullRequestUrl && (
+          <a
+            href={scan.pullRequestUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="font-semibold text-cobalt hover:underline"
+          >
+            See it on the pull request ↗
+          </a>
+        )}
+      </p>
+    );
+  }
+  if (pending) {
+    return (
+      <p className="rounded-lg border border-paper-line bg-paper-card px-3.5 py-2.5 text-[13px] text-muted-on-paper">
+        Posting the review to {host}…
+      </p>
+    );
+  }
+  return (
+    <div className="rounded-lg border border-critical/40 bg-critical/5 px-3.5 py-3 text-[13px] text-[#1C2128]">
+      <p className="font-bold text-critical">
+        {state.error ? `The review wasn't posted on ${host}` : `No record of posting this review to ${host}`}
+      </p>
+      {state.error && <p className="mt-1 leading-relaxed">{state.error}</p>}
+      <div className="mt-2.5 flex flex-wrap gap-2">
+        <button
+          onClick={() => void retry()}
+          disabled={busy}
+          className="cursor-pointer rounded-md bg-cobalt px-3.5 py-1.5 text-[13px] font-bold text-white hover:bg-cobalt-dark disabled:cursor-wait disabled:opacity-60"
+        >
+          {busy ? 'Posting…' : state.error ? 'Retry posting' : `Post to ${host}`}
+        </button>
+        <Link
+          href={`/app/repository?source=${scan.sourceType === 'gitlab_mr' ? 'gitlab' : 'github'}`}
+          className="rounded-md border border-paper-line px-3.5 py-1.5 text-[13px] font-semibold text-[#1C2128] hover:border-cobalt"
+        >
+          Reconnect {host}
+        </Link>
+      </div>
+    </div>
   );
 }
 

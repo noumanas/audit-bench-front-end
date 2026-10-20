@@ -160,6 +160,9 @@ export interface AdminUserUsageDetail {
     usedAi: boolean;
     tokens: number;
     createdAt: string;
+    /** Scans only: whether a PR/MR review reached the pull request; null when it doesn't post. */
+    posted?: 'posted' | 'failed' | 'unknown' | null;
+    postError?: string | null;
   }>;
   planRequests: Array<{ id: string; status: string; createdAt: string; reviewedAt: string | null; requestedPlan: { name: string } }>;
 }
@@ -581,6 +584,10 @@ export interface ScanJob {
   id: string;
   /** GitHub PR reviews: GitHub's merge state and CI at review time, and the verdict computed from it. */
   prSnapshot?: Omit<PublicPullRequest, 'readiness'> | null;
+  /** Set when the review posts back to GitHub/GitLab; null when it was kept in the app. */
+  prContext?: unknown;
+  prPublishedAt?: string | null;
+  prPublishError?: string | null;
   mergeReadiness?: PublicPullRequest['readiness'];
   // Public share link state — see backend PublicScanService.
   shareId?: string | null;

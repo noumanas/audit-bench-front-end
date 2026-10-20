@@ -220,7 +220,16 @@ export function AdminUserDrawer({
                     <div className="min-w-0 flex-1">
                       <div className="truncate font-mono text-[12px] text-[#E8ECF4]">{r.label}</div>
                       <div className="text-[11px] text-muted-on-ink">
-                        {r.usedAi ? `AI · ${r.provider}${r.tokens > 0 ? ` · ${compactNumber(r.tokens)} tokens` : ''}` : 'Local checks only'}
+                        {r.usedAi
+                          ? `AI · ${r.provider}${r.tokens > 0 ? ` · ${compactNumber(r.tokens)} tokens` : ''}`
+                          : 'Local checks only'}
+                        {r.posted === 'posted' && <span className="text-pass"> · Posted to PR</span>}
+                        {r.posted === 'failed' && (
+                          <span className="text-[#F3B7BF]" title={r.postError ?? undefined}>
+                            {' '}
+                            · Not posted to PR
+                          </span>
+                        )}
                       </div>
                     </div>
                     {r.verdict && r.status === 'completed' ? (
