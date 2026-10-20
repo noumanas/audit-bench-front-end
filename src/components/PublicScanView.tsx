@@ -7,6 +7,7 @@ import { PublicScan, Severity } from '@/lib/types';
 import { groupDependencies, SEVERITY_HEX } from '@/lib/dependencyGroups';
 import { formatDateTime, timeAgo } from '@/lib/time';
 import { useSiteOrigin } from '@/lib/useSiteOrigin';
+import { READINESS, buildPrComment } from '@/lib/prComment';
 import { FindingCard } from './FindingCard';
 import { ScrollReveal } from './gsap/ScrollReveal';
 import { PublicScanForm } from './PublicScanForm';
@@ -73,12 +74,17 @@ export function PublicScanView({ shareId }: { shareId: string }) {
     <Shell>
       <Header scan={scan} />
       {scan.status === 'completed' ? (
-        <Report scan={scan} />
+        scan.pullRequest ? (
+          <PrReport scan={scan} />
+        ) : (
+          <Report scan={scan} />
+        )
       ) : scan.status === 'failed' ? (
         <div className="bg-paper px-6 py-12">
           <div className="mx-auto max-w-xl text-center">
             <p className="mb-6 text-sm text-[#1C2128]">
-              This scan couldn&apos;t be completed. The repository may be too large or temporarily unavailable.
+              This {scan.pullRequest ? 'review' : 'scan'} couldn&apos;t be completed. The{' '}
+              {scan.pullRequest ? 'pull request' : 'repository'} may be too large or temporarily unavailable.
             </p>
             <PublicScanForm tone="paper" showExamples={false} />
           </div>
@@ -99,32 +105,54 @@ function Header({ scan }: { scan: PublicScan }) {
   // The deployment the reader is on, which is the one that holds this report.
   const origin = useSiteOrigin();
   const url = `${origin}/scan/${scan.shareId}`;
-  const text = `Code health report for ${scan.sourceName}, scanned free with Audit Bench Ai`;
+  const pr = scan.pullRequest;
+  const text = pr
+    ? `Is ${scan.sourceName} ready to merge? Free pull request review by Audit Bench Ai`
+    : `Code health report for ${scan.sourceName}, scanned free with Audit Bench Ai`;
 
   return (
     <section className="border-b border-ink-line px-6 pt-10 pb-8">
       <div className="mx-auto max-w-5xl">
         <div className="mb-2 font-mono text-[11px] font-bold tracking-[0.12em] text-cobalt uppercase">
-          Free code health report
+          {pr ? 'Free pull request review' : 'Free code health report'}
         </div>
         <div className="flex flex-wrap items-end gap-x-6 gap-y-4">
           <div className="min-w-0 flex-1">
             <h1 className="flex items-center gap-3 font-mono text-2xl font-bold break-all text-[#E8ECF4] sm:text-3xl">
               <GithubLogoIcon className="h-6 w-6 shrink-0 text-muted-on-ink" />
-              {scan.repoUrl ? (
-                <a href={scan.repoUrl} target="_blank" rel="noreferrer" className="hover:underline">
+              {pr || scan.repoUrl ? (
+                <a href={pr?.url ?? scan.repoUrl!} target="_blank" rel="noreferrer" className="hover:underline">
                   {scan.sourceName}
                 </a>
               ) : (
                 scan.sourceName
               )}
             </h1>
-            <p className="mt-2 text-[13px] text-muted-on-ink">
-              {[scan.ref && `Branch ${scan.ref}`, scan.framework, `${scan.fileCount.toLocaleString()} files`]
-                .filter(Boolean)
-                .join(' · ')}{' '}
-              · <span title={formatDateTime(scan.createdAt)}>scanned {timeAgo(scan.createdAt)}</span>
-            </p>
+            {pr ? (
+              <>
+                <p className="mt-2 text-[15px] font-semibold break-words text-[#E8ECF4]">{pr.title}</p>
+                <p className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-[13px] text-muted-on-ink">
+                  <span className="max-w-full truncate rounded bg-ink-soft px-1.5 py-0.5 font-mono text-[12px]">
+                    {pr.baseRef} ← {pr.headRef}
+                  </span>
+                  <span>
+                    <span className="text-pass">+{pr.additions.toLocaleString()}</span>{' '}
+                    <span className="text-critical">−{pr.deletions.toLocaleString()}</span>
+                  </span>
+                  <span>· {pr.changedFiles.toLocaleString()} files</span>
+                  <span>
+                    · <span title={formatDateTime(scan.createdAt)}>reviewed {timeAgo(scan.createdAt)}</span>
+                  </span>
+                </p>
+              </>
+            ) : (
+              <p className="mt-2 text-[13px] text-muted-on-ink">
+                {[scan.ref && `Branch ${scan.ref}`, scan.framework, `${scan.fileCount.toLocaleString()} files`]
+                  .filter(Boolean)
+                  .join(' · ')}{' '}
+                · <span title={formatDateTime(scan.createdAt)}>scanned {timeAgo(scan.createdAt)}</span>
+              </p>
+            )}
           </div>
           <div className="flex flex-wrap gap-2">
             <button
@@ -165,6 +193,26 @@ function Progress({ scan }: { scan: PublicScan }) {
   const pct = scan.fileCount
     ? Math.round((scan.filesScanned / Math.max(scan.filesScanned, Math.min(scan.fileCount, 40))) * 100)
     : 0;
+  if (scan.pullRequest) {
+    return (
+      <section className="px-6 py-14">
+        <div className="mx-auto max-w-xl rounded-xl border border-ink-line bg-ink-soft p-6 text-center">
+          <div className="mx-auto mb-4 h-2 w-2 animate-ping rounded-full bg-cobalt" />
+          <h2 className="mb-1 text-lg font-bold text-[#E8ECF4]">Reviewing {scan.sourceName}…</h2>
+          <p className="mb-5 text-[13px] text-muted-on-ink">
+            Checking the changed lines for risky code and secrets, alongside merge conflicts and CI results. This
+            usually takes a few seconds.
+          </p>
+          <div className="h-1.5 overflow-hidden rounded-full bg-ink-line">
+            <div className="h-full rounded-full bg-cobalt transition-all" style={{ width: `${Math.max(pct, 6)}%` }} />
+          </div>
+          <p className="mt-2 font-mono text-[11px] text-muted-on-ink">
+            {scan.filesScanned} of {scan.fileCount} changed files reviewed
+          </p>
+        </div>
+      </section>
+    );
+  }
   return (
     <section className="px-6 py-14">
       <div className="mx-auto max-w-xl rounded-xl border border-ink-line bg-ink-soft p-6 text-center">
@@ -408,10 +456,218 @@ function Report({ scan }: { scan: PublicScan }) {
   );
 }
 
+function PrReport({ scan }: { scan: PublicScan }) {
+  const pr = scan.pullRequest!;
+  const readiness = pr.readiness;
+  const origin = useSiteOrigin();
+  const [copied, setCopied] = useState(false);
+  const counts = useMemo(() => {
+    const c: Record<Severity, number> = { critical: 0, high: 0, medium: 0, low: 0 };
+    for (const f of scan.files) for (const x of f.findings) c[x.severity]++;
+    return c;
+  }, [scan.files]);
+  const comment = useMemo(() => buildPrComment(scan, `${origin}/scan/${scan.shareId}`), [scan, origin]);
+  const filesWithFindings = scan.files.filter((f) => f.findings.length > 0);
+  const totalFindings = SEVERITIES.reduce((s, k) => s + counts[k], 0);
+  const r = readiness ? READINESS[readiness.status] : null;
+  const ci = pr.checks;
+  const conflicts = pr.mergeable === false || pr.mergeableState === 'dirty';
+
+  return (
+    <div className="bg-paper px-6 py-10">
+      <ScrollReveal stagger y={20} className="mx-auto max-w-5xl space-y-8">
+        {r && readiness && (
+          <div className="rounded-xl border-2 bg-paper-card p-5 sm:p-6" style={{ borderColor: `${r.hex}80` }}>
+            <div className="font-mono text-[11px] tracking-wide text-muted-on-paper uppercase">Merge readiness</div>
+            <div className="mt-1 text-3xl font-bold sm:text-4xl" style={{ color: r.hex }}>
+              {r.label}
+            </div>
+            {(readiness.blockers.length > 0 || readiness.notes.length > 0) && (
+              <div className="mt-4 grid gap-4 md:grid-cols-2">
+                {readiness.blockers.length > 0 && (
+                  <ReadinessList title="Fix before merging" items={readiness.blockers} hex="#c92a3d" mark="✕" />
+                )}
+                {readiness.notes.length > 0 && (
+                  <ReadinessList title="Worth a look" items={readiness.notes} hex="#d97706" mark="!" />
+                )}
+              </div>
+            )}
+            <p className="mt-4 text-[12px] leading-relaxed text-muted-on-paper">
+              Based on GitHub&apos;s merge status and CI results at commit{' '}
+              <span className="font-mono">{pr.headSha.slice(0, 7)}</span>, plus automated local checks on the changed
+              lines. Not a substitute for a human review.
+            </p>
+          </div>
+        )}
+
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <Stat
+            label={pr.merged ? 'Status' : 'Merge conflicts'}
+            value={
+              pr.merged
+                ? 'Merged'
+                : pr.state === 'closed'
+                  ? 'Closed'
+                  : conflicts
+                    ? 'Yes'
+                    : pr.mergeable === null
+                      ? '…'
+                      : 'None'
+            }
+            tone={pr.state === 'closed' ? undefined : conflicts ? 'bad' : pr.mergeable === null ? undefined : 'good'}
+          />
+          <Stat
+            label={
+              ci.failed.length ? 'CI checks failing' : ci.pending.length ? 'CI checks running' : 'CI checks passed'
+            }
+            value={ci.failed.length || ci.pending.length || ci.passed}
+            tone={ci.failed.length ? 'bad' : ci.pending.length ? 'warn' : ci.passed ? 'good' : undefined}
+          />
+          <Stat
+            label="Findings in changed lines"
+            value={totalFindings}
+            tone={counts.critical + counts.high > 0 ? 'bad' : totalFindings > 0 ? 'warn' : 'good'}
+          />
+          <Stat
+            label="Exposed secrets"
+            value={scan.secrets?.count ?? 0}
+            tone={(scan.secrets?.count ?? 0) > 0 ? 'bad' : 'good'}
+          />
+        </div>
+
+        {(ci.failed.length > 0 || ci.pending.length > 0) && (
+          <Section title="CI checks">
+            <ul className="divide-y divide-paper-line overflow-hidden rounded-lg border border-paper-line bg-paper-card">
+              {ci.failed.map((name) => (
+                <CheckRow key={`f-${name}`} name={name} state="Failing" hex="#c92a3d" />
+              ))}
+              {ci.pending.map((name) => (
+                <CheckRow key={`p-${name}`} name={name} state="Running" hex="#d97706" />
+              ))}
+              {ci.passed > 0 && <li className="px-3.5 py-2 text-[12px] text-muted-on-paper">+ {ci.passed} passing</li>}
+            </ul>
+          </Section>
+        )}
+
+        {comment && (
+          <Section title="Post this review on the pull request">
+            <div className="overflow-hidden rounded-lg border border-paper-line bg-paper-card">
+              <div className="flex flex-wrap items-center gap-3 border-b border-paper-line px-4 py-3">
+                <p className="min-w-[14rem] flex-1 text-[13px] text-[#1C2128]">
+                  Copy the review as a GitHub comment, with a link back to this report.
+                </p>
+                <button
+                  onClick={() =>
+                    void navigator.clipboard.writeText(comment).then(() => {
+                      setCopied(true);
+                      setTimeout(() => setCopied(false), 1800);
+                    })
+                  }
+                  className="cursor-pointer rounded-md bg-cobalt px-3.5 py-1.5 text-[13px] font-bold text-white hover:bg-cobalt-dark"
+                >
+                  {copied ? 'Comment copied' : 'Copy comment'}
+                </button>
+                <a
+                  href={pr.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="rounded-md border border-paper-line px-3.5 py-1.5 text-[13px] font-semibold text-[#1C2128] hover:border-cobalt"
+                >
+                  Open the PR
+                </a>
+              </div>
+              <pre className="max-h-72 overflow-auto px-4 py-3 font-mono text-[12px] leading-relaxed whitespace-pre-wrap text-[#1C2128]">
+                {comment}
+              </pre>
+            </div>
+          </Section>
+        )}
+
+        <UpgradeNote />
+
+        <Section title={`Findings by file (${filesWithFindings.length} of ${scan.files.length} reviewed files)`}>
+          {scan.files.length === 0 ? (
+            <p className="text-[13px] text-muted-on-paper">
+              None of the changed files are in a language the free review reads, so only GitHub&apos;s status was
+              checked.
+            </p>
+          ) : filesWithFindings.length === 0 ? (
+            <Clean>Local checks found nothing to flag in the changed lines.</Clean>
+          ) : (
+            <div className="space-y-2">
+              {filesWithFindings.map((f) => (
+                <FileFindings key={f.path} file={f} />
+              ))}
+            </div>
+          )}
+        </Section>
+
+        <div className="rounded-xl bg-ink p-6 text-center sm:p-8">
+          <h2 className="text-xl font-bold text-[#E8ECF4]">Review every pull request automatically</h2>
+          <p className="mx-auto mt-2 max-w-xl text-[13px] text-muted-on-ink">
+            Connect GitHub or GitLab and Audit Bench Ai reviews each PR as it opens: AI review of risky changes, inline
+            comments, a merge check, and fixes you can commit back to the branch.
+          </p>
+          <div className="mt-5 flex flex-wrap justify-center gap-3">
+            <Link
+              href="/signup"
+              className="rounded-lg bg-cobalt px-5 py-2.5 text-sm font-bold text-white hover:bg-cobalt-dark"
+            >
+              Sign up free
+            </Link>
+            <Link
+              href="/scan"
+              className="rounded-lg border border-ink-line px-5 py-2.5 text-sm font-bold text-[#E8ECF4] hover:border-cobalt"
+            >
+              Review another PR
+            </Link>
+          </div>
+        </div>
+      </ScrollReveal>
+    </div>
+  );
+}
+
+function ReadinessList({ title, items, hex, mark }: { title: string; items: string[]; hex: string; mark: string }) {
+  return (
+    <div>
+      <h3 className="mb-2 text-[13px] font-bold" style={{ color: hex }}>
+        {title}
+      </h3>
+      <ul className="space-y-1.5">
+        {items.map((item) => (
+          <li key={item} className="flex gap-2 text-[13px] leading-snug text-[#1C2128]">
+            <span
+              aria-hidden="true"
+              className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full font-mono text-[10px] font-bold text-white"
+              style={{ backgroundColor: hex }}
+            >
+              {mark}
+            </span>
+            {item}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function CheckRow({ name, state, hex }: { name: string; state: string; hex: string }) {
+  return (
+    <li className="flex items-center gap-3 px-3.5 py-2">
+      <span className="h-2 w-2 shrink-0 rounded-full" style={{ backgroundColor: hex }} />
+      <span className="min-w-0 flex-1 truncate font-mono text-[13px] text-[#1C2128]">{name}</span>
+      <span className="text-[12px] font-semibold" style={{ color: hex }}>
+        {state}
+      </span>
+    </li>
+  );
+}
+
 function UpgradeNote() {
   return (
     <div className="flex flex-wrap items-center gap-3 rounded-lg border border-cobalt/30 bg-cobalt/5 px-4 py-3">
-      <p className="min-w-0 flex-1 text-[13px] text-[#1C2128]">
+      <p className="min-w-[14rem] flex-1 text-[13px] text-[#1C2128]">
         <strong>Free scan: local checks only.</strong> Risky functions get an AI review, with root causes and fixes,
         when you sign up. Private repos and pull request reviews too.
       </p>

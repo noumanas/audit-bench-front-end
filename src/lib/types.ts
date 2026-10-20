@@ -577,6 +577,9 @@ export interface AnalyticsTrend {
 
 export interface ScanJob {
   id: string;
+  /** GitHub PR reviews: GitHub's merge state and CI at review time, and the verdict computed from it. */
+  prSnapshot?: Omit<PublicPullRequest, 'readiness'> | null;
+  mergeReadiness?: PublicPullRequest['readiness'];
   // Public share link state — see backend PublicScanService.
   shareId?: string | null;
   isPublic?: boolean;
@@ -668,8 +671,36 @@ export interface Investigation {
 }
 
 // Shared/public scan view — mirrors backend PublicScanService.getShared.
+export type MergeReadinessStatus = 'ready' | 'ready_with_notes' | 'not_ready' | 'merged' | 'closed';
+
+/** A free public PR review — mirrors backend public-scan/merge-readiness.ts and PublicScanService.getShared. */
+export interface PublicPullRequest {
+  number: number;
+  title: string;
+  url: string;
+  state: 'open' | 'closed';
+  merged: boolean;
+  draft: boolean;
+  mergeable: boolean | null;
+  mergeableState: string;
+  baseRef: string;
+  headRef: string;
+  headSha: string;
+  additions: number;
+  deletions: number;
+  changedFiles: number;
+  commits: number;
+  checks: { passed: number; failed: string[]; pending: string[] };
+  filesReviewed: number;
+  filesSkipped: number;
+  fetchedAt: string;
+  readiness: { status: MergeReadinessStatus; blockers: string[]; notes: string[] } | null;
+}
+
 export interface PublicScan {
   shareId: string;
+  /** Set when this is a pull request review rather than a repository scan. */
+  pullRequest: PublicPullRequest | null;
   sourceName: string;
   sourceType: ScanSourceType;
   repoUrl: string | null;

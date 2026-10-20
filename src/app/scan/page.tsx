@@ -7,9 +7,9 @@ import { Footer } from '@/components/Footer';
 import { PublicScanForm } from '@/components/PublicScanForm';
 
 export const metadata: Metadata = {
-  title: 'Free GitHub repository scan',
+  title: 'Free GitHub repository scan and pull request review',
   description:
-    'Scan any public GitHub repository free, no sign-up: exposed secrets, vulnerable dependencies, license risk, dead code, duplication and an overall health score, with a report you can share.',
+    'Scan any public GitHub repository or review any public pull request free, no sign-up: exposed secrets, vulnerable dependencies, risky code, merge conflicts and CI status, with a report you can share.',
   alternates: { canonical: '/scan' },
 };
 
@@ -23,10 +23,19 @@ const CHECKS = [
   },
   { title: 'Structure', detail: 'Dead files, duplicated logic and circular imports across the repo.' },
   { title: 'Tests and team', detail: 'Test-to-source ratio, CI test steps, and how concentrated the commits are.' },
+  {
+    title: 'Pull request merge check',
+    detail:
+      'Paste a PR link instead: changed lines, merge conflicts and CI results, with a verdict and a comment to post.',
+  },
 ];
 
 const STEPS = [
-  { n: '1', title: 'Paste a public repo URL', detail: 'Any public GitHub repository. No account, no token.' },
+  {
+    n: '1',
+    title: 'Paste a repo or pull request link',
+    detail: 'Any public GitHub repository or pull request. No account, no token.',
+  },
   {
     n: '2',
     title: 'Get a report in about a minute',
@@ -49,11 +58,11 @@ export default function FreeScanPage() {
             Free · No sign-up
           </div>
           <h1 className="mb-4 text-4xl leading-tight font-bold text-[#E8ECF4] sm:text-5xl">
-            Scan any public GitHub repo
+            Scan any public GitHub repo or pull request
           </h1>
           <p className="mx-auto mb-8 max-w-xl text-base leading-relaxed text-muted-on-ink">
-            Find exposed secrets, vulnerable dependencies and risky code in about a minute, then share the report with
-            one link.
+            Find exposed secrets, vulnerable dependencies and risky code in about a minute. Paste a pull request link to
+            see if it&apos;s ready to merge. Share the report with one link.
           </p>
           <div className="mx-auto max-w-2xl text-left">
             <PublicScanForm />
@@ -96,7 +105,7 @@ export default function FreeScanPage() {
             <div className="rounded-xl border border-paper-line bg-paper-card p-6">
               <h3 className="font-mono text-[11px] font-bold tracking-wide text-muted-on-paper uppercase">Free scan</h3>
               <ul className="mt-3 space-y-1.5 text-[13px] text-[#1C2128]">
-                <li>✓ Public GitHub repositories</li>
+                <li>✓ Public GitHub repositories and pull requests</li>
                 <li>✓ All local checks above</li>
                 <li>✓ Shareable report link</li>
                 <li className="text-muted-on-paper">– No AI review of risky code</li>

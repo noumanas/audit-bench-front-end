@@ -17,6 +17,7 @@ import {
   listGitlabMergeRequests,
   listGitlabProjects,
   reviewGithubPr,
+  reviewGithubPrByUrl,
   reviewGitlabMr,
   scanGithubRepo,
   scanGitlabProject,
@@ -306,6 +307,15 @@ export function GitHostPanel({
         </button>
       </div>
 
+      {host === 'github' && (
+        <PrLinkReview
+          username={status.username}
+          onStarted={onScanStarted}
+          onFailure={setFailure}
+          onTokenRejected={markTokenRejected}
+        />
+      )}
+
       {failure && <FailureNote failure={failure} onDismiss={() => setFailure(null)} />}
 
       <div className="grid grid-cols-1 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
@@ -569,6 +579,100 @@ function RepoDetail({
         )}
       </section>
     </div>
+  );
+}
+
+/** github.com/owner/repo/pull/123, or the short owner/repo#123. */
+const PR_LINK = /github\.com\/[\w.-]+\/[\w.-]+\/pull\/\d+|^[\w.-]+\/[\w.-]+#\d+$/;
+
+/**
+ * Review one pull request by its link — any repository the token can read,
+ * including public ones the user doesn't own — and post the review on it as
+ * the connected account.
+ */
+function PrLinkReview({
+  username,
+  onStarted,
+  onFailure,
+  onTokenRejected,
+}: {
+  username: string | null;
+  onStarted: (id: string) => void;
+  onFailure: (f: Failure | null) => void;
+  onTokenRejected: () => void;
+}) {
+  const [url, setUrl] = useState('');
+  const [post, setPost] = useState(true);
+  const [busy, setBusy] = useState(false);
+  const valid = PR_LINK.test(url.trim());
+
+  const submit = async () => {
+    if (!valid) return;
+    setBusy(true);
+    onFailure(null);
+    try {
+      const job = await reviewGithubPrByUrl(url.trim(), post);
+      onStarted(job.id);
+    } catch (err) {
+      if (isTokenRejected(err)) onTokenRejected();
+      else onFailure(toFailure(err, 'Failed to start the review.'));
+      setBusy(false);
+    }
+  };
+
+  return (
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        void submit();
+      }}
+      className="border-b border-ink-line bg-ink px-4 py-3.5"
+    >
+      <div className="mb-2 flex flex-wrap items-baseline gap-x-2">
+        <h3 className="text-sm font-bold text-[#E8ECF4]">Review any pull request</h3>
+        <span className="text-[12px] text-muted-on-ink">
+          Paste a link from any repository your token can read, including public ones you don&apos;t own.
+        </span>
+      </div>
+      <div className="flex flex-col gap-2 sm:flex-row">
+        <label className="relative min-w-0 flex-1">
+          <span className="sr-only">Pull request link</span>
+          <GithubLogoIcon className="pointer-events-none absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-on-ink" />
+          <input
+            value={url}
+            onChange={(e) => setUrl(e.target.value)}
+            placeholder="https://github.com/owner/repo/pull/123"
+            autoComplete="off"
+            spellCheck={false}
+            className="w-full rounded-md border border-ink-line bg-ink-soft py-2 pr-3 pl-9 font-mono text-[13px] text-[#E8ECF4] outline-none placeholder:text-muted-on-ink focus:border-cobalt"
+          />
+        </label>
+        <button
+          type="submit"
+          disabled={!valid || busy}
+          className="cursor-pointer rounded-md bg-cobalt px-4 py-2 text-sm font-bold whitespace-nowrap text-white hover:bg-cobalt-dark disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          {busy ? 'Starting…' : post ? 'Review and comment' : 'Review'}
+        </button>
+      </div>
+      {url.trim() && !valid && (
+        <p className="mt-1.5 text-[12px] text-[#F3B7BF]">That doesn&apos;t look like a GitHub pull request link.</p>
+      )}
+      <label className="mt-2.5 flex cursor-pointer items-start gap-2 text-[12px] text-muted-on-ink">
+        <input
+          type="checkbox"
+          checked={post}
+          onChange={(e) => setPost(e.target.checked)}
+          className="mt-0.5 h-3.5 w-3.5 accent-cobalt"
+        />
+        <span>
+          <span className="font-semibold text-[#E8ECF4]">Post the review on GitHub</span> as{' '}
+          {username ? <span className="font-mono">@{username}</span> : 'your connected account'}: a summary with merge
+          readiness (conflicts, CI, blockers) and inline comments on the changed lines. It&apos;s public on public
+          repositories.
+        </span>
+      </label>
+    </form>
   );
 }
 

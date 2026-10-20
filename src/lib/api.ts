@@ -551,6 +551,19 @@ export function reviewGithubPr(
   }).then((res) => unwrap<ScanJob>(res));
 }
 
+/** Any pull request by its link; with postToGithub the review is posted on the PR as the connected account. */
+export function reviewGithubPrByUrl(
+  prUrl: string,
+  postToGithub: boolean,
+  provider?: string,
+): Promise<ScanJob> {
+  return fetch(`${API_URL}/github/pr-url`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...authHeaders() },
+    body: JSON.stringify({ prUrl, postToGithub, provider }),
+  }).then((res) => unwrap<ScanJob>(res));
+}
+
 // ---------- GitLab ----------
 
 export function getGitlabStatus(): Promise<GitlabStatus> {

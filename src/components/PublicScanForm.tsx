@@ -7,9 +7,12 @@ import { GithubLogoIcon } from './icons';
 
 const EXAMPLES = ['expressjs/express', 'pallets/flask', 'axios/axios'];
 
+/** github.com/owner/repo/pull/123, or the short owner/repo#123. */
+const isPrLink = (value: string) => /\/pull\/\d+|^[\w.-]+\/[\w.-]+#\d+$/.test(value.trim());
+
 /**
- * The no-sign-up entry point: paste a public GitHub repo, get a shareable
- * report. Used on the home page and on /scan.
+ * The no-sign-up entry point: paste a public GitHub repo or pull request,
+ * get a shareable report. Used on the home page and on /scan.
  */
 export function PublicScanForm({
   tone = 'ink',
@@ -47,14 +50,14 @@ export function PublicScanForm({
         className="flex flex-col gap-2 sm:flex-row"
       >
         <label className="relative flex-1">
-          <span className="sr-only">Public GitHub repository URL</span>
+          <span className="sr-only">Public GitHub repository or pull request URL</span>
           <GithubLogoIcon
             className={`pointer-events-none absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2 ${paper ? 'text-muted-on-paper' : 'text-muted-on-ink'}`}
           />
           <input
             value={url}
             onChange={(e) => setUrl(e.target.value)}
-            placeholder="https://github.com/owner/repo"
+            placeholder="github.com/owner/repo or a pull request link"
             autoComplete="off"
             spellCheck={false}
             className={`w-full rounded-lg border py-3 pr-3 pl-10 font-mono text-sm outline-none focus:border-cobalt ${
@@ -69,7 +72,7 @@ export function PublicScanForm({
           disabled={busy || !url.trim()}
           className="cursor-pointer rounded-lg bg-cobalt px-5 py-3 text-sm font-bold whitespace-nowrap text-white transition-colors hover:bg-cobalt-dark disabled:cursor-not-allowed disabled:opacity-50"
         >
-          {busy ? 'Starting scan…' : 'Scan free'}
+          {busy ? 'Starting…' : isPrLink(url) ? 'Review PR free' : 'Scan free'}
         </button>
       </form>
       {error && (
@@ -82,7 +85,7 @@ export function PublicScanForm({
       )}
       {showExamples && (
         <p className={`mt-2.5 text-[12px] ${paper ? 'text-muted-on-paper' : 'text-muted-on-ink'}`}>
-          No sign-up. Public repos only. Try{' '}
+          No sign-up. Public repos and pull requests only. Try{' '}
           {EXAMPLES.map((ex, i) => (
             <span key={ex}>
               {i > 0 && ', '}

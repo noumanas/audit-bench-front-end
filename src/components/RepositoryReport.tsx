@@ -26,6 +26,7 @@ import { ShareScanPanel } from './ShareScanPanel';
 import { setScanFileFindingStatus } from '@/lib/api';
 import { SEVERITY_HEX, groupDependencies } from '@/lib/dependencyGroups';
 import { TokenUsageNote } from './TokenUsageNote';
+import { READINESS } from '@/lib/prComment';
 
 const DIFF_SOURCE_TYPES = new Set<ScanJob['sourceType']>(['github_pr', 'gitlab_mr']);
 // Fixing requires a remote to commit to — a .zip upload has none.
@@ -209,6 +210,10 @@ export function RepositoryReport({ scan }: { scan: ScanJob }) {
 
         {scan.status === 'completed' && (
           <>
+            {scan.mergeReadiness && scan.prSnapshot && (
+              <MergeReadinessBanner readiness={scan.mergeReadiness} pr={scan.prSnapshot} />
+            )}
+
             {/* Overview */}
             <section className="space-y-4">
               {scan.summary && <p className="max-w-[72ch] text-sm leading-relaxed text-[#1C2128]">{scan.summary}</p>}
@@ -531,6 +536,61 @@ export function RepositoryReport({ scan }: { scan: ScanJob }) {
         />
       )}
     </article>
+  );
+}
+
+function MergeReadinessBanner({
+  readiness,
+  pr,
+}: {
+  readiness: NonNullable<ScanJob['mergeReadiness']>;
+  pr: NonNullable<ScanJob['prSnapshot']>;
+}) {
+  const r = READINESS[readiness.status];
+  const ci = pr.checks;
+  const conflicts = pr.mergeable === false || pr.mergeableState === 'dirty';
+  const facts = [
+    pr.state === 'open' &&
+      (conflicts ? 'Merge conflicts' : pr.mergeable === null ? 'Mergeability pending' : 'No conflicts'),
+    ci.failed.length
+      ? `${ci.failed.length} CI failing`
+      : ci.pending.length
+        ? `${ci.pending.length} CI running`
+        : ci.passed
+          ? `${ci.passed} CI passed`
+          : 'No CI checks',
+    `${pr.baseRef} ← ${pr.headRef}`,
+  ].filter(Boolean);
+  return (
+    <section className="rounded-lg border-2 bg-paper-card p-4" style={{ borderColor: `${r.hex}80` }}>
+      <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+        <span className="font-mono text-[11px] tracking-wide text-muted-on-paper uppercase">Merge readiness</span>
+        <span className="text-xl font-bold" style={{ color: r.hex }}>
+          {r.label}
+        </span>
+      </div>
+      <p className="mt-1 font-mono text-[11px] break-words text-muted-on-paper">{facts.join(' · ')}</p>
+      {(readiness.blockers.length > 0 || readiness.notes.length > 0) && (
+        <ul className="mt-3 space-y-1">
+          {readiness.blockers.map((b) => (
+            <li key={b} className="flex gap-2 text-[13px] text-[#1C2128]">
+              <span className="font-bold text-critical">✕</span>
+              {b}
+            </li>
+          ))}
+          {readiness.notes.map((n) => (
+            <li key={n} className="flex gap-2 text-[13px] text-[#1C2128]">
+              <span className="font-bold text-medium">!</span>
+              {n}
+            </li>
+          ))}
+        </ul>
+      )}
+      <p className="mt-3 text-[11px] text-muted-on-paper">
+        GitHub&apos;s merge state and CI at commit <span className="font-mono">{pr.headSha.slice(0, 7)}</span> when
+        reviewed, plus the findings below.
+      </p>
+    </section>
   );
 }
 

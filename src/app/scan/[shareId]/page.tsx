@@ -18,11 +18,24 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     if (res.ok) {
       const scan = (await res.json()) as {
         sourceName: string;
+        pullRequest: { title: string; readiness: { status: string; blockers: string[] } | null } | null;
         riskAggregation: { overallRiskRating: string; overallHealthScore: number } | null;
         secrets: { count: number } | null;
       };
       title = `${scan.sourceName}: code health report`;
-      if (scan.riskAggregation) {
+      if (scan.pullRequest) {
+        const verdict = {
+          ready: 'Ready to merge',
+          ready_with_notes: 'Ready to merge, with notes',
+          not_ready: 'Not ready to merge',
+          merged: 'Merged',
+          closed: 'Closed',
+        }[scan.pullRequest.readiness?.status ?? ''];
+        title = `${verdict ? `${verdict}: ` : ''}${scan.sourceName} pull request review`;
+        description = `${scan.pullRequest.title}. ${
+          scan.pullRequest.readiness?.blockers.length ? `${scan.pullRequest.readiness.blockers.join(' ')} ` : ''
+        }Review any public pull request free with Audit Bench Ai.`;
+      } else if (scan.riskAggregation) {
         description = `Overall risk ${scan.riskAggregation.overallRiskRating}, health score ${scan.riskAggregation.overallHealthScore}/100${
           scan.secrets ? `, ${scan.secrets.count} potential secret(s)` : ''
         }. Scan any public GitHub repo free with Audit Bench Ai.`;
