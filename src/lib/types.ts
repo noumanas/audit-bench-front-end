@@ -684,6 +684,9 @@ export type MergeReadinessStatus = 'ready' | 'ready_with_notes' | 'not_ready' | 
 
 /** A free public PR review — mirrors backend public-scan/merge-readiness.ts and PublicScanService.getShared. */
 export interface PublicPullRequest {
+  /** The GitHub account "Post on GitHub" posts as; null when the server can't post. */
+  postAs: string | null;
+  postedAt: string | null;
   number: number;
   title: string;
   url: string;

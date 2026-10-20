@@ -24,7 +24,10 @@ export default function LoginPage() {
     try {
       await login(email, password);
       const pendingInvite = consumePendingInvite();
-      router.push(pendingInvite ? `/invite/${pendingInvite}` : '/app');
+      // Same-site paths only ("/scan/x", never "//evil.com"), so the link can't redirect off-site.
+      const next = new URLSearchParams(window.location.search).get('next');
+      const safeNext = next && next.startsWith('/') && !next.startsWith('//') ? next : null;
+      router.push(pendingInvite ? `/invite/${pendingInvite}` : (safeNext ?? '/app'));
     } catch (err) {
       setError(err instanceof ApiError ? err.message : 'Login failed. Please try again.');
     } finally {
@@ -40,9 +43,7 @@ export default function LoginPage() {
       >
         <div className="mb-5 flex items-center gap-2">
           <span className="h-1.5 w-1.5 rounded-full bg-cobalt" />
-          <span className="font-mono text-[11px] font-bold tracking-[0.14em] text-cobalt uppercase">
-            Welcome back
-          </span>
+          <span className="font-mono text-[11px] font-bold tracking-[0.14em] text-cobalt uppercase">Welcome back</span>
         </div>
         <h1 className="mb-1 text-xl font-bold tracking-tight text-[#E8ECF4]">Log in</h1>
         <p className="mb-6 text-sm text-muted-on-ink">Continue auditing where you left off.</p>

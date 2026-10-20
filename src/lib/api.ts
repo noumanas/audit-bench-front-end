@@ -789,6 +789,14 @@ export function getPublicScan(shareId: string): Promise<PublicScan> {
   return fetch(`${API_URL}/public/scans/${encodeURIComponent(shareId)}`).then((res) => unwrap<PublicScan>(res));
 }
 
+/** The PR's signed-in author or a maintainer asks Audit Bench Ai to post a public review on the PR. */
+export function postPublicReview(shareId: string): Promise<{ prPublishedAt: string; url: string }> {
+  return fetch(`${API_URL}/public/scans/${encodeURIComponent(shareId)}/post`, {
+    method: "POST",
+    headers: authHeaders(),
+  }).then((res) => unwrap<{ prPublishedAt: string; url: string }>(res));
+}
+
 export function shareScan(scanId: string): Promise<{ shareId: string; isPublic: true }> {
   return fetch(`${API_URL}/repository/${scanId}/share`, { method: "POST", headers: authHeaders() }).then((res) =>
     unwrap<{ shareId: string; isPublic: true }>(res),

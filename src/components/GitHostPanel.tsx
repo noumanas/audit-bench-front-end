@@ -612,10 +612,13 @@ function PrLinkReview({
     onFailure(null);
     try {
       const job = await reviewGithubPrByUrl(url.trim(), post);
+      // The review shows below on this same page, so get ready for the next link.
+      setUrl('');
       onStarted(job.id);
     } catch (err) {
       if (isTokenRejected(err)) onTokenRejected();
       else onFailure(toFailure(err, 'Failed to start the review.'));
+    } finally {
       setBusy(false);
     }
   };

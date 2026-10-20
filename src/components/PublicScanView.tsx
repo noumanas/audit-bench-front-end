@@ -2,7 +2,8 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
-import { getPublicScan } from '@/lib/api';
+import { getPublicScan, postPublicReview } from '@/lib/api';
+import { useSignedIn } from '@/lib/useSignedIn';
 import { PublicScan, Severity } from '@/lib/types';
 import { groupDependencies, SEVERITY_HEX } from '@/lib/dependencyGroups';
 import { formatDateTime, timeAgo } from '@/lib/time';
@@ -549,8 +550,14 @@ function PrReport({ scan }: { scan: PublicScan }) {
           </Section>
         )}
 
+        {pr.postAs && pr.state === 'open' && readiness && (
+          <PostAsAuditBench shareId={scan.shareId} prUrl={pr.url} postAs={pr.postAs} postedAt={pr.postedAt} />
+        )}
+
         {comment && (
-          <Section title="Post this review on the pull request">
+          <Section
+            title={pr.postAs && pr.state === 'open' ? 'Or post it yourself' : 'Post this review on the pull request'}
+          >
             <div className="overflow-hidden rounded-lg border border-paper-line bg-paper-card">
               <div className="flex flex-wrap items-center gap-3 border-b border-paper-line px-4 py-3">
                 <p className="min-w-[14rem] flex-1 text-[13px] text-[#1C2128]">
@@ -625,6 +632,107 @@ function PrReport({ scan }: { scan: PublicScan }) {
         </div>
       </ScrollReveal>
     </div>
+  );
+}
+
+/**
+ * Lets the PR's author (or a maintainer) have Audit Bench Ai's own GitHub
+ * account post the review. The server checks who they are on GitHub; anyone
+ * else can still copy the comment below.
+ */
+function PostAsAuditBench({
+  shareId,
+  prUrl,
+  postAs,
+  postedAt,
+}: {
+  shareId: string;
+  prUrl: string;
+  postAs: string;
+  postedAt: string | null;
+}) {
+  const signedIn = useSignedIn();
+  const [posted, setPosted] = useState(postedAt);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const next = encodeURIComponent(`/scan/${shareId}`);
+
+  const post = async () => {
+    setBusy(true);
+    setError(null);
+    try {
+      const r = await postPublicReview(shareId);
+      setPosted(r.prPublishedAt);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Posting failed. Please try again.');
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  return (
+    <Section title="Post on GitHub">
+      <div className="rounded-lg border border-cobalt/30 bg-paper-card p-4">
+        {posted ? (
+          <p className="flex flex-wrap items-center gap-2 text-[13px] text-[#1C2128]">
+            <span className="font-bold text-pass">✓</span>
+            Posted on the pull request by <span className="font-mono">@{postAs}</span>
+            {` ${timeAgo(posted)}.`}
+            <a href={prUrl} target="_blank" rel="noreferrer" className="font-semibold text-cobalt hover:underline">
+              See it on GitHub ↗
+            </a>
+          </p>
+        ) : (
+          <>
+            <p className="text-[13px] leading-relaxed text-[#1C2128]">
+              <strong>Your pull request?</strong> Have <span className="font-mono">@{postAs}</span>
+              {
+                " post this review on it: a summary with merge readiness and inline comments on the changed lines. For the PR's author or a maintainer: sign in with the GitHub account that owns the PR, or connect it to your account."
+              }
+            </p>
+            <div className="mt-3 flex flex-wrap items-center gap-2">
+              {signedIn ? (
+                <button
+                  onClick={() => void post()}
+                  disabled={busy}
+                  className="cursor-pointer rounded-md bg-cobalt px-3.5 py-1.5 text-[13px] font-bold text-white hover:bg-cobalt-dark disabled:cursor-wait disabled:opacity-60"
+                >
+                  {busy ? 'Posting…' : `Post as @${postAs}`}
+                </button>
+              ) : (
+                <>
+                  <Link
+                    href={`/login?next=${next}`}
+                    className="rounded-md bg-cobalt px-3.5 py-1.5 text-[13px] font-bold text-white hover:bg-cobalt-dark"
+                  >
+                    Sign in to post
+                  </Link>
+                  <Link
+                    href="/signup"
+                    className="rounded-md border border-paper-line px-3.5 py-1.5 text-[13px] font-semibold text-[#1C2128] hover:border-cobalt"
+                  >
+                    Sign up free
+                  </Link>
+                </>
+              )}
+            </div>
+            {error && (
+              <p role="alert" className="mt-2.5 text-[13px] leading-relaxed text-critical">
+                {error}
+                {/Connect GitHub/.test(error) && (
+                  <>
+                    {' '}
+                    <Link href="/app/repository?source=github" className="font-semibold text-cobalt hover:underline">
+                      Connect GitHub
+                    </Link>
+                  </>
+                )}
+              </p>
+            )}
+          </>
+        )}
+      </div>
+    </Section>
   );
 }
 
