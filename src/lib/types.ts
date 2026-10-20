@@ -277,6 +277,8 @@ export interface Finding {
   category: string;
   title: string;
   line: number | null;
+  /** Last line when the problem spans several lines. */
+  endLine?: number | null;
   description: string;
   rootCause: string;
   suggestedFix: string;

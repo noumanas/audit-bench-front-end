@@ -69,6 +69,10 @@ export function FindingCard({
     onOpenChange?.(next);
   };
   const dismissed = status === 'wont_fix';
+  const lineLabel =
+    finding.endLine && finding.line != null && finding.endLine > finding.line
+      ? `L${finding.line}–${finding.endLine}`
+      : `L${finding.line}`;
 
   return (
     <div
@@ -125,11 +129,11 @@ export function FindingCard({
               title={`Jump to line ${finding.line}`}
               className="mt-0.5 shrink-0 cursor-pointer rounded border border-paper-line px-1.5 py-0.5 font-mono text-[11px] text-muted-on-paper hover:border-cobalt hover:text-cobalt"
             >
-              L{finding.line}
+              {lineLabel}
             </button>
           ) : (
             <span className="mt-0.5 shrink-0 rounded border border-paper-line px-1.5 py-0.5 font-mono text-[11px] text-muted-on-paper">
-              L{finding.line}
+              {lineLabel}
             </span>
           ))}
         <ChevronRightIcon
