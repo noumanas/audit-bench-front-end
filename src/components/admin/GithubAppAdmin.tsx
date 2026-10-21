@@ -125,11 +125,11 @@ export function GithubAppAdmin() {
         <section className="rounded-lg border border-ink-line bg-ink-soft p-5">
           <h2 className="text-base font-bold text-[#E8ECF4]">Create the Audit Bench Ai GitHub App</h2>
           <p className="mt-1 text-[13px] leading-relaxed text-muted-on-ink">
-            One click creates the app on GitHub with the right permissions (read code, write pull request comments and
-            commit statuses, read CI checks) and events (pull requests, review comments, conversation comments). GitHub
-            then sends you back here and the credentials are stored, encrypted. Its bot posts reviews as{' '}
-            <span className="font-mono">audit-bench-ai[bot]</span> (from the app name, which GitHub lets you change on
-            the next screen).
+            One click creates the app on GitHub with the least access it needs (read code, write pull request reviews
+            and comments, write checks for the pass/fail verdict) and events (pull requests, review comments,
+            conversation comments, check re-runs). GitHub then sends you back here and the credentials are stored,
+            encrypted. Its bot posts reviews as <span className="font-mono">audit-bench-ai[bot]</span> (from the app
+            name, which GitHub lets you change on the next screen).
           </p>
           <label className="mt-4 block text-[12px] text-muted-on-ink">
             The GitHub organization that will own the app: its login, as in github.com/<strong>your-org</strong>. Leave

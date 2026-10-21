@@ -84,8 +84,11 @@ export default function PrivacyPage() {
       <h2>3. Your source code</h2>
       <ul>
         <li>
-          <strong>Analysis:</strong> code is analysed with local static checks. Only code those checks flag as risky is
-          sent to an AI model provider for review. Code is read, never executed.
+          <strong>Analysis:</strong> code is analysed with local static checks first. For a pull request review, the
+          changed lines (with surrounding code and short excerpts of code that uses them) are sent to an AI model
+          provider; for a repository scan, only the functions those checks flag as risky and a short sample of core
+          files. Code is read, never executed. Details are on our <Link href="/security">Security &amp; Trust</Link>{' '}
+          page.
         </li>
         <li>
           <strong>What we keep:</strong> findings, verdicts, file paths and short code excerpts needed to display and

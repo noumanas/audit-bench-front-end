@@ -23,7 +23,9 @@ import { Stage1Summary } from './Stage1Summary';
 import { FixInEditorModal } from './FixInEditorModal';
 import { downloadReport } from '@/lib/reportExport';
 import { ShareScanPanel } from './ShareScanPanel';
-import { getRepositoryScan, republishScan, setScanFileFindingStatus } from '@/lib/api';
+import { deleteRepositoryScan, getRepositoryScan, republishScan, setScanFileFindingStatus } from '@/lib/api';
+import { useAuth } from '@/lib/AuthContext';
+import { useRouter } from 'next/navigation';
 import { SEVERITY_HEX, groupDependencies } from '@/lib/dependencyGroups';
 import { TokenUsageNote } from './TokenUsageNote';
 import { timeAgo } from '@/lib/time';
@@ -61,6 +63,17 @@ function worstRank(file: ScanFile): number {
 }
 
 export function RepositoryReport({ scan }: { scan: ScanJob }) {
+  const { user } = useAuth();
+  const router = useRouter();
+  const removeScan = async () => {
+    if (!window.confirm(`Delete this report for ${scan.sourceName}? Its findings are removed for good.`)) return;
+    try {
+      await deleteRepositoryScan(scan.id);
+      router.push('/app/dashboard?tab=scans');
+    } catch (err) {
+      window.alert(err instanceof Error ? err.message : 'Could not delete the report.');
+    }
+  };
   const [openFilePath, setOpenFilePath] = useState<string | null>(null);
   const [fixingPath, setFixingPath] = useState<string | null>(null);
   const [showCleanFiles, setShowCleanFiles] = useState(false);
@@ -188,6 +201,14 @@ export function RepositoryReport({ scan }: { scan: ScanJob }) {
                 />
                 <ExportButton label=".json" onClick={() => downloadReport(scan, 'json')} />
               </div>
+            )}
+            {user && scan.userId === user.id && scan.status !== 'queued' && scan.status !== 'processing' && (
+              <button
+                onClick={() => void removeScan()}
+                className="cursor-pointer rounded-md border border-ink-line px-3 py-1.5 text-xs font-bold text-muted-on-ink transition-colors hover:border-critical hover:text-[#F3B7BF]"
+              >
+                Delete
+              </button>
             )}
           </div>
         </div>

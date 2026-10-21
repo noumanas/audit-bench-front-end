@@ -154,13 +154,15 @@ const PIPELINE_STAGES = [
   },
   {
     stage: '02',
-    title: 'AI on flagged code only',
-    detail: 'Only the functions Stage 1 flags as risky go to an LLM, with just the relevant code and types — not the whole file.',
+    title: 'AI on what matters',
+    detail:
+      'Pull requests: only the changed lines and the code that calls them go to the LLM. Repository scans: only the functions Stage 1 flags as risky — never the whole repo.',
   },
   {
     stage: '03',
     title: 'Cached by content hash',
-    detail: 'Re-scanning unchanged code — the common case across repeated repo scans — costs nothing and returns instantly.',
+    detail:
+      'Re-scanning unchanged code — the common case across repeated repo scans — costs nothing and returns instantly.',
   },
 ];
 
@@ -281,9 +283,9 @@ export default function HomePage() {
                 </h1>
               </div>
               <p className="mb-8 max-w-md text-base leading-relaxed text-muted-on-ink">
-                Audit Bench Ai combines LLM reasoning with static analysis to catch the security holes,
-                logic bugs, and framework misuse that traditional linters miss — on a single file, a
-                pull request, or a whole repository.
+                Audit Bench Ai combines LLM reasoning with static analysis to catch the security holes, logic bugs, and
+                framework misuse that traditional linters miss — on a single file, a pull request, or a whole
+                repository.
               </p>
               <div className="flex flex-wrap gap-3">
                 <Link
@@ -305,7 +307,10 @@ export default function HomePage() {
                   Get a risk report in days, not weeks →
                 </Link>{' '}
                 or use the free{' '}
-                <Link href="/blog/technical-due-diligence-checklist" className="font-semibold text-cobalt hover:underline">
+                <Link
+                  href="/blog/technical-due-diligence-checklist"
+                  className="font-semibold text-cobalt hover:underline"
+                >
                   technical due diligence checklist
                 </Link>
                 .
@@ -341,10 +346,12 @@ export default function HomePage() {
             <div className="mb-2 font-mono text-[11px] font-bold tracking-[0.12em] text-cobalt uppercase">
               Try it now · no sign-up
             </div>
-            <h2 className="text-2xl leading-tight font-bold text-[#E8ECF4] sm:text-3xl">Scan a public GitHub repo free</h2>
+            <h2 className="text-2xl leading-tight font-bold text-[#E8ECF4] sm:text-3xl">
+              Scan a public GitHub repo free
+            </h2>
             <p className="mt-3 text-sm leading-relaxed text-muted-on-ink">
-              Paste a repo URL and get a health score, exposed secrets, vulnerable dependencies and risky code in about a
-              minute, with a report link you can share.
+              Paste a repo URL and get a health score, exposed secrets, vulnerable dependencies and risky code in about
+              a minute, with a report link you can share.
             </p>
           </div>
           <PublicScanForm />
@@ -401,8 +408,8 @@ export default function HomePage() {
             ))}
           </div>
           <p className="mx-auto mt-5 max-w-lg text-center text-xs leading-relaxed text-muted-on-ink">
-            Every provider runs the same three-stage pipeline and the same review lenses — pick
-            the one that fits your budget or your existing contract, per audit or as your account default.
+            Every provider runs the same three-stage pipeline and the same review lenses — pick the one that fits your
+            budget or your existing contract, per audit or as your account default.
           </p>
         </ScrollReveal>
       </section>
@@ -410,13 +417,10 @@ export default function HomePage() {
       {/* Problem statement */}
       <section className="bg-paper px-6 py-16">
         <ScrollReveal className="mx-auto max-w-3xl text-center">
-          <div className="mb-3 font-mono text-[13px] tracking-wide text-muted-on-paper uppercase">
-            The problem
-          </div>
+          <div className="mb-3 font-mono text-[13px] tracking-wide text-muted-on-paper uppercase">The problem</div>
           <p className="text-lg leading-relaxed text-[#1C2128]">
-            Modern AI coding assistants generate code quickly but frequently introduce hidden bugs,
-            security issues, and framework misuse. Traditional linters catch syntax problems — not
-            business logic or intent.
+            Modern AI coding assistants generate code quickly but frequently introduce hidden bugs, security issues, and
+            framework misuse. Traditional linters catch syntax problems — not business logic or intent.
           </p>
         </ScrollReveal>
       </section>
@@ -436,8 +440,8 @@ export default function HomePage() {
               <TextReveal>Built for how teams actually ship</TextReveal>
             </h2>
             <p className="mx-auto mt-2 max-w-xl text-sm leading-relaxed text-muted-on-paper">
-              Beyond one-off audits: review the code your team merges, track quality trends over
-              time, and wire it into the pipeline you already have.
+              Beyond one-off audits: review the code your team merges, track quality trends over time, and wire it into
+              the pipeline you already have.
             </p>
           </div>
         </ScrollReveal>
@@ -494,15 +498,13 @@ export default function HomePage() {
       <section className="border-t border-ink-line bg-ink px-6 py-16">
         <ScrollReveal className="mx-auto max-w-5xl">
           <div className="mb-10 text-center">
-            <div className="mb-2 font-mono text-[13px] tracking-wide text-muted-on-ink uppercase">
-              Cost control
-            </div>
+            <div className="mb-2 font-mono text-[13px] tracking-wide text-muted-on-ink uppercase">Cost control</div>
             <h2 className="text-2xl font-bold text-[#E8ECF4]">
               <TextReveal>Engineered to control AI spend</TextReveal>
             </h2>
             <p className="mx-auto mt-2 max-w-xl text-sm leading-relaxed text-muted-on-ink">
-              AI credits, not raw request counts. A three-stage pipeline keeps the LLM off the
-              critical path until the code actually warrants it.
+              AI credits, not raw request counts. A three-stage pipeline keeps the LLM off the critical path until the
+              code actually warrants it.
             </p>
           </div>
         </ScrollReveal>
@@ -524,9 +526,7 @@ export default function HomePage() {
       <section className="bg-paper px-6 py-16">
         <ScrollReveal className="mx-auto max-w-5xl">
           <div className="mb-8 text-center">
-            <div className="mb-2 font-mono text-[13px] tracking-wide text-muted-on-paper uppercase">
-              Plans
-            </div>
+            <div className="mb-2 font-mono text-[13px] tracking-wide text-muted-on-paper uppercase">Plans</div>
             <h2 className="text-2xl font-bold text-[#1C2128]">
               <TextReveal>Start free, upgrade when you need more</TextReveal>
             </h2>
@@ -552,15 +552,13 @@ export default function HomePage() {
       <section className="border-t border-ink-line bg-ink px-6 py-16">
         <ScrollReveal className="mx-auto max-w-5xl">
           <div className="mb-10 text-center">
-            <div className="mb-2 font-mono text-[13px] tracking-wide text-muted-on-ink uppercase">
-              From the blog
-            </div>
+            <div className="mb-2 font-mono text-[13px] tracking-wide text-muted-on-ink uppercase">From the blog</div>
             <h2 className="text-2xl font-bold text-[#E8ECF4]">
               <TextReveal>Guides on AI code review and secure coding</TextReveal>
             </h2>
             <p className="mx-auto mt-2 max-w-xl text-sm leading-relaxed text-muted-on-ink">
-              Practical write-ups on the vulnerabilities, architecture pitfalls, and review habits our own
-              engine is built to catch.
+              Practical write-ups on the vulnerabilities, architecture pitfalls, and review habits our own engine is
+              built to catch.
             </p>
           </div>
         </ScrollReveal>
@@ -571,9 +569,7 @@ export default function HomePage() {
               href={`/blog/${post.slug}`}
               className="group block rounded-lg border border-ink-line bg-ink-soft p-5 transition-all duration-200 hover:-translate-y-1 hover:border-cobalt/40 hover:shadow-panel"
             >
-              <h3 className="mb-2 font-mono text-sm font-bold text-[#E8ECF4] group-hover:text-cobalt">
-                {post.title}
-              </h3>
+              <h3 className="mb-2 font-mono text-sm font-bold text-[#E8ECF4] group-hover:text-cobalt">{post.title}</h3>
               <p className="text-xs leading-relaxed text-muted-on-ink">{post.description}</p>
             </Link>
           ))}
@@ -590,14 +586,13 @@ export default function HomePage() {
       <section className="border-t border-ink-line bg-paper px-6 py-16">
         <ScrollReveal className="mx-auto max-w-4xl">
           <div className="mb-10 text-center">
-            <div className="mb-2 font-mono text-[13px] tracking-wide text-muted-on-paper uppercase">
-              FAQ
-            </div>
+            <div className="mb-2 font-mono text-[13px] tracking-wide text-muted-on-paper uppercase">FAQ</div>
             <h2 className="text-2xl font-bold text-[#1C2128]">
               <TextReveal>Questions teams ask before they adopt it</TextReveal>
             </h2>
             <p className="mx-auto mt-2 max-w-xl text-sm leading-relaxed text-muted-on-paper">
-              Short answers to the questions that matter when you are deciding whether to trust a review tool in your workflow.
+              Short answers to the questions that matter when you are deciding whether to trust a review tool in your
+              workflow.
             </p>
           </div>
         </ScrollReveal>
@@ -631,8 +626,8 @@ export default function HomePage() {
             <TextReveal>Review your first repository free</TextReveal>
           </h2>
           <p className="mx-auto mb-6 max-w-md text-sm leading-relaxed text-muted-on-ink">
-            No credit card required. Connect GitHub or GitLab, or upload a .zip, and see what an audit
-            finds in your own code.
+            No credit card required. Connect GitHub or GitLab, or upload a .zip, and see what an audit finds in your own
+            code.
           </p>
           <div className="flex flex-wrap justify-center gap-3">
             <Link

@@ -589,6 +589,8 @@ export interface AnalyticsTrend {
 
 export interface ScanJob {
   id: string;
+  /** Who ran it — only they can delete it. */
+  userId?: string;
   /** GitHub PR reviews: GitHub's merge state and CI at review time, and the verdict computed from it. */
   prSnapshot?: Omit<PublicPullRequest, 'readiness'> | null;
   /** Set when the review posts back to GitHub/GitLab; null when it was kept in the app. */
@@ -865,4 +867,17 @@ export interface BitbucketPull {
   draft: boolean;
   updatedAt: string;
   htmlUrl: string;
+}
+
+/** Accepted / dismissed / ignored findings on closed PRs — mirrors ReviewRulesService.outcomes. */
+export interface OutcomeCounts {
+  accepted: number;
+  dismissed: number;
+  ignored: number;
+  total: number;
+}
+export interface ReviewOutcomes {
+  days: number;
+  total: OutcomeCounts;
+  byCategory: Record<string, OutcomeCounts>;
 }

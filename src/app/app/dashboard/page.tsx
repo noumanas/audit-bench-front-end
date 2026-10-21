@@ -6,6 +6,7 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { listAudits, listRepositoryScans } from '@/lib/api';
 import { Audit, ScanJob, Verdict } from '@/lib/types';
 import { VerdictBadge } from '@/components/VerdictBadge';
+import { DeleteAccountCard } from '@/components/DeleteAccountCard';
 import { PlanPanel } from '@/components/PlanPanel';
 import { UsageStrip } from '@/components/UsageStrip';
 import { RequireAuth } from '@/components/RequireAuth';
@@ -345,7 +346,12 @@ function DashboardPageInner() {
         />
       )}
 
-      {tab === 'plan' && <PlanPanel />}
+      {tab === 'plan' && (
+        <>
+          <PlanPanel />
+          <DeleteAccountCard />
+        </>
+      )}
     </div>
   );
 }

@@ -193,6 +193,9 @@ function InstallationRow({
       <a href={manageUrl} target="_blank" rel="noreferrer" className="text-[12px] text-cobalt hover:underline">
         Choose repositories ↗
       </a>
+      <a href="/docs/required-check" target="_blank" className="text-[12px] text-cobalt hover:underline">
+        Make it a required check ↗
+      </a>
       <button
         onClick={onUnlink}
         disabled={busy !== null}

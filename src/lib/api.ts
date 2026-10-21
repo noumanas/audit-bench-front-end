@@ -3,6 +3,7 @@ import {
   BitbucketPull,
   BitbucketRepo,
   GithubAppStatus,
+  ReviewOutcomes,
   ReviewRule,
   ReviewRuleKind,
   RevenueOverview,
@@ -369,6 +370,22 @@ export function setAuditFindingStatus(
   }).then((res) => unwrap<Audit>(res));
 }
 
+/** Deletes a scan and its report. */
+export function deleteRepositoryScan(id: string): Promise<{ deleted: true }> {
+  return fetch(`${API_URL}/repository/${id}`, { method: "DELETE", headers: authHeaders() }).then((res) =>
+    unwrap<{ deleted: true }>(res),
+  );
+}
+
+/** Deletes the signed-in account and all its data; confirmEmail must match the account. */
+export function deleteMyAccount(confirmEmail: string): Promise<{ deleted: true }> {
+  return fetch(`${API_URL}/me`, {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json", ...authHeaders() },
+    body: JSON.stringify({ confirmEmail }),
+  }).then((res) => unwrap<{ deleted: true }>(res));
+}
+
 /** Posts a finished PR/MR review to GitHub/GitLab again. */
 export function republishScan(id: string): Promise<{ prPublishedAt: string | null; prPublishError: string | null }> {
   return fetch(`${API_URL}/repository/${id}/publish`, {
@@ -619,6 +636,10 @@ export function getGithubAppManifest(org?: string): Promise<{ action: string; ma
 
 export function listReviewRules(): Promise<ReviewRule[]> {
   return fetch(`${API_URL}/review-rules`, { headers: authHeaders() }).then((res) => unwrap<ReviewRule[]>(res));
+}
+
+export function getReviewOutcomes(): Promise<ReviewOutcomes> {
+  return fetch(`${API_URL}/review-rules/outcomes`, { headers: authHeaders() }).then((res) => unwrap<ReviewOutcomes>(res));
 }
 
 export function createReviewRule(input: {
