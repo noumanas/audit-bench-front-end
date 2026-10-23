@@ -28,6 +28,7 @@ import {
   reviewGithubPrByUrl,
   reviewGitlabMr,
   scanGithubRepo,
+  startHostConnect,
   scanGitlabProject,
 } from '@/lib/api';
 import { formatDateTime, timeAgo } from '@/lib/time';
@@ -68,6 +69,10 @@ interface HostConfig {
   changeShort: string;
   prefix: string;
   icon: (p: { className?: string }) => React.ReactElement;
+  /** Set when the host can be connected with one click (OAuth) instead of a pasted token. */
+  oauth?: 'github' | 'gitlab';
+  /** What one-click connecting lets Audit Bench do, shown under the button. */
+  oauthNote?: string;
   tokenPlaceholder: string;
   tokenHelp: React.ReactNode;
   getStatus: () => Promise<{ connected: boolean; username: string | null }>;
@@ -86,6 +91,9 @@ const HOSTS: Record<'github' | 'gitlab' | 'bitbucket', HostConfig> = {
     changeShort: 'PR',
     prefix: '#',
     icon: GithubLogoIcon,
+    oauth: 'github',
+    oauthNote:
+      'GitHub asks you to approve access to your repositories, so Audit Bench can list them, read the code to scan, and post reviews on pull requests.',
     tokenPlaceholder: 'ghp_…',
     tokenHelp: (
       <>
@@ -137,6 +145,9 @@ const HOSTS: Record<'github' | 'gitlab' | 'bitbucket', HostConfig> = {
     changeShort: 'MR',
     prefix: '!',
     icon: GitlabLogoIcon,
+    oauth: 'gitlab',
+    oauthNote:
+      'GitLab asks you to approve access to your projects, so Audit Bench can list them, read the code to scan, and post reviews on merge requests.',
     tokenPlaceholder: 'glpat-…',
     tokenHelp: (
       <>
@@ -350,7 +361,7 @@ export function GitHostPanel({
         )}
         <button
           onClick={async () => {
-            if (!window.confirm(`Disconnect ${cfg.name}? Your past scans stay; you'll need a token to scan again.`))
+            if (!window.confirm(`Disconnect ${cfg.name}? Your past scans stay; you'll need to connect again to scan.`))
               return;
             try {
               await cfg.disconnect();
@@ -395,7 +406,7 @@ export function GitHostPanel({
             {repos === null && <RowSkeleton count={6} />}
             {repos?.length === 0 && (
               <p className="px-4 py-6 text-[13px] text-muted-on-ink">
-                No {cfg.repoPlural} found for this token. Check its scopes, or that it belongs to the right account.
+                No {cfg.repoPlural} found for this account. Check it&apos;s the right account and that it has access.
               </p>
             )}
             {repos && repos.length > 0 && filtered.length === 0 && (
@@ -694,7 +705,7 @@ function PrLinkReview({
       <div className="mb-2 flex flex-wrap items-baseline gap-x-2">
         <h3 className="text-sm font-bold text-[#E8ECF4]">Review any pull request</h3>
         <span className="text-[12px] text-muted-on-ink">
-          Paste a link from any repository your token can read, including public ones you don&apos;t own.
+          Paste a link from any repository your account can read, including public ones you don&apos;t own.
         </span>
       </div>
       <div className="flex flex-col gap-2 sm:flex-row">
@@ -749,70 +760,131 @@ function ConnectCard({
   /** Set when the saved token was rejected: the username it belonged to (null if unknown). */
   expiredFor?: string | null;
 }) {
+  const [useToken, setUseToken] = useState(!cfg.oauth);
   const [token, setToken] = useState('');
   const [connecting, setConnecting] = useState(false);
+  const [redirecting, setRedirecting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const Icon = cfg.icon;
+  const reconnect = expiredFor !== undefined;
+
+  const connectWithOAuth = async () => {
+    if (!cfg.oauth) return;
+    setRedirecting(true);
+    setError(null);
+    try {
+      const { url } = await startHostConnect(cfg.oauth);
+      window.location.assign(url);
+    } catch (err) {
+      setRedirecting(false);
+      setError(err instanceof Error ? err.message : `Couldn't start connecting ${cfg.name}.`);
+    }
+  };
 
   return (
-    <form
-      onSubmit={async (e) => {
-        e.preventDefault();
-        setConnecting(true);
-        setError(null);
-        try {
-          await cfg.connect(token.trim());
-          setToken('');
-          onConnected();
-        } catch (err) {
-          setError(err instanceof Error ? err.message : 'Failed to connect.');
-        } finally {
-          setConnecting(false);
-        }
-      }}
-      className="shadow-panel rounded-lg border border-ink-line bg-ink-soft p-5"
-    >
+    <div className="shadow-panel rounded-lg border border-ink-line bg-ink-soft p-5">
       <div className="mb-1 flex items-center gap-2">
         <Icon className="h-5 w-5 text-[#E8ECF4]" />
         <h3 className="text-base font-bold text-[#E8ECF4]">
-          {expiredFor !== undefined ? `Reconnect ${cfg.name}` : `Connect ${cfg.name}`}
+          {reconnect ? `Reconnect ${cfg.name}` : `Connect ${cfg.name}`}
         </h3>
       </div>
-      {expiredFor !== undefined && (
+      {reconnect && (
         <div className="mb-4 rounded-md border border-high/40 bg-high/10 px-3.5 py-2.5 text-[13px] text-[#F0CE9A]">
-          {cfg.name} rejected the saved token{expiredFor ? ` for @${expiredFor}` : ''}. It has expired or been revoked.
-          Create a new token and paste it below; it replaces the old one. Your past scans are kept.
+          {cfg.name} no longer accepts the saved access{expiredFor ? ` for @${expiredFor}` : ''}. It has expired or been
+          revoked. Connect again to replace it. Your past scans are kept.
         </div>
       )}
       <p className="mb-4 max-w-[70ch] text-[13px] leading-relaxed text-muted-on-ink">
-        Paste a personal access token to list your {cfg.repoPlural}, scan any branch and review {cfg.changePlural}.
-        Tokens are stored encrypted, and the code is never run.
+        Connect your {cfg.name} account to list your {cfg.repoPlural}, scan any branch and review {cfg.changePlural}.
+        Access is stored encrypted, and the code is never run.
       </p>
-      <div className="flex flex-wrap gap-2">
-        <PasswordInput
-          required
-          value={token}
-          onChange={(e) => setToken(e.target.value)}
-          placeholder={cfg.tokenPlaceholder}
-          aria-label={`${cfg.name} personal access token`}
-          wrapperClassName="min-w-[240px] flex-1"
-          className="w-full rounded-md border border-ink-line bg-ink px-3 py-2 font-mono text-[13px] text-[#E8ECF4] outline-none focus:border-cobalt"
-        />
-        <button
-          type="submit"
-          disabled={connecting || !token.trim()}
-          className="cursor-pointer rounded-md bg-cobalt px-4 py-2 text-sm font-bold text-white disabled:cursor-not-allowed disabled:opacity-50"
+
+      {cfg.oauth && (
+        <>
+          <button
+            type="button"
+            onClick={connectWithOAuth}
+            disabled={redirecting}
+            className="inline-flex cursor-pointer items-center gap-2 rounded-md bg-cobalt px-5 py-2.5 text-sm font-bold text-white hover:bg-cobalt-dark disabled:cursor-wait disabled:opacity-60"
+          >
+            <Icon className="h-4 w-4" />
+            {redirecting ? `Opening ${cfg.name}…` : reconnect ? `Reconnect ${cfg.name}` : `Connect ${cfg.name}`}
+          </button>
+          {cfg.oauthNote && (
+            <p className="mt-2 max-w-[70ch] text-[12px] leading-relaxed text-muted-on-ink">{cfg.oauthNote}</p>
+          )}
+          {!useToken && (
+            <button
+              type="button"
+              onClick={() => setUseToken(true)}
+              className="mt-3 cursor-pointer text-[12px] font-medium text-muted-on-ink underline hover:text-[#E8ECF4]"
+            >
+              Use an access token instead
+            </button>
+          )}
+        </>
+      )}
+
+      {useToken && (
+        <form
+          onSubmit={async (e) => {
+            e.preventDefault();
+            setConnecting(true);
+            setError(null);
+            try {
+              await cfg.connect(token.trim());
+              setToken('');
+              onConnected();
+            } catch (err) {
+              setError(err instanceof Error ? err.message : 'Failed to connect.');
+            } finally {
+              setConnecting(false);
+            }
+          }}
+          className={cfg.oauth ? 'mt-4 border-t border-ink-line pt-4' : ''}
         >
-          {connecting ? 'Connecting…' : expiredFor !== undefined ? 'Save new token' : `Connect ${cfg.name}`}
-        </button>
-      </div>
-      <p className="mt-2 text-[12px] leading-relaxed text-muted-on-ink">{cfg.tokenHelp}</p>
+          {cfg.oauth && (
+            <p className="mb-2 text-[12px] text-muted-on-ink">
+              Or paste a personal access token, for example if your organisation blocks third-party apps.
+            </p>
+          )}
+          <div className="flex flex-wrap gap-2">
+            <PasswordInput
+              required
+              value={token}
+              onChange={(e) => setToken(e.target.value)}
+              placeholder={cfg.tokenPlaceholder}
+              aria-label={`${cfg.name} personal access token`}
+              wrapperClassName="min-w-[240px] flex-1"
+              className="w-full rounded-md border border-ink-line bg-ink px-3 py-2 font-mono text-[13px] text-[#E8ECF4] outline-none focus:border-cobalt"
+            />
+            <button
+              type="submit"
+              disabled={connecting || !token.trim()}
+              className={`cursor-pointer rounded-md px-4 py-2 text-sm font-bold disabled:cursor-not-allowed disabled:opacity-50 ${
+                cfg.oauth ? 'border border-ink-line text-[#E8ECF4] hover:bg-ink-line/40' : 'bg-cobalt text-white'
+              }`}
+            >
+              {connecting
+                ? 'Connecting…'
+                : reconnect
+                  ? 'Save new token'
+                  : cfg.oauth
+                    ? 'Save token'
+                    : `Connect ${cfg.name}`}
+            </button>
+          </div>
+          <p className="mt-2 text-[12px] leading-relaxed text-muted-on-ink">{cfg.tokenHelp}</p>
+        </form>
+      )}
+
       {error && (
         <div className="mt-3 rounded-md border border-critical/40 bg-critical/10 px-3 py-2 text-[12px] text-[#F3B7BF]">
           {error}
         </div>
       )}
-    </form>
+    </div>
   );
 }
 

@@ -180,8 +180,8 @@ export function changePlan(slug: string): Promise<ChangePlanResult> {
 }
 
 export function getMyPlanRequests(): Promise<PlanRequest[]> {
-  return fetch(`${API_URL}/me/plan-requests`, { headers: authHeaders() }).then((res) =>
-    unwrap<PlanRequest[]>(res),
+  return fetch(`${API_URL}/me/plan-requests`, { headers: authHeaders() }).then(
+    (res) => unwrap<PlanRequest[]>(res),
   );
 }
 
@@ -192,8 +192,8 @@ export function listPlans(): Promise<Plan[]> {
 // ---------- Organization ----------
 
 export function getMyOrganization(): Promise<OrganizationDetail | null> {
-  return fetch(`${API_URL}/organization`, { headers: authHeaders() }).then((res) =>
-    unwrap<OrganizationDetail | null>(res),
+  return fetch(`${API_URL}/organization`, { headers: authHeaders() }).then(
+    (res) => unwrap<OrganizationDetail | null>(res),
   );
 }
 
@@ -205,7 +205,10 @@ export function createOrganization(name: string): Promise<OrganizationDetail> {
   }).then((res) => unwrap<OrganizationDetail>(res));
 }
 
-export function inviteToOrganization(email: string, role: OrgRole): Promise<OrganizationInvite> {
+export function inviteToOrganization(
+  email: string,
+  role: OrgRole,
+): Promise<OrganizationInvite> {
   return fetch(`${API_URL}/organization/invites`, {
     method: "POST",
     headers: { "Content-Type": "application/json", ...authHeaders() },
@@ -226,14 +229,19 @@ export function getInvitePreview(token: string): Promise<InvitePreview> {
   );
 }
 
-export function acceptOrganizationInvite(token: string): Promise<OrganizationDetail> {
+export function acceptOrganizationInvite(
+  token: string,
+): Promise<OrganizationDetail> {
   return fetch(`${API_URL}/organization/invites/${token}/accept`, {
     method: "POST",
     headers: authHeaders(),
   }).then((res) => unwrap<OrganizationDetail>(res));
 }
 
-export function updateOrganizationMemberRole(memberId: string, role: OrgRole): Promise<void> {
+export function updateOrganizationMemberRole(
+  memberId: string,
+  role: OrgRole,
+): Promise<void> {
   return fetch(`${API_URL}/organization/members/${memberId}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json", ...authHeaders() },
@@ -248,11 +256,16 @@ export function removeOrganizationMember(memberId: string): Promise<void> {
   }).then((res) => unwrap<void>(res));
 }
 
-export function leaveOrganization(): Promise<{ left: boolean; organizationDeleted: boolean }> {
+export function leaveOrganization(): Promise<{
+  left: boolean;
+  organizationDeleted: boolean;
+}> {
   return fetch(`${API_URL}/organization/leave`, {
     method: "POST",
     headers: authHeaders(),
-  }).then((res) => unwrap<{ left: boolean; organizationDeleted: boolean }>(res));
+  }).then((res) =>
+    unwrap<{ left: boolean; organizationDeleted: boolean }>(res),
+  );
 }
 
 export function deleteOrganization(): Promise<void> {
@@ -265,32 +278,41 @@ export function deleteOrganization(): Promise<void> {
 // ---------- Admin ----------
 
 export function listAdminUsers(): Promise<AdminUser[]> {
-  return fetch(`${API_URL}/admin/users`, { headers: authHeaders() }).then((res) =>
-    unwrap<AdminUser[]>(res),
+  return fetch(`${API_URL}/admin/users`, { headers: authHeaders() }).then(
+    (res) => unwrap<AdminUser[]>(res),
   );
 }
 
 export function getAdminUsageSummary(): Promise<AdminUsageSummary> {
-  return fetch(`${API_URL}/admin/usage/summary`, { headers: authHeaders() }).then((res) => unwrap<AdminUsageSummary>(res));
+  return fetch(`${API_URL}/admin/usage/summary`, {
+    headers: authHeaders(),
+  }).then((res) => unwrap<AdminUsageSummary>(res));
 }
 
-export function getAdminUserUsage(userId: string): Promise<AdminUserUsageDetail> {
-  return fetch(`${API_URL}/admin/users/${userId}/usage`, { headers: authHeaders() }).then((res) =>
-    unwrap<AdminUserUsageDetail>(res),
-  );
+export function getAdminUserUsage(
+  userId: string,
+): Promise<AdminUserUsageDetail> {
+  return fetch(`${API_URL}/admin/users/${userId}/usage`, {
+    headers: authHeaders(),
+  }).then((res) => unwrap<AdminUserUsageDetail>(res));
 }
 
-export function renewUserPlan(userId: string): Promise<{ id: string; planExpiresAt: string | null; plan: Plan }> {
-  return fetch(`${API_URL}/admin/users/${userId}/renew-plan`, { method: "POST", headers: authHeaders() }).then((res) =>
+export function renewUserPlan(
+  userId: string,
+): Promise<{ id: string; planExpiresAt: string | null; plan: Plan }> {
+  return fetch(`${API_URL}/admin/users/${userId}/renew-plan`, {
+    method: "POST",
+    headers: authHeaders(),
+  }).then((res) =>
     unwrap<{ id: string; planExpiresAt: string | null; plan: Plan }>(res),
   );
 }
 
 export function listAdminPlanRequests(status?: string): Promise<PlanRequest[]> {
   const query = status ? `?status=${encodeURIComponent(status)}` : "";
-  return fetch(`${API_URL}/admin/plan-requests${query}`, { headers: authHeaders() }).then((res) =>
-    unwrap<PlanRequest[]>(res),
-  );
+  return fetch(`${API_URL}/admin/plan-requests${query}`, {
+    headers: authHeaders(),
+  }).then((res) => unwrap<PlanRequest[]>(res));
 }
 
 export function approvePlanRequest(id: string): Promise<PlanRequest> {
@@ -300,7 +322,10 @@ export function approvePlanRequest(id: string): Promise<PlanRequest> {
   }).then((res) => unwrap<PlanRequest>(res));
 }
 
-export function rejectPlanRequest(id: string, note?: string): Promise<PlanRequest> {
+export function rejectPlanRequest(
+  id: string,
+  note?: string,
+): Promise<PlanRequest> {
   return fetch(`${API_URL}/admin/plan-requests/${id}/reject`, {
     method: "POST",
     headers: { "Content-Type": "application/json", ...authHeaders() },
@@ -308,7 +333,10 @@ export function rejectPlanRequest(id: string, note?: string): Promise<PlanReques
   }).then((res) => unwrap<PlanRequest>(res));
 }
 
-export function updateUserRole(userId: string, role: string): Promise<AdminUser> {
+export function updateUserRole(
+  userId: string,
+  role: string,
+): Promise<AdminUser> {
   return fetch(`${API_URL}/admin/users/${userId}/role`, {
     method: "POST",
     headers: { "Content-Type": "application/json", ...authHeaders() },
@@ -316,7 +344,10 @@ export function updateUserRole(userId: string, role: string): Promise<AdminUser>
   }).then((res) => unwrap<AdminUser>(res));
 }
 
-export function updateUserStatus(userId: string, isActive: boolean): Promise<AdminUser> {
+export function updateUserStatus(
+  userId: string,
+  isActive: boolean,
+): Promise<AdminUser> {
   return fetch(`${API_URL}/admin/users/${userId}/status`, {
     method: "POST",
     headers: { "Content-Type": "application/json", ...authHeaders() },
@@ -372,13 +403,16 @@ export function setAuditFindingStatus(
 
 /** Deletes a scan and its report. */
 export function deleteRepositoryScan(id: string): Promise<{ deleted: true }> {
-  return fetch(`${API_URL}/repository/${id}`, { method: "DELETE", headers: authHeaders() }).then((res) =>
-    unwrap<{ deleted: true }>(res),
-  );
+  return fetch(`${API_URL}/repository/${id}`, {
+    method: "DELETE",
+    headers: authHeaders(),
+  }).then((res) => unwrap<{ deleted: true }>(res));
 }
 
 /** Deletes the signed-in account and all its data; confirmEmail must match the account. */
-export function deleteMyAccount(confirmEmail: string): Promise<{ deleted: true }> {
+export function deleteMyAccount(
+  confirmEmail: string,
+): Promise<{ deleted: true }> {
   return fetch(`${API_URL}/me`, {
     method: "DELETE",
     headers: { "Content-Type": "application/json", ...authHeaders() },
@@ -387,11 +421,17 @@ export function deleteMyAccount(confirmEmail: string): Promise<{ deleted: true }
 }
 
 /** Posts a finished PR/MR review to GitHub/GitLab again. */
-export function republishScan(id: string): Promise<{ prPublishedAt: string | null; prPublishError: string | null }> {
+export function republishScan(
+  id: string,
+): Promise<{ prPublishedAt: string | null; prPublishError: string | null }> {
   return fetch(`${API_URL}/repository/${id}/publish`, {
     method: "POST",
     headers: authHeaders(),
-  }).then((res) => unwrap<{ prPublishedAt: string | null; prPublishError: string | null }>(res));
+  }).then((res) =>
+    unwrap<{ prPublishedAt: string | null; prPublishError: string | null }>(
+      res,
+    ),
+  );
 }
 
 export function setScanFileFindingStatus(
@@ -399,11 +439,14 @@ export function setScanFileFindingStatus(
   findingIndex: number,
   status: FindingStatus,
 ): Promise<ScanFile> {
-  return fetch(`${API_URL}/repository/scan-files/${scanFileId}/findings/${findingIndex}`, {
-    method: "PATCH",
-    headers: { "Content-Type": "application/json", ...authHeaders() },
-    body: JSON.stringify({ status }),
-  }).then((res) => unwrap<ScanFile>(res));
+  return fetch(
+    `${API_URL}/repository/scan-files/${scanFileId}/findings/${findingIndex}`,
+    {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json", ...authHeaders() },
+      body: JSON.stringify({ status }),
+    },
+  ).then((res) => unwrap<ScanFile>(res));
 }
 
 export function listAudits(): Promise<Audit[]> {
@@ -442,10 +485,16 @@ export function listRepositoryScans(): Promise<ScanJob[]> {
 
 // ---------- Fix in editor ----------
 
-export function getFixFileContent(scanJobId: string, path: string): Promise<{ content: string }> {
-  return fetch(`${API_URL}/repository/${scanJobId}/fix/content?path=${encodeURIComponent(path)}`, {
-    headers: authHeaders(),
-  }).then((res) => unwrap<{ content: string }>(res));
+export function getFixFileContent(
+  scanJobId: string,
+  path: string,
+): Promise<{ content: string }> {
+  return fetch(
+    `${API_URL}/repository/${scanJobId}/fix/content?path=${encodeURIComponent(path)}`,
+    {
+      headers: authHeaders(),
+    },
+  ).then((res) => unwrap<{ content: string }>(res));
 }
 
 export interface CommitFixResult {
@@ -473,7 +522,11 @@ export interface RecheckFixResult {
   resolved: boolean;
 }
 
-export function recheckFix(scanJobId: string, path: string, content: string): Promise<RecheckFixResult> {
+export function recheckFix(
+  scanJobId: string,
+  path: string,
+  content: string,
+): Promise<RecheckFixResult> {
   return fetch(`${API_URL}/repository/${scanJobId}/fix/recheck`, {
     method: "POST",
     headers: { "Content-Type": "application/json", ...authHeaders() },
@@ -522,6 +575,29 @@ export function getGithubStatus(): Promise<GithubStatus> {
   );
 }
 
+/** "Connect GitHub/GitLab" by OAuth: the provider's consent page to send the browser to. */
+export function startHostConnect(
+  provider: "github" | "gitlab",
+): Promise<{ url: string }> {
+  return fetch(`${API_URL}/auth/${provider}/connect`, {
+    method: "POST",
+    headers: authHeaders(),
+  }).then((res) => unwrap<{ url: string }>(res));
+}
+
+/** Finishes the OAuth connection when the provider sends the browser back. */
+export function completeHostConnect(
+  provider: "github" | "gitlab",
+  code: string,
+  state: string,
+): Promise<{ connected: true; username: string }> {
+  return fetch(`${API_URL}/auth/connect/complete`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...authHeaders() },
+    body: JSON.stringify({ provider, code, state }),
+  }).then((res) => unwrap<{ connected: true; username: string }>(res));
+}
+
 export function connectGithub(token: string): Promise<{ username: string }> {
   return fetch(`${API_URL}/github/connect`, {
     method: "POST",
@@ -543,16 +619,22 @@ export function listGithubRepos(): Promise<GithubRepo[]> {
   );
 }
 
-export function listGithubBranches(owner: string, repo: string): Promise<string[]> {
-  return fetch(`${API_URL}/github/repos/${owner}/${repo}/branches`, { headers: authHeaders() }).then(
-    (res) => unwrap<string[]>(res),
-  );
+export function listGithubBranches(
+  owner: string,
+  repo: string,
+): Promise<string[]> {
+  return fetch(`${API_URL}/github/repos/${owner}/${repo}/branches`, {
+    headers: authHeaders(),
+  }).then((res) => unwrap<string[]>(res));
 }
 
-export function listGithubPulls(owner: string, repo: string): Promise<GithubPullRequest[]> {
-  return fetch(`${API_URL}/github/repos/${owner}/${repo}/pulls`, { headers: authHeaders() }).then(
-    (res) => unwrap<GithubPullRequest[]>(res),
-  );
+export function listGithubPulls(
+  owner: string,
+  repo: string,
+): Promise<GithubPullRequest[]> {
+  return fetch(`${API_URL}/github/repos/${owner}/${repo}/pulls`, {
+    headers: authHeaders(),
+  }).then((res) => unwrap<GithubPullRequest[]>(res));
 }
 
 export function scanGithubRepo(
@@ -597,20 +679,28 @@ export function reviewGithubPrByUrl(
 // ---------- GitHub App ----------
 
 export function getGithubAppStatus(): Promise<GithubAppStatus> {
-  return fetch(`${API_URL}/github-app/status`, { headers: authHeaders() }).then((res) => unwrap<GithubAppStatus>(res));
-}
-
-export function getGithubAppInstallUrl(): Promise<{ url: string }> {
-  return fetch(`${API_URL}/github-app/install-url`, { headers: authHeaders() }).then((res) => unwrap<{ url: string }>(res));
-}
-
-export function claimGithubInstallation(id: number): Promise<GithubAppStatus> {
-  return fetch(`${API_URL}/github-app/installations/${id}/claim`, { method: "POST", headers: authHeaders() }).then((res) =>
-    unwrap<GithubAppStatus>(res),
+  return fetch(`${API_URL}/github-app/status`, { headers: authHeaders() }).then(
+    (res) => unwrap<GithubAppStatus>(res),
   );
 }
 
-export function updateGithubInstallation(id: number, autoReview: boolean): Promise<GithubAppStatus> {
+export function getGithubAppInstallUrl(): Promise<{ url: string }> {
+  return fetch(`${API_URL}/github-app/install-url`, {
+    headers: authHeaders(),
+  }).then((res) => unwrap<{ url: string }>(res));
+}
+
+export function claimGithubInstallation(id: number): Promise<GithubAppStatus> {
+  return fetch(`${API_URL}/github-app/installations/${id}/claim`, {
+    method: "POST",
+    headers: authHeaders(),
+  }).then((res) => unwrap<GithubAppStatus>(res));
+}
+
+export function updateGithubInstallation(
+  id: number,
+  autoReview: boolean,
+): Promise<GithubAppStatus> {
   return fetch(`${API_URL}/github-app/installations/${id}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json", ...authHeaders() },
@@ -619,27 +709,34 @@ export function updateGithubInstallation(id: number, autoReview: boolean): Promi
 }
 
 export function unlinkGithubInstallation(id: number): Promise<GithubAppStatus> {
-  return fetch(`${API_URL}/github-app/installations/${id}`, { method: "DELETE", headers: authHeaders() }).then((res) =>
-    unwrap<GithubAppStatus>(res),
-  );
+  return fetch(`${API_URL}/github-app/installations/${id}`, {
+    method: "DELETE",
+    headers: authHeaders(),
+  }).then((res) => unwrap<GithubAppStatus>(res));
 }
 
 /** Super admin: GitHub's create-app-from-manifest form target and manifest. */
-export function getGithubAppManifest(org?: string): Promise<{ action: string; manifest: string }> {
+export function getGithubAppManifest(
+  org?: string,
+): Promise<{ action: string; manifest: string }> {
   const q = org?.trim() ? `?org=${encodeURIComponent(org.trim())}` : "";
-  return fetch(`${API_URL}/github-app/manifest${q}`, { headers: authHeaders() }).then((res) =>
-    unwrap<{ action: string; manifest: string }>(res),
-  );
+  return fetch(`${API_URL}/github-app/manifest${q}`, {
+    headers: authHeaders(),
+  }).then((res) => unwrap<{ action: string; manifest: string }>(res));
 }
 
 // ---------- Review rules ----------
 
 export function listReviewRules(): Promise<ReviewRule[]> {
-  return fetch(`${API_URL}/review-rules`, { headers: authHeaders() }).then((res) => unwrap<ReviewRule[]>(res));
+  return fetch(`${API_URL}/review-rules`, { headers: authHeaders() }).then(
+    (res) => unwrap<ReviewRule[]>(res),
+  );
 }
 
 export function getReviewOutcomes(): Promise<ReviewOutcomes> {
-  return fetch(`${API_URL}/review-rules/outcomes`, { headers: authHeaders() }).then((res) => unwrap<ReviewOutcomes>(res));
+  return fetch(`${API_URL}/review-rules/outcomes`, {
+    headers: authHeaders(),
+  }).then((res) => unwrap<ReviewOutcomes>(res));
 }
 
 export function createReviewRule(input: {
@@ -655,7 +752,10 @@ export function createReviewRule(input: {
   }).then((res) => unwrap<ReviewRule>(res));
 }
 
-export function updateReviewRule(id: string, input: { enabled?: boolean; text?: string }): Promise<ReviewRule> {
+export function updateReviewRule(
+  id: string,
+  input: { enabled?: boolean; text?: string },
+): Promise<ReviewRule> {
   return fetch(`${API_URL}/review-rules/${id}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json", ...authHeaders() },
@@ -664,20 +764,26 @@ export function updateReviewRule(id: string, input: { enabled?: boolean; text?: 
 }
 
 export function deleteReviewRule(id: string): Promise<{ deleted: true }> {
-  return fetch(`${API_URL}/review-rules/${id}`, { method: "DELETE", headers: authHeaders() }).then((res) =>
-    unwrap<{ deleted: true }>(res),
-  );
+  return fetch(`${API_URL}/review-rules/${id}`, {
+    method: "DELETE",
+    headers: authHeaders(),
+  }).then((res) => unwrap<{ deleted: true }>(res));
 }
 
 // ---------- Bitbucket ----------
 
-export function getBitbucketStatus(): Promise<{ connected: boolean; username: string | null }> {
-  return fetch(`${API_URL}/bitbucket/status`, { headers: authHeaders() }).then((res) =>
-    unwrap<{ connected: boolean; username: string | null }>(res),
+export function getBitbucketStatus(): Promise<{
+  connected: boolean;
+  username: string | null;
+}> {
+  return fetch(`${API_URL}/bitbucket/status`, { headers: authHeaders() }).then(
+    (res) => unwrap<{ connected: boolean; username: string | null }>(res),
   );
 }
 
-export function connectBitbucket(token: string): Promise<{ username: string | null }> {
+export function connectBitbucket(
+  token: string,
+): Promise<{ username: string | null }> {
   return fetch(`${API_URL}/bitbucket/connect`, {
     method: "POST",
     headers: { "Content-Type": "application/json", ...authHeaders() },
@@ -686,28 +792,47 @@ export function connectBitbucket(token: string): Promise<{ username: string | nu
 }
 
 export function disconnectBitbucket(): Promise<void> {
-  return fetch(`${API_URL}/bitbucket/disconnect`, { method: "DELETE", headers: authHeaders() }).then((res) =>
-    unwrap<void>(res),
-  );
+  return fetch(`${API_URL}/bitbucket/disconnect`, {
+    method: "DELETE",
+    headers: authHeaders(),
+  }).then((res) => unwrap<void>(res));
 }
 
 export function listBitbucketRepos(): Promise<BitbucketRepo[]> {
-  return fetch(`${API_URL}/bitbucket/repos`, { headers: authHeaders() }).then((res) => unwrap<BitbucketRepo[]>(res));
+  return fetch(`${API_URL}/bitbucket/repos`, { headers: authHeaders() }).then(
+    (res) => unwrap<BitbucketRepo[]>(res),
+  );
 }
 
-export function listBitbucketBranches(workspace: string, slug: string): Promise<string[]> {
-  return fetch(`${API_URL}/bitbucket/repos/${encodeURIComponent(workspace)}/${encodeURIComponent(slug)}/branches`, {
-    headers: authHeaders(),
-  }).then((res) => unwrap<string[]>(res));
+export function listBitbucketBranches(
+  workspace: string,
+  slug: string,
+): Promise<string[]> {
+  return fetch(
+    `${API_URL}/bitbucket/repos/${encodeURIComponent(workspace)}/${encodeURIComponent(slug)}/branches`,
+    {
+      headers: authHeaders(),
+    },
+  ).then((res) => unwrap<string[]>(res));
 }
 
-export function listBitbucketPulls(workspace: string, slug: string): Promise<BitbucketPull[]> {
-  return fetch(`${API_URL}/bitbucket/repos/${encodeURIComponent(workspace)}/${encodeURIComponent(slug)}/pulls`, {
-    headers: authHeaders(),
-  }).then((res) => unwrap<BitbucketPull[]>(res));
+export function listBitbucketPulls(
+  workspace: string,
+  slug: string,
+): Promise<BitbucketPull[]> {
+  return fetch(
+    `${API_URL}/bitbucket/repos/${encodeURIComponent(workspace)}/${encodeURIComponent(slug)}/pulls`,
+    {
+      headers: authHeaders(),
+    },
+  ).then((res) => unwrap<BitbucketPull[]>(res));
 }
 
-export function scanBitbucketRepo(workspace: string, repoSlug: string, ref?: string): Promise<ScanJob> {
+export function scanBitbucketRepo(
+  workspace: string,
+  repoSlug: string,
+  ref?: string,
+): Promise<ScanJob> {
   return fetch(`${API_URL}/bitbucket/scan`, {
     method: "POST",
     headers: { "Content-Type": "application/json", ...authHeaders() },
@@ -715,7 +840,11 @@ export function scanBitbucketRepo(workspace: string, repoSlug: string, ref?: str
   }).then((res) => unwrap<ScanJob>(res));
 }
 
-export function reviewBitbucketPr(workspace: string, repoSlug: string, pullId: number): Promise<ScanJob> {
+export function reviewBitbucketPr(
+  workspace: string,
+  repoSlug: string,
+  pullId: number,
+): Promise<ScanJob> {
   return fetch(`${API_URL}/bitbucket/pr`, {
     method: "POST",
     headers: { "Content-Type": "application/json", ...authHeaders() },
@@ -753,15 +882,17 @@ export function listGitlabProjects(): Promise<GitlabProject[]> {
 }
 
 export function listGitlabBranches(projectId: number): Promise<string[]> {
-  return fetch(`${API_URL}/gitlab/projects/${projectId}/branches`, { headers: authHeaders() }).then(
-    (res) => unwrap<string[]>(res),
-  );
+  return fetch(`${API_URL}/gitlab/projects/${projectId}/branches`, {
+    headers: authHeaders(),
+  }).then((res) => unwrap<string[]>(res));
 }
 
-export function listGitlabMergeRequests(projectId: number): Promise<GitlabMergeRequest[]> {
-  return fetch(`${API_URL}/gitlab/projects/${projectId}/merge_requests`, { headers: authHeaders() }).then(
-    (res) => unwrap<GitlabMergeRequest[]>(res),
-  );
+export function listGitlabMergeRequests(
+  projectId: number,
+): Promise<GitlabMergeRequest[]> {
+  return fetch(`${API_URL}/gitlab/projects/${projectId}/merge_requests`, {
+    headers: authHeaders(),
+  }).then((res) => unwrap<GitlabMergeRequest[]>(res));
 }
 
 export function scanGitlabProject(
@@ -793,8 +924,8 @@ export function reviewGitlabMr(
 // ---------- Badge ----------
 
 export function getBadgeToken(): Promise<{ badgeToken: string }> {
-  return fetch(`${API_URL}/me/badge-token`, { headers: authHeaders() }).then((res) =>
-    unwrap<{ badgeToken: string }>(res),
+  return fetch(`${API_URL}/me/badge-token`, { headers: authHeaders() }).then(
+    (res) => unwrap<{ badgeToken: string }>(res),
   );
 }
 
@@ -808,8 +939,8 @@ export function rotateBadgeToken(): Promise<{ badgeToken: string }> {
 // ---------- API key (CLI / CI-CD) ----------
 
 export function getApiKey(): Promise<{ apiKey: string }> {
-  return fetch(`${API_URL}/me/api-key`, { headers: authHeaders() }).then((res) =>
-    unwrap<{ apiKey: string }>(res),
+  return fetch(`${API_URL}/me/api-key`, { headers: authHeaders() }).then(
+    (res) => unwrap<{ apiKey: string }>(res),
   );
 }
 
@@ -823,8 +954,8 @@ export function rotateApiKey(): Promise<{ apiKey: string }> {
 // ---------- Webhooks (continuous PR/MR review + conversational chat) ----------
 
 export function listWebhookConfigs(): Promise<WebhookConfig[]> {
-  return fetch(`${API_URL}/webhooks/configs`, { headers: authHeaders() }).then((res) =>
-    unwrap<WebhookConfig[]>(res),
+  return fetch(`${API_URL}/webhooks/configs`, { headers: authHeaders() }).then(
+    (res) => unwrap<WebhookConfig[]>(res),
   );
 }
 
@@ -840,7 +971,10 @@ export function createWebhookConfig(
   }).then((res) => unwrap<WebhookConfig>(res));
 }
 
-export function updateWebhookConfig(id: string, autoReview: boolean): Promise<WebhookConfig> {
+export function updateWebhookConfig(
+  id: string,
+  autoReview: boolean,
+): Promise<WebhookConfig> {
   return fetch(`${API_URL}/webhooks/configs/${id}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json", ...authHeaders() },
@@ -858,31 +992,41 @@ export function deleteWebhookConfig(id: string): Promise<{ deleted: boolean }> {
 // ---------- Analytics ----------
 
 function repoQuery(repo?: string): string {
-  return repo ? `&repo=${encodeURIComponent(repo)}` : '';
+  return repo ? `&repo=${encodeURIComponent(repo)}` : "";
 }
 
-export function getAnalyticsOverview(days: number, repo?: string): Promise<AnalyticsOverview> {
+export function getAnalyticsOverview(
+  days: number,
+  repo?: string,
+): Promise<AnalyticsOverview> {
   return fetch(`${API_URL}/analytics/overview?days=${days}${repoQuery(repo)}`, {
     headers: authHeaders(),
   }).then((res) => unwrap<AnalyticsOverview>(res));
 }
 
-export function getAnalyticsTrend(days: number, repo?: string): Promise<AnalyticsTrend> {
+export function getAnalyticsTrend(
+  days: number,
+  repo?: string,
+): Promise<AnalyticsTrend> {
   return fetch(`${API_URL}/analytics/trend?days=${days}${repoQuery(repo)}`, {
     headers: authHeaders(),
   }).then((res) => unwrap<AnalyticsTrend>(res));
 }
 
 export function listAnalyticsRepos(): Promise<string[]> {
-  return fetch(`${API_URL}/analytics/repos`, { headers: authHeaders() }).then((res) => unwrap<string[]>(res));
+  return fetch(`${API_URL}/analytics/repos`, { headers: authHeaders() }).then(
+    (res) => unwrap<string[]>(res),
+  );
 }
 
 // ---------- Web Vitals (admin) ----------
 
-export function getWebVitalsSummary(days = 7): Promise<WebVitalMetricSummary[]> {
-  return fetch(`${API_URL}/web-vitals/summary?days=${days}`, { headers: authHeaders() }).then((res) =>
-    unwrap<WebVitalMetricSummary[]>(res),
-  );
+export function getWebVitalsSummary(
+  days = 7,
+): Promise<WebVitalMetricSummary[]> {
+  return fetch(`${API_URL}/web-vitals/summary?days=${days}`, {
+    headers: authHeaders(),
+  }).then((res) => unwrap<WebVitalMetricSummary[]>(res));
 }
 
 // ---------- Alignment lab (admin-only pilot) ----------
@@ -895,26 +1039,31 @@ export interface CreateBenchmarkModelInput {
   confessionResistance?: BenchmarkDifficulty;
 }
 
-export function createBenchmarkModel(input: CreateBenchmarkModelInput): Promise<BenchmarkModel> {
+export function createBenchmarkModel(
+  input: CreateBenchmarkModelInput,
+): Promise<BenchmarkModel> {
   return fetch(`${API_URL}/alignment-lab/models`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...authHeaders() },
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...authHeaders() },
     body: JSON.stringify(input),
   }).then((res) => unwrap<BenchmarkModel>(res));
 }
 
 export function listBenchmarkModels(): Promise<BenchmarkModel[]> {
-  return fetch(`${API_URL}/alignment-lab/models`, { headers: authHeaders() }).then((res) =>
-    unwrap<BenchmarkModel[]>(res),
-  );
+  return fetch(`${API_URL}/alignment-lab/models`, {
+    headers: authHeaders(),
+  }).then((res) => unwrap<BenchmarkModel[]>(res));
 }
 
 // Runs the full investigator loop server-side (up to 5 turns, several LLM
 // calls each) — can take a while and spends real provider cost each time.
-export function runInvestigation(modelId: string, provider?: string): Promise<Investigation> {
+export function runInvestigation(
+  modelId: string,
+  provider?: string,
+): Promise<Investigation> {
   return fetch(`${API_URL}/alignment-lab/models/${modelId}/investigate`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...authHeaders() },
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...authHeaders() },
     body: JSON.stringify({ provider }),
   }).then((res) => unwrap<Investigation>(res));
 }
@@ -928,7 +1077,9 @@ export function listInvestigations(modelId: string): Promise<Investigation[]> {
 // ---------- Public scans & sharing ----------
 
 /** No sign-in: start a free, local-checks-only scan of a public GitHub repo. */
-export function startPublicScan(repoUrl: string): Promise<{ shareId: string; reused: boolean }> {
+export function startPublicScan(
+  repoUrl: string,
+): Promise<{ shareId: string; reused: boolean }> {
   return fetch(`${API_URL}/public/scans`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -937,46 +1088,62 @@ export function startPublicScan(repoUrl: string): Promise<{ shareId: string; reu
 }
 
 export function getPublicScan(shareId: string): Promise<PublicScan> {
-  return fetch(`${API_URL}/public/scans/${encodeURIComponent(shareId)}`).then((res) => unwrap<PublicScan>(res));
+  return fetch(`${API_URL}/public/scans/${encodeURIComponent(shareId)}`).then(
+    (res) => unwrap<PublicScan>(res),
+  );
 }
 
 /** The PR's signed-in author or a maintainer asks Audit Bench Ai to post a public review on the PR. */
-export function postPublicReview(shareId: string): Promise<{ prPublishedAt: string; url: string }> {
+export function postPublicReview(
+  shareId: string,
+): Promise<{ prPublishedAt: string; url: string }> {
   return fetch(`${API_URL}/public/scans/${encodeURIComponent(shareId)}/post`, {
     method: "POST",
     headers: authHeaders(),
   }).then((res) => unwrap<{ prPublishedAt: string; url: string }>(res));
 }
 
-export function shareScan(scanId: string): Promise<{ shareId: string; isPublic: true }> {
-  return fetch(`${API_URL}/repository/${scanId}/share`, { method: "POST", headers: authHeaders() }).then((res) =>
-    unwrap<{ shareId: string; isPublic: true }>(res),
-  );
+export function shareScan(
+  scanId: string,
+): Promise<{ shareId: string; isPublic: true }> {
+  return fetch(`${API_URL}/repository/${scanId}/share`, {
+    method: "POST",
+    headers: authHeaders(),
+  }).then((res) => unwrap<{ shareId: string; isPublic: true }>(res));
 }
 
 export function unshareScan(scanId: string): Promise<{ isPublic: false }> {
-  return fetch(`${API_URL}/repository/${scanId}/share`, { method: "DELETE", headers: authHeaders() }).then((res) =>
-    unwrap<{ isPublic: false }>(res),
-  );
+  return fetch(`${API_URL}/repository/${scanId}/share`, {
+    method: "DELETE",
+    headers: authHeaders(),
+  }).then((res) => unwrap<{ isPublic: false }>(res));
 }
 
 // ---------- Revenue (super admin) ----------
 
-const jsonHeaders = () => ({ "Content-Type": "application/json", ...authHeaders() });
+const jsonHeaders = () => ({
+  "Content-Type": "application/json",
+  ...authHeaders(),
+});
 
 export function getRevenueOverview(months = 12): Promise<RevenueOverview> {
-  return fetch(`${API_URL}/admin/revenue/overview?months=${months}`, { headers: authHeaders() }).then((res) =>
-    unwrap<RevenueOverview>(res),
-  );
+  return fetch(`${API_URL}/admin/revenue/overview?months=${months}`, {
+    headers: authHeaders(),
+  }).then((res) => unwrap<RevenueOverview>(res));
 }
 
-export function listRevenueSubscriptions(status: "all" | "active" | "ended" = "all"): Promise<RevenueSubscription[]> {
-  return fetch(`${API_URL}/admin/revenue/subscriptions?status=${status}`, { headers: authHeaders() }).then((res) =>
-    unwrap<RevenueSubscription[]>(res),
-  );
+export function listRevenueSubscriptions(
+  status: "all" | "active" | "ended" = "all",
+): Promise<RevenueSubscription[]> {
+  return fetch(`${API_URL}/admin/revenue/subscriptions?status=${status}`, {
+    headers: authHeaders(),
+  }).then((res) => unwrap<RevenueSubscription[]>(res));
 }
 
-export function updateRevenueSubscription(id: string, data: { amountCents?: number; notes?: string }): Promise<unknown> {
+export function updateRevenueSubscription(
+  id: string,
+  data: { amountCents?: number; notes?: string },
+): Promise<unknown> {
   return fetch(`${API_URL}/admin/revenue/subscriptions/${id}`, {
     method: "PATCH",
     headers: jsonHeaders(),
@@ -985,12 +1152,16 @@ export function updateRevenueSubscription(id: string, data: { amountCents?: numb
 }
 
 export function renewRevenueSubscription(id: string): Promise<unknown> {
-  return fetch(`${API_URL}/admin/revenue/subscriptions/${id}/renew`, { method: "POST", headers: authHeaders() }).then(
-    (res) => unwrap<unknown>(res),
-  );
+  return fetch(`${API_URL}/admin/revenue/subscriptions/${id}/renew`, {
+    method: "POST",
+    headers: authHeaders(),
+  }).then((res) => unwrap<unknown>(res));
 }
 
-export function cancelRevenueSubscription(id: string, downgrade: boolean): Promise<unknown> {
+export function cancelRevenueSubscription(
+  id: string,
+  downgrade: boolean,
+): Promise<unknown> {
   return fetch(`${API_URL}/admin/revenue/subscriptions/${id}/cancel`, {
     method: "POST",
     headers: jsonHeaders(),
@@ -999,9 +1170,9 @@ export function cancelRevenueSubscription(id: string, downgrade: boolean): Promi
 }
 
 export function listRevenuePayments(): Promise<RevenuePayment[]> {
-  return fetch(`${API_URL}/admin/revenue/payments`, { headers: authHeaders() }).then((res) =>
-    unwrap<RevenuePayment[]>(res),
-  );
+  return fetch(`${API_URL}/admin/revenue/payments`, {
+    headers: authHeaders(),
+  }).then((res) => unwrap<RevenuePayment[]>(res));
 }
 
 export function recordRevenuePayment(data: {
@@ -1022,7 +1193,8 @@ export function recordRevenuePayment(data: {
 }
 
 export function deleteRevenuePayment(id: string): Promise<unknown> {
-  return fetch(`${API_URL}/admin/revenue/payments/${id}`, { method: "DELETE", headers: authHeaders() }).then((res) =>
-    unwrap<unknown>(res),
-  );
+  return fetch(`${API_URL}/admin/revenue/payments/${id}`, {
+    method: "DELETE",
+    headers: authHeaders(),
+  }).then((res) => unwrap<unknown>(res));
 }
