@@ -1,5 +1,8 @@
 import {
   AdminUser,
+  EmailCampaignKey,
+  EmailCampaignRecipients,
+  EmailCampaignsStatus,
   BitbucketPull,
   BitbucketRepo,
   GithubAppStatus,
@@ -1017,6 +1020,44 @@ export function listAnalyticsRepos(): Promise<string[]> {
   return fetch(`${API_URL}/analytics/repos`, { headers: authHeaders() }).then(
     (res) => unwrap<string[]>(res),
   );
+}
+
+// ---------- Email campaigns (super admin) ----------
+
+export function getEmailCampaigns(): Promise<EmailCampaignsStatus> {
+  return fetch(`${API_URL}/email/campaigns`, { headers: authHeaders() }).then(
+    (res) => unwrap<EmailCampaignsStatus>(res),
+  );
+}
+
+/** Dry run — lists who'd get it right now; sends nothing. */
+export function checkEmailCampaign(
+  campaign: EmailCampaignKey,
+): Promise<EmailCampaignRecipients> {
+  return fetch(`${API_URL}/email/${campaign}-campaign`, {
+    method: "POST",
+    headers: authHeaders(),
+  }).then((res) => unwrap<EmailCampaignRecipients>(res));
+}
+
+/** Starts sending in the background; poll getEmailCampaigns for progress. */
+export function sendEmailCampaign(
+  campaign: EmailCampaignKey,
+): Promise<{ started: true; eligible: number }> {
+  return fetch(`${API_URL}/email/${campaign}-campaign?send=true`, {
+    method: "POST",
+    headers: authHeaders(),
+  }).then((res) => unwrap<{ started: true; eligible: number }>(res));
+}
+
+/** Sends the email to the signed-in admin only. */
+export function previewEmailCampaign(
+  campaign: EmailCampaignKey,
+): Promise<{ sentTo: string }> {
+  return fetch(`${API_URL}/email/${campaign}-campaign/preview`, {
+    method: "POST",
+    headers: authHeaders(),
+  }).then((res) => unwrap<{ sentTo: string }>(res));
 }
 
 // ---------- Web Vitals (admin) ----------

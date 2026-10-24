@@ -881,3 +881,34 @@ export interface ReviewOutcomes {
   total: OutcomeCounts;
   byCategory: Record<string, OutcomeCounts>;
 }
+
+// ---------- Email campaigns (super admin) ----------
+
+export type EmailCampaignKey = 'upgrade' | 'inactivity';
+
+export interface EmailCampaignRun {
+  trigger: 'schedule' | 'manual';
+  startedAt: string;
+  /** null while still sending. */
+  finishedAt: string | null;
+  eligible: number;
+  sent: number;
+  failed: number;
+}
+
+export interface EmailCampaignStatus {
+  /** Whether the automatic schedule is switched on (UPGRADE_/INACTIVITY_EMAILS_ENABLED). */
+  enabled: boolean;
+  schedule: string;
+  running: boolean;
+  /** Since the server last started — null if it hasn't run yet. */
+  lastRun: EmailCampaignRun | null;
+}
+
+export type EmailCampaignsStatus = Record<EmailCampaignKey, EmailCampaignStatus>;
+
+/** Dry run: who'd get it right now. Inactivity recipients include days inactive. */
+export interface EmailCampaignRecipients {
+  eligible: number;
+  recipients: (string | { email: string; daysInactive: number })[];
+}
