@@ -4,49 +4,56 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/lib/AuthContext';
-import { Logo } from './Logo';
+import { BrandMark } from './BrandMark';
 
 const MARKETING_LINKS = [
-  { href: '/', label: 'Home' },
-  { href: '/about', label: 'About' },
   { href: '/features', label: 'Features' },
   { href: '/scan', label: 'Free scan' },
-  { href: '/services', label: 'Services' },
-  { href: '/alignment-lab', label: 'Alignment Lab' },
-  { href: '/cli', label: 'CLI' },
-  { href: '/vscode', label: 'VS Code' },
   { href: '/pricing', label: 'Pricing' },
+  { href: '/security', label: 'Security' },
+  { href: '/due-diligence', label: 'Due diligence' },
+  { href: '/docs/required-check', label: 'Docs' },
+  { href: '/blog', label: 'Blog' },
 ];
 
 function UserActions({ onLogout, stacked }: { onLogout: () => void; stacked?: boolean }) {
-  const wrap = stacked ? 'flex flex-col items-start gap-3' : 'flex items-center gap-3';
+  const wrap = stacked ? 'flex flex-col items-start gap-3' : 'flex items-center gap-2';
   return (
     <div className={wrap}>
-      <Link href="/app" className="rounded-md bg-cobalt px-3 py-1.5 text-sm font-bold text-white">
-        Go to app
-      </Link>
       <button
         onClick={onLogout}
-        className="cursor-pointer text-sm font-medium text-muted-on-ink hover:text-[#E8ECF4]"
+        className="inline-flex min-h-11 cursor-pointer items-center px-3 text-sm text-ab-soft hover:text-white"
       >
         Log out
       </button>
+      <Link
+        href="/app"
+        className="inline-flex min-h-10 items-center rounded-lg bg-chartreuse px-4 text-sm font-semibold text-ab-bg"
+      >
+        Go to app
+      </Link>
     </div>
   );
 }
 
 function GuestActions({ stacked }: { stacked?: boolean }) {
-  const wrap = stacked ? 'flex flex-col items-start gap-3' : 'flex items-center gap-3';
+  const wrap = stacked ? 'flex flex-col items-start gap-3' : 'flex items-center gap-2';
   return (
     <div className={wrap}>
-      <Link href="/login" className="text-sm font-medium text-muted-on-ink hover:text-[#E8ECF4]">
-        Log in
+      <Link href="/login" className="inline-flex min-h-11 items-center px-3 text-sm text-ab-soft hover:text-white">
+        Sign in
+      </Link>
+      <Link
+        href="/contact"
+        className="inline-flex min-h-10 items-center rounded-lg border border-ab-line-3 px-4 text-sm font-medium text-white hover:border-lavender"
+      >
+        Contact sales
       </Link>
       <Link
         href="/signup"
-        className="rounded-md bg-cobalt px-3 py-1.5 text-sm font-bold text-white"
+        className="inline-flex min-h-10 items-center rounded-lg bg-chartreuse px-4 text-sm font-semibold text-ab-bg"
       >
-        Sign up
+        Start free
       </Link>
     </div>
   );
@@ -65,30 +72,33 @@ export function Navbar() {
     setMenuOpen(false);
     logout();
   };
+  const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
 
   return (
-    <header className="border-b border-ink-line px-4 py-4 sm:px-6">
-      <div className="relative flex items-center gap-4">
-        <Link href="/" className="transition-opacity hover:opacity-80">
-          <Logo size="lg" />
+    <header className="border-b border-ab-line bg-ab-bg font-ab text-ab-text">
+      <div className="mx-auto flex max-w-[1280px] items-center gap-6 px-4 py-3 sm:px-8">
+        <Link href="/" aria-label="Audit Bench Ai home" className="shrink-0">
+          <BrandMark />
         </Link>
 
-        <nav className="absolute left-1/2 hidden -translate-x-1/2 gap-4 lg:flex">
-          {MARKETING_LINKS.map((link) => {
-            const active = pathname === link.href;
-            return (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`text-sm font-medium whitespace-nowrap ${active ? 'text-cobalt' : 'text-muted-on-ink hover:text-[#E8ECF4]'}`}
-              >
-                {link.label}
-              </Link>
-            );
-          })}
+        <nav aria-label="Main" className="hidden gap-0.5 xl:flex">
+          {MARKETING_LINKS.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              aria-current={isActive(link.href) ? 'page' : undefined}
+              className={`inline-flex min-h-11 items-center px-3 text-sm whitespace-nowrap ${
+                isActive(link.href)
+                  ? 'text-white shadow-[inset_0_-2px_0_var(--color-chartreuse)]'
+                  : 'text-ab-soft hover:text-white'
+              }`}
+            >
+              {link.label}
+            </Link>
+          ))}
         </nav>
 
-        <div className="ml-auto hidden lg:block">
+        <div className="ml-auto hidden xl:block">
           {!loading && user && <UserActions onLogout={handleLogout} />}
           {!loading && !user && <GuestActions />}
         </div>
@@ -97,31 +107,39 @@ export function Navbar() {
           onClick={() => setMenuOpen((v) => !v)}
           aria-label={menuOpen ? 'Close menu' : 'Open menu'}
           aria-expanded={menuOpen}
-          className="ml-auto flex h-9 w-9 cursor-pointer items-center justify-center rounded-md border border-ink-line text-lg text-muted-on-ink lg:hidden"
+          className="ml-auto flex h-11 w-11 cursor-pointer items-center justify-center rounded-lg border border-ab-line-2 text-ab-soft xl:hidden"
         >
-          {menuOpen ? '✕' : '☰'}
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            aria-hidden="true"
+          >
+            {menuOpen ? <path d="M6 6l12 12M18 6L6 18" /> : <path d="M3 7h18M3 12h18M3 17h18" />}
+          </svg>
         </button>
       </div>
 
       {menuOpen && (
-        <div className="mt-4 flex flex-col gap-4 border-t border-ink-line pt-4 lg:hidden">
-          <nav className="flex flex-col gap-3">
-            {MARKETING_LINKS.map((link) => {
-              const active = pathname === link.href;
-              return (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setMenuOpen(false)}
-                  className={`text-sm font-medium ${active ? 'text-cobalt' : 'text-muted-on-ink hover:text-[#E8ECF4]'}`}
-                >
-                  {link.label}
-                </Link>
-              );
-            })}
+        <div className="flex flex-col gap-4 border-t border-ab-line px-4 py-4 sm:px-8 xl:hidden">
+          <nav aria-label="Main" className="flex flex-col">
+            {MARKETING_LINKS.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setMenuOpen(false)}
+                aria-current={isActive(link.href) ? 'page' : undefined}
+                className={`flex min-h-11 items-center text-[15px] ${isActive(link.href) ? 'text-white' : 'text-ab-soft'}`}
+              >
+                {link.label}
+              </Link>
+            ))}
           </nav>
-
-          <div className="border-t border-ink-line pt-4">
+          <div className="border-t border-ab-line pt-4">
             {!loading && user && <UserActions onLogout={handleLogout} stacked />}
             {!loading && !user && <GuestActions stacked />}
           </div>

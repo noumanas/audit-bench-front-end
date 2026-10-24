@@ -31,6 +31,28 @@
   --color-medium: #b08a00;
   --color-low: #2e6fab;
   --color-pass: #1f7a4d;
+
+  /* Redesign (2026-10): dark aubergine ground with lavender, chartreuse and tomato. */
+  --font-ab: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  --font-ab-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-display: var(--font-bodoni), Georgia, serif;
+
+  --color-ab-bg: #0e0612;
+  --color-ab-deep: #120818;
+  --color-ab-panel: #150a1c;
+  --color-ab-panel-2: #1b0e24;
+  --color-ab-line: #2a1b33;
+  --color-ab-line-2: #3a2746;
+  --color-ab-line-3: #4a3457;
+  --color-ab-text: #ede3f2;
+  --color-ab-soft: #cdb9d8;
+  --color-ab-muted: #bfaacb;
+  --color-ab-dim: #9c86a9;
+  --color-lavender: #c883e8;
+  --color-chartreuse: #d4ff3f;
+  --color-tomato: #e34234;
+  --color-ab-amber: #f3d36b;
+  --color-ab-coral: #ff8e7f;
 }
 
 body {

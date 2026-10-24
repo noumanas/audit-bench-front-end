@@ -9,7 +9,21 @@ import { Navbar } from "@/components/Navbar";
 import { WebVitalsReporter } from "@/components/WebVitalsReporter";
 import { StructuredData } from "@/components/StructuredData";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/seo";
+import { Bodoni_Moda, Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+
+// The redesign's type: Geist for text, Geist Mono for labels and code,
+// Bodoni Moda italic for accent words. Self-hosted by next/font, so no
+// request goes to Google (and the CSP needs no change).
+const geist = Geist({ subsets: ["latin"], variable: "--font-geist", display: "swap" });
+const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono", display: "swap" });
+const bodoni = Bodoni_Moda({
+  subsets: ["latin"],
+  style: ["italic"],
+  weight: ["400", "500"],
+  variable: "--font-bodoni",
+  display: "swap",
+});
 
 const ORGANIZATION_SCHEMA = {
   '@context': 'https://schema.org',
@@ -100,7 +114,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="h-full antialiased">
+    <html lang="en" className={`h-full antialiased ${geist.variable} ${geistMono.variable} ${bodoni.variable}`}>
       <head>
         <link rel="manifest" href="/manifest.webmanifest" />
         {/* Google AdSense: site verification and ads. Kept as a plain <script>

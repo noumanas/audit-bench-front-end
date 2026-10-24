@@ -1,46 +1,15 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import {
-  siReact,
-  siNextdotjs,
-  siNodedotjs,
-  siNestjs,
-  siPython,
-  siFastapi,
-  siDjango,
-  siLaravel,
-  siSpringboot,
-  siSupabase,
-  siDeno,
-  siFirebase,
-  siAnthropic,
-  siGooglegemini,
-  siDeepseek,
-  siZdotai,
-  siQwen,
-  siKimi,
-  siMistralai,
-  siMinimax,
-} from 'simple-icons';
 import { Footer } from '@/components/Footer';
-import { PricingTeaser } from '@/components/PricingTeaser';
-import { HeroShowcase } from '@/components/HeroShowcase';
-import { FeatureShowcase } from '@/components/FeatureShowcase';
-import { ScrollReveal } from '@/components/gsap/ScrollReveal';
-import { HeroEntrance } from '@/components/gsap/HeroEntrance';
-import { CountUp } from '@/components/gsap/CountUp';
-import { TextReveal } from '@/components/gsap/TextReveal';
 import { StructuredData } from '@/components/StructuredData';
-import { TechLogo } from '@/components/TechLogo';
-import { TypingText, TypingSegment } from '@/components/TypingText';
+import { PrPreview } from '@/components/home/PrPreview';
+import { BitbucketLogoIcon, GithubLogoIcon, GitlabLogoIcon } from '@/components/icons';
 import { SITE_NAME, SITE_URL } from '@/lib/seo';
-import { BLOG_POSTS } from '@/lib/blog';
-import { PublicScanForm } from '@/components/PublicScanForm';
 
 export const metadata: Metadata = {
   title: 'AI code review before it ships',
   description:
-    'Combine LLM reasoning with static analysis to catch security holes, logic bugs, and framework misuse — on a single file, a pull request, or a whole repository.',
+    'Audit Bench Ai reviews every pull request with static analysis and AI, comments on the exact lines with fixes, and blocks the merge until critical issues are resolved.',
   keywords: [
     'AI code review',
     'auditbench',
@@ -55,145 +24,115 @@ export const metadata: Metadata = {
     'ai code review tools for large codebases',
     'ai code quality checker',
     'ai audit pricing',
-    'building and evaluating alignment auditing agents',
-    'align auditor',
     'owasp top 10',
   ],
   alternates: { canonical: '/' },
 };
 
-const HERO_HEADLINE: TypingSegment[] = [
-  { text: 'AI coding assistants ship fast.\nMake sure what they ship is ' },
-  { text: 'safe', className: 'text-cobalt' },
-  { text: '.' },
-];
-
-const STATS = [
-  { value: '5', label: 'Review lenses per audit' },
-  { value: '10', label: 'LLM providers to choose from' },
-  { value: '11+', label: 'Frameworks understood' },
-  { value: '2', label: 'Git providers, native PR/MR review' },
-];
-
-// icons: [] for the two brands (OpenAI, xAI) with no accurate mark available
-// in simple-icons — left as text-only rather than approximating a logo.
-const LLM_PROVIDERS = [
-  { label: 'Anthropic', icons: [siAnthropic] },
-  { label: 'OpenAI', icons: [] },
-  { label: 'Gemini', icons: [siGooglegemini] },
-  { label: 'DeepSeek', icons: [siDeepseek] },
-  { label: 'Z.AI (GLM)', icons: [siZdotai] },
-  { label: 'Qwen', icons: [siQwen] },
-  { label: 'Kimi', icons: [siKimi] },
-  { label: 'xAI (Grok)', icons: [] },
-  { label: 'Mistral', icons: [siMistralai] },
-  { label: 'MiniMax', icons: [siMinimax] },
-];
-
-const TEAM_CAPABILITIES = [
+const HOW_IT_REVIEWS = [
   {
-    title: 'Pull & merge request review',
-    detail:
-      'Review a GitHub PR or GitLab MR scoped to just the changed lines — findings post back as inline review comments, a summary, and a merge-blocking status check.',
+    step: '01',
+    title: 'Free checks first',
+    body: 'ESLint, TypeScript, Semgrep and secret scanning run on every change at no cost, so AI is spent only where it matters.',
   },
   {
-    title: 'Team analytics dashboard',
-    detail:
-      'Security, performance, and technical-debt scores trended over time, plus a breakdown of your most common findings and riskiest files.',
+    step: '02',
+    title: 'Context beyond the diff',
+    body: 'It finds where changed functions are used across the repository, so a breaking change in one file is caught in another.',
   },
   {
-    title: 'CLI for CI pipelines',
+    step: '03',
+    title: 'Learns your standards',
+    body: 'Rules in plain English or auditbench.md, plus what it learns from replies and reactions. Noise drops every week.',
+  },
+];
+
+const EXAMPLES = [
+  {
+    stack: 'TypeScript · Express',
+    kind: 'Security',
+    tone: 'text-ab-coral',
+    codeTone: 'bg-tomato/10 text-[#FFD9D3]',
+    code: "db.query(`SELECT * FROM orders WHERE id = '${id}'`)",
+    title: 'SQL built from the request query',
+    body: 'Any visitor can read every order. Suggested fix uses a parameter.',
+  },
+  {
+    stack: 'Go · net/http',
+    kind: 'Logic',
+    tone: 'text-ab-amber',
+    codeTone: 'bg-ab-amber/10 text-[#FBEFC7]',
+    code: 'json.NewDecoder(r.Body).Decode(&req)',
+    title: 'Decode error ignored',
+    body: 'Invalid input silently creates an empty order. Return 400 on error.',
+  },
+  {
+    stack: 'TypeScript · Prisma',
+    kind: 'Concurrency',
+    tone: 'text-ab-amber',
+    codeTone: 'bg-ab-amber/10 text-[#FBEFC7]',
+    code: 'data: { uses: coupon.uses + 1 }',
+    title: 'Read-then-write race',
+    body: 'Two requests at once redeem a coupon past its limit. Use an atomic increment.',
+  },
+];
+
+const STACK = [
+  {
+    label: 'Git hosts',
+    title: 'GitHub, GitLab, Bitbucket',
+    body: 'A bot identity, inline reviews and a pass/fail check on each.',
+    href: '/features',
+  },
+  {
+    label: 'Editor & CI',
+    title: 'VS Code and CLI',
+    body: 'Review before you push, or gate any pipeline with one command.',
     href: '/cli',
-    detail:
-      'Run `auditbench scan` or `auditbench audit` from a pipeline step, a pre-commit hook, or a terminal — same engine, same findings, scriptable output.',
   },
   {
-    title: 'Role-ready plans & quotas',
-    detail:
-      'Daily and monthly AI-audit limits per plan, usage-based — not a flat seat count — so cost scales with what a team actually reviews.',
+    label: 'Your model',
+    title: 'Ten AI providers',
+    body: 'Anthropic, OpenAI, Gemini and more, with automatic fallback if one fails.',
+    href: '/features',
+  },
+  {
+    label: 'Whole repository',
+    title: 'Deep scans',
+    body: 'Secrets, vulnerable dependencies, licenses, dead and duplicate code.',
+    href: '/scan',
   },
 ];
 
-const WORKFLOW_INTEGRATIONS = [
-  {
-    title: 'Inline PR & MR comments',
-    detail:
-      'Findings land as real review comments on the exact changed lines — GitHub review threads or GitLab discussions — not a dashboard you have to remember to check.',
-  },
-  {
-    title: 'Auto-generated summary',
-    detail:
-      'Every review posts a plain-English walkthrough alongside the inline comments — verdict, finding counts, and a link to the full report.',
-  },
-  {
-    title: 'Merge-blocking quality gates',
-    detail:
-      'A commit status check reports pass/fail on every PR and MR. Wire it into branch protection and stop shippable-looking regressions before they merge.',
-  },
-  {
-    title: 'README score badge',
-    detail: 'A live, always-current badge for your README showing the verdict of your most recent scan.',
-  },
-  {
-    title: 'Dependency vulnerability scanning',
-    detail:
-      'npm audit for Node, OSV.dev for Python — known-vulnerable packages surface automatically, no extra tooling to install.',
-  },
-  {
-    title: 'Conversational PR chat',
-    detail:
-      '@-mention the bot in any PR or MR thread and it replies in context, using the diff to answer follow-up questions.',
-  },
+const SECURITY = [
+  { title: 'Least-privilege GitHub App', body: 'Contents read-only; writes only reviews and checks.' },
+  { title: 'Never trains on your code', body: 'Not by us, not by our AI providers.' },
+  { title: 'No source kept', body: 'Findings are stored, not your code. Secrets are masked.' },
+  { title: 'Delete on demand', body: 'Remove a report or the whole account in one click.' },
+  { title: 'Only the changed lines', body: 'Pull request reviews send the diff, not the repository.' },
+  { title: 'Your choice of AI provider', body: 'Pick the provider your security team already approved.' },
 ];
 
-const PIPELINE_STAGES = [
+const FAQ = [
   {
-    stage: '01',
-    title: 'Free local checks',
-    detail: 'ESLint, TypeScript diagnostics, complexity, formatting, and secret scanning run first — no AI, no cost.',
+    q: 'How much does it cost?',
+    a: 'Free to start. Pro is $29 a month, Team $99 a month, and Enterprise is priced for your organisation.',
+  },
+  { q: 'Is my code used to train AI?', a: 'No. Neither we nor our AI providers train on your code.' },
+  {
+    q: 'Which languages are supported?',
+    a: 'TypeScript, JavaScript, Python, Go, Java, PHP, Ruby and more, with framework-aware checks for React, Next.js, NestJS, Django, Laravel and Spring Boot.',
   },
   {
-    stage: '02',
-    title: 'AI on what matters',
-    detail:
-      'Pull requests: only the changed lines and the code that calls them go to the LLM. Repository scans: only the functions Stage 1 flags as risky — never the whole repo.',
+    q: 'Can it block a merge?',
+    a: 'Yes. Make "Audit Bench Ai" a required status check and blocking issues lock the merge button.',
   },
   {
-    stage: '03',
-    title: 'Cached by content hash',
-    detail:
-      'Re-scanning unchanged code — the common case across repeated repo scans — costs nothing and returns instantly.',
+    q: 'Which git providers are supported?',
+    a: 'GitHub, GitLab and Bitbucket, with inline pull request reviews and a pass/fail status on each.',
   },
+  { q: 'Is it free for open source?', a: 'Paste any public pull request at auditbenchai.com/scan for a free review.' },
 ];
-
-const FRAMEWORKS = [
-  { label: 'React', icons: [siReact] },
-  { label: 'Next.js', icons: [siNextdotjs] },
-  { label: 'Node.js', icons: [siNodedotjs] },
-  { label: 'NestJS', icons: [siNestjs] },
-  { label: 'Python/FastAPI', icons: [siPython, siFastapi] },
-  { label: 'Django', icons: [siDjango] },
-  { label: 'Laravel', icons: [siLaravel] },
-  { label: 'Spring Boot', icons: [siSpringboot] },
-  { label: 'Supabase', icons: [siSupabase] },
-  { label: 'Deno', icons: [siDeno] },
-  { label: 'Firebase', icons: [siFirebase] },
-];
-
-// A handful of cornerstone posts, linked from the homepage so the blog
-// cluster gets real internal-link weight instead of being reachable only
-// through /blog's own paginated index — a page with no inbound links from
-// anywhere but a search-results listing is a weak indexing-priority signal.
-const HOMEPAGE_BLOG_SLUGS = [
-  'ai-code-review-guide',
-  'technical-due-diligence-red-flags',
-  'command-injection-code-review-guide',
-  'python-dependency-hygiene',
-  'file-upload-security-code-review',
-  'github-ai-code-review',
-];
-
-const HOMEPAGE_BLOG_POSTS = HOMEPAGE_BLOG_SLUGS.map((slug) => BLOG_POSTS.find((p) => p.slug === slug)!);
 
 const HOMEPAGE_SCHEMA = {
   '@context': 'https://schema.org',
@@ -203,7 +142,7 @@ const HOMEPAGE_SCHEMA = {
   operatingSystem: 'Web',
   url: SITE_URL,
   description:
-    'AI code review that combines LLM reasoning with static analysis to catch security holes, logic bugs, and framework misuse.',
+    'AI code review that combines LLM reasoning with static analysis to catch security holes, logic bugs, and framework misuse, and blocks risky merges.',
   offers: [
     { '@type': 'Offer', name: 'Free', price: '0', priceCurrency: 'USD' },
     { '@type': 'Offer', name: 'Pro', price: '29', priceCurrency: 'USD' },
@@ -212,438 +151,366 @@ const HOMEPAGE_SCHEMA = {
   ],
 };
 
+// Must match the FAQ shown on the page.
 const HOME_FAQ_SCHEMA = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
-  mainEntity: [
-    {
-      '@type': 'Question',
-      name: 'How does Audit Bench Ai control AI costs?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Free local checks run first, and only risky code is escalated to an LLM. Cached scans are free, so repeated reviews do not burn credits.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'Which git providers are supported?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'GitHub and GitLab are supported natively for pull request and merge request review.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'What frameworks does it understand?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'It understands common web stacks including React, Next.js, Node.js, NestJS, Python, FastAPI, Django, Laravel, Spring Boot, Supabase, Deno, and Firebase.',
-      },
-    },
-  ],
+  mainEntity: FAQ.map(({ q, a }) => ({
+    '@type': 'Question',
+    name: q,
+    acceptedAnswer: { '@type': 'Answer', text: a },
+  })),
 };
+
+function SectionLabel({ children, className = 'text-lavender' }: { children: React.ReactNode; className?: string }) {
+  return (
+    <span className={`font-ab-mono text-[11.5px] font-medium tracking-[0.14em] uppercase ${className}`}>
+      [ {children} ]
+    </span>
+  );
+}
+
+function Accent({ children }: { children: React.ReactNode }) {
+  return <span className="font-display font-medium tracking-[-0.02em] italic">{children}</span>;
+}
 
 export default function HomePage() {
   return (
-    <div>
+    <div className="bg-ab-bg font-ab text-ab-text">
       <StructuredData data={[HOMEPAGE_SCHEMA, HOME_FAQ_SCHEMA]} />
+
       {/* Hero */}
-      <section className="relative overflow-hidden border-b border-ink-line bg-ink px-6 py-20">
-        <div
-          aria-hidden="true"
-          className="glow-pulse pointer-events-none absolute top-[-220px] left-1/2 h-[420px] w-[640px] -translate-x-1/2 rounded-full"
-          style={{ background: 'radial-gradient(circle, rgba(43,91,227,0.35) 0%, rgba(43,91,227,0) 70%)' }}
-        />
-        <div className="relative mx-auto max-w-5xl">
-          <div className="grid items-center gap-12 md:grid-cols-2">
-            <HeroEntrance>
-              <div className="mb-4 inline-block rounded-full border border-ink-line px-3 py-1 font-mono text-[11px] tracking-wide text-muted-on-ink uppercase">
-                AI code review, before it ships
-              </div>
-              {/* Reserves the heading's final rendered size immediately via an
-                  invisible copy of the full text, so the typing animation
-                  fills already-allocated space instead of growing the box
-                  and pushing everything below it down frame by frame (this
-                  was a real, measured CLS regression — see WebVital data). */}
-              <div className="relative mb-5">
-                <span aria-hidden="true" className="invisible block text-4xl leading-tight font-bold sm:text-5xl">
-                  {HERO_HEADLINE.map((seg, i) => (
-                    <span key={i}>
-                      {seg.text.split('\n').map((line, j) => (
-                        <span key={j}>
-                          {j > 0 && <br />}
-                          {line}
-                        </span>
-                      ))}
-                    </span>
-                  ))}
-                </span>
-                <h1 className="absolute inset-0 text-4xl leading-tight font-bold text-[#E8ECF4] sm:text-5xl">
-                  <TypingText segments={HERO_HEADLINE} />
-                </h1>
-              </div>
-              <p className="mb-8 max-w-md text-base leading-relaxed text-muted-on-ink">
-                Audit Bench Ai combines LLM reasoning with static analysis to catch the security holes, logic bugs, and
-                framework misuse that traditional linters miss — on a single file, a pull request, or a whole
-                repository.
-              </p>
-              <div className="flex flex-wrap gap-3">
-                <Link
-                  href="/signup"
-                  className="rounded-lg bg-cobalt px-5 py-3 text-sm font-bold text-white transition-all duration-200 hover:-translate-y-0.5 hover:bg-cobalt-dark hover:shadow-lg"
-                >
-                  Get started free
-                </Link>
-                <Link
-                  href="#free-scan"
-                  className="rounded-lg border border-ink-line px-5 py-3 text-sm font-bold text-muted-on-ink transition-all duration-200 hover:-translate-y-0.5 hover:border-cobalt/40 hover:text-[#E8ECF4]"
-                >
-                  Scan a repo free
-                </Link>
-              </div>
-              <p className="mt-5 max-w-md text-xs leading-relaxed text-muted-on-ink">
-                Doing technical due diligence on a software acquisition?{' '}
-                <Link href="/due-diligence" className="font-semibold text-cobalt hover:underline">
-                  Get a risk report in days, not weeks →
-                </Link>{' '}
-                or use the free{' '}
-                <Link
-                  href="/blog/technical-due-diligence-checklist"
-                  className="font-semibold text-cobalt hover:underline"
-                >
-                  technical due diligence checklist
-                </Link>
-                .
-              </p>
-            </HeroEntrance>
-
-            <HeroEntrance delay={200}>
-              <HeroShowcase />
-            </HeroEntrance>
-          </div>
-
-          <ScrollReveal
-            className="mt-16 grid grid-cols-2 gap-6 border-t border-ink-line pt-8 sm:grid-cols-4"
-            stagger
-            delay={500}
+      <section aria-labelledby="hero-title" className="overflow-hidden">
+        <div className="mx-auto flex max-w-[1280px] flex-col items-center gap-6 px-4 pt-20 pb-16 text-center sm:px-8 md:pt-24">
+          <Link
+            href="/features"
+            className="inline-flex min-h-9 items-center gap-2.5 rounded-full border border-ab-line-2 bg-[#170B1F] py-1 pr-1.5 pl-3.5 text-[13px] text-[#E2CFEC]"
           >
-            {STATS.map((s) => (
-              <div key={s.label}>
-                <div className="text-2xl font-bold text-[#E8ECF4] tabular-nums">
-                  <CountUp value={s.value} />
-                </div>
-                <div className="mt-1 text-xs leading-snug text-muted-on-ink">{s.label}</div>
-              </div>
-            ))}
-          </ScrollReveal>
-        </div>
-      </section>
-
-      {/* Free public scan: try it before signing up */}
-      <section id="free-scan" className="border-b border-ink-line bg-ink-soft px-6 py-12">
-        <ScrollReveal className="mx-auto grid max-w-5xl items-center gap-8 md:grid-cols-[1fr_1.3fr]">
-          <div>
-            <div className="mb-2 font-mono text-[11px] font-bold tracking-[0.12em] text-cobalt uppercase">
-              Try it now · no sign-up
-            </div>
-            <h2 className="text-2xl leading-tight font-bold text-[#E8ECF4] sm:text-3xl">
-              Scan a public GitHub repo free
-            </h2>
-            <p className="mt-3 text-sm leading-relaxed text-muted-on-ink">
-              Paste a repo URL and get a health score, exposed secrets, vulnerable dependencies and risky code in about
-              a minute, with a report link you can share.
-            </p>
-          </div>
-          <PublicScanForm />
-        </ScrollReveal>
-      </section>
-
-      {/* Stack / integrations bar */}
-      <section className="border-b border-ink-line bg-ink px-6 py-10">
-        <ScrollReveal className="mx-auto max-w-5xl">
-          <div className="mb-5 text-center font-mono text-[11px] tracking-wide text-muted-on-ink uppercase">
-            Works with the stack your team already runs
-          </div>
-          <div className="flex flex-wrap justify-center gap-2">
-            {FRAMEWORKS.map((fw) => (
-              <span
-                key={fw.label}
-                className="group inline-flex items-center gap-1.5 rounded-full border border-ink-line px-3 py-1.5 text-xs font-medium text-muted-on-ink transition-colors duration-200 hover:border-cobalt/50 hover:text-[#E8ECF4]"
-              >
-                {fw.icons.map((icon) => (
-                  <TechLogo
-                    key={icon.slug}
-                    icon={icon}
-                    className="h-3.5 w-3.5 shrink-0 text-muted-on-ink transition-colors duration-200 group-hover:text-[color:var(--brand)]"
-                  />
-                ))}
-                {fw.label}
-              </span>
-            ))}
-          </div>
-        </ScrollReveal>
-      </section>
-
-      {/* LLM provider bar */}
-      <section className="border-b border-ink-line bg-ink px-6 py-10">
-        <ScrollReveal className="mx-auto max-w-5xl">
-          <div className="mb-5 text-center font-mono text-[11px] tracking-wide text-muted-on-ink uppercase">
-            Bring the model you already have a key for
-          </div>
-          <div className="flex flex-wrap justify-center gap-2">
-            {LLM_PROVIDERS.map((p) => (
-              <span
-                key={p.label}
-                className="group inline-flex items-center gap-1.5 rounded-full border border-ink-line px-3 py-1.5 text-xs font-medium text-muted-on-ink transition-colors duration-200 hover:border-cobalt/50 hover:text-[#E8ECF4]"
-              >
-                {p.icons.map((icon) => (
-                  <TechLogo
-                    key={icon.slug}
-                    icon={icon}
-                    className="h-3.5 w-3.5 shrink-0 text-muted-on-ink transition-colors duration-200 group-hover:text-[color:var(--brand)]"
-                  />
-                ))}
-                {p.label}
-              </span>
-            ))}
-          </div>
-          <p className="mx-auto mt-5 max-w-lg text-center text-xs leading-relaxed text-muted-on-ink">
-            Every provider runs the same three-stage pipeline and the same review lenses — pick the one that fits your
-            budget or your existing contract, per audit or as your account default.
-          </p>
-        </ScrollReveal>
-      </section>
-
-      {/* Problem statement */}
-      <section className="bg-paper px-6 py-16">
-        <ScrollReveal className="mx-auto max-w-3xl text-center">
-          <div className="mb-3 font-mono text-[13px] tracking-wide text-muted-on-paper uppercase">The problem</div>
-          <p className="text-lg leading-relaxed text-[#1C2128]">
-            Modern AI coding assistants generate code quickly but frequently introduce hidden bugs, security issues, and
-            framework misuse. Traditional linters catch syntax problems — not business logic or intent.
-          </p>
-        </ScrollReveal>
-      </section>
-
-      <ScrollReveal>
-        <FeatureShowcase />
-      </ScrollReveal>
-
-      {/* Built for teams */}
-      <section className="border-t border-ink-line bg-paper px-6 py-16">
-        <ScrollReveal className="mx-auto max-w-5xl">
-          <div className="mb-10 text-center">
-            <div className="mb-2 font-mono text-[13px] tracking-wide text-muted-on-paper uppercase">
-              For engineering organizations
-            </div>
-            <h2 className="text-2xl font-bold text-[#1C2128]">
-              <TextReveal>Built for how teams actually ship</TextReveal>
-            </h2>
-            <p className="mx-auto mt-2 max-w-xl text-sm leading-relaxed text-muted-on-paper">
-              Beyond one-off audits: review the code your team merges, track quality trends over time, and wire it into
-              the pipeline you already have.
-            </p>
-          </div>
-        </ScrollReveal>
-        <ScrollReveal className="mx-auto grid max-w-5xl gap-4 sm:grid-cols-2" stagger>
-          {TEAM_CAPABILITIES.map((c) => (
-            <div
-              key={c.title}
-              className="rounded-lg border border-paper-line bg-paper-card p-5 transition-all duration-200 hover:-translate-y-1 hover:border-cobalt/40 hover:shadow-panel"
-            >
-              <h3 className="mb-2 text-sm font-bold text-[#1C2128]">
-                {c.href ? (
-                  <Link href={c.href} className="hover:text-cobalt">
-                    {c.title}
-                  </Link>
-                ) : (
-                  c.title
-                )}
-              </h3>
-              <p className="text-sm leading-relaxed text-muted-on-paper">{c.detail}</p>
-            </div>
-          ))}
-        </ScrollReveal>
-      </section>
-
-      {/* Workflow integrations */}
-      <section className="border-t border-ink-line bg-ink px-6 py-16">
-        <ScrollReveal className="mx-auto max-w-5xl">
-          <div className="mb-10 text-center">
-            <div className="mb-2 font-mono text-[13px] tracking-wide text-muted-on-ink uppercase">
-              Where you already work
-            </div>
-            <h2 className="text-2xl font-bold text-[#E8ECF4]">
-              <TextReveal>Lives inside the review you&apos;re already doing</TextReveal>
-            </h2>
-            <p className="mx-auto mt-2 max-w-xl text-sm leading-relaxed text-muted-on-ink">
-              Not another tab to check. Findings, gates, and answers show up directly on the PR or MR.
-            </p>
-          </div>
-        </ScrollReveal>
-        <ScrollReveal className="mx-auto grid max-w-5xl gap-4 sm:grid-cols-2 lg:grid-cols-3" stagger>
-          {WORKFLOW_INTEGRATIONS.map((f) => (
-            <div
-              key={f.title}
-              className="rounded-lg border border-ink-line bg-ink-soft p-5 transition-all duration-200 hover:-translate-y-1 hover:border-cobalt/40 hover:shadow-panel"
-            >
-              <h3 className="mb-2 font-mono text-sm font-bold text-[#E8ECF4]">{f.title}</h3>
-              <p className="text-sm leading-relaxed text-muted-on-ink">{f.detail}</p>
-            </div>
-          ))}
-        </ScrollReveal>
-      </section>
-
-      {/* Cost governance / pipeline */}
-      <section className="border-t border-ink-line bg-ink px-6 py-16">
-        <ScrollReveal className="mx-auto max-w-5xl">
-          <div className="mb-10 text-center">
-            <div className="mb-2 font-mono text-[13px] tracking-wide text-muted-on-ink uppercase">Cost control</div>
-            <h2 className="text-2xl font-bold text-[#E8ECF4]">
-              <TextReveal>Engineered to control AI spend</TextReveal>
-            </h2>
-            <p className="mx-auto mt-2 max-w-xl text-sm leading-relaxed text-muted-on-ink">
-              AI credits, not raw request counts. A three-stage pipeline keeps the LLM off the critical path until the
-              code actually warrants it.
-            </p>
-          </div>
-        </ScrollReveal>
-        <ScrollReveal className="mx-auto grid max-w-5xl gap-4 sm:grid-cols-3" stagger>
-          {PIPELINE_STAGES.map((s) => (
-            <div
-              key={s.stage}
-              className="rounded-lg border border-ink-line bg-ink-soft p-5 transition-all duration-200 hover:-translate-y-1 hover:border-cobalt/40 hover:shadow-panel"
-            >
-              <div className="mb-2 font-mono text-[11px] text-muted-on-ink">{s.stage}</div>
-              <div className="mb-1 text-sm font-bold text-[#E8ECF4]">{s.title}</div>
-              <p className="text-xs leading-relaxed text-muted-on-ink">{s.detail}</p>
-            </div>
-          ))}
-        </ScrollReveal>
-      </section>
-
-      {/* Pricing teaser */}
-      <section className="bg-paper px-6 py-16">
-        <ScrollReveal className="mx-auto max-w-5xl">
-          <div className="mb-8 text-center">
-            <div className="mb-2 font-mono text-[13px] tracking-wide text-muted-on-paper uppercase">Plans</div>
-            <h2 className="text-2xl font-bold text-[#1C2128]">
-              <TextReveal>Start free, upgrade when you need more</TextReveal>
-            </h2>
-          </div>
-          <PricingTeaser />
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-4 text-center">
-            <Link href="/pricing" className="group text-sm font-semibold text-cobalt">
-              Compare all plans{' '}
-              <span className="inline-block transition-transform duration-200 group-hover:translate-x-1">→</span>
-            </Link>
-            <span className="text-sm text-muted-on-paper">
-              Need a custom rollout?{' '}
-              <a href="mailto:noumanqureshi15@gmail.com" className="font-semibold text-cobalt hover:underline">
-                Talk to sales
-              </a>
-              .
-            </span>
-          </div>
-        </ScrollReveal>
-      </section>
-
-      {/* From the blog */}
-      <section className="border-t border-ink-line bg-ink px-6 py-16">
-        <ScrollReveal className="mx-auto max-w-5xl">
-          <div className="mb-10 text-center">
-            <div className="mb-2 font-mono text-[13px] tracking-wide text-muted-on-ink uppercase">From the blog</div>
-            <h2 className="text-2xl font-bold text-[#E8ECF4]">
-              <TextReveal>Guides on AI code review and secure coding</TextReveal>
-            </h2>
-            <p className="mx-auto mt-2 max-w-xl text-sm leading-relaxed text-muted-on-ink">
-              Practical write-ups on the vulnerabilities, architecture pitfalls, and review habits our own engine is
-              built to catch.
-            </p>
-          </div>
-        </ScrollReveal>
-        <ScrollReveal className="mx-auto grid max-w-5xl gap-4 sm:grid-cols-2 lg:grid-cols-3" stagger>
-          {HOMEPAGE_BLOG_POSTS.map((post) => (
-            <Link
-              key={post.slug}
-              href={`/blog/${post.slug}`}
-              className="group block rounded-lg border border-ink-line bg-ink-soft p-5 transition-all duration-200 hover:-translate-y-1 hover:border-cobalt/40 hover:shadow-panel"
-            >
-              <h3 className="mb-2 font-mono text-sm font-bold text-[#E8ECF4] group-hover:text-cobalt">{post.title}</h3>
-              <p className="text-xs leading-relaxed text-muted-on-ink">{post.description}</p>
-            </Link>
-          ))}
-        </ScrollReveal>
-        <div className="mt-8 text-center">
-          <Link href="/blog" className="group text-sm font-semibold text-cobalt">
-            Read all articles{' '}
-            <span className="inline-block transition-transform duration-200 group-hover:translate-x-1">→</span>
+            New: answers @auditbench in a thread on the exact line
+            <span className="rounded-full bg-ab-line px-2.5 py-1 text-xs whitespace-nowrap text-chartreuse">Read more →</span>
           </Link>
-        </div>
-      </section>
-
-      {/* FAQ */}
-      <section className="border-t border-ink-line bg-paper px-6 py-16">
-        <ScrollReveal className="mx-auto max-w-4xl">
-          <div className="mb-10 text-center">
-            <div className="mb-2 font-mono text-[13px] tracking-wide text-muted-on-paper uppercase">FAQ</div>
-            <h2 className="text-2xl font-bold text-[#1C2128]">
-              <TextReveal>Questions teams ask before they adopt it</TextReveal>
-            </h2>
-            <p className="mx-auto mt-2 max-w-xl text-sm leading-relaxed text-muted-on-paper">
-              Short answers to the questions that matter when you are deciding whether to trust a review tool in your
-              workflow.
-            </p>
-          </div>
-        </ScrollReveal>
-        <ScrollReveal className="mx-auto max-w-4xl space-y-4" stagger>
-          {[
-            {
-              q: 'How does Audit Bench Ai control AI costs?',
-              a: 'Free local checks run first, and only risky code is escalated to an LLM. Cached scans are free, so repeated reviews do not burn credits.',
-            },
-            {
-              q: 'Which git providers are supported?',
-              a: 'GitHub and GitLab are supported natively for pull request and merge request review.',
-            },
-            {
-              q: 'What frameworks does it understand?',
-              a: 'It understands common web stacks including React, Next.js, Node.js, NestJS, Python, FastAPI, Django, Laravel, Spring Boot, Supabase, Deno, and Firebase.',
-            },
-          ].map((item) => (
-            <div key={item.q} className="rounded-lg border border-paper-line bg-paper-card p-5">
-              <h3 className="mb-1.5 text-sm font-bold text-[#1C2128]">{item.q}</h3>
-              <p className="text-sm leading-relaxed text-muted-on-paper">{item.a}</p>
-            </div>
-          ))}
-        </ScrollReveal>
-      </section>
-
-      {/* Final CTA */}
-      <section className="border-t border-ink-line bg-ink px-6 py-16 text-center">
-        <ScrollReveal>
-          <h2 className="mb-3 text-2xl font-bold text-[#E8ECF4]">
-            <TextReveal>Review your first repository free</TextReveal>
-          </h2>
-          <p className="mx-auto mb-6 max-w-md text-sm leading-relaxed text-muted-on-ink">
-            No credit card required. Connect GitHub or GitLab, or upload a .zip, and see what an audit finds in your own
+          <h1
+            id="hero-title"
+            className="m-0 max-w-[13em] text-[clamp(44px,6.6vw,88px)] leading-[0.98] font-semibold tracking-[-0.045em] text-white"
+          >
+            The merge gate for{' '}
+            <span className="text-lavender">
+              <Accent>AI-written</Accent>
+            </span>{' '}
             code.
+          </h1>
+          <p className="m-0 max-w-[40em] text-[18.5px] leading-relaxed text-ab-muted">
+            Audit Bench Ai reviews every pull request with static analysis and AI, comments on the exact lines with
+            fixes, and blocks the merge until critical issues are resolved.
           </p>
           <div className="flex flex-wrap justify-center gap-3">
             <Link
               href="/signup"
-              className="rounded-lg bg-cobalt px-5 py-3 text-sm font-bold text-white transition-all duration-200 hover:-translate-y-0.5 hover:bg-cobalt-dark hover:shadow-lg"
+              className="inline-flex min-h-[50px] items-center gap-2.5 rounded-[10px] bg-chartreuse px-6 text-[15.5px] font-semibold text-ab-bg"
             >
-              Get started free
+              <GithubLogoIcon className="h-[17px] w-[17px]" />
+              Start free on GitHub
             </Link>
-            <a
-              href="mailto:noumanqureshi15@gmail.com"
-              className="rounded-lg border border-ink-line px-5 py-3 text-sm font-bold text-muted-on-ink transition-all duration-200 hover:-translate-y-0.5 hover:border-cobalt/40 hover:text-[#E8ECF4]"
+            <Link
+              href="/contact"
+              className="inline-flex min-h-[50px] items-center rounded-[10px] border border-ab-line-3 px-6 text-[15.5px] font-medium text-white hover:border-lavender"
             >
-              Talk to sales
-            </a>
+              Book a demo
+            </Link>
           </div>
-        </ScrollReveal>
+          <span className="font-ab-mono text-[12.5px] text-ab-dim">
+            Free plan · Read-only code access · Never used to train AI
+          </span>
+        </div>
+        <div className="mx-auto max-w-[1180px] px-4 pb-24 sm:px-8">
+          <PrPreview />
+        </div>
+      </section>
+
+      {/* Works with */}
+      <section aria-label="Works with" className="border-y border-ab-line">
+        <div className="mx-auto flex max-w-[1280px] flex-wrap items-center justify-center gap-x-10 gap-y-4 px-4 py-9 sm:px-8">
+          <SectionLabel className="text-ab-dim">Works where you ship</SectionLabel>
+          <span className="inline-flex items-center gap-2 text-lg font-semibold text-ab-soft">
+            <GithubLogoIcon className="h-5 w-5" /> GitHub
+          </span>
+          <span className="inline-flex items-center gap-2 text-lg font-semibold text-ab-soft">
+            <GitlabLogoIcon className="h-5 w-5" /> GitLab
+          </span>
+          <span className="inline-flex items-center gap-2 text-lg font-semibold text-ab-soft">
+            <BitbucketLogoIcon className="h-5 w-5" /> Bitbucket
+          </span>
+          <span className="text-lg font-semibold text-ab-soft">VS Code</span>
+          <span className="text-lg font-semibold text-ab-soft">CLI for CI</span>
+        </div>
+      </section>
+
+      {/* How it reviews */}
+      <section
+        aria-labelledby="how-title"
+        className="mx-auto flex max-w-[1280px] flex-col gap-12 px-4 pt-28 pb-16 sm:px-8"
+      >
+        <div className="flex max-w-[780px] flex-col gap-3.5">
+          <SectionLabel>How it reviews</SectionLabel>
+          <h2
+            id="how-title"
+            className="m-0 text-[clamp(36px,4.4vw,52px)] leading-[1.02] font-semibold tracking-[-0.04em] text-white"
+          >
+            Reads the change like your <Accent>best</Accent> reviewer would.
+          </h2>
+        </div>
+        <div className="grid grid-cols-1 gap-px overflow-hidden rounded-[18px] border border-ab-line bg-ab-line md:grid-cols-3">
+          {HOW_IT_REVIEWS.map((s) => (
+            <div key={s.step} className="flex flex-col gap-3.5 bg-ab-deep p-8">
+              <span className="font-ab-mono text-[13px] font-medium text-chartreuse">{s.step}</span>
+              <h3 className="m-0 text-[22px] font-semibold text-white">{s.title}</h3>
+              <p className="m-0 text-[15px] leading-relaxed text-ab-muted">{s.body}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* What it catches */}
+      <section
+        aria-labelledby="catches-title"
+        className="mx-auto flex max-w-[1280px] flex-col gap-10 px-4 pt-16 pb-28 sm:px-8"
+      >
+        <div className="flex flex-wrap items-end justify-between gap-5">
+          <div className="flex max-w-[720px] flex-col gap-3.5">
+            <SectionLabel>What it catches</SectionLabel>
+            <h2
+              id="catches-title"
+              className="m-0 text-[clamp(36px,4.4vw,52px)] leading-[1.02] font-semibold tracking-[-0.04em] text-white"
+            >
+              Bugs linters miss, in every stack.
+            </h2>
+          </div>
+          <Link
+            href="/scan"
+            className="inline-flex min-h-11 items-center text-[15px] font-medium text-[#E9D5F5] hover:text-white"
+          >
+            Try it on a public PR →
+          </Link>
+        </div>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+          {EXAMPLES.map((e) => (
+            <article
+              key={e.title}
+              className="flex flex-col overflow-hidden rounded-2xl border border-ab-line bg-ab-panel"
+            >
+              <div className="flex justify-between gap-2 border-b border-ab-line px-4 py-3 font-ab-mono text-xs text-ab-dim">
+                <span>{e.stack}</span>
+                <span className={e.tone}>{e.kind}</span>
+              </div>
+              <pre className={`m-0 overflow-x-auto px-4 py-2.5 font-ab-mono text-xs leading-[1.7] ${e.codeTone}`}>
+                {e.code}
+              </pre>
+              <div className="flex flex-col gap-2 p-4">
+                <h3 className="m-0 text-[15px] font-semibold text-white">{e.title}</h3>
+                <p className="m-0 text-[13.5px] leading-relaxed text-ab-muted">{e.body}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      {/* Merge gate */}
+      <section aria-labelledby="gate-title" className="bg-lavender text-ab-bg">
+        <div className="mx-auto flex max-w-[1280px] flex-wrap items-center gap-14 px-4 py-24 sm:px-8">
+          <div className="flex flex-[1_1_420px] flex-col gap-4">
+            <SectionLabel className="text-ab-bg">The merge gate</SectionLabel>
+            <h2
+              id="gate-title"
+              className="m-0 text-[clamp(38px,4.6vw,56px)] leading-none font-semibold tracking-[-0.045em]"
+            >
+              Advice is optional. <Accent>A gate isn&apos;t.</Accent>
+            </h2>
+            <p className="m-0 max-w-[32em] text-[17px] leading-relaxed">
+              Make &quot;Audit Bench Ai&quot; a required check. Critical issues, high-severity security findings,
+              exposed secrets, conflicts and failing CI keep the merge button locked until they&apos;re fixed.
+            </p>
+            <Link
+              href="/docs/required-check"
+              className="inline-flex min-h-12 items-center self-start rounded-[10px] bg-ab-bg px-5 text-[15px] font-semibold text-white"
+            >
+              Set it up in 2 minutes →
+            </Link>
+          </div>
+          <div className="flex min-w-0 flex-[1_1_480px] flex-col gap-2.5">
+            <div className="flex items-center gap-3.5 rounded-2xl bg-ab-bg px-5 py-4 text-ab-text">
+              <span className="inline-flex h-[34px] w-[34px] shrink-0 items-center justify-center rounded-full bg-tomato">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#0E0612"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  aria-hidden="true"
+                >
+                  <path d="M7 7l10 10M17 7L7 17" />
+                </svg>
+              </span>
+              <span className="flex flex-col gap-0.5">
+                <strong className="text-[15px] text-white">Audit Bench Ai — Blocking issues found</strong>
+                <span className="text-[13px] text-ab-muted">Required · 1 critical in refunds.service.ts:42</span>
+              </span>
+            </div>
+            <div className="flex items-center gap-3.5 rounded-2xl bg-ab-bg px-5 py-4 text-ab-text">
+              <span className="inline-flex h-[34px] w-[34px] shrink-0 items-center justify-center rounded-full bg-chartreuse">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#0E0612"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M5 12.5l4.5 4.5L19 7.5" />
+                </svg>
+              </span>
+              <span className="flex flex-col gap-0.5">
+                <strong className="text-[15px] text-white">build / test (ubuntu-latest)</strong>
+                <span className="text-[13px] text-ab-muted">Successful in 2m 14s</span>
+              </span>
+            </div>
+            <div className="flex items-center justify-between gap-3 rounded-2xl border-[1.5px] border-dashed border-ab-bg bg-ab-bg/10 px-5 py-4">
+              <strong className="text-[15px]">Merge pull request</strong>
+              <span className="font-ab-mono text-xs font-medium tracking-[0.08em] uppercase">Blocked</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Your stack */}
+      <section aria-labelledby="stack-title" className="mx-auto flex max-w-[1280px] flex-col gap-11 px-4 py-28 sm:px-8">
+        <div className="flex max-w-[780px] flex-col gap-3.5">
+          <SectionLabel>Your stack</SectionLabel>
+          <h2
+            id="stack-title"
+            className="m-0 text-[clamp(36px,4.4vw,52px)] leading-[1.02] font-semibold tracking-[-0.04em] text-white"
+          >
+            One review layer, everywhere code changes.
+          </h2>
+        </div>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {STACK.map((s) => (
+            <Link
+              key={s.title}
+              href={s.href}
+              className="flex flex-col gap-2.5 rounded-2xl border border-ab-line bg-ab-panel p-6 transition-colors hover:border-ab-line-3"
+            >
+              <span className="font-ab-mono text-xs font-medium text-chartreuse">{s.label}</span>
+              <strong className="text-lg text-white">{s.title}</strong>
+              <span className="text-sm leading-relaxed text-ab-muted">{s.body}</span>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* Enterprise security */}
+      <section aria-labelledby="security-title" className="border-y border-ab-line bg-ab-deep">
+        <div className="mx-auto flex max-w-[1280px] flex-wrap gap-14 px-4 py-24 sm:px-8">
+          <div className="flex flex-[1_1_380px] flex-col gap-4">
+            <SectionLabel>Enterprise</SectionLabel>
+            <h2
+              id="security-title"
+              className="m-0 text-[clamp(34px,4vw,48px)] leading-[1.04] font-semibold tracking-[-0.04em] text-white"
+            >
+              Security your CISO can <Accent>sign off</Accent> on.
+            </h2>
+            <p className="m-0 text-[16.5px] leading-relaxed text-ab-muted">
+              Least-privilege access, no training on your code, and data you can delete at any time.
+            </p>
+            <div className="flex flex-wrap gap-2.5">
+              <Link
+                href="/contact"
+                className="inline-flex min-h-[46px] items-center rounded-[10px] bg-chartreuse px-5 text-[14.5px] font-semibold text-ab-bg"
+              >
+                Talk to sales
+              </Link>
+              <Link
+                href="/security"
+                className="inline-flex min-h-[46px] items-center rounded-[10px] border border-ab-line-3 px-5 text-[14.5px] font-medium text-white hover:border-lavender"
+              >
+                Security overview
+              </Link>
+            </div>
+          </div>
+          <div className="grid flex-[1_1_560px] grid-cols-1 gap-px overflow-hidden rounded-2xl border border-ab-line bg-ab-line sm:grid-cols-2">
+            {SECURITY.map((s) => (
+              <div key={s.title} className="flex flex-col gap-1.5 bg-ab-panel p-6">
+                <strong className="text-[15.5px] text-white">{s.title}</strong>
+                <span className="text-sm leading-relaxed text-ab-muted">{s.body}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section aria-labelledby="faq-title" className="mx-auto flex max-w-[1280px] flex-wrap gap-12 px-4 py-28 sm:px-8">
+        <div className="flex flex-[1_1_300px] flex-col gap-3.5">
+          <SectionLabel>FAQ</SectionLabel>
+          <h2
+            id="faq-title"
+            className="m-0 text-[clamp(34px,3.8vw,44px)] leading-[1.04] font-semibold tracking-[-0.04em] text-white"
+          >
+            Questions, answered.
+          </h2>
+          <Link
+            href="/pricing"
+            className="inline-flex min-h-11 items-center self-start text-[15px] text-[#E9D5F5] hover:text-white"
+          >
+            See full pricing →
+          </Link>
+        </div>
+        <div className="flex flex-[2_1_560px] flex-col border-t border-ab-line">
+          {FAQ.map(({ q, a }) => (
+            <details key={q} className="group border-b border-ab-line py-5">
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-[17px] font-medium text-white [&::-webkit-details-marker]:hidden">
+                {q}
+                <span className="text-xl text-ab-dim transition-transform group-open:rotate-45" aria-hidden="true">
+                  +
+                </span>
+              </summary>
+              <p className="mt-3 mb-0 text-[15px] leading-relaxed text-ab-muted">{a}</p>
+            </details>
+          ))}
+        </div>
+      </section>
+
+      {/* Final call to action */}
+      <section aria-labelledby="cta-title" className="px-4 pb-28 sm:px-8">
+        <div className="mx-auto flex max-w-[1216px] flex-col items-center gap-5 rounded-[28px] bg-tomato px-6 py-[72px] text-center text-ab-bg sm:px-10">
+          <h2
+            id="cta-title"
+            className="m-0 max-w-[14em] text-[clamp(38px,5.6vw,72px)] leading-[0.98] font-semibold tracking-[-0.045em]"
+          >
+            Ship code, not <Accent>surprises</Accent>.
+          </h2>
+          <p className="m-0 max-w-[34em] text-[17px] leading-relaxed">
+            Install in two minutes. Your next pull request gets a full review.
+          </p>
+          <div className="flex flex-wrap justify-center gap-3">
+            <Link
+              href="/signup"
+              className="inline-flex min-h-[52px] items-center rounded-[10px] bg-ab-bg px-6 text-[15.5px] font-semibold text-white"
+            >
+              Start free
+            </Link>
+            <Link
+              href="/contact"
+              className="inline-flex min-h-[52px] items-center rounded-[10px] border-[1.5px] border-ab-bg px-6 text-[15.5px] font-semibold text-ab-bg"
+            >
+              Book a demo
+            </Link>
+          </div>
+        </div>
       </section>
 
       <Footer />
