@@ -1022,6 +1022,50 @@ export function listAnalyticsRepos(): Promise<string[]> {
   );
 }
 
+// ---------- Contact form (public) ----------
+
+export type ContactTopic =
+  | "support"
+  | "sales"
+  | "due-diligence"
+  | "security"
+  | "privacy"
+  | "partnerships"
+  | "other";
+
+export interface ContactInput {
+  name: string;
+  email: string;
+  company?: string;
+  topic: ContactTopic;
+  message: string;
+  /** Honeypot — always empty from a real visitor. */
+  website?: string;
+}
+
+export async function submitContact(input: ContactInput): Promise<void> {
+  const res = await fetch(`${API_URL}/contact`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(input),
+  });
+  if (res.status === 429) {
+    throw new ApiError(
+      "You've sent a few messages already. Please wait 10 minutes, or email us directly.",
+      429,
+      {},
+    );
+  }
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    // ValidationPipe sends an array of messages, one per invalid field.
+    const message = Array.isArray(body.message)
+      ? body.message.join(". ")
+      : body.message || `Request failed with status ${res.status}`;
+    throw new ApiError(message, res.status, body);
+  }
+}
+
 // ---------- Email campaigns (super admin) ----------
 
 export function getEmailCampaigns(): Promise<EmailCampaignsStatus> {
