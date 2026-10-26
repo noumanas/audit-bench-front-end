@@ -23,6 +23,7 @@ import { Stage1Summary } from './Stage1Summary';
 import { FixInEditorModal } from './FixInEditorModal';
 import { downloadReport } from '@/lib/reportExport';
 import { ShareScanPanel } from './ShareScanPanel';
+import { RemediationBasis, SecretGroups, SkippedFilesList, displayVerdict, groupSecrets } from './ScanCoverage';
 import { deleteRepositoryScan, getRepositoryScan, republishScan, setScanFileFindingStatus } from '@/lib/api';
 import { useAuth } from '@/lib/AuthContext';
 import { useRouter } from 'next/navigation';
@@ -120,7 +121,7 @@ export function RepositoryReport({ scan }: { scan: ScanJob }) {
             {SOURCE_LABEL[scan.sourceType]}
           </span>
           <StatusBadge status={scan.status} />
-          {scan.verdict && <VerdictBadge verdict={scan.verdict} />}
+          {displayVerdict(scan) && <VerdictBadge verdict={displayVerdict(scan)!} />}
         </div>
 
         <h1 className="mb-5 text-2xl leading-tight font-bold tracking-tight break-words sm:text-[26px]">
@@ -182,9 +183,10 @@ export function RepositoryReport({ scan }: { scan: ScanJob }) {
             {scan.status === 'completed' && (
               <a
                 href="#share"
-                className="rounded-md bg-cobalt px-3 py-1.5 text-xs font-bold text-white transition-colors hover:bg-cobalt-dark"
+                title={scan.isPublic ? 'Anyone with the link can open this report' : 'Only you and your team can see this report'}
+                className="rounded-md border border-ink-line px-3 py-1.5 text-xs font-bold text-muted-on-ink transition-colors hover:border-cobalt hover:text-[#E8ECF4]"
               >
-                Share report
+                {scan.isPublic ? 'Shared publicly' : 'Private · Share…'}
               </a>
             )}
             {scan.status === 'completed' && (
@@ -256,13 +258,28 @@ export function RepositoryReport({ scan }: { scan: ScanJob }) {
                 ))}
                 <CountTile
                   label="Secrets"
-                  value={scan.secrets?.length ?? 0}
+                  value={groupSecrets(scan.secrets ?? []).length}
                   hex={SEVERITY_HEX.critical}
                   className="col-span-2 sm:col-span-1"
                 />
               </div>
 
               <PipelineBar aiReviewed={aiReviewedCount} cached={scan.filesFromCache} localOnly={scan.filesAiSkipped} />
+
+              {scan.skippedFiles && (
+                <AnalysisSection
+                  title="Files not reviewed"
+                  empty="Every file in the repository was reviewed."
+                  show={Object.values(scan.skippedFiles.counts).some((n) => (n ?? 0) > 0)}
+                  badge={
+                    <span className="font-mono text-[10px] font-bold text-muted-on-paper tabular-nums">
+                      {Object.values(scan.skippedFiles.counts).reduce((a, n) => (a ?? 0) + (n ?? 0), 0)}
+                    </span>
+                  }
+                >
+                  <SkippedFilesList skipped={scan.skippedFiles} reviewed={scan.filesScanned} />
+                </AnalysisSection>
+              )}
             </section>
 
             <ShareScanPanel
@@ -436,25 +453,9 @@ export function RepositoryReport({ scan }: { scan: ScanJob }) {
                   title="Potential hardcoded secrets"
                   empty="No obvious secrets detected."
                   show={Boolean(scan.secrets?.length)}
-                  badge={statusPill(scan.secrets, 'critical')}
+                  badge={scan.secrets ? statusPill(groupSecrets(scan.secrets), 'critical') : <NaPill />}
                 >
-                  <ul className="divide-y divide-paper-line">
-                    {scan.secrets?.map((s, i) => (
-                      <li key={i} className="py-2 first:pt-0 last:pb-0">
-                        <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-                          <span className="rounded bg-critical/10 px-1.5 py-0.5 font-mono text-[10px] font-bold text-critical uppercase">
-                            {s.rule}
-                          </span>
-                          <span className="font-mono text-xs break-all text-[#1C2128]">
-                            {s.path}:{s.line}
-                          </span>
-                        </div>
-                        <code className="mt-1 block truncate font-mono text-[11px] text-muted-on-paper">
-                          {s.snippet}
-                        </code>
-                      </li>
-                    ))}
-                  </ul>
+                  <SecretGroups secrets={scan.secrets ?? []} />
                 </AnalysisSection>
               </div>
             </section>
@@ -976,6 +977,8 @@ export function RiskAssessmentBanner({ aggregation }: { aggregation: RiskAggrega
       </div>
 
       <p className="max-w-[72ch] text-sm leading-relaxed text-[#1C2128]">{aggregation.summary}</p>
+
+      <RemediationBasis remediation={remediation} />
 
       <div className="flex flex-wrap gap-2">
         {aggregation.categories.map((c) => (

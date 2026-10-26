@@ -232,6 +232,10 @@ export interface InvitePreview {
 export interface GithubStatus {
   connected: boolean;
   username: string | null;
+  /** 'app': connected only through the GitHub App, which reaches just the repositories picked at install. */
+  via?: 'token' | 'app' | null;
+  /** Accounts the user's GitHub App installations are on. */
+  appAccounts?: string[];
 }
 
 export interface GithubRepo {
@@ -357,6 +361,24 @@ export interface SecretFinding {
   line: number;
   rule: string;
   snippet: string;
+  /** Same for the same secret within one scan (never the secret itself); absent on older scans. */
+  fingerprint?: string;
+}
+
+/** Why a file wasn't reviewed — mirrors backend analysis/generated-files.ts. */
+export type SkipReason =
+  | 'ignored_by_rule'
+  | 'generated'
+  | 'vendor'
+  | 'not_source'
+  | 'file_limit'
+  | 'too_large'
+  | 'binary';
+
+export interface SkippedFiles {
+  counts: Partial<Record<SkipReason, number>>;
+  /** Up to 500 paths; counts are always complete. */
+  files: Array<{ path: string; reason: SkipReason }>;
 }
 
 export interface DependencyVulnerability {
@@ -396,6 +418,8 @@ export interface RemediationItem {
   category: string;
   description: string;
   estimatedDays: number;
+  /** How estimatedDays was worked out; absent on reports computed before it existed. */
+  basis?: string;
 }
 
 // Technical due diligence assessment — mirrors backend repository/tdd-assessment.ts.
@@ -472,6 +496,8 @@ export interface RiskAggregation {
     totalEstimatedDays: number;
     estimatedCostLowUsd: number;
     estimatedCostHighUsd: number;
+    /** How days become dollars. */
+    rateBasis?: string;
   };
   recommendations: string[];
   summary: string;
@@ -622,6 +648,8 @@ export interface ScanJob {
   testCoverage: TestCoverageEstimate | null;
   architectureAssessment: ArchitectureAssessment | null;
   contributorStats: ContributorStat[] | null;
+  /** Files left out of the review and why; null on scans made before this existed. */
+  skippedFiles?: SkippedFiles | null;
   riskAggregation: RiskAggregation | null;
   /** Computed on read alongside riskAggregation for completed scans — see backend repository/tdd-assessment.ts. */
   tddAssessment?: TddAssessment | null;

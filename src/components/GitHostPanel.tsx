@@ -30,6 +30,8 @@ import {
   scanGithubRepo,
   startHostConnect,
   scanGitlabProject,
+  getGithubAppInstallUrl,
+  getGithubAppStatus,
 } from '@/lib/api';
 import { formatDateTime, timeAgo } from '@/lib/time';
 import { PasswordInput } from './PasswordInput';
@@ -60,6 +62,14 @@ interface ChangeItem {
   url: string;
 }
 
+interface HostStatus {
+  connected: boolean;
+  username: string | null;
+  /** GitHub only: connected through the GitHub App rather than a token. */
+  via?: 'token' | 'app' | null;
+  appAccounts?: string[];
+}
+
 interface HostConfig {
   name: string;
   repoNoun: string;
@@ -75,7 +85,7 @@ interface HostConfig {
   oauthNote?: string;
   tokenPlaceholder: string;
   tokenHelp: React.ReactNode;
-  getStatus: () => Promise<{ connected: boolean; username: string | null }>;
+  getStatus: () => Promise<HostStatus>;
   connect: (token: string) => Promise<unknown>;
   disconnect: () => Promise<void>;
   listRepos: () => Promise<RepoItem[]>;
@@ -93,7 +103,7 @@ const HOSTS: Record<'github' | 'gitlab' | 'bitbucket', HostConfig> = {
     icon: GithubLogoIcon,
     oauth: 'github',
     oauthNote:
-      'GitHub asks you to approve access to your repositories, so Audit Bench can list them, read the code to scan, and post reviews on pull requests.',
+      'Signing in with GitHub gives Audit Bench access to every repository your account can read, so it can list them, read the code to scan, and post reviews on pull requests.',
     tokenPlaceholder: 'ghp_…',
     tokenHelp: (
       <>
@@ -267,7 +277,7 @@ export function GitHostPanel({
   onScanStarted: (scanId: string) => void;
 }) {
   const cfg = HOSTS[host];
-  const [status, setStatus] = useState<{ connected: boolean; username: string | null } | null>(null);
+  const [status, setStatus] = useState<HostStatus | null>(null);
   const [statusError, setStatusError] = useState<string | null>(null);
   const [repos, setRepos] = useState<RepoItem[] | null>(null);
   const [selectedKey, setSelectedKey] = useState<string | null>(null);
@@ -352,30 +362,50 @@ export function GitHostPanel({
       <div className="flex flex-wrap items-center gap-2 border-b border-ink-line px-4 py-3">
         <Icon className="h-4 w-4 text-muted-on-ink" />
         <span className="text-sm text-[#E8ECF4]">
-          Connected as <span className="font-bold">@{status.username}</span>
+          {status.via === 'app' ? (
+            <>
+              Connected through the GitHub App on{' '}
+              <span className="font-bold">{(status.appAccounts ?? []).join(', ')}</span>
+            </>
+          ) : (
+            <>
+              Connected as <span className="font-bold">@{status.username}</span>
+            </>
+          )}
         </span>
         {repos && (
           <span className="text-[12px] text-muted-on-ink">
             · {repos.length} {repos.length === 1 ? cfg.repoNoun : cfg.repoPlural}
           </span>
         )}
-        <button
-          onClick={async () => {
-            if (!window.confirm(`Disconnect ${cfg.name}? Your past scans stay; you'll need to connect again to scan.`))
-              return;
-            try {
-              await cfg.disconnect();
-              setStatus({ connected: false, username: null });
-              setRepos(null);
-              setSelectedKey(null);
-            } catch (err) {
-              setFailure(toFailure(err, 'Failed to disconnect.'));
-            }
-          }}
-          className="ml-auto cursor-pointer text-[12px] font-medium text-muted-on-ink hover:text-[#E8ECF4]"
-        >
-          Disconnect
-        </button>
+        {status.via === 'app' ? (
+          <a
+            href="https://github.com/settings/installations"
+            target="_blank"
+            rel="noreferrer"
+            className="ml-auto text-[12px] font-medium text-muted-on-ink hover:text-[#E8ECF4]"
+          >
+            Choose repositories on GitHub ↗
+          </a>
+        ) : (
+          <button
+            onClick={async () => {
+              if (!window.confirm(`Disconnect ${cfg.name}? Your past scans stay; you'll need to connect again to scan.`))
+                return;
+              try {
+                await cfg.disconnect();
+                setStatus({ connected: false, username: null });
+                setRepos(null);
+                setSelectedKey(null);
+              } catch (err) {
+                setFailure(toFailure(err, 'Failed to disconnect.'));
+              }
+            }}
+            className="ml-auto cursor-pointer text-[12px] font-medium text-muted-on-ink hover:text-[#E8ECF4]"
+          >
+            Disconnect
+          </button>
+        )}
       </div>
 
       {host === 'github' && (
@@ -750,6 +780,66 @@ function PrLinkReview({
   );
 }
 
+/**
+ * For people who won't grant access to their whole GitHub account (client
+ * code, consultants): install the GitHub App on just the repositories they
+ * pick. Scans and reviews then go through the installation, and reviews are
+ * posted by the bot rather than the user's account. Hidden when the App
+ * isn't set up on this deployment.
+ */
+function SelectedReposOption() {
+  const [available, setAvailable] = useState(false);
+  const [opening, setOpening] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    getGithubAppStatus()
+      .then((s) => setAvailable(s.configured && Boolean(s.slug)))
+      .catch(() => setAvailable(false));
+  }, []);
+
+  if (!available) return null;
+  return (
+    <div className="mb-4 rounded-md border border-cobalt/40 bg-cobalt/10 px-4 py-3">
+      <div className="text-[13px] font-bold text-[#E8ECF4]">
+        Only want to share some repositories?
+      </div>
+      <p className="mt-1 max-w-[70ch] text-[12px] leading-relaxed text-muted-on-ink">
+        Install the Audit Bench Ai GitHub App and choose{" "}
+        <em>Only select repositories</em>. Audit Bench can then see only those,
+        and reviews are posted by the Audit Bench Ai bot instead of your
+        account. Add or remove repositories on GitHub at any time.
+      </p>
+      <button
+        type="button"
+        disabled={opening}
+        onClick={async () => {
+          setOpening(true);
+          setError(null);
+          try {
+            const { url } = await getGithubAppInstallUrl();
+            window.location.assign(url);
+          } catch (err) {
+            setOpening(false);
+            setError(
+              err instanceof Error ? err.message : "Couldn’t open GitHub.",
+            );
+          }
+        }}
+        className="mt-2.5 cursor-pointer rounded-md border border-cobalt bg-ink px-4 py-2 text-[13px] font-bold text-[#E8ECF4] hover:bg-cobalt disabled:cursor-wait disabled:opacity-60"
+      >
+        {opening
+          ? "Opening GitHub…"
+          : "Choose repositories with the GitHub App"}
+      </button>
+      {error && <p className="mt-2 text-[12px] text-[#F3B7BF]">{error}</p>}
+      <p className="mt-3 text-[12px] text-muted-on-ink">
+        Or connect your whole account:
+      </p>
+    </div>
+  );
+}
+
 function ConnectCard({
   cfg,
   onConnected,
@@ -799,6 +889,8 @@ function ConnectCard({
         Connect your {cfg.name} account to list your {cfg.repoPlural}, scan any branch and review {cfg.changePlural}.
         Access is stored encrypted, and the code is never run.
       </p>
+
+      {cfg.oauth === 'github' && !reconnect && <SelectedReposOption />}
 
       {cfg.oauth && (
         <>

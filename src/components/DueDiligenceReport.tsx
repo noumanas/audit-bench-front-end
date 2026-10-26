@@ -22,6 +22,7 @@ import {
   FindingsEvidence,
   RemediationPlan,
 } from './TddSections';
+import { groupSecrets } from './ScanCoverage';
 
 const SEVERITY_ORDER: Severity[] = ['critical', 'high', 'medium', 'low'];
 
@@ -235,7 +236,7 @@ export function DueDiligenceReport({ scan }: { scan: ScanJob }) {
             ))}
             <CountTile
               label="Exposed secrets"
-              value={scan.secrets?.length ?? 0}
+              value={groupSecrets(scan.secrets ?? []).length}
               hex={SEVERITY_HEX.critical}
               className="col-span-2 sm:col-span-1"
             />

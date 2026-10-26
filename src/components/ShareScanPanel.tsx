@@ -36,6 +36,14 @@ export function ShareScanPanel({
   };
 
   const enable = async () => {
+    // Reports are private until shared; make the switch to public a deliberate choice.
+    if (
+      !window.confirm(
+        `Create a public link to the report for ${sourceName}? Anyone with the link can open it without an account. You can stop sharing at any time.`,
+      )
+    ) {
+      return;
+    }
     setBusy(true);
     setError(null);
     try {
@@ -76,13 +84,13 @@ export function ShareScanPanel({
       <div className="flex flex-wrap items-start gap-3">
         <div className="min-w-0 flex-1">
           <h2 className="text-[15px] font-bold text-[#1C2128]">
-            {isPublic ? 'This report is shared' : 'Share this report'}
+            {isPublic ? 'This report is shared publicly' : 'Private report'}
           </h2>
           <p className="mt-0.5 text-[12px] leading-relaxed text-muted-on-paper">
             {isPublic
               ? 'Anyone with the link can view it without an account. '
-              : 'Create a public link your team, clients or followers can open without an account. '}
-            Where secrets are and who wrote the code always stay hidden.
+              : 'Only you and your team can see this report. Reports are never shared unless you create a link. '}
+            Shared reports always hide where secrets are and who wrote the code.
           </p>
         </div>
         {!isPublic && (
@@ -91,7 +99,7 @@ export function ShareScanPanel({
             disabled={busy}
             className="shrink-0 cursor-pointer rounded-md bg-cobalt px-4 py-2 text-[13px] font-bold text-white disabled:cursor-wait disabled:opacity-60"
           >
-            {busy ? 'Creating link…' : 'Create share link'}
+            {busy ? 'Creating link…' : 'Create public link'}
           </button>
         )}
       </div>
