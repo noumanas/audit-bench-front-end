@@ -41,6 +41,11 @@ export default function CodeReviewVsCodeAuditPage() {
         <li>High-risk releases</li>
         <li>Large refactors and architecture changes</li>
         <li>Investigating code that may already be in trouble</li>
+        <li>
+          Acquisitions and investments, where a{' '}
+          <Link href="/blog/technical-due-diligence-checklist">technical due diligence checklist</Link> turns the audit
+          into findings you can price
+        </li>
       </ul>
 
       <h2>Why the difference matters</h2>

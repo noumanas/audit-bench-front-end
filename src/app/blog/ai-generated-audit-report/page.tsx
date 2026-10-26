@@ -35,6 +35,11 @@ export default function AiGeneratedAuditReportPage() {
         <li>A concrete suggestion for fixing it</li>
         <li>Any uncertainty or limits in the analysis</li>
       </ul>
+      <p>
+        If the report is for an investor or acquirer, check its scope against a full{' '}
+        <Link href="/blog/technical-due-diligence-checklist">tech due diligence checklist</Link>, so the gaps are
+        visible rather than silently skipped.
+      </p>
 
       <h2>What makes a report credible</h2>
       <p>

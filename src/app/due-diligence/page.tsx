@@ -240,7 +240,7 @@ export default function DueDiligencePage() {
           <p className="mt-5 text-xs text-muted-on-ink">
             Running it yourself? Use our free{' '}
             <Link href="/blog/technical-due-diligence-checklist" className="font-semibold text-cobalt hover:underline">
-              technical due diligence checklist (43 checks + template)
+              technical due diligence checklist (55 checks + template)
             </Link>{' '}
             and{' '}
             <Link href="/blog/technical-due-diligence-questions" className="font-semibold text-cobalt hover:underline">

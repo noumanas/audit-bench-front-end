@@ -3,11 +3,16 @@ import Link from 'next/link';
 import { BlogArticleLayout } from '@/components/blog/BlogArticleLayout';
 import { StructuredData } from '@/components/StructuredData';
 import { BLOG_POSTS } from '@/lib/blog';
-import { TDD_CHECKLIST } from '@/lib/tddChecklist';
+import { BEYOND_CODE_CHECKLIST, TDD_CHECKLIST, type TddChecklistArea } from '@/lib/tddChecklist';
 
 const POST = BLOG_POSTS.find((p) => p.slug === 'technical-due-diligence-checklist')!;
 const TEMPLATE_URL = '/downloads/technical-due-diligence-checklist.csv';
-const TOTAL = TDD_CHECKLIST.reduce((n, a) => n + a.domains.reduce((m, d) => m + d.checks.length, 0), 0);
+const countChecks = (a: TddChecklistArea) => a.domains.reduce((n, d) => n + d.checks.length, 0);
+// TOTAL is the code-level catalog Audit Bench automates; BEYOND covers infrastructure, compliance, IP and roadmap.
+const TOTAL = TDD_CHECKLIST.reduce((n, a) => n + countChecks(a), 0);
+const BEYOND = countChecks(BEYOND_CODE_CHECKLIST);
+const ALL = TOTAL + BEYOND;
+const ALL_AREAS = [...TDD_CHECKLIST, BEYOND_CODE_CHECKLIST];
 
 export const metadata: Metadata = {
   title: POST.title,
@@ -19,7 +24,7 @@ export const metadata: Metadata = {
 const FAQ = [
   {
     q: 'What is a technical due diligence checklist?',
-    a: 'A list of the checks an investor or acquirer runs on a target company’s software before a deal: security exposure, dependency and license risk, technical debt, architecture, engineering practices and team risk. Each failed check becomes a finding with a severity and a cost to fix.',
+    a: 'A list of the checks an investor or acquirer runs on a target company’s software before a deal: security exposure, dependency and license risk, technical debt, architecture and scalability, engineering practices, team risk, and the questions beyond the code such as infrastructure, compliance and IP ownership. Each failed check becomes a finding with a severity and a cost to fix.',
   },
   {
     q: 'How long does technical due diligence take?',
@@ -36,6 +41,14 @@ const FAQ = [
   {
     q: 'What are the biggest red flags in technical due diligence?',
     a: 'Live secrets in the code, strong-copyleft (GPL/AGPL) code inside a proprietary product, almost no automated tests around payments or authentication, and one engineer who wrote most of the code and is not committed to stay after the deal.',
+  },
+  {
+    q: 'Is technology due diligence the same as technical due diligence?',
+    a: 'Yes. Technical, technology, tech and engineering due diligence all describe the same review of a target’s software, infrastructure, security and engineering team. Some firms use “technology due diligence” for a wider scope that includes IT systems and vendors, which the beyond-the-code checks in this list cover.',
+  },
+  {
+    q: 'Is there a free technical due diligence template?',
+    a: 'Yes. The spreadsheet linked on this page has every check in this checklist as one row, with what to look at, the red flag, the severity, and empty columns for status, evidence and engineer-days to fix. It opens in Excel, Google Sheets or Numbers.',
   },
   {
     q: 'Can technical due diligence be automated?',
@@ -67,7 +80,7 @@ function slugify(s: string) {
 function DownloadBox() {
   return (
     <div className="not-prose my-8 rounded-xl border border-cobalt/40 bg-cobalt/5 p-5">
-      <div className="text-base font-bold text-[#1C2128]">Free template: all {TOTAL} checks in a spreadsheet</div>
+      <div className="text-base font-bold text-[#1C2128]">Free template: all {ALL} checks in a spreadsheet</div>
       <p className="mt-1 text-sm leading-relaxed text-muted-on-paper">
         One row per check with what to look at, the red flag, severity, and empty columns for status, evidence and
         engineer-days to fix. Opens in Excel, Google Sheets or Numbers.
@@ -91,6 +104,48 @@ function DownloadBox() {
   );
 }
 
+function AreaSection({ area, index }: { area: TddChecklistArea; index: number }) {
+  return (
+    <section>
+      <h2 id={slugify(area.name)}>
+        {index}. {area.name} checklist
+      </h2>
+      <p>{area.why}</p>
+      {area.domains.map((d) => (
+        <div key={d.name}>
+          <h3>{d.name}</h3>
+          <ul className="not-prose my-4 space-y-3">
+            {d.checks.map((c) => (
+              <li key={c.check} className="rounded-lg border border-paper-line bg-paper-card p-4">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span
+                    aria-hidden="true"
+                    className="inline-block h-4 w-4 shrink-0 rounded border-2 border-muted-on-paper"
+                  />
+                  <span className="font-semibold text-[#1C2128]">{c.check}</span>
+                  <span
+                    className={`ml-auto rounded px-1.5 py-0.5 font-mono text-[10px] font-bold uppercase ${SEVERITY_STYLE[c.severity]}`}
+                  >
+                    {c.severity}
+                  </span>
+                </div>
+                <p className="mt-2 text-sm leading-relaxed text-[#1C2128]">
+                  <span className="font-semibold">What to look at: </span>
+                  {c.lookFor}
+                </p>
+                <p className="mt-1 text-sm leading-relaxed text-[#1C2128]">
+                  <span className="font-semibold text-critical">Red flag: </span>
+                  {c.redFlag}
+                </p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </section>
+  );
+}
+
 export default function TechnicalDueDiligenceChecklistPage() {
   return (
     <BlogArticleLayout
@@ -105,19 +160,52 @@ export default function TechnicalDueDiligenceChecklistPage() {
 
       <p>
         <strong>A technical due diligence checklist</strong> is the list of checks an investor or acquirer runs on a
-        target company’s software before signing. This one has <strong>{TOTAL} checks</strong> grouped into{' '}
-        <strong>6 risk areas</strong>: security exposure, dependency and license risk, technical debt, architecture and
-        scalability, engineering practices, and team and knowledge risk. Each check says what to look at and what a red
-        flag looks like, so a failed check turns straight into a finding you can price.
+        target company’s software before signing. This one has <strong>{ALL} checks</strong> in{' '}
+        <strong>7 risk areas</strong>: {TOTAL} code-level checks across security exposure, dependency and license risk,
+        technical debt, architecture and scalability, engineering practices, and team and knowledge risk, plus {BEYOND}{' '}
+        checks <a href="#beyond-the-code">beyond the code</a> covering infrastructure, compliance, IP ownership and the
+        roadmap. Each check says what to look at and what a red flag looks like, so a failed check turns straight into a
+        finding you can price.
       </p>
 
+      <h2>The {ALL} checks at a glance</h2>
+      <div className="not-prose my-6 overflow-x-auto">
+        <table className="w-full min-w-[520px] border-collapse text-left text-sm">
+          <thead>
+            <tr className="border-b-2 border-[#1C2128]">
+              <th className="py-2 pr-4 font-bold text-[#1C2128]">Risk area</th>
+              <th className="py-2 pr-4 font-bold text-[#1C2128]">Domains</th>
+              <th className="py-2 text-right font-bold text-[#1C2128]">Checks</th>
+            </tr>
+          </thead>
+          <tbody>
+            {ALL_AREAS.map((a) => (
+              <tr key={a.name} className="border-b border-paper-line">
+                <td className="py-2 pr-4 align-top">
+                  <a href={`#${slugify(a.name)}`} className="font-semibold text-cobalt">
+                    {a.name}
+                  </a>
+                </td>
+                <td className="py-2 pr-4 align-top text-muted-on-paper">{a.domains.map((d) => d.name).join(', ')}</td>
+                <td className="py-2 text-right align-top font-mono text-[#1C2128]">{countChecks(a)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <h2>Free technical due diligence checklist template</h2>
+      <p>
+        Prefer a spreadsheet? The tech due diligence template below has every check as a row, ready to fill in during
+        the review and share with the deal team.
+      </p>
       <DownloadBox />
 
-      <h2>How to use this checklist</h2>
+      <h2>How to use this tech due diligence checklist</h2>
       <ol>
         <li>
-          <strong>Get read-only access first.</strong> Every check below is answered from the code, the git history or
-          the build, not from a questionnaire the target fills in about itself.
+          <strong>Get read-only access first.</strong> The code-level checks are answered from the code, the git
+          history or the build, not from a questionnaire the target fills in about itself.
         </li>
         <li>
           <strong>Mark each check Pass, Fail or N/A.</strong> A check you couldn’t assess is N/A, never a pass. Say so
@@ -133,76 +221,12 @@ export default function TechnicalDueDiligenceChecklistPage() {
         </li>
         <li>
           <strong>Split by timing.</strong> Decide what must be fixed before close (live secrets, exploitable
-          vulnerabilities, license problems) and what goes into the 30- and 90-day plan.
+          vulnerabilities, license problems, missing IP assignments) and what goes into the 30- and 90-day plan.
         </li>
       </ol>
 
-      <h2>The {TOTAL} checks at a glance</h2>
-      <div className="not-prose my-6 overflow-x-auto">
-        <table className="w-full min-w-[520px] border-collapse text-left text-sm">
-          <thead>
-            <tr className="border-b-2 border-[#1C2128]">
-              <th className="py-2 pr-4 font-bold text-[#1C2128]">Risk area</th>
-              <th className="py-2 pr-4 font-bold text-[#1C2128]">Domains</th>
-              <th className="py-2 text-right font-bold text-[#1C2128]">Checks</th>
-            </tr>
-          </thead>
-          <tbody>
-            {TDD_CHECKLIST.map((a) => (
-              <tr key={a.name} className="border-b border-paper-line">
-                <td className="py-2 pr-4 align-top">
-                  <a href={`#${slugify(a.name)}`} className="font-semibold text-cobalt">
-                    {a.name}
-                  </a>
-                </td>
-                <td className="py-2 pr-4 align-top text-muted-on-paper">{a.domains.map((d) => d.name).join(', ')}</td>
-                <td className="py-2 text-right align-top font-mono text-[#1C2128]">
-                  {a.domains.reduce((n, d) => n + d.checks.length, 0)}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      {TDD_CHECKLIST.map((area, ai) => (
-        <section key={area.name}>
-          <h2 id={slugify(area.name)}>
-            {ai + 1}. {area.name} checklist
-          </h2>
-          <p>{area.why}</p>
-          {area.domains.map((d) => (
-            <div key={d.name}>
-              <h3>{d.name}</h3>
-              <ul className="not-prose my-4 space-y-3">
-                {d.checks.map((c) => (
-                  <li key={c.check} className="rounded-lg border border-paper-line bg-paper-card p-4">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <span
-                        aria-hidden="true"
-                        className="inline-block h-4 w-4 shrink-0 rounded border-2 border-muted-on-paper"
-                      />
-                      <span className="font-semibold text-[#1C2128]">{c.check}</span>
-                      <span
-                        className={`ml-auto rounded px-1.5 py-0.5 font-mono text-[10px] font-bold uppercase ${SEVERITY_STYLE[c.severity]}`}
-                      >
-                        {c.severity}
-                      </span>
-                    </div>
-                    <p className="mt-2 text-sm leading-relaxed text-[#1C2128]">
-                      <span className="font-semibold">What to look at: </span>
-                      {c.lookFor}
-                    </p>
-                    <p className="mt-1 text-sm leading-relaxed text-[#1C2128]">
-                      <span className="font-semibold text-critical">Red flag: </span>
-                      {c.redFlag}
-                    </p>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </section>
+      {ALL_AREAS.map((area, ai) => (
+        <AreaSection key={area.name} area={area} index={ai + 1} />
       ))}
 
       <h2>What to request from the target before you start</h2>
@@ -231,7 +255,8 @@ export default function TechnicalDueDiligenceChecklistPage() {
       </p>
       <ul>
         <li>
-          <strong>Before close:</strong> live secrets, critical or high vulnerabilities, strong-copyleft licenses.
+          <strong>Before close:</strong> live secrets, critical or high vulnerabilities, strong-copyleft licenses, missing IP
+          assignments.
         </li>
         <li>
           <strong>First 30 days:</strong> vulnerable dependencies, debug settings, missing CI tests.
@@ -282,7 +307,7 @@ export default function TechnicalDueDiligenceChecklistPage() {
 
       <p>
         <Link href="/due-diligence" className="font-semibold">
-          Audit Bench Ai runs these {TOTAL} checks automatically and prices every finding. See a technical due diligence
+          Audit Bench Ai runs the {TOTAL} code-level checks automatically and prices every finding. See a technical due diligence
           report →
         </Link>
       </p>

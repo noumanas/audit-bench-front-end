@@ -385,3 +385,109 @@ export const TDD_CHECKLIST: TddChecklistArea[] = [
     ],
   },
 ];
+
+// Checks the code can't answer on its own. Kept separate from TDD_CHECKLIST, which mirrors the
+// automated catalog; these are answered from documents, the cloud account and interviews.
+export const BEYOND_CODE_CHECKLIST: TddChecklistArea = {
+  name: 'Beyond the code',
+  why: 'What a code scan can’t tell you: whether the system scales, whether the company is compliant, and whether it owns what it sells. Answer these from the cloud account, contracts and interviews.',
+  domains: [
+    {
+      name: 'Infrastructure & scalability',
+      checks: [
+        {
+          severity: 'high',
+          check: 'Scaling headroom is known',
+          lookFor: 'Ask for current peak load against capacity, any load-test results, and which component saturates first.',
+          redFlag: 'Nobody can say how much more traffic the system handles, or the database is already near its limits.',
+        },
+        {
+          severity: 'high',
+          check: 'No single points of failure',
+          lookFor: 'Look for a single database without failover, a single region or server, and deploys only one person can run.',
+          redFlag: 'One machine or one person whose loss takes the product down.',
+        },
+        {
+          severity: 'high',
+          check: 'Backups and disaster recovery are tested',
+          lookFor: 'Ask when a backup was last restored end to end, and what the recovery point and recovery time targets are.',
+          redFlag: 'Backups exist but have never been restored.',
+        },
+        {
+          severity: 'medium',
+          check: 'Cloud cost scales with revenue',
+          lookFor: 'Compare the monthly cloud bill over the last 12 months with customer and revenue growth.',
+          redFlag: 'Infrastructure cost growing faster than revenue, or large line items nobody can explain.',
+        },
+      ],
+    },
+    {
+      name: 'Compliance & data privacy',
+      checks: [
+        {
+          severity: 'high',
+          check: 'Personal data is mapped',
+          lookFor: 'Ask for a data map: what personal data is stored, where, for how long, and who can access it.',
+          redFlag: 'Nobody can list where customer data lives, or production data is copied to laptops and test systems.',
+        },
+        {
+          severity: 'high',
+          check: 'Regulatory obligations are met',
+          lookFor: 'Check GDPR/CCPA basics, plus PCI DSS or HIPAA if the product touches card or health data, and vendor DPAs.',
+          redFlag: 'Card or health data handled with no compliance program in place.',
+        },
+        {
+          severity: 'medium',
+          check: 'Security certifications and pen tests are current',
+          lookFor: 'Review SOC 2 or ISO 27001 status, the last penetration test, and whether its findings were closed.',
+          redFlag: 'SOC 2 promised to enterprise customers but not started, or pen-test findings still open.',
+        },
+      ],
+    },
+    {
+      name: 'IP ownership',
+      checks: [
+        {
+          severity: 'critical',
+          check: 'The company owns its code',
+          lookFor: 'Confirm signed IP assignment agreements for every founder, employee, contractor and agency that wrote code.',
+          redFlag: 'Core code written by contractors or an agency with no IP assignment.',
+        },
+        {
+          severity: 'medium',
+          check: 'No borrowed or disputed code',
+          lookFor: 'Ask where the first version came from and whether any code was reused from a previous employer or client.',
+          redFlag: 'Code carried over from a founder’s previous company or a client project.',
+        },
+      ],
+    },
+    {
+      name: 'Build vs buy & vendors',
+      checks: [
+        {
+          severity: 'medium',
+          check: 'Commodity pieces are bought, not built',
+          lookFor: 'Look for homegrown authentication, billing, queues or search where a standard service would do.',
+          redFlag: 'In-house versions of commodity infrastructure maintained by a single engineer.',
+        },
+        {
+          severity: 'medium',
+          check: 'Critical vendors have an exit',
+          lookFor: 'List the vendors the product can’t run without, their contract terms and who owns the accounts.',
+          redFlag: 'A critical service on a personal account, a free tier, or a vendor with no realistic replacement.',
+        },
+      ],
+    },
+    {
+      name: 'Product & roadmap',
+      checks: [
+        {
+          severity: 'medium',
+          check: 'The roadmap fits the architecture',
+          lookFor: 'Walk through the next 12–18 months of roadmap with the tech lead and ask what would need rebuilding.',
+          redFlag: 'The deal thesis assumes features the current architecture can’t support without a rewrite.',
+        },
+      ],
+    },
+  ],
+};

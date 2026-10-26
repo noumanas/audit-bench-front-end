@@ -87,7 +87,7 @@ export default function HowToPrepareForTechnicalDueDiligencePage() {
 
       <p>
         Sellers: work through the same 
-        <Link href="/blog/technical-due-diligence-checklist">technical due diligence checklist (43 checks + free template)</Link> 
+        <Link href="/blog/technical-due-diligence-checklist">technical due diligence checklist (55 checks + free template)</Link> 
         and the <Link href="/blog/technical-due-diligence-questions">60 technical due diligence questions to ask</Link>.
       </p>
 

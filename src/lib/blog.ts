@@ -17,12 +17,12 @@ export interface BlogPostMeta {
 export const BLOG_POSTS: BlogPostMeta[] = [
   {
     slug: "technical-due-diligence-checklist",
-    title: "Technical Due Diligence Checklist (2026): 43 Checks + Free Template",
+    title: "Technical Due Diligence Checklist (2026): 55 Checks + Free Template",
     description:
-      "Free tech due diligence checklist for M&A and investors: 43 checks across security, dependencies and licenses, technical debt, architecture, engineering practices and team risk. Download the template.",
+      "Free technical due diligence checklist and template for M&A and investors: 55 checks across security, licenses, tech debt, architecture and scalability, team risk, infrastructure, compliance and IP. Download the spreadsheet.",
     publishedAt: "2026-09-17",
-    updatedAt: "2026-10-08",
-    readingTime: "14 min read",
+    updatedAt: "2026-10-26",
+    readingTime: "16 min read",
     image: "/blog/technical-due-diligence-checklist.svg",
   },
   {
