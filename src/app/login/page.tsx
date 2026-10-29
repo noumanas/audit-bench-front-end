@@ -27,7 +27,7 @@ export default function LoginPage() {
       // Same-site paths only ("/scan/x", never "//evil.com"), so the link can't redirect off-site.
       const next = new URLSearchParams(window.location.search).get('next');
       const safeNext = next && next.startsWith('/') && !next.startsWith('//') ? next : null;
-      router.push(pendingInvite ? `/invite/${pendingInvite}` : (safeNext ?? '/app'));
+      router.push(pendingInvite ? `/invite/${pendingInvite}` : (safeNext ?? '/app/dashboard'));
     } catch (err) {
       setError(err instanceof ApiError ? err.message : 'Login failed. Please try again.');
     } finally {

@@ -5,8 +5,12 @@ import { getAdminUsageSummary, listAdminUsers, listPlans } from '@/lib/api';
 import { AdminUsageSummary, AdminUser, Plan, Role } from '@/lib/types';
 import { useAuth } from '@/lib/AuthContext';
 import { formatDateTime, timeAgo } from '@/lib/time';
-import { ChevronRightIcon } from '@/components/icons';
+import { ChevronRightIcon, TrashIcon } from '@/components/icons';
 import { AdminUserDrawer } from './AdminUserDrawer';
+import { DeleteUserDialog } from './DeleteUserDialog';
+
+/** The built-in account that owns anonymous public scans; the API refuses to delete it. */
+const isSystemAccount = (email: string) => email.toLowerCase() === 'public-scans@system.auditbenchai.local';
 import { UsageMeter, compactNumber, isAtLimit } from './usageDisplay';
 
 const ROLE_LABEL: Record<Role, string> = { user: 'User', admin: 'Admin', super_admin: 'Super Admin' };
@@ -50,6 +54,7 @@ export function AdminUsersTable() {
   const [sort, setSort] = useState<SortKey>('last_active');
   const [page, setPage] = useState(0);
   const [openId, setOpenId] = useState<string | null>(null);
+  const [deleting, setDeleting] = useState<{ id: string; email: string } | null>(null);
   // Snapshot of "now" so filters that depend on time stay pure during render.
   const [now] = useState(() => Date.now());
 
@@ -201,7 +206,7 @@ export function AdminUsersTable() {
             <col className="w-[120px]" />
             <col className="hidden w-[210px] md:table-column" />
             <col className="w-[96px]" />
-            <col className="w-[28px]" />
+            <col className="w-[72px]" />
           </colgroup>
           <thead>
             <tr className="border-b border-ink-line bg-ink-line/40 font-mono text-[11px] tracking-wide text-muted-on-ink uppercase">
@@ -346,7 +351,25 @@ export function AdminUsersTable() {
                   </td>
 
                   <td className="py-2.5 pr-2 align-middle">
-                    <ChevronRightIcon className="h-4 w-4 text-muted-on-ink opacity-40 transition-opacity group-hover:opacity-100" />
+                    <div className="flex items-center justify-end gap-1">
+                      {/* Super admins only, never yourself or another super admin (the API enforces the same). */}
+                      {canManageRoles && u.id !== me?.id && u.role !== 'super_admin' && !isSystemAccount(u.email) && (
+                        <button
+                          type="button"
+                          aria-label={`Delete ${u.email}`}
+                          title="Delete user"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setDeleting({ id: u.id, email: u.email });
+                          }}
+                          onKeyDown={(e) => e.stopPropagation()}
+                          className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-md text-muted-on-ink opacity-60 transition hover:bg-critical/15 hover:text-critical hover:opacity-100 focus-visible:opacity-100"
+                        >
+                          <TrashIcon className="h-4 w-4" />
+                        </button>
+                      )}
+                      <ChevronRightIcon className="h-4 w-4 text-muted-on-ink opacity-40 transition-opacity group-hover:opacity-100" />
+                    </div>
                   </td>
                 </tr>
               );
@@ -383,6 +406,18 @@ export function AdminUsersTable() {
           isSelf={openUser.id === me?.id}
           onClose={() => setOpenId(null)}
           onChanged={applyPatch}
+        />
+      )}
+
+      {deleting && (
+        <DeleteUserDialog
+          user={deleting}
+          onClose={() => setDeleting(null)}
+          onDeleted={(id) => {
+            setUsers((prev) => prev.filter((u) => u.id !== id));
+            setOpenId((open) => (open === id ? null : open));
+            setDeleting(null);
+          }}
         />
       )}
     </div>

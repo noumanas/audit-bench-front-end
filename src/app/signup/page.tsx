@@ -31,7 +31,7 @@ function SignupForm() {
     try {
       await signup(email, password, name || undefined);
       const pendingInvite = consumePendingInvite();
-      router.push(pendingInvite ? `/invite/${pendingInvite}` : '/app');
+      router.push(pendingInvite ? `/invite/${pendingInvite}` : '/app/dashboard');
     } catch (err) {
       setError(err instanceof ApiError ? err.message : 'Sign up failed. Please try again.');
     } finally {

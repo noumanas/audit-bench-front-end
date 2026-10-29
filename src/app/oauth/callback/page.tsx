@@ -16,7 +16,7 @@ function OAuthCallbackInner() {
     const code = params.get('code');
     if (!code) return;
     loginWithOAuthCode(code)
-      .then(() => router.replace('/app'))
+      .then(() => router.replace('/app/dashboard'))
       .catch((err) => setError(err instanceof ApiError ? err.message : 'Login failed. Please try again.'));
     // Only ever run once per landing on this page — re-running with a
     // used-up code would just fail.

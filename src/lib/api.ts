@@ -358,6 +358,18 @@ export function updateUserStatus(
   }).then((res) => unwrap<AdminUser>(res));
 }
 
+/** Permanently deletes a user (super admin only). `confirmEmail` must match the user's email. */
+export function deleteAdminUser(
+  userId: string,
+  confirmEmail: string,
+): Promise<{ deleted: true }> {
+  return fetch(`${API_URL}/admin/users/${encodeURIComponent(userId)}`, {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json", ...authHeaders() },
+    body: JSON.stringify({ confirmEmail }),
+  }).then((res) => unwrap<{ deleted: true }>(res));
+}
+
 export function updateUserProfile(
   userId: string,
   data: { name?: string; planId?: string },
