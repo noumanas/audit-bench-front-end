@@ -8,6 +8,8 @@ import { ApiError } from '@/lib/api';
 import { OAuthButtons } from '@/components/OAuthButtons';
 import { PasswordInput } from '@/components/PasswordInput';
 import { consumePendingInvite } from '@/lib/pendingInvite';
+import { AuthShell, authButtonClass, authInputClass, authLabelClass } from '@/components/auth/AuthShell';
+import { ArrowRightIcon } from '@/components/icons';
 
 function SignupForm() {
   const { signup } = useAuth();
@@ -40,74 +42,68 @@ function SignupForm() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center px-6 py-12">
-      <form
-        onSubmit={handleSubmit}
-        className="shadow-panel fade-up w-full max-w-sm rounded-xl border border-ink-line bg-ink-soft p-7"
-      >
-        <div className="mb-5 flex items-center gap-2">
-          <span className="h-1.5 w-1.5 rounded-full bg-cobalt" />
-          <span className="font-mono text-[11px] font-bold tracking-[0.14em] text-cobalt uppercase">
-            Get started
-          </span>
-        </div>
-        <h1 className="mb-1 text-xl font-bold tracking-tight text-[#E8ECF4]">Create an account</h1>
-        <p className="mb-6 text-sm leading-relaxed text-muted-on-ink">
+    <AuthShell
+      eyebrow="Get started"
+      title="Create an account"
+      subtitle={
+        <>
           Starts on the Free plan — 5 AI audits/day, 20/month. Local checks (lint, types,
-          complexity) are unlimited and don't count against that.
-        </p>
-
+          complexity) are unlimited and don&apos;t count against that.
+        </>
+      }
+    >
+      <form onSubmit={handleSubmit}>
         <OAuthButtons />
 
-        <label className="mb-1 block text-xs font-semibold text-muted-on-ink">Name (optional)</label>
+        <label className={authLabelClass}>Name (optional)</label>
         <input
           type="text"
+          autoComplete="name"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="mb-3 w-full rounded-md border border-ink-line bg-ink px-3 py-2 text-sm text-[#E8ECF4] outline-none transition-colors focus:border-cobalt focus:ring-1 focus:ring-cobalt/40"
+          className={`mb-4 ${authInputClass}`}
         />
 
-        <label className="mb-1 block text-xs font-semibold text-muted-on-ink">Email</label>
+        <label className={authLabelClass}>Work email</label>
         <input
           type="email"
           required
+          autoComplete="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="mb-3 w-full rounded-md border border-ink-line bg-ink px-3 py-2 text-sm text-[#E8ECF4] outline-none transition-colors focus:border-cobalt focus:ring-1 focus:ring-cobalt/40"
+          className={`mb-4 ${authInputClass}`}
         />
 
-        <label className="mb-1 block text-xs font-semibold text-muted-on-ink">Password</label>
+        <label className={authLabelClass}>Password</label>
         <PasswordInput
           required
           minLength={8}
+          autoComplete="new-password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          wrapperClassName="mb-4"
-          className="w-full rounded-md border border-ink-line bg-ink px-3 py-2 text-sm text-[#E8ECF4] outline-none transition-colors focus:border-cobalt focus:ring-1 focus:ring-cobalt/40"
+          wrapperClassName="mb-6"
+          className={authInputClass}
         />
 
         {error && (
-          <div className="mb-4 rounded-md border border-critical/40 bg-critical/10 px-3 py-2 text-xs text-[#F3B7BF]">
+          <div className="mb-4 rounded-lg border border-critical/40 bg-critical/10 px-3 py-2 text-xs text-[#F3B7BF]">
             {error}
           </div>
         )}
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full cursor-pointer rounded-lg bg-cobalt px-4 py-2.5 text-sm font-bold text-white transition-transform hover:-translate-y-px disabled:cursor-wait disabled:opacity-70 disabled:hover:translate-y-0"
-        >
+        <button type="submit" disabled={loading} className={authButtonClass}>
           {loading ? 'Creating account…' : 'Sign up'}
+          {!loading && <ArrowRightIcon className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />}
         </button>
 
-        <p className="mt-5 text-center text-xs text-muted-on-ink">
+        <p className="mt-6 text-center text-sm text-muted-on-ink">
           Already have an account?{' '}
           <Link href="/login" className="font-semibold text-cobalt hover:underline">
             Log in
           </Link>
         </p>
       </form>
-    </div>
+    </AuthShell>
   );
 }
 

@@ -8,6 +8,8 @@ import { ApiError } from '@/lib/api';
 import { OAuthButtons } from '@/components/OAuthButtons';
 import { PasswordInput } from '@/components/PasswordInput';
 import { consumePendingInvite } from '@/lib/pendingInvite';
+import { AuthShell, authButtonClass, authInputClass, authLabelClass } from '@/components/auth/AuthShell';
+import { ArrowRightIcon } from '@/components/icons';
 
 export default function LoginPage() {
   const { login } = useAuth();
@@ -36,59 +38,52 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center px-6 py-12">
-      <form
-        onSubmit={handleSubmit}
-        className="shadow-panel fade-up w-full max-w-sm rounded-xl border border-ink-line bg-ink-soft p-7"
-      >
-        <div className="mb-5 flex items-center gap-2">
-          <span className="h-1.5 w-1.5 rounded-full bg-cobalt" />
-          <span className="font-mono text-[11px] font-bold tracking-[0.14em] text-cobalt uppercase">Welcome back</span>
-        </div>
-        <h1 className="mb-1 text-xl font-bold tracking-tight text-[#E8ECF4]">Log in</h1>
-        <p className="mb-6 text-sm text-muted-on-ink">Continue auditing where you left off.</p>
-
+    <AuthShell
+      eyebrow="Welcome back"
+      title="Log in"
+      subtitle="Continue auditing where you left off — every pull request reviewed before it reaches main."
+    >
+      <form onSubmit={handleSubmit}>
         <OAuthButtons />
 
-        <label className="mb-1 block text-xs font-semibold text-muted-on-ink">Email</label>
+        <label className={authLabelClass}>Work email</label>
         <input
           type="email"
           required
+          autoComplete="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="mb-3 w-full rounded-md border border-ink-line bg-ink px-3 py-2 text-sm text-[#E8ECF4] outline-none transition-colors focus:border-cobalt focus:ring-1 focus:ring-cobalt/40"
+          className={`mb-4 ${authInputClass}`}
         />
 
-        <label className="mb-1 block text-xs font-semibold text-muted-on-ink">Password</label>
+        <label className={authLabelClass}>Password</label>
         <PasswordInput
           required
+          autoComplete="current-password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          wrapperClassName="mb-4"
-          className="w-full rounded-md border border-ink-line bg-ink px-3 py-2 text-sm text-[#E8ECF4] outline-none transition-colors focus:border-cobalt focus:ring-1 focus:ring-cobalt/40"
+          wrapperClassName="mb-6"
+          className={authInputClass}
         />
 
         {error && (
-          <div className="mb-4 rounded-md border border-critical/40 bg-critical/10 px-3 py-2 text-xs text-[#F3B7BF]">
+          <div className="mb-4 rounded-lg border border-critical/40 bg-critical/10 px-3 py-2 text-xs text-[#F3B7BF]">
             {error}
           </div>
         )}
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full cursor-pointer rounded-lg bg-cobalt px-4 py-2.5 text-sm font-bold text-white transition-transform hover:-translate-y-px disabled:cursor-wait disabled:opacity-70 disabled:hover:translate-y-0"
-        >
+        <button type="submit" disabled={loading} className={authButtonClass}>
           {loading ? 'Logging in…' : 'Log in'}
+          {!loading && <ArrowRightIcon className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />}
         </button>
 
-        <p className="mt-5 text-center text-xs text-muted-on-ink">
+        <p className="mt-6 text-center text-sm text-muted-on-ink">
           No account?{' '}
           <Link href="/signup" className="font-semibold text-cobalt hover:underline">
             Sign up
           </Link>
         </p>
       </form>
-    </div>
+    </AuthShell>
   );
 }

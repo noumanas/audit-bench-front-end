@@ -338,3 +338,128 @@ html.lenis body {
     animation: none;
   }
 }
+
+/* Merge-gate scene on the login/signup screens (auth/MergeGateArt and
+   auth/PrChecksCard). Every .mg-* part shares one 9s loop: PR rolls up ->
+   scanned -> blocked -> checks pass -> gate opens -> merges into main ->
+   gate closes. The un-animated styles are the resting "blocked" frame for
+   reduced motion. */
+.mg-token,
+.mg-door-l,
+.mg-door-r,
+.mg-red,
+.mg-green,
+.mg-flag,
+.mg-scan,
+.mg-pulse,
+.mg-pending,
+.mg-fail,
+.mg-ready,
+.mg-merged {
+  animation-duration: 9s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+  animation-fill-mode: both;
+}
+.mg-pulse,
+.mg-glow {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.mg-token { transform: translateY(-100px); animation-name: mg-token; }
+.mg-door-l { animation-name: mg-door-l; }
+.mg-door-r { animation-name: mg-door-r; }
+.mg-red { animation-name: mg-red; }
+.mg-green { opacity: 0; animation-name: mg-green; }
+.mg-glow { filter: blur(6px); }
+.mg-red.mg-glow { opacity: 0.6; }
+.mg-flag { animation-name: mg-flag; }
+.mg-scan { opacity: 0; animation-name: mg-scan; animation-timing-function: linear; }
+.mg-pulse { opacity: 0; animation-name: mg-pulse; animation-timing-function: ease-out; }
+.mg-pending { opacity: 0; animation-name: mg-pending; }
+.mg-fail { animation-name: mg-fail; }
+.mg-ready { opacity: 0; animation-name: mg-ready; }
+.mg-merged { opacity: 0; animation-name: mg-merged; }
+
+@keyframes mg-token {
+  0% { transform: translateY(0); opacity: 0; }
+  5% { opacity: 1; }
+  16%, 58% { transform: translateY(-100px); }
+  76% { transform: translateY(-326px); opacity: 1; }
+  84%, 100% { transform: translateY(-326px); opacity: 0; }
+}
+@keyframes mg-door-l {
+  0%, 52% { transform: translateX(0); }
+  60%, 84% { transform: translateX(-74px); }
+  92%, 100% { transform: translateX(0); }
+}
+@keyframes mg-door-r {
+  0%, 52% { transform: translateX(0); }
+  60%, 84% { transform: translateX(74px); }
+  92%, 100% { transform: translateX(0); }
+}
+@keyframes mg-red {
+  0%, 48% { opacity: 1; }
+  52%, 90% { opacity: 0; }
+  94%, 100% { opacity: 1; }
+}
+@keyframes mg-green {
+  0%, 48% { opacity: 0; }
+  52%, 90% { opacity: 1; }
+  94%, 100% { opacity: 0; }
+}
+@keyframes mg-flag {
+  0%, 24% { opacity: 0; }
+  28%, 44% { opacity: 1; }
+  48%, 100% { opacity: 0; }
+}
+@keyframes mg-scan {
+  0%, 17% { transform: translateY(0); opacity: 0; }
+  19% { opacity: 1; }
+  32% { transform: translateY(64px); opacity: 1; }
+  34% { transform: translateY(64px); opacity: 0; }
+  100% { transform: translateY(64px); opacity: 0; }
+}
+@keyframes mg-pulse {
+  0%, 74% { transform: scale(1); opacity: 0; }
+  76% { transform: scale(1); opacity: 0.9; }
+  90%, 100% { transform: scale(3.2); opacity: 0; }
+}
+@keyframes mg-pending {
+  0%, 17% { opacity: 1; }
+  19%, 92% { opacity: 0; }
+  95%, 100% { opacity: 1; }
+}
+@keyframes mg-fail {
+  0%, 17% { opacity: 0; }
+  19%, 48% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+@keyframes mg-ready {
+  0%, 50% { opacity: 0; }
+  53%, 74% { opacity: 1; }
+  77%, 100% { opacity: 0; }
+}
+@keyframes mg-merged {
+  0%, 75% { opacity: 0; }
+  77%, 90% { opacity: 1; }
+  94%, 100% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mg-token,
+  .mg-door-l,
+  .mg-door-r,
+  .mg-red,
+  .mg-green,
+  .mg-flag,
+  .mg-scan,
+  .mg-pulse,
+  .mg-pending,
+  .mg-fail,
+  .mg-ready,
+  .mg-merged {
+    animation: none;
+  }
+}
