@@ -17,7 +17,7 @@ export default function PrivacyPage() {
       kicker="Legal"
       title="Privacy Policy"
       intro="What we collect when you use auditbenchai.com and the Audit Bench Ai app, why we collect it, who we share it with, and the choices you have."
-      updated="October 11, 2026"
+      updated="October 31, 2026"
     >
       <p>
         This policy applies to the Audit Bench Ai website at auditbenchai.com, the web app, the command-line tool, the
@@ -55,6 +55,22 @@ export default function PrivacyPage() {
         <li>
           <strong>Device and log data:</strong> IP address, browser type, pages visited and timestamps, collected by our
           servers and by the analytics and advertising services described below.
+        </li>
+        <li>
+          <strong>Sign-in and account activity:</strong> when you sign up, sign in (including failed attempts) or
+          request a plan, we record the IP address, an approximate location derived from it (country, and sometimes
+          region or city), and your browser and operating system. We use this to protect accounts and spot abuse.
+          These records are kept for 180 days and deleted with your account. Country lookups use IP2Location LITE
+          data available from{' '}
+          <a href="https://lite.ip2location.com" target="_blank" rel="noreferrer">
+            https://lite.ip2location.com
+          </a>
+          , processed on our own servers.
+        </li>
+        <li>
+          <strong>How you found us:</strong> the site that referred you and any campaign tags in the link you arrived
+          from (for example <code>utm_source</code>). This is kept in your browser until you sign up, then saved with
+          your account so we know which channels bring people to Audit Bench Ai.
         </li>
         <li>
           <strong>Performance data:</strong> page-load timing measurements (Web Vitals) used to keep the site fast.

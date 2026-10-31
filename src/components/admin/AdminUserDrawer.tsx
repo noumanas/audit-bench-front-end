@@ -6,6 +6,7 @@ import { AdminUser, AdminUserUsageDetail, Plan, Role } from '@/lib/types';
 import { formatDateTime, timeAgo } from '@/lib/time';
 import { VerdictBadge } from '@/components/VerdictBadge';
 import { UsageMeter, compactNumber } from './usageDisplay';
+import { ActivityBadge, Location, activityDetail, deviceLabel, locationLabel, methodLabel } from './activityDisplay';
 
 const ROLE_LABEL: Record<Role, string> = { user: 'User', admin: 'Admin', super_admin: 'Super Admin' };
 
@@ -207,7 +208,7 @@ export function AdminUserDrawer({
             )}
           </Section>
 
-          <Section title="Recent activity">
+          <Section title="Recent runs">
             {loading || !detail ? (
               <div className="h-20 animate-pulse rounded-lg bg-ink-soft" />
             ) : detail.recent.length === 0 ? (
@@ -245,6 +246,72 @@ export function AdminUserDrawer({
                     </span>
                   </li>
                 ))}
+              </ul>
+            )}
+          </Section>
+
+          <Section title="Onboarding">
+            {loading || !detail ? (
+              <div className="h-14 animate-pulse rounded-lg bg-ink-soft" />
+            ) : detail.user.signupMethod || detail.user.signupSource || detail.user.signupCountry ? (
+              <dl className="grid grid-cols-2 gap-x-4 gap-y-2 text-[12px]">
+                <Info label="Signed up with" value={methodLabel(detail.user.signupMethod) ?? 'Unknown'} />
+                <Info
+                  label="Came from"
+                  value={
+                    (detail.user.signupSource ?? 'Unknown') +
+                    (detail.user.signupCampaign ? ` · ${detail.user.signupCampaign}` : '')
+                  }
+                />
+                <Info
+                  label="Signup location"
+                  value={
+                    locationLabel({ city: detail.user.signupCity, countryCode: detail.user.signupCountry }) ??
+                    'Unknown'
+                  }
+                />
+                <Info label="Region" value={detail.user.signupRegion ?? '—'} />
+              </dl>
+            ) : (
+              <p className="text-[13px] text-muted-on-ink">
+                Joined before onboarding tracking was added — no signup source recorded.
+              </p>
+            )}
+          </Section>
+
+          <Section title="Sign-ins & events">
+            {loading || !detail ? (
+              <div className="h-20 animate-pulse rounded-lg bg-ink-soft" />
+            ) : detail.activity.length === 0 ? (
+              <p className="text-[13px] text-muted-on-ink">No sign-ins recorded since activity tracking began.</p>
+            ) : (
+              <ul className="divide-y divide-ink-line overflow-hidden rounded-lg border border-ink-line">
+                {detail.activity.map((a) => {
+                  const extra = [activityDetail(a), methodLabel(a.method), deviceLabel(a.userAgent)]
+                    .filter(Boolean)
+                    .join(' · ');
+                  return (
+                    <li key={a.id} className="flex items-center gap-3 bg-ink-soft px-3.5 py-2.5 text-[12px]">
+                      <div className="min-w-0 flex-1">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <ActivityBadge type={a.type} />
+                          <span className="text-[#E8ECF4]">
+                            <Location city={a.city} countryCode={a.countryCode} />
+                          </span>
+                        </div>
+                        <div className="mt-1 truncate text-[11px] text-muted-on-ink">
+                          {[a.ip, extra].filter(Boolean).join(' · ')}
+                        </div>
+                      </div>
+                      <span
+                        className="w-20 shrink-0 text-right text-[11px] text-muted-on-ink"
+                        title={formatDateTime(a.createdAt)}
+                      >
+                        {timeAgo(a.createdAt)}
+                      </span>
+                    </li>
+                  );
+                })}
               </ul>
             )}
           </Section>

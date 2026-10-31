@@ -4,6 +4,7 @@ import { createContext, useContext, useEffect, useState, useCallback } from 'rea
 import { useRouter } from 'next/navigation';
 import * as api from './api';
 import { User } from './types';
+import { clearAttribution } from './attribution';
 
 interface AuthContextValue {
   user: User | null;
@@ -55,10 +56,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signup = async (email: string, password: string, name?: string) => {
     applySession(await api.signup(email, password, name));
+    clearAttribution();
   };
 
   const loginWithOAuthCode = async (code: string) => {
     applySession(await api.exchangeOAuthCode(code));
+    // Sent with the exchange; spent either way (a returning user doesn't need it).
+    clearAttribution();
   };
 
   const refreshUser = async () => {

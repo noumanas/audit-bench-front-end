@@ -114,6 +114,52 @@ export interface AdminUser {
   lastActiveAt?: string | null;
   quota?: AdminQuota;
   month?: { aiRuns: number; aiRepoScans: number; inputTokens: number; outputTokens: number };
+  // Onboarding — null for accounts created before tracking began.
+  signupMethod?: string | null;
+  signupSource?: string | null;
+  signupCountry?: string | null;
+  signupCity?: string | null;
+}
+
+export type ActivityType = 'signup' | 'login' | 'login_failed' | 'plan_requested' | 'plan_approved' | 'plan_rejected';
+
+export interface ActivityLog {
+  id: string;
+  type: ActivityType;
+  userId: string | null;
+  email: string | null;
+  method: string | null;
+  ip: string | null;
+  countryCode: string | null;
+  region: string | null;
+  city: string | null;
+  userAgent: string | null;
+  metadata: Record<string, unknown> | null;
+  createdAt: string;
+  user?: { id: string; email: string; name: string | null } | null;
+}
+
+export interface ActivityPage {
+  items: ActivityLog[];
+  nextCursor: string | null;
+}
+
+export interface ActivitySummary {
+  signupsToday: number;
+  signups7d: number;
+  signups30d: number;
+  logins24h: number;
+  failedLogins24h: number;
+  pendingRequests: number;
+  topSources: Array<{ source: string; count: number }>;
+  methods: Array<{ method: string; count: number }>;
+  topCountries: Array<{ countryCode: string; users: number }>;
+}
+
+export interface AdminNotifications {
+  unreadCount: number;
+  seenAt: string;
+  items: ActivityLog[];
 }
 
 export interface AdminQuota {
@@ -153,6 +199,12 @@ export interface AdminUserUsageDetail {
     orgRole: OrgRole | null;
     plan: Plan;
     organization: { id: string; name: string } | null;
+    signupMethod: string | null;
+    signupSource: string | null;
+    signupCampaign: string | null;
+    signupCountry: string | null;
+    signupRegion: string | null;
+    signupCity: string | null;
   };
   quota: Usage;
   daily: Array<{ date: string; audits: number; scans: number; aiRuns: number; tokens: number }>;
@@ -172,6 +224,8 @@ export interface AdminUserUsageDetail {
     postError?: string | null;
   }>;
   planRequests: Array<{ id: string; status: string; createdAt: string; reviewedAt: string | null; requestedPlan: { name: string } }>;
+  /** Latest sign-ins, failed sign-ins and plan events, newest first. */
+  activity: ActivityLog[];
 }
 
 export interface Usage {

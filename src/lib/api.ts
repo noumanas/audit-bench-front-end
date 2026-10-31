@@ -1,4 +1,8 @@
 import {
+  ActivityPage,
+  ActivitySummary,
+  ActivityType,
+  AdminNotifications,
   AdminUser,
   EmailCampaignKey,
   EmailCampaignRecipients,
@@ -46,6 +50,7 @@ import {
   WebhookConfig,
   WebhookProvider,
 } from "./types";
+import { readAttribution } from "./attribution";
 
 export const API_URL =
   process.env.NEXT_PUBLIC_API_URL ||
@@ -124,7 +129,7 @@ export function signup(
   return fetch(`${API_URL}/auth/signup`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, password, name }),
+    body: JSON.stringify({ email, password, name, attribution: readAttribution() }),
   }).then((res) => unwrap<AuthResponse>(res));
 }
 
@@ -158,7 +163,8 @@ export function exchangeOAuthCode(code: string): Promise<AuthResponse> {
   return fetch(`${API_URL}/auth/oauth/exchange`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ code }),
+    // Only used by the backend when this sign-in created the account.
+    body: JSON.stringify({ code, attribution: readAttribution() }),
   }).then((res) => unwrap<AuthResponse>(res));
 }
 
@@ -379,6 +385,39 @@ export function updateUserProfile(
     headers: { "Content-Type": "application/json", ...authHeaders() },
     body: JSON.stringify(data),
   }).then((res) => unwrap<AdminUser>(res));
+}
+
+// ---------- Admin activity & notifications ----------
+
+export function listAdminActivity(params: {
+  type?: ActivityType;
+  q?: string;
+  userId?: string;
+  cursor?: string;
+}): Promise<ActivityPage> {
+  const query = new URLSearchParams();
+  for (const [k, v] of Object.entries(params)) if (v) query.set(k, v);
+  return fetch(`${API_URL}/admin/activity?${query}`, { headers: authHeaders() }).then((res) =>
+    unwrap<ActivityPage>(res),
+  );
+}
+
+export function getAdminActivitySummary(): Promise<ActivitySummary> {
+  return fetch(`${API_URL}/admin/activity/summary`, { headers: authHeaders() }).then((res) =>
+    unwrap<ActivitySummary>(res),
+  );
+}
+
+export function getAdminNotifications(): Promise<AdminNotifications> {
+  return fetch(`${API_URL}/admin/notifications`, { headers: authHeaders() }).then((res) =>
+    unwrap<AdminNotifications>(res),
+  );
+}
+
+export function markAdminNotificationsSeen(): Promise<{ ok: true }> {
+  return fetch(`${API_URL}/admin/notifications/seen`, { method: "POST", headers: authHeaders() }).then((res) =>
+    unwrap<{ ok: true }>(res),
+  );
 }
 
 // ---------- Audits ----------

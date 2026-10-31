@@ -12,6 +12,7 @@ import { DeleteUserDialog } from './DeleteUserDialog';
 /** The built-in account that owns anonymous public scans; the API refuses to delete it. */
 const isSystemAccount = (email: string) => email.toLowerCase() === 'public-scans@system.auditbenchai.local';
 import { UsageMeter, compactNumber, isAtLimit } from './usageDisplay';
+import { countryName, flag, methodLabel } from './activityDisplay';
 
 const ROLE_LABEL: Record<Role, string> = { user: 'User', admin: 'Admin', super_admin: 'Super Admin' };
 const PAGE_SIZE = 20;
@@ -295,6 +296,20 @@ export function AdminUsersTable() {
                       {limited && (
                         <span className="rounded bg-critical/15 px-1.5 py-px font-mono text-[10px] font-bold text-critical uppercase">
                           At limit
+                        </span>
+                      )}
+                      {(u.signupCountry || u.signupSource) && (
+                        <span
+                          className="truncate"
+                          title={[
+                            u.signupCity || countryName(u.signupCountry),
+                            u.signupSource && `came from ${u.signupSource}`,
+                            u.signupMethod && `via ${methodLabel(u.signupMethod)}`,
+                          ]
+                            .filter(Boolean)
+                            .join(' · ')}
+                        >
+                          {flag(u.signupCountry)} {u.signupSource && u.signupSource !== 'direct' ? u.signupSource : ''}
                         </span>
                       )}
                     </div>

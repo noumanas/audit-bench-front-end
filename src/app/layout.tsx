@@ -7,6 +7,7 @@ import Script from "next/script";
 import { AuthProvider } from "@/lib/AuthContext";
 import { Navbar } from "@/components/Navbar";
 import { WebVitalsReporter } from "@/components/WebVitalsReporter";
+import { AttributionCapture } from "@/components/AttributionCapture";
 import { StructuredData } from "@/components/StructuredData";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/seo";
 import "./globals.css";
@@ -127,6 +128,7 @@ export default function RootLayout({
       <body className="flex min-h-full flex-col font-sans">
         <StructuredData data={[ORGANIZATION_SCHEMA, WEBSITE_SCHEMA]} />
         <WebVitalsReporter />
+        <AttributionCapture />
         {/* Motion: top loading bar, page enter transition, smooth scroll. */}
         <Suspense fallback={null}>
           <RouteProgress />
