@@ -42,6 +42,26 @@ function isSelfServicePlan(plan: Plan): boolean {
   return plan.priceMonthlyCents === 0 && plan.slug !== 'enterprise';
 }
 
+// Paid plans are paid off-site, then an admin matches the payment and
+// approves the request (the backend emails hello@auditbenchai.com on submit).
+const PAYMENT_URL = 'https://wise.com/pay/r/CybqhkY2UDfTvIs';
+const BILLING_EMAIL = 'hello@auditbenchai.com';
+
+// Fallback when the Wise link fails: a direct transfer to the Wise USD account.
+const BANK_DETAILS: { label: string; value: string; hint?: string }[] = [
+  { label: 'Account holder', value: 'Muhammad Nouman Qureshi' },
+  { label: 'Account type', value: 'Deposit' },
+  { label: 'Routing number (wire & ACH)', value: '084009519', hint: 'From a US bank' },
+  { label: 'Account number', value: '168832787556766' },
+  { label: 'Swift/BIC', value: 'TRWIUS35XXX', hint: 'From outside the US' },
+  { label: 'Bank address', value: 'Wise US Inc, 108 W 13th St, Wilmington, DE, 19801, United States' },
+];
+
+// Enterprise is "contact sales" with no fixed price, so it skips the payment step.
+function needsPayment(plan: Plan): boolean {
+  return plan.priceMonthlyCents > 0;
+}
+
 export function PlanPanel() {
   const { user, refreshUser } = useAuth();
   const canManageOrgPlan = user?.orgRole === 'owner' || user?.orgRole === 'admin';
@@ -51,6 +71,7 @@ export function PlanPanel() {
   const [switching, setSwitching] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
+  const [payingFor, setPayingFor] = useState<Plan | null>(null);
 
   const load = () => {
     Promise.all([getUsage(), listPlans(), getMyPlanRequests()])
@@ -76,7 +97,11 @@ export function PlanPanel() {
         await refreshUser();
         load();
       } else {
-        setNotice(`Request submitted — ${plan.name} is pending admin approval.`);
+        setNotice(
+          needsPayment(plan)
+            ? `Request submitted — we'll confirm your payment and activate ${plan.name}, usually within 24 hours.`
+            : `Request submitted — ${plan.name} is pending admin approval.`,
+        );
         load();
       }
     } catch (err) {
@@ -112,8 +137,9 @@ export function PlanPanel() {
 
       {pendingRequest && (
         <div className="mb-3 rounded-lg border border-high/40 bg-high/10 px-3.5 py-2.5 text-[13px] text-[#F0CE9A]">
-          Your request for <strong>{pendingRequest.requestedPlan.name}</strong> is awaiting admin approval (submitted{' '}
-          {new Date(pendingRequest.createdAt).toLocaleString()}).
+          Your request for <strong>{pendingRequest.requestedPlan.name}</strong> is awaiting approval (submitted{' '}
+          {new Date(pendingRequest.createdAt).toLocaleString()}). We activate it once your payment is confirmed —
+          questions? {BILLING_EMAIL}
         </div>
       )}
 
@@ -194,7 +220,7 @@ export function PlanPanel() {
                   </div>
                 ) : (
                   <button
-                    onClick={() => handleApply(plan)}
+                    onClick={() => (needsPayment(plan) ? setPayingFor(plan) : handleApply(plan))}
                     disabled={switching !== null || blockedByOtherPending}
                     title={blockedByOtherPending ? 'You already have a pending plan request' : undefined}
                     className="w-full cursor-pointer rounded-md border border-cobalt px-2 py-1.5 text-xs font-bold text-cobalt disabled:cursor-not-allowed disabled:opacity-40"
@@ -210,7 +236,182 @@ export function PlanPanel() {
         Free switches instantly. Paid plans need admin approval, run for 30 days from approval, then switch back to Free
         automatically unless renewed.
       </p>
+
+      {payingFor && (
+        <PaymentModal
+          plan={payingFor}
+          email={user?.email}
+          submitting={switching === payingFor.slug}
+          onCancel={() => setPayingFor(null)}
+          onConfirm={async () => {
+            await handleApply(payingFor);
+            setPayingFor(null);
+          }}
+        />
+      )}
     </div>
+  );
+}
+
+function PaymentModal({
+  plan,
+  email,
+  submitting,
+  onCancel,
+  onConfirm,
+}: {
+  plan: Plan;
+  email?: string;
+  submitting: boolean;
+  onCancel: () => void;
+  onConfirm: () => void;
+}) {
+  const [opened, setOpened] = useState(false);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && !submitting) onCancel();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [onCancel, submitting]);
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4 backdrop-blur-sm"
+      onClick={() => !submitting && onCancel()}
+    >
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="payment-modal-title"
+        onClick={(e) => e.stopPropagation()}
+        className="shadow-panel fade-up max-h-[90vh] w-full max-w-md overflow-y-auto rounded-xl border border-ink-line bg-ink-soft p-6"
+      >
+        <div className="mb-1 font-mono text-[11px] font-bold tracking-[0.14em] text-cobalt uppercase">Upgrade</div>
+        <h3 id="payment-modal-title" className="mb-1 text-lg font-bold text-[#E8ECF4]">
+          {plan.name} · {formatPrice(plan)}
+        </h3>
+        <p className="mb-5 text-[13px] leading-relaxed text-muted-on-ink">
+          Pay first (Wise link or bank transfer), then submit your request. We check the payment and activate {plan.name} for 30 days — usually
+          within 24 hours.
+        </p>
+
+        <ol className="mb-5 space-y-4 text-[13px] text-[#E8ECF4]">
+          <li className="flex gap-3">
+            <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-cobalt font-mono text-[11px] font-bold text-white">
+              1
+            </span>
+            <div className="flex-1">
+              <div className="mb-2 font-semibold">Pay {formatPrice(plan)} via Wise</div>
+              <a
+                href={PAYMENT_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setOpened(true)}
+                className="inline-flex items-center gap-1.5 rounded-md bg-cobalt px-3.5 py-2 text-xs font-bold text-white transition-colors hover:bg-cobalt-dark"
+              >
+                Open payment page ↗
+              </a>
+              {email && (
+                <p className="mt-2 text-[11px] text-muted-on-ink">
+                  Add <strong className="text-[#E8ECF4]">{email}</strong> as the payment reference so we can match it to
+                  your account.
+                </p>
+              )}
+              <BankTransferDetails />
+            </div>
+          </li>
+          <li className="flex gap-3">
+            <span
+              className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full font-mono text-[11px] font-bold ${
+                opened ? 'bg-cobalt text-white' : 'bg-ink-line text-muted-on-ink'
+              }`}
+            >
+              2
+            </span>
+            <div className="flex-1">
+              <div className="font-semibold">Submit your request</div>
+              <p className="mt-0.5 text-[11px] text-muted-on-ink">
+                Our team is notified and activates the plan once the payment arrives.
+              </p>
+            </div>
+          </li>
+        </ol>
+
+        <div className="flex gap-2">
+          <button
+            onClick={onCancel}
+            disabled={submitting}
+            className="flex-1 cursor-pointer rounded-md border border-ink-line px-3 py-2 text-xs font-bold text-muted-on-ink hover:text-[#E8ECF4] disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={onConfirm}
+            disabled={submitting}
+            className="flex-[2] cursor-pointer rounded-md border border-cobalt bg-cobalt/15 px-3 py-2 text-xs font-bold text-[#B9CCF7] hover:bg-cobalt/25 disabled:cursor-wait disabled:opacity-60"
+          >
+            {submitting ? 'Submitting…' : "I've paid — submit request"}
+          </button>
+        </div>
+        <p className="mt-3 text-center text-[11px] text-muted-on-ink">
+          Questions about billing?{' '}
+          <a href={`mailto:${BILLING_EMAIL}`} className="text-cobalt hover:underline">
+            {BILLING_EMAIL}
+          </a>
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function BankTransferDetails() {
+  const [copied, setCopied] = useState<string | null>(null);
+
+  const copy = (label: string, value: string) => {
+    navigator.clipboard
+      .writeText(value)
+      .then(() => {
+        setCopied(label);
+        setTimeout(() => setCopied((c) => (c === label ? null : c)), 1500);
+      })
+      .catch(() => {});
+  };
+
+  return (
+    <details className="group mt-3 rounded-md border border-ink-line bg-ink/60">
+      <summary className="cursor-pointer list-none px-3 py-2 text-[11px] font-semibold text-muted-on-ink hover:text-[#E8ECF4]">
+        <span className="mr-1 inline-block transition-transform group-open:rotate-90">›</span>
+        Payment link not working? Pay by bank transfer
+      </summary>
+      <div className="border-t border-ink-line px-3 py-2.5">
+        <p className="mb-2 text-[11px] leading-relaxed text-muted-on-ink">
+          USD account on Wise. From a US bank, send a domestic wire or ACH; from anywhere else, send an international
+          Swift transfer.
+        </p>
+        <dl className="space-y-1.5">
+          {BANK_DETAILS.map(({ label, value, hint }) => (
+            <div key={label} className="flex items-start justify-between gap-2">
+              <div className="min-w-0">
+                <dt className="text-[10px] text-muted-on-ink">
+                  {label}
+                  {hint && <span className="text-muted-on-ink/70"> · {hint}</span>}
+                </dt>
+                <dd className="font-mono text-[12px] break-words text-[#E8ECF4]">{value}</dd>
+              </div>
+              <button
+                type="button"
+                onClick={() => copy(label, value)}
+                className="mt-2.5 shrink-0 cursor-pointer rounded border border-ink-line px-1.5 py-0.5 font-mono text-[10px] text-muted-on-ink hover:text-[#E8ECF4]"
+              >
+                {copied === label ? 'Copied' : 'Copy'}
+              </button>
+            </div>
+          ))}
+        </dl>
+      </div>
+    </details>
   );
 }
 
@@ -234,7 +435,7 @@ function ExpiryNotice({ planName, expiresAt }: { planName: string; expiresAt: st
       })}{' '}
       ({daysLeft} day
       {daysLeft === 1 ? '' : 's'} left). After that the account switches to Free automatically — contact us at
-      noumanqureshi15@gmail.com to renew.
+      {BILLING_EMAIL} to renew.
     </div>
   );
 }
