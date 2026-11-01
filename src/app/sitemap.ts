@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next';
 import { BLOG_POSTS } from '@/lib/blog';
+import { DOC_PAGES, docHref } from '@/lib/docs';
 import { SITE_URL } from '@/lib/seo';
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -18,7 +19,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: '/cli', changeFrequency: 'monthly', priority: 0.7 },
     { path: '/vscode', changeFrequency: 'monthly', priority: 0.7 },
     { path: '/security', changeFrequency: 'monthly', priority: 0.6 },
-    { path: '/docs/required-check', changeFrequency: 'monthly', priority: 0.5 },
     { path: '/scan', changeFrequency: 'monthly', priority: 0.9 },
     { path: '/due-diligence', changeFrequency: 'monthly', priority: 0.7 },
     { path: '/pricing', changeFrequency: 'monthly', priority: 0.8 },
@@ -37,7 +37,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: new Date(post.updatedAt ?? post.publishedAt),
   }));
 
-  return [...routes, ...blogRoutes].map((r) => ({
+  const docRoutes = DOC_PAGES.map((page) => ({
+    path: docHref(page.slug),
+    changeFrequency: 'monthly' as const,
+    priority: page.slug ? 0.6 : 0.8,
+    lastModified: undefined as Date | undefined,
+  }));
+
+  return [...routes, ...docRoutes, ...blogRoutes].map((r) => ({
     url: `${SITE_URL}${r.path}`,
     lastModified: r.lastModified ?? new Date(),
     changeFrequency: r.changeFrequency,

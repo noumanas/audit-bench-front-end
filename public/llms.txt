@@ -7,6 +7,7 @@
 - [Homepage](https://auditbenchai.com/) — AI code review before it ships
 - [Technical due diligence](https://auditbenchai.com/due-diligence) — for investors, PE, VC, and M&A deal teams
 - [Pricing](https://auditbenchai.com/pricing) — developer plans (Free/Pro/Team/Enterprise)
+- [Documentation](https://auditbenchai.com/docs) — setup guides for GitHub, GitLab, Bitbucket, VS Code and the CLI; how reviews, configuration and limits work
 - [Free repository scan](https://auditbenchai.com/scan) — scan any public GitHub repo without signing up: exposed secrets, vulnerable dependencies, license risk, dead code, duplication and a health score, with a shareable report link
 - [Features](https://auditbenchai.com/features)
 - [Services](https://auditbenchai.com/services) — audit coverage and methodology
@@ -18,15 +19,34 @@
 
 ## Product 1: AI code review for engineering teams
 
-- [GitHub pull request review](https://auditbenchai.com/features) — inline comments, a summary, a merge-blocking status check
-- [GitLab merge request review](https://auditbenchai.com/features)
-- [Repository scans](https://auditbenchai.com/services) — dependency graph, dead code, duplicate code, secrets, license compliance, test-coverage estimate, architecture consistency
+- [GitHub pull request review](https://auditbenchai.com/docs/github) — a GitHub App: inline comments, a summary, and an "Audit Bench Ai" check that can be made a required check
+- [GitLab merge request review](https://auditbenchai.com/docs/gitlab)
+- [Bitbucket Cloud pull request review](https://auditbenchai.com/docs/bitbucket)
+- [Repository scans](https://auditbenchai.com/docs/repository-scans) — dependency graph, dead code, duplicate code, secrets, license compliance, test-coverage estimate, architecture consistency
 - [Single-file audits](https://auditbenchai.com/services)
-- [CLI for CI pipelines](https://auditbenchai.com/cli)
-- [VS Code extension](https://auditbenchai.com/vscode)
+- [CLI for CI pipelines](https://auditbenchai.com/docs/cli)
+- [VS Code extension](https://auditbenchai.com/docs/vscode)
+- Supported languages: TypeScript, JavaScript, Python, Go, Java, Kotlin, C#, PHP, Ruby, Rust, Swift, Scala, C, C++, plus SQL, Prisma, YAML and JSON
 - Supported stacks: React, Next.js, Node.js, NestJS, Python, FastAPI, Django, Laravel, Spring Boot, Supabase, Deno, Firebase
 - Supported LLM providers: Anthropic, OpenAI, Gemini, DeepSeek, Z.AI (GLM), Qwen, Kimi, xAI (Grok), Mistral, MiniMax
 - Pricing: Free ($0), Pro ($29/mo), Team ($99/mo), Enterprise (custom) — see [pricing](https://auditbenchai.com/pricing)
+
+## Documentation
+
+- [Introduction](https://auditbenchai.com/docs) — what Audit Bench Ai reviews and where it runs
+- [Quickstart](https://auditbenchai.com/docs/quickstart) — install the GitHub App and get a first pull request reviewed in about five minutes
+- [How reviews work](https://auditbenchai.com/docs/how-it-works) — free local checks (Stage 1), one focused AI call per changed file (Stage 2), calibration, no repeated comments, caching
+- [GitHub](https://auditbenchai.com/docs/github) — App install, permissions (contents read; pull requests and checks write), when reviews run, the check's failure/neutral/success rules, Re-run
+- [GitLab](https://auditbenchai.com/docs/gitlab) — access token and project webhook for merge request reviews
+- [Bitbucket](https://auditbenchai.com/docs/bitbucket) — API token and repository webhook for pull request reviews
+- [Reading a review](https://auditbenchai.com/docs/reviews) — inline comment format, severities (critical, high, medium, low, suggestion), 12 finding categories, the summary comment and verdict
+- [Replies and reactions](https://auditbenchai.com/docs/conversations) — reply to a finding to get a recheck, ask @auditbench about a pull request, 👍/👎/👀 reactions and learned rules
+- [Make it a required check](https://auditbenchai.com/docs/required-check) — GitHub rulesets or branch protection
+- [Rules and strictness](https://auditbenchai.com/docs/configuration) — the auditbench.md file, team rules (instruction, ignore files, don't flag), confidence and complexity thresholds
+- [Review quality metrics](https://auditbenchai.com/docs/review-quality) — precision, dismissals, acknowledgements, repeats held back
+- [Plans and limits](https://auditbenchai.com/docs/plans) — what counts toward limits and what happens at a limit
+- [Security and data](https://auditbenchai.com/docs/security) — what code is read, what goes to the AI provider, what is kept, deletion
+- [Troubleshooting](https://auditbenchai.com/docs/troubleshooting) — no review on a pull request, "Review didn't finish", webhooks not firing, too many comments
 
 ## Product 2: Technical due diligence for M&A and investment
 - [Technical Due Diligence Checklist (2026): 43 checks + free template](https://auditbenchai.com/blog/technical-due-diligence-checklist) — 6 risk areas, 15 domains, 43 checks with what to look at and red flags; free CSV template at https://auditbenchai.com/downloads/technical-due-diligence-checklist.csv
@@ -49,11 +69,11 @@ audit/bench runs repository-wide checks — dependency graph analysis, circular 
 **How much does AI code review cost?**
 audit/bench has four plans: Free ($0), Pro ($29/month), Team ($99/month), and Enterprise (custom pricing). Local checks (linting, type errors, complexity, formatting, secret scanning) are unlimited and free on every plan; plans differ in how many AI-reviewed audits are included per day and month.
 
-**Does audit/bench review GitHub pull requests and GitLab merge requests?**
-Yes. It reviews GitHub PRs and GitLab MRs natively, posting inline review comments on the changed lines, a plain-English summary, and a merge-blocking commit status check that can be wired into branch protection rules.
+**Does audit/bench review GitHub pull requests, GitLab merge requests and Bitbucket pull requests?**
+Yes. On GitHub it's a GitHub App that posts inline review comments on the changed lines, a plain-English summary, and an "Audit Bench Ai" check that can be made required with branch protection or rulesets. GitLab merge requests and Bitbucket Cloud pull requests are reviewed through a webhook. See the [GitHub](https://auditbenchai.com/docs/github), [GitLab](https://auditbenchai.com/docs/gitlab) and [Bitbucket](https://auditbenchai.com/docs/bitbucket) guides.
 
 **How does audit/bench control AI costs on a repository scan?**
-A three-stage pipeline: free local checks run first and cost nothing; only code that pass flags as risky is sent to an LLM; results are cached by content hash, so re-scanning unchanged code across repeated scans is free.
+Two stages plus a cache: free local checks run first and cost nothing; then only the code that pass flags as risky is sent to an LLM; and results are cached by content, rules and engine version, so re-scanning unchanged code is free. See [how reviews work](https://auditbenchai.com/docs/how-it-works).
 
 **What is technical due diligence software for M&A or private equity?**
 It's software that scans a target company's codebase directly, instead of relying on a manual consultant engagement, to assess security exposure, technical debt, talent concentration risk, and architecture consistency — producing a report an investment committee can act on in days rather than weeks.
@@ -74,10 +94,28 @@ An executive summary with an overall risk rating and health score; security expo
 Ten providers are supported and selectable per audit or as an account default: Anthropic, OpenAI, Gemini, DeepSeek, Z.AI (GLM), Qwen, Kimi, xAI (Grok), Mistral, and MiniMax.
 
 **Is there a CLI or VS Code extension for audit/bench?**
-Yes — a CLI for CI pipelines and pre-commit hooks, and a VS Code extension for in-editor review, both using the same review engine and findings format as the web app.
+Yes — a CLI (`auditbench audit`, `auditbench scan`, with `--fail-on` exit codes for CI) and a VS Code extension for in-editor review, both using the same review engine and findings format as the web app. See the [CLI](https://auditbenchai.com/docs/cli) and [VS Code](https://auditbenchai.com/docs/vscode) docs.
 
 **How does audit/bench compare to CodeRabbit or other AI code review tools?**
 See the full comparison: [audit/bench vs CodeRabbit](https://auditbenchai.com/blog/audit-bench-ai-vs-coderabbit).
+
+**How do I install AI code review on a GitHub repository?**
+Sign up, connect GitHub in the app, and click "Install on GitHub" on the Audit Bench Ai GitHub App card, choosing the repositories. The next non-draft pull request gets a review in one to two minutes. See the [quickstart](https://auditbenchai.com/docs/quickstart).
+
+**How do I configure audit/bench for my team's conventions?**
+Add an auditbench.md file (or .auditbench.md, or .github/auditbench.md) to the repository with your conventions in plain language, and add rules in the app: instructions, glob patterns of files to ignore, and kinds of finding not to flag. Strictness thresholds control the minimum confidence for posting a finding and for critical/high severity. There is no YAML config file. See [rules and strictness](https://auditbenchai.com/docs/configuration).
+
+**How do I reduce noise from an AI code reviewer?**
+React 👎 to findings you don't want: after two such signals on the same kind of finding in a repository, audit/bench creates a learned rule and stops raising it there. You can also raise the minimum confidence, turn off optional suggestions, and add ignore or don't-flag rules. Findings already raised on a pull request are never posted again on later pushes. See [replies and reactions](https://auditbenchai.com/docs/conversations).
+
+**What happens when I disagree with an AI review comment?**
+Reply in the comment's thread. audit/bench rechecks the code at the latest commit and answers: resolved, dismissed (you were right), downgraded (real but less serious), confirmed (still applies, with evidence), or asks for more detail. It judges the reply against the code, not against how confident the reply sounds. See [replies and reactions](https://auditbenchai.com/docs/conversations).
+
+**Can an AI code review block a pull request from merging?**
+Yes. On GitHub the "Audit Bench Ai" check fails on a critical finding, a high-severity security finding, merge conflicts, failing CI, or a likely committed secret, and can be made a required check. A review that can't finish closes as neutral so it never locks a pull request. See [make it a required check](https://auditbenchai.com/docs/required-check).
+
+**Is my code used to train AI models?**
+No. Code is sent to the AI provider through its API under terms that don't allow training on it, only the code a review needs is sent, and the free public scan sends nothing to an AI provider. Reports keep findings and line numbers, not copies of repositories. See [security and data](https://auditbenchai.com/docs/security).
 
 **What is the difference between a linter and AI code review?**
 A linter (like ESLint) checks code against a fixed set of syntax and style rules — it has no understanding of business logic or intent. AI code review adds LLM reasoning on top, catching logic bugs, security issues, and framework misuse that a fixed rule set can't express. audit/bench runs both: ESLint, TypeScript diagnostics, Semgrep, and Prettier as a free local first pass, then escalates only the code that pass flags as risky to an LLM.
@@ -153,3 +191,4 @@ Six categories: security exposure (vulnerabilities, exposed secrets, recurring p
 - [Technical Due Diligence Checklist (2026): 43 checks + free template](https://auditbenchai.com/blog/technical-due-diligence-checklist)
 - [Technical Due Diligence Questions: 60 questions to ask the target](https://auditbenchai.com/blog/technical-due-diligence-questions)
 - [Full blog index](https://auditbenchai.com/blog)
+- [Full documentation](https://auditbenchai.com/docs)

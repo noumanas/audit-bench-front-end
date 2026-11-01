@@ -10,6 +10,7 @@ const COLUMNS = [
       { href: '/alignment-lab', label: 'Alignment Lab' },
       { href: '/cli', label: 'CLI' },
       { href: '/vscode', label: 'VS Code' },
+      { href: '/docs', label: 'Documentation' },
       { href: '/pricing', label: 'Pricing' },
       { href: '/app', label: 'Open the app' },
     ],

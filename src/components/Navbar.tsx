@@ -15,6 +15,7 @@ const MARKETING_LINKS = [
   { href: '/alignment-lab', label: 'Alignment Lab' },
   { href: '/cli', label: 'CLI' },
   { href: '/vscode', label: 'VS Code' },
+  { href: '/docs', label: 'Docs' },
   { href: '/pricing', label: 'Pricing' },
 ];
 
@@ -75,7 +76,7 @@ export function Navbar() {
 
         <nav className="absolute left-1/2 hidden -translate-x-1/2 gap-4 lg:flex">
           {MARKETING_LINKS.map((link) => {
-            const active = pathname === link.href;
+            const active = pathname === link.href || (link.href === '/docs' && pathname.startsWith('/docs/'));
             return (
               <Link
                 key={link.href}
@@ -107,7 +108,7 @@ export function Navbar() {
         <div className="mt-4 flex flex-col gap-4 border-t border-ink-line pt-4 lg:hidden">
           <nav className="flex flex-col gap-3">
             {MARKETING_LINKS.map((link) => {
-              const active = pathname === link.href;
+              const active = pathname === link.href || (link.href === '/docs' && pathname.startsWith('/docs/'));
               return (
                 <Link
                   key={link.href}
