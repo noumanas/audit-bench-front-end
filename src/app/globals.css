@@ -294,6 +294,134 @@ html {
   font-size: 0.85em;
 }
 
+/* Docs article typography (components/docs/DocPage) — the dark counterpart
+   of .prose-blog. Blocks marked .not-prose (callouts, steps, cards) style
+   themselves. */
+.docs-prose {
+  font-size: 14.5px;
+  line-height: 1.75;
+  color: #c9d1e0;
+}
+
+.docs-prose > * + * {
+  margin-top: 1.15em;
+}
+
+.docs-prose h2:not(:where(.not-prose *)) {
+  margin-top: 2.4em;
+  padding-top: 0.2em;
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #e8ecf4;
+}
+
+.docs-prose h3:not(:where(.not-prose *)) {
+  margin-top: 1.9em;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #e8ecf4;
+}
+
+.docs-prose > h2:first-child,
+.docs-prose > h3:first-child {
+  margin-top: 0;
+}
+
+.docs-anchor {
+  margin-left: 0.45em;
+  color: var(--color-muted-on-ink);
+  opacity: 0;
+  text-decoration: none;
+  transition: opacity 0.15s;
+}
+
+.group:hover > .docs-anchor,
+.docs-anchor:focus-visible {
+  opacity: 1;
+}
+
+.docs-prose :where(ul, ol):not(:where(.not-prose, .not-prose *)) {
+  padding-left: 1.3em;
+}
+
+.docs-prose ul:not(:where(.not-prose, .not-prose *)) {
+  list-style: disc;
+}
+
+.docs-prose ol:not(:where(.not-prose, .not-prose *)) {
+  list-style: decimal;
+}
+
+.docs-prose li::marker {
+  color: var(--color-muted-on-ink);
+}
+
+.docs-prose li + li {
+  margin-top: 0.4em;
+}
+
+.docs-prose a:not(:where(.not-prose, .not-prose *)),
+.docs-callout-body a,
+.docs-step-body a {
+  color: #9db6ff;
+  text-decoration: underline;
+  text-decoration-color: rgba(157, 182, 255, 0.4);
+  text-underline-offset: 2px;
+}
+
+.docs-prose a:not(:where(.not-prose, .not-prose *)):hover,
+.docs-callout-body a:hover,
+.docs-step-body a:hover {
+  text-decoration-color: currentColor;
+}
+
+.docs-prose strong {
+  font-weight: 700;
+  color: #e8ecf4;
+}
+
+.docs-prose :not(pre) > code {
+  font-family: var(--font-mono);
+  font-size: 0.86em;
+  color: #e8ecf4;
+  background: var(--color-ink-soft);
+  border: 1px solid var(--color-ink-line);
+  border-radius: 4px;
+  padding: 0.12em 0.4em;
+}
+
+.docs-prose table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.docs-prose .docs-table {
+  overflow-x: auto;
+  border: 1px solid var(--color-ink-line);
+  border-radius: 8px;
+}
+
+.docs-prose th {
+  background: var(--color-ink-soft);
+  color: #e8ecf4;
+  font-weight: 700;
+  text-align: left;
+}
+
+.docs-prose th,
+.docs-prose td {
+  padding: 0.6em 0.9em;
+  border-bottom: 1px solid var(--color-ink-line);
+  vertical-align: top;
+}
+
+.docs-prose tr:last-child td {
+  border-bottom: 0;
+}
+
 /* Lenis smooth scrolling (see components/motion/SmoothScroll). Native
    scroll-behavior must be off while Lenis drives the scroll. */
 html.lenis,
