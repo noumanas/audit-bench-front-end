@@ -1,5 +1,8 @@
 import {
   ActivityPage,
+  ReviewQuality,
+  ReviewSettings,
+  ReviewThresholds,
   ActivitySummary,
   ActivityType,
   AdminNotifications,
@@ -791,6 +794,31 @@ export function getReviewOutcomes(): Promise<ReviewOutcomes> {
   return fetch(`${API_URL}/review-rules/outcomes`, {
     headers: authHeaders(),
   }).then((res) => unwrap<ReviewOutcomes>(res));
+}
+
+export function getReviewQuality(): Promise<ReviewQuality> {
+  return fetch(`${API_URL}/review-rules/quality`, { headers: authHeaders() }).then((res) => unwrap<ReviewQuality>(res));
+}
+
+export function getReviewSettings(): Promise<ReviewSettings> {
+  return fetch(`${API_URL}/review-rules/settings`, { headers: authHeaders() }).then((res) =>
+    unwrap<ReviewSettings>(res),
+  );
+}
+
+export function updateReviewSettings(input: Partial<ReviewThresholds>): Promise<ReviewThresholds> {
+  return fetch(`${API_URL}/review-rules/settings`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json", ...authHeaders() },
+    body: JSON.stringify(input),
+  }).then((res) => unwrap<ReviewThresholds>(res));
+}
+
+/** Admins: review usefulness across every team. */
+export function getAdminReviewQuality(days = 90): Promise<ReviewQuality> {
+  return fetch(`${API_URL}/admin/review-quality?days=${days}`, { headers: authHeaders() }).then((res) =>
+    unwrap<ReviewQuality>(res),
+  );
 }
 
 export function createReviewRule(input: {

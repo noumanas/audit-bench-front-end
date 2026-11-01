@@ -11,10 +11,11 @@ import { GithubAppAdmin } from '@/components/admin/GithubAppAdmin';
 import { EmailCampaigns } from '@/components/admin/EmailCampaigns';
 import { ActivityLogPanel } from '@/components/admin/ActivityLogPanel';
 import { NotificationBell } from '@/components/admin/NotificationBell';
+import { ReviewQualityAdmin } from '@/components/admin/ReviewQualityAdmin';
 import { getAdminActivitySummary } from '@/lib/api';
 import { useAuth } from '@/lib/AuthContext';
 
-type Tab = 'revenue' | 'activity' | 'requests' | 'users' | 'emails' | 'github-app' | 'vitals';
+type Tab = 'revenue' | 'activity' | 'requests' | 'users' | 'quality' | 'emails' | 'github-app' | 'vitals';
 
 // Icon paths share the 24px stroke style of components/icons.tsx.
 const TABS: { id: Tab; label: string; superOnly?: boolean; icon: string }[] = [
@@ -22,6 +23,7 @@ const TABS: { id: Tab; label: string; superOnly?: boolean; icon: string }[] = [
   { id: 'activity', label: 'Activity', icon: 'M3 12h4l3-7 4 14 3-7h4' },
   { id: 'requests', label: 'Plan requests', icon: 'M5 4h14v16l-7-3-7 3V4zm4 5h6m-6 4h4' },
   { id: 'users', label: 'Users', icon: 'M16 19v-1a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v1m6.5-9a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zM21 19v-1a4 4 0 0 0-3-3.9M16 3.1a3.5 3.5 0 0 1 0 6.8' },
+  { id: 'quality', label: 'Review quality', icon: 'M9 12l2 2 4-4M12 3l7 3v5c0 4.5-3 8.2-7 9-4-.8-7-4.5-7-9V6l7-3z' },
   { id: 'emails', label: 'Emails', superOnly: true, icon: 'M3 6h18v12H3zM3 7l9 6 9-6' },
   { id: 'github-app', label: 'GitHub App', superOnly: true, icon: 'M6 3v12m0 0a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm12-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm0 0a9 9 0 0 1-9 9' },
   { id: 'vitals', label: 'Web Vitals', icon: 'M12 3a9 9 0 1 0 9 9M12 12l5-5' },
@@ -109,6 +111,7 @@ function AdminPageInner() {
         {tab === 'activity' && <ActivityLogPanel />}
         {tab === 'requests' && <PlanRequestsTable />}
         {tab === 'users' && <AdminUsersTable />}
+        {tab === 'quality' && <ReviewQualityAdmin />}
         {tab === 'vitals' && <WebVitalsTable />}
         {tab === 'github-app' && isSuperAdmin && <GithubAppAdmin />}
         {tab === 'emails' && isSuperAdmin && <EmailCampaigns />}

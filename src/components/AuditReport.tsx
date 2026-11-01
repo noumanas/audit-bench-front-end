@@ -9,12 +9,13 @@ import { Stage1Summary } from './Stage1Summary';
 import { TokenUsageNote } from './TokenUsageNote';
 
 const SEVERITIES: Severity[] = ['critical', 'high', 'medium', 'low'];
-const SEVERITY_RANK: Record<Severity, number> = { critical: 0, high: 1, medium: 2, low: 3 };
+const SEVERITY_RANK: Record<Severity, number> = { critical: 0, high: 1, medium: 2, low: 3, info: 4 };
 const SEVERITY_HEX: Record<Severity, string> = {
   critical: '#c92a3d',
   high: '#d97706',
   medium: '#b08a00',
   low: '#2e6fab',
+  info: '#8a93a3',
 };
 const STATUS_FILTERS: Array<{ key: FindingStatus | 'all'; label: string }> = [
   { key: 'all', label: 'All' },
@@ -50,7 +51,7 @@ export function AuditReport({
   );
 
   const counts = useMemo(() => {
-    const c: Record<Severity, number> = { critical: 0, high: 0, medium: 0, low: 0 };
+    const c: Record<Severity, number> = { critical: 0, high: 0, medium: 0, low: 0, info: 0 };
     for (const f of audit.findings) c[f.severity]++;
     return c;
   }, [audit.findings]);

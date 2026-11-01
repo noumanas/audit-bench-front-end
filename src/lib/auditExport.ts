@@ -6,7 +6,7 @@ const VERDICT_LABEL: Record<Audit['verdict'], string> = {
   needs_work: 'Needs work',
   do_not_ship: 'Do not ship',
 };
-const RANK = { critical: 0, high: 1, medium: 2, low: 3 } as const;
+const RANK = { critical: 0, high: 1, medium: 2, low: 3, info: 4 } as const;
 
 /** The audit as Markdown — for pasting into a PR description, ticket or chat. */
 export function auditToMarkdown(audit: Audit): string {

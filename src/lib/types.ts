@@ -1,4 +1,4 @@
-export type Severity = 'critical' | 'high' | 'medium' | 'low';
+export type Severity = 'critical' | 'high' | 'medium' | 'low' | 'info';
 export type Verdict = 'pass' | 'needs_work' | 'do_not_ship';
 export type ScanStatus = 'queued' | 'processing' | 'completed' | 'failed';
 export type ScanSourceType =
@@ -993,4 +993,49 @@ export type EmailCampaignsStatus = Record<EmailCampaignKey, EmailCampaignStatus>
 export interface EmailCampaignRecipients {
   eligible: number;
   recipients: (string | { email: string; daysInactive: number })[];
+}
+
+/** How strict reviews are for a team or personal account (backend ReviewSettings). */
+export interface ReviewThresholds {
+  minConfidence: number;
+  severeMinConfidence: number;
+  deepNesting: number;
+  veryHighComplexity: number;
+  optionalSuggestions: boolean;
+}
+
+export interface ReviewSettings {
+  thresholds: ReviewThresholds;
+  defaults: ReviewThresholds;
+  limits: Record<'minConfidence' | 'severeMinConfidence' | 'deepNesting' | 'veryHighComplexity', { min: number; max: number }>;
+}
+
+/** Review usefulness over a window (backend review-quality.ts). A rate is null until there's data. */
+export interface ReviewQuality {
+  days: number;
+  precision: number | null;
+  acceptanceRate: number | null;
+  dismissalRate: number | null;
+  ignoredRate: number | null;
+  findingsWithOutcome: number;
+  acknowledged: number;
+  acknowledgedRate: number | null;
+  duplicates: { posted: number; open: number; dismissed: number; duplicateRate: number | null };
+  discussion: {
+    resolved: number;
+    withdrawn: number;
+    upheld: number;
+    downgraded: number;
+    withdrawnRate: number | null;
+    severityOverstatedRate: number | null;
+  };
+  volume: {
+    reviews: number;
+    findings: number;
+    inputTokens: number;
+    outputTokens: number;
+    findingsPerReview: number | null;
+    tokensPerReview: number | null;
+    tokensPerFinding: number | null;
+  };
 }
