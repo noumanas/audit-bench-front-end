@@ -2,12 +2,14 @@ import { DependencyVulnerability } from './types';
 
 export type DepSeverity = 'critical' | 'high' | 'medium' | 'low' | 'unknown';
 
-export const SEVERITY_HEX: Record<DepSeverity, string> = {
+// Also colors code-review findings, whose optional suggestions are "info".
+export const SEVERITY_HEX: Record<DepSeverity | 'info', string> = {
   critical: '#c92a3d',
   high: '#d97706',
   medium: '#b08a00',
   low: '#2e6fab',
   unknown: '#8a93a3',
+  info: '#8a93a3',
 };
 
 export const DEP_RANK: Record<DepSeverity, number> = { critical: 4, high: 3, medium: 2, low: 1, unknown: 0 };

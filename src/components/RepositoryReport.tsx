@@ -41,7 +41,7 @@ const FIXABLE_SOURCE_TYPES = new Set<ScanJob['sourceType']>(['github_repo', 'git
 const CONTRIBUTOR_STATS_SOURCE_TYPES = new Set<ScanJob['sourceType']>(['github_repo', 'gitlab_repo']);
 
 const SEVERITY_ORDER: Severity[] = ['critical', 'high', 'medium', 'low'];
-const SEVERITY_RANK: Record<Severity, number> = { critical: 4, high: 3, medium: 2, low: 1 };
+const SEVERITY_RANK: Record<Severity, number> = { critical: 4, high: 3, medium: 2, low: 1, info: 0 };
 
 const SOURCE_LABEL: Record<ScanJob['sourceType'], string> = {
   zip: 'Repository scan · .zip upload',
@@ -54,7 +54,7 @@ const SOURCE_LABEL: Record<ScanJob['sourceType'], string> = {
 };
 
 function severityCounts(findings: { severity: Severity }[]): Record<Severity, number> {
-  const counts: Record<Severity, number> = { critical: 0, high: 0, medium: 0, low: 0 };
+  const counts: Record<Severity, number> = { critical: 0, high: 0, medium: 0, low: 0, info: 0 };
   for (const f of findings) counts[f.severity]++;
   return counts;
 }

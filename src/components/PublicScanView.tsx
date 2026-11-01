@@ -235,7 +235,7 @@ function Progress({ scan }: { scan: PublicScan }) {
 function Report({ scan }: { scan: PublicScan }) {
   const risk = scan.riskAggregation;
   const counts = useMemo(() => {
-    const c: Record<Severity, number> = { critical: 0, high: 0, medium: 0, low: 0 };
+    const c: Record<Severity, number> = { critical: 0, high: 0, medium: 0, low: 0, info: 0 };
     for (const f of scan.files) for (const x of f.findings) c[x.severity]++;
     return c;
   }, [scan.files]);
@@ -463,7 +463,7 @@ function PrReport({ scan }: { scan: PublicScan }) {
   const origin = useSiteOrigin();
   const [copied, setCopied] = useState(false);
   const counts = useMemo(() => {
-    const c: Record<Severity, number> = { critical: 0, high: 0, medium: 0, low: 0 };
+    const c: Record<Severity, number> = { critical: 0, high: 0, medium: 0, low: 0, info: 0 };
     for (const f of scan.files) for (const x of f.findings) c[x.severity]++;
     return c;
   }, [scan.files]);

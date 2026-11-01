@@ -5,6 +5,7 @@ const STYLES: Record<Severity, { label: string; className: string }> = {
   high: { label: 'High', className: 'bg-high' },
   medium: { label: 'Medium', className: 'bg-medium' },
   low: { label: 'Low', className: 'bg-low' },
+  info: { label: 'Suggestion', className: 'bg-muted-on-paper' },
 };
 
 export function SeverityBadge({ level }: { level: Severity }) {

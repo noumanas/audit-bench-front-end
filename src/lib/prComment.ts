@@ -8,7 +8,13 @@ export const READINESS: Record<MergeReadinessStatus, { label: string; icon: stri
   closed: { label: 'Closed without merging', icon: '⚪', hex: '#6b7280' },
 };
 
-const SEVERITY_LABEL: Record<Severity, string> = { critical: 'Critical', high: 'High', medium: 'Medium', low: 'Low' };
+const SEVERITY_LABEL: Record<Severity, string> = {
+  critical: 'Critical',
+  high: 'High',
+  medium: 'Medium',
+  low: 'Low',
+  info: 'Suggestion',
+};
 const ORDER: Severity[] = ['critical', 'high', 'medium', 'low'];
 const mergeCell = (pr: NonNullable<PublicScan['pullRequest']>) =>
   pr.merged

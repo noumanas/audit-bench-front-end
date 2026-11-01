@@ -10,6 +10,7 @@ const SEVERITY_BORDER: Record<Finding['severity'], string> = {
   high: 'border-l-high',
   medium: 'border-l-medium',
   low: 'border-l-low',
+  info: 'border-l-paper-line',
 };
 
 const STATUS_LABEL: Record<FindingStatus, string> = {

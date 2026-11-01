@@ -56,6 +56,7 @@ function severityCounts(findings: Finding[]): Record<Severity, number> {
     high: 0,
     medium: 0,
     low: 0,
+    info: 0,
   };
   for (const f of findings) counts[f.severity]++;
   return counts;

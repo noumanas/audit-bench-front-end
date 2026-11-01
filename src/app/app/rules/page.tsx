@@ -1,8 +1,26 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import { createReviewRule, deleteReviewRule, getReviewOutcomes, listReviewRules, updateReviewRule } from '@/lib/api';
-import type { OutcomeCounts, ReviewOutcomes, ReviewRule, ReviewRuleKind } from '@/lib/types';
+import {
+  createReviewRule,
+  deleteReviewRule,
+  getReviewOutcomes,
+  getReviewQuality,
+  getReviewSettings,
+  listReviewRules,
+  updateReviewRule,
+  updateReviewSettings,
+} from '@/lib/api';
+import type {
+  OutcomeCounts,
+  ReviewOutcomes,
+  ReviewQuality,
+  ReviewRule,
+  ReviewRuleKind,
+  ReviewSettings,
+  ReviewThresholds,
+} from '@/lib/types';
+import { ReviewQualityPanel } from '@/components/ReviewQualityPanel';
 import { RequireAuth } from '@/components/RequireAuth';
 import { PageHeader } from '@/components/PageHeader';
 import { useAuth } from '@/lib/AuthContext';
@@ -47,6 +65,8 @@ function RulesInner() {
   const manual = useMemo(() => (rules ?? []).filter((r) => r.source === 'manual'), [rules]);
   const learned = useMemo(() => (rules ?? []).filter((r) => r.source === 'learned'), [rules]);
   const canShare = Boolean(user?.organization) && (user?.orgRole === 'owner' || user?.orgRole === 'admin');
+  // Personal accounts tune their own reviews; in a team only owners and admins can.
+  const canTune = !user?.organization || canShare;
 
   const replace = (rule: ReviewRule) => setRules((rs) => (rs ?? []).map((r) => (r.id === rule.id ? rule : r)));
   const remove = (id: string) => setRules((rs) => (rs ?? []).filter((r) => r.id !== id));
@@ -69,6 +89,8 @@ function RulesInner() {
       )}
 
       <OutcomesCard />
+      <QualityCard />
+      <StrictnessCard canTune={canTune} team={Boolean(user?.organization)} />
 
       <AddRule canShare={canShare} onAdded={(r) => setRules((rs) => [r, ...(rs ?? [])])} onError={setError} />
       <p className="-mt-5 mb-8 text-[12px] leading-relaxed text-muted-on-ink">
@@ -366,5 +388,172 @@ function CategoryRow({ cat, c, pct }: { cat: string; c: OutcomeCounts; pct: (n: 
         {pct(c.ignored, c.total)} ignored · {c.total}
       </span>
     </li>
+  );
+}
+
+function QualityCard() {
+  const [data, setData] = useState<ReviewQuality | null>(null);
+  useEffect(() => {
+    getReviewQuality()
+      .then(setData)
+      .catch(() => setData(null));
+  }, []);
+  if (!data || data.volume.reviews === 0) return null;
+  return (
+    <section className="mb-8 rounded-lg border border-ink-line bg-ink-soft p-4">
+      <h2 className="mb-3 text-sm font-bold text-[#E8ECF4]">Review quality (last {data.days} days)</h2>
+      <ReviewQualityPanel data={data} scope="team" />
+    </section>
+  );
+}
+
+const STRICTNESS_FIELDS: Array<{
+  key: 'minConfidence' | 'severeMinConfidence' | 'deepNesting' | 'veryHighComplexity';
+  label: string;
+  hint: string;
+  step: number;
+  percent?: boolean;
+}> = [
+  {
+    key: 'minConfidence',
+    label: 'Minimum confidence to post a finding',
+    hint: 'Raise it for fewer, surer comments. Lower it to see more possible issues.',
+    step: 0.05,
+    percent: true,
+  },
+  {
+    key: 'severeMinConfidence',
+    label: 'Confidence a critical or high finding needs',
+    hint: 'Below this, it is posted as medium, so an unconfirmed concern can’t block a merge.',
+    step: 0.05,
+    percent: true,
+  },
+  {
+    key: 'deepNesting',
+    label: 'Nesting depth that counts as hard to follow',
+    hint: 'Conditions nested this deep get a maintainability comment.',
+    step: 1,
+  },
+  {
+    key: 'veryHighComplexity',
+    label: 'Paths through a function that count as too many',
+    hint: 'Flags a function this branchy even when it is flat.',
+    step: 1,
+  },
+];
+
+function StrictnessCard({ canTune, team }: { canTune: boolean; team: boolean }) {
+  const [settings, setSettings] = useState<ReviewSettings | null>(null);
+  const [draft, setDraft] = useState<ReviewThresholds | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [message, setMessage] = useState<{ ok: boolean; text: string } | null>(null);
+
+  useEffect(() => {
+    getReviewSettings()
+      .then((s) => {
+        setSettings(s);
+        setDraft(s.thresholds);
+      })
+      .catch(() => setSettings(null));
+  }, []);
+  if (!settings || !draft) return null;
+
+  const changed = (Object.keys(draft) as (keyof ReviewThresholds)[]).some((k) => draft[k] !== settings.thresholds[k]);
+  const save = async (next: ReviewThresholds) => {
+    setBusy(true);
+    setMessage(null);
+    try {
+      const saved = await updateReviewSettings(next);
+      setSettings({ ...settings, thresholds: saved });
+      setDraft(saved);
+      setMessage({ ok: true, text: 'Saved. The next reviews use these settings.' });
+    } catch (err) {
+      setMessage({ ok: false, text: err instanceof Error ? err.message : 'Could not save the settings.' });
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  return (
+    <section className="mb-8 rounded-lg border border-ink-line bg-ink-soft p-4">
+      <h2 className="text-sm font-bold text-[#E8ECF4]">Review strictness</h2>
+      <p className="mt-1 mb-4 text-[12px] leading-relaxed text-muted-on-ink">
+        How sure Audit Bench Ai must be before it comments, and when complexity is worth raising.
+        {team ? ' Applies to your whole team.' : ''}
+        {!canTune ? ' Only your team’s owners and admins can change these.' : ''}
+      </p>
+      <div className="grid gap-4 sm:grid-cols-2">
+        {STRICTNESS_FIELDS.map((f) => {
+          const lim = settings.limits[f.key];
+          const value = draft[f.key];
+          return (
+            <label key={f.key} htmlFor={`strict-${f.key}`} className="block">
+              <span className="flex items-baseline justify-between gap-2 text-[12px] font-semibold text-[#E8ECF4]">
+                {f.label}
+                <span className="font-mono text-[12px] text-[#8fb0ff] tabular-nums">
+                  {f.percent ? `${Math.round(value * 100)}%` : value}
+                </span>
+              </span>
+              <input
+                id={`strict-${f.key}`}
+                type="range"
+                min={lim.min}
+                max={lim.max}
+                step={f.step}
+                value={value}
+                disabled={!canTune || busy}
+                onChange={(e) => setDraft({ ...draft, [f.key]: Number(e.target.value) })}
+                className="mt-2 w-full accent-[#2b5be3] disabled:opacity-50"
+              />
+              <span className="mt-1 block text-[11px] leading-snug text-muted-on-ink">
+                {f.hint} Default {f.percent ? `${Math.round(settings.defaults[f.key] * 100)}%` : settings.defaults[f.key]}.
+              </span>
+            </label>
+          );
+        })}
+      </div>
+      <label htmlFor="strict-suggestions" className="mt-4 flex items-start gap-2.5 text-[12px] text-[#E8ECF4]">
+        <input
+          id="strict-suggestions"
+          type="checkbox"
+          checked={draft.optionalSuggestions}
+          disabled={!canTune || busy}
+          onChange={(e) => setDraft({ ...draft, optionalSuggestions: e.target.checked })}
+          className="mt-0.5 accent-[#2b5be3]"
+        />
+        <span>
+          <span className="font-semibold">List optional suggestions on pull requests</span>
+          <span className="block text-[11px] text-muted-on-ink">
+            Nice-to-have ideas go in a collapsed section of the review summary, never as comments, and never affect
+            the verdict.
+          </span>
+        </span>
+      </label>
+      {canTune && (
+        <div className="mt-4 flex flex-wrap items-center gap-2">
+          <button
+            type="button"
+            onClick={() => save(draft)}
+            disabled={!changed || busy}
+            className="cursor-pointer rounded-md bg-cobalt px-3.5 py-1.5 text-xs font-bold text-white disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {busy ? 'Saving…' : 'Save'}
+          </button>
+          <button
+            type="button"
+            onClick={() => save(settings.defaults)}
+            disabled={busy}
+            className="cursor-pointer rounded-md border border-ink-line px-3.5 py-1.5 text-xs font-semibold text-muted-on-ink hover:text-[#E8ECF4] disabled:opacity-50"
+          >
+            Reset to defaults
+          </button>
+          {message && (
+            <span role="status" className={`text-[12px] ${message.ok ? 'text-pass' : 'text-[#F3B7BF]'}`}>
+              {message.text}
+            </span>
+          )}
+        </div>
+      )}
+    </section>
   );
 }
