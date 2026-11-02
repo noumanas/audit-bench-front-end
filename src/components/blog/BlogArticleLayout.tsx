@@ -37,6 +37,7 @@ export function BlogArticleLayout({
     author: { '@type': 'Organization', name: SITE_NAME, url: SITE_URL },
     publisher: { '@type': 'Organization', name: SITE_NAME, url: SITE_URL },
     mainEntityOfPage: articleUrl,
+    ...(image && { image: `${SITE_URL}${image}` }),
   };
   const breadcrumb = {
     '@context': 'https://schema.org',

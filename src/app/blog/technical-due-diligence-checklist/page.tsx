@@ -2,11 +2,15 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { BlogArticleLayout } from '@/components/blog/BlogArticleLayout';
 import { StructuredData } from '@/components/StructuredData';
+import { CopySnippet } from '@/components/blog/CopySnippet';
 import { BLOG_POSTS } from '@/lib/blog';
+import { SITE_NAME, SITE_URL } from '@/lib/seo';
 import { BEYOND_CODE_CHECKLIST, TDD_CHECKLIST, type TddChecklistArea } from '@/lib/tddChecklist';
 
 const POST = BLOG_POSTS.find((p) => p.slug === 'technical-due-diligence-checklist')!;
+const POST_URL = `${SITE_URL}/blog/${POST.slug}`;
 const TEMPLATE_URL = '/downloads/technical-due-diligence-checklist.csv';
+const SAMPLE_REPORT_URL = '/audit-bench-sample-tdd-report.pdf';
 const countChecks = (a: TddChecklistArea) => a.domains.reduce((n, d) => n + d.checks.length, 0);
 // TOTAL is the code-level catalog Audit Bench automates; BEYOND covers infrastructure, compliance, IP and roadmap.
 const TOTAL = TDD_CHECKLIST.reduce((n, a) => n + countChecks(a), 0);
@@ -14,11 +18,24 @@ const BEYOND = countChecks(BEYOND_CODE_CHECKLIST);
 const ALL = TOTAL + BEYOND;
 const ALL_AREAS = [...TDD_CHECKLIST, BEYOND_CODE_CHECKLIST];
 
+// The root template appends "· Audit Bench Ai", which pushes this title well
+// past the ~60 characters Google shows and truncates the "+ Template" hook —
+// so the search title is set absolutely and kept keyword-first.
+const SEARCH_TITLE = `Technical Due Diligence Checklist 2026: ${ALL} Checks + Template`;
+
 export const metadata: Metadata = {
-  title: POST.title,
+  title: { absolute: SEARCH_TITLE },
   description: POST.description,
   alternates: { canonical: `/blog/${POST.slug}` },
-  openGraph: { title: POST.title, description: POST.description, type: 'article' },
+  openGraph: {
+    title: SEARCH_TITLE,
+    description: POST.description,
+    type: 'article',
+    url: POST_URL,
+    publishedTime: POST.publishedAt,
+    modifiedTime: POST.updatedAt,
+  },
+  twitter: { card: 'summary_large_image', title: SEARCH_TITLE, description: POST.description },
 };
 
 const FAQ = [
@@ -94,17 +111,64 @@ function DownloadBox() {
           Download the checklist (CSV)
         </a>
         <Link
-          href="/scan"
-          className="rounded-lg border border-paper-line bg-paper-card px-4 py-2 text-sm font-bold text-[#1C2128] no-underline"
+          href="/signup"
+          className="rounded-lg border border-paper-line bg-paper-card px-4 py-2 text-sm font-bold text-[#1C2128] no-underline hover:border-cobalt/40"
         >
-          Run the code checks free on a repo
+          Run the {TOTAL} code checks automatically
         </Link>
+      </div>
+      <p className="mt-3 text-xs text-muted-on-paper">
+        No account yet? <Link href="/scan">Scan a public GitHub repo free</Link> and see the checks in action first.
+      </p>
+    </div>
+  );
+}
+
+function AutomateCallout() {
+  return (
+    <div className="not-prose my-8 rounded-xl border border-ink-line bg-ink p-6">
+      <div className="font-mono text-[11px] font-bold tracking-[0.12em] text-cobalt uppercase">
+        Skip the manual pass
+      </div>
+      <div className="mt-2 text-lg leading-snug font-bold text-[#E8ECF4]">
+        {TOTAL} of these {ALL} checks run automatically on a repo — every finding priced in engineer-days.
+      </div>
+      <p className="mt-2 text-sm leading-relaxed text-muted-on-ink">
+        Connect GitHub or GitLab, or upload a .zip. Secrets, vulnerable dependencies, licenses, complexity, test coverage
+        and commit-history risk come back as one report you can hand to the deal team.
+      </p>
+      <div className="mt-4 flex flex-wrap gap-3">
+        <Link
+          href="/signup"
+          className="rounded-lg bg-cobalt px-4 py-2 text-sm font-bold text-white hover:bg-cobalt-dark"
+        >
+          Start free — no credit card
+        </Link>
+        <a
+          href={SAMPLE_REPORT_URL}
+          className="rounded-lg border border-ink-line px-4 py-2 text-sm font-bold text-muted-on-ink hover:border-cobalt/40 hover:text-[#E8ECF4]"
+        >
+          See a sample report (PDF)
+        </a>
       </div>
     </div>
   );
 }
 
-function AreaSection({ area, index }: { area: TddChecklistArea; index: number }) {
+function AreaAutomationStrip({ area }: { area: TddChecklistArea }) {
+  return (
+    <div className="not-prose my-6 flex flex-wrap items-center justify-between gap-3 rounded-lg border border-cobalt/30 bg-cobalt/5 px-4 py-3">
+      <span className="text-sm text-[#1C2128]">
+        <span className="font-semibold">All {countChecks(area)} checks above run automatically</span> in {SITE_NAME}.
+      </span>
+      <Link href="/signup" className="text-sm font-bold whitespace-nowrap text-cobalt no-underline hover:underline">
+        Run them on your repo free →
+      </Link>
+    </div>
+  );
+}
+
+function AreaSection({ area, index, automated }: { area: TddChecklistArea; index: number; automated: boolean }) {
   return (
     <section>
       <h2 id={slugify(area.name)}>
@@ -123,10 +187,17 @@ function AreaSection({ area, index }: { area: TddChecklistArea; index: number })
                     className="inline-block h-4 w-4 shrink-0 rounded border-2 border-muted-on-paper"
                   />
                   <span className="font-semibold text-[#1C2128]">{c.check}</span>
-                  <span
-                    className={`ml-auto rounded px-1.5 py-0.5 font-mono text-[10px] font-bold uppercase ${SEVERITY_STYLE[c.severity]}`}
-                  >
-                    {c.severity}
+                  <span className="ml-auto flex items-center gap-1.5">
+                    {automated && (
+                      <span className="rounded border border-cobalt/40 px-1.5 py-0.5 font-mono text-[10px] font-bold text-cobalt uppercase">
+                        Automated
+                      </span>
+                    )}
+                    <span
+                      className={`rounded px-1.5 py-0.5 font-mono text-[10px] font-bold uppercase ${SEVERITY_STYLE[c.severity]}`}
+                    >
+                      {c.severity}
+                    </span>
                   </span>
                 </div>
                 <p className="mt-2 text-sm leading-relaxed text-[#1C2128]">
@@ -142,9 +213,12 @@ function AreaSection({ area, index }: { area: TddChecklistArea; index: number })
           </ul>
         </div>
       ))}
+      {automated && <AreaAutomationStrip area={area} />}
     </section>
   );
 }
+
+const CITATION_HTML = `<a href="${POST_URL}">Technical Due Diligence Checklist</a> (${ALL} checks) by ${SITE_NAME}`;
 
 export default function TechnicalDueDiligenceChecklistPage() {
   return (
@@ -167,6 +241,8 @@ export default function TechnicalDueDiligenceChecklistPage() {
         roadmap. Each check says what to look at and what a red flag looks like, so a failed check turns straight into a
         finding you can price.
       </p>
+
+      <AutomateCallout />
 
       <h2>The {ALL} checks at a glance</h2>
       <div className="not-prose my-6 overflow-x-auto">
@@ -226,7 +302,7 @@ export default function TechnicalDueDiligenceChecklistPage() {
       </ol>
 
       {ALL_AREAS.map((area, ai) => (
-        <AreaSection key={area.name} area={area} index={ai + 1} />
+        <AreaSection key={area.name} area={area} index={ai + 1} automated={area !== BEYOND_CODE_CHECKLIST} />
       ))}
 
       <h2>What to request from the target before you start</h2>
@@ -297,6 +373,14 @@ export default function TechnicalDueDiligenceChecklistPage() {
 
       <DownloadBox />
 
+      <h2>Use or cite this checklist</h2>
+      <p>
+        The checklist and template are free to use in your own due diligence process, playbook or course material. If
+        you reference it in an article, a fund’s operating guide or a deal memo template, please link back to this page
+        so readers get the latest version.
+      </p>
+      <CopySnippet label="Link HTML" value={CITATION_HTML} />
+
       <h2>Technical due diligence checklist FAQ</h2>
       {FAQ.map((f) => (
         <div key={f.q}>
@@ -305,12 +389,27 @@ export default function TechnicalDueDiligenceChecklistPage() {
         </div>
       ))}
 
-      <p>
-        <Link href="/due-diligence" className="font-semibold">
-          Audit Bench Ai runs the {TOTAL} code-level checks automatically and prices every finding. See a technical due diligence
-          report →
-        </Link>
-      </p>
+      <div className="not-prose mt-10 rounded-xl border border-ink-line bg-ink p-6 text-center">
+        <div className="text-xl font-bold text-[#E8ECF4]">Run the {TOTAL} code-level checks in minutes, not weeks</div>
+        <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-muted-on-ink">
+          {SITE_NAME} scans the target’s repositories, prices every finding in engineer-days, and gives you a report
+          for the investment committee. Free to start, no credit card.
+        </p>
+        <div className="mt-5 flex flex-wrap justify-center gap-3">
+          <Link
+            href="/signup"
+            className="rounded-lg bg-cobalt px-5 py-2.5 text-sm font-bold text-white hover:bg-cobalt-dark"
+          >
+            Create a free account
+          </Link>
+          <Link
+            href="/due-diligence"
+            className="rounded-lg border border-ink-line px-5 py-2.5 text-sm font-bold text-muted-on-ink hover:border-cobalt/40 hover:text-[#E8ECF4]"
+          >
+            Need a full TDD report? →
+          </Link>
+        </div>
+      </div>
     </BlogArticleLayout>
   );
 }

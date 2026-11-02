@@ -26,7 +26,11 @@ const COLUMNS = [
   },
   {
     title: 'Investors & M&A',
-    links: [{ href: '/due-diligence', label: 'Technical Due Diligence' }],
+    links: [
+      { href: '/due-diligence', label: 'Technical Due Diligence' },
+      { href: '/blog/technical-due-diligence-checklist', label: 'TDD Checklist & Template' },
+      { href: '/blog/technical-due-diligence-questions', label: 'TDD Questions to Ask' },
+    ],
   },
   {
     title: 'Legal & Contact',
