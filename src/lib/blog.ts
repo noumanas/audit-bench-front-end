@@ -19,9 +19,9 @@ export const BLOG_POSTS: BlogPostMeta[] = [
     slug: "technical-due-diligence-checklist",
     title: "Technical Due Diligence Checklist (2026): 55 Checks + Free Template",
     description:
-      "Free technical due diligence checklist and template for M&A and investors: 55 checks across security, licenses, tech debt, architecture and scalability, team risk, infrastructure, compliance and IP. Download the spreadsheet.",
+      "Free technical due diligence checklist for investors and M&A: 55 checks on security, licenses, tech debt, architecture, team and IP. Download the template.",
     publishedAt: "2026-09-17",
-    updatedAt: "2026-10-26",
+    updatedAt: "2026-11-02",
     readingTime: "16 min read",
     image: "/blog/technical-due-diligence-checklist.svg",
   },
