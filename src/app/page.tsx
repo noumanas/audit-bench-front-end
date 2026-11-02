@@ -26,6 +26,7 @@ import { Footer } from '@/components/Footer';
 import { PricingTeaser } from '@/components/PricingTeaser';
 import { HeroShowcase } from '@/components/HeroShowcase';
 import { FeatureShowcase } from '@/components/FeatureShowcase';
+import { StatsShowcase } from '@/components/StatsShowcase';
 import { ScrollReveal } from '@/components/gsap/ScrollReveal';
 import { HeroEntrance } from '@/components/gsap/HeroEntrance';
 import { CountUp } from '@/components/gsap/CountUp';
@@ -413,6 +414,8 @@ export default function HomePage() {
           </p>
         </ScrollReveal>
       </section>
+
+      <StatsShowcase />
 
       {/* Problem statement */}
       <section className="bg-paper px-6 py-16">
