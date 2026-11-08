@@ -56,7 +56,15 @@ export default function LoginPage() {
           className={`mb-4 ${authInputClass}`}
         />
 
-        <label className={authLabelClass}>Password</label>
+        <div className="flex items-baseline justify-between">
+          <label className={authLabelClass}>Password</label>
+          <Link
+            href={email ? `/forgot-password?email=${encodeURIComponent(email)}` : '/forgot-password'}
+            className="mb-1.5 text-xs font-semibold text-cobalt hover:underline"
+          >
+            Forgot password?
+          </Link>
+        </div>
         <PasswordInput
           required
           autoComplete="current-password"

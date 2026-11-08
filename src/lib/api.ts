@@ -144,6 +144,35 @@ export function login(email: string, password: string): Promise<AuthResponse> {
   }).then((res) => unwrap<AuthResponse>(res));
 }
 
+// ---------- Forgot password (email code → verify → new password) ----------
+
+/** Step 1: emails a 6-digit code. Answers the same whether or not the account exists. */
+export function requestPasswordReset(email: string): Promise<{ ok: true }> {
+  return fetch(`${API_URL}/auth/forgot-password`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email }),
+  }).then((res) => unwrap<{ ok: true }>(res));
+}
+
+/** Step 2: the code from the email, traded for a short-lived reset token. */
+export function verifyPasswordResetCode(email: string, code: string): Promise<{ resetToken: string }> {
+  return fetch(`${API_URL}/auth/forgot-password/verify`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, code }),
+  }).then((res) => unwrap<{ resetToken: string }>(res));
+}
+
+/** Step 3: sets the new password and returns a fresh session (other sessions are signed out). */
+export function resetPassword(email: string, resetToken: string, password: string): Promise<AuthResponse> {
+  return fetch(`${API_URL}/auth/reset-password`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, resetToken, password }),
+  }).then((res) => unwrap<AuthResponse>(res));
+}
+
 // ---------- OAuth login ("Continue with GitHub/GitLab/Google") ----------
 
 // Full-page redirects, not fetch calls — the browser navigates through the

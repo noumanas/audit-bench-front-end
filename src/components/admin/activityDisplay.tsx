@@ -8,6 +8,7 @@ export const ACTIVITY_META: Record<ActivityType, { label: string; badge: string;
   plan_requested: { label: 'Requested plan', badge: 'border-high/40 bg-high/15 text-[#F0CE9A]', dot: 'bg-high' },
   plan_approved: { label: 'Plan approved', badge: 'border-pass/40 bg-pass/15 text-[#7ee2ad]', dot: 'bg-pass' },
   plan_rejected: { label: 'Plan rejected', badge: 'border-ink-line bg-ink text-muted-on-ink', dot: 'bg-muted-on-ink' },
+  password_reset: { label: 'Reset password', badge: 'border-high/40 bg-high/15 text-[#F0CE9A]', dot: 'bg-high' },
 };
 
 const METHOD_LABELS: Record<string, string> = {

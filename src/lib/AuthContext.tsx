@@ -12,6 +12,8 @@ interface AuthContextValue {
   login: (email: string, password: string) => Promise<void>;
   signup: (email: string, password: string, name?: string) => Promise<void>;
   loginWithOAuthCode: (code: string) => Promise<void>;
+  /** Last step of forgot password: sets the new password and signs in. */
+  completePasswordReset: (email: string, resetToken: string, password: string) => Promise<void>;
   logout: () => void;
   refreshUser: () => Promise<void>;
 }
@@ -65,13 +67,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     clearAttribution();
   };
 
+  const completePasswordReset = async (email: string, resetToken: string, password: string) => {
+    applySession(await api.resetPassword(email, resetToken, password));
+  };
+
   const refreshUser = async () => {
     const me = await api.getMe();
     setUser(me);
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, signup, loginWithOAuthCode, logout, refreshUser }}>
+    <AuthContext.Provider value={{ user, loading, login, signup, loginWithOAuthCode, completePasswordReset, logout, refreshUser }}>
       {children}
     </AuthContext.Provider>
   );
