@@ -121,7 +121,14 @@ export interface AdminUser {
   signupCity?: string | null;
 }
 
-export type ActivityType = 'signup' | 'login' | 'login_failed' | 'plan_requested' | 'plan_approved' | 'plan_rejected';
+export type ActivityType =
+  | 'signup'
+  | 'login'
+  | 'login_failed'
+  | 'plan_requested'
+  | 'plan_approved'
+  | 'plan_rejected'
+  | 'password_reset';
 
 export interface ActivityLog {
   id: string;

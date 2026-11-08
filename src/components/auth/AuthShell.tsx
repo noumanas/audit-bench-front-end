@@ -11,7 +11,7 @@ export const authButtonClass =
   'group flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-cobalt px-4 py-3 text-sm font-bold text-white shadow-[0_10px_28px_-12px_rgba(43,91,227,0.9)] transition-all hover:-translate-y-px hover:bg-[#3a68ee] disabled:cursor-wait disabled:opacity-70 disabled:hover:translate-y-0';
 
 /**
- * Full-height split for /login and /signup: the merge-gate scene (gate + PR
+ * Full-height split for /login, /signup and /forgot-password: the merge-gate scene (gate + PR
  * checks card, animated in sync) on the left from lg up, the form on the
  * right. The navbar is hidden on these routes, so this owns the viewport.
  */

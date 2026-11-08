@@ -22,6 +22,7 @@ const FILTERS: { label: string; value: ActivityType | 'all' }[] = [
   { label: 'Plan requests', value: 'plan_requested' },
   { label: 'Approved', value: 'plan_approved' },
   { label: 'Rejected', value: 'plan_rejected' },
+  { label: 'Password resets', value: 'password_reset' },
 ];
 
 /**

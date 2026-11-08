@@ -60,7 +60,7 @@ export function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   // The login/signup forms are the whole page, and /app renders its own Sidebar — no top nav chrome for either.
-  if (pathname === '/login' || pathname === '/signup' || pathname.startsWith('/app')) return null;
+  if (pathname === '/login' || pathname === '/signup' || pathname === '/forgot-password' || pathname.startsWith('/app')) return null;
 
   const handleLogout = () => {
     setMenuOpen(false);

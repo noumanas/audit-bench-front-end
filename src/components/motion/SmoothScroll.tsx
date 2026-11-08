@@ -8,7 +8,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 /** The product UI has its own scroll panels and drawers; smooth scrolling is for the public site. */
 function isMarketingPath(pathname: string): boolean {
-  return !pathname.startsWith('/app') && pathname !== '/login' && pathname !== '/signup';
+  return !pathname.startsWith('/app') && pathname !== '/login' && pathname !== '/signup' && pathname !== '/forgot-password';
 }
 
 /**
