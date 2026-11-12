@@ -34,7 +34,7 @@ export function ReviewQualityPanel({ data, scope }: { data: ReviewQuality; scope
 
       <div className="rounded-md border border-ink-line bg-ink p-3">
         <div className="mb-2 flex flex-wrap items-baseline justify-between gap-2">
-          <h3 className="text-[12px] font-bold text-[#E8ECF4]">When developers pushed back</h3>
+          <h3 className="text-[12px] font-bold text-white">When developers pushed back</h3>
           <span className="text-[11px] text-muted-on-ink">
             {disputed ? `${disputed} disputed finding${disputed === 1 ? '' : 's'}` : 'No disputes yet'}
           </span>
@@ -73,8 +73,8 @@ export function ReviewQualityPanel({ data, scope }: { data: ReviewQuality; scope
 function Metric({ label, value, hint, tone }: { label: string; value: string; hint: string; tone?: string }) {
   return (
     <div className="rounded-md border border-ink-line bg-ink px-3 py-2">
-      <div className={`text-lg font-bold tabular-nums ${tone ?? 'text-[#E8ECF4]'}`}>{value}</div>
-      <div className="text-[11px] font-semibold text-[#c9d1e0]">{label}</div>
+      <div className={`text-lg font-bold tabular-nums ${tone ?? 'text-white'}`}>{value}</div>
+      <div className="text-[11px] font-semibold text-[#d4d4d4]">{label}</div>
       <div className="text-[10px] leading-snug text-muted-on-ink">{hint}</div>
     </div>
   );
@@ -83,7 +83,7 @@ function Metric({ label, value, hint, tone }: { label: string; value: string; hi
 function Count({ label, value }: { label: string; value: number }) {
   return (
     <div>
-      <div className="font-mono text-base font-bold text-[#E8ECF4] tabular-nums">{value}</div>
+      <div className="font-mono text-base font-bold text-white tabular-nums">{value}</div>
       <div className="text-[11px] text-muted-on-ink">{label}</div>
     </div>
   );

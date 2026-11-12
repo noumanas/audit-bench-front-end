@@ -62,8 +62,8 @@ export function PublicScanForm({
             spellCheck={false}
             className={`w-full rounded-lg border py-3 pr-3 pl-10 font-mono text-sm outline-none focus:border-cobalt ${
               paper
-                ? 'border-paper-line bg-paper-card text-[#1C2128] placeholder:text-muted-on-paper'
-                : 'border-ink-line bg-ink-soft text-[#E8ECF4] placeholder:text-muted-on-ink'
+                ? 'border-paper-line bg-paper-card text-black placeholder:text-muted-on-paper'
+                : 'border-ink-line bg-ink-soft text-white placeholder:text-muted-on-ink'
             }`}
           />
         </label>

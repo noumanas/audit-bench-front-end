@@ -3,7 +3,7 @@ import { ActivityLog, ActivityType } from '@/lib/types';
 /** Label + badge colors per event, shared by the Activity tab, the bell and the user drawer. */
 export const ACTIVITY_META: Record<ActivityType, { label: string; badge: string; dot: string }> = {
   signup: { label: 'Signed up', badge: 'border-pass/40 bg-pass/15 text-[#7ee2ad]', dot: 'bg-pass' },
-  login: { label: 'Signed in', badge: 'border-cobalt/40 bg-cobalt/15 text-[#B9CCF7]', dot: 'bg-cobalt' },
+  login: { label: 'Signed in', badge: 'border-cobalt/40 bg-cobalt/15 text-[#D3C6FF]', dot: 'bg-cobalt' },
   login_failed: { label: 'Failed sign-in', badge: 'border-critical/40 bg-critical/15 text-[#F3B7BF]', dot: 'bg-critical' },
   plan_requested: { label: 'Requested plan', badge: 'border-high/40 bg-high/15 text-[#F0CE9A]', dot: 'bg-high' },
   plan_approved: { label: 'Plan approved', badge: 'border-pass/40 bg-pass/15 text-[#7ee2ad]', dot: 'bg-pass' },

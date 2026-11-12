@@ -51,13 +51,13 @@ export default function FreeScanPage() {
         <div
           aria-hidden="true"
           className="pointer-events-none absolute top-[-200px] left-1/2 h-[380px] w-[600px] -translate-x-1/2 rounded-full"
-          style={{ background: 'radial-gradient(circle, rgba(43,91,227,0.3) 0%, rgba(43,91,227,0) 70%)' }}
+          style={{ background: 'radial-gradient(circle, rgba(117,70,244,0.3) 0%, rgba(117,70,244,0) 70%)' }}
         />
         <HeroEntrance className="relative mx-auto max-w-3xl text-center">
-          <div className="mb-4 inline-block rounded-full border border-ink-line px-3 py-1 font-mono text-[11px] tracking-wide text-muted-on-ink uppercase">
+          <div className="mb-4 inline-block rounded-full border border-ink-line px-3 py-1 text-[11px] tracking-wide text-muted-on-ink uppercase">
             Free · No sign-up
           </div>
-          <h1 className="mb-4 text-4xl leading-tight font-bold text-[#E8ECF4] sm:text-5xl">
+          <h1 className="mb-4 text-4xl leading-tight text-white sm:text-5xl font-light tracking-[-0.03em]">
             Scan any public GitHub repo or pull request
           </h1>
           <p className="mx-auto mb-8 max-w-xl text-base leading-relaxed text-muted-on-ink">
@@ -72,7 +72,7 @@ export default function FreeScanPage() {
 
       <section className="bg-paper px-6 py-14">
         <div className="mx-auto max-w-5xl">
-          <h2 className="mb-6 text-center text-2xl font-bold text-[#1C2128]">
+          <h2 className="mb-6 text-center text-3xl sm:text-4xl text-black font-light tracking-[-0.03em]">
             <TextReveal>How it works</TextReveal>
           </h2>
           <ScrollReveal>
@@ -82,20 +82,20 @@ export default function FreeScanPage() {
                   <span className="mb-3 flex h-7 w-7 items-center justify-center rounded-full bg-cobalt font-mono text-[12px] font-bold text-white">
                     {s.n}
                   </span>
-                  <h3 className="text-[15px] font-bold text-[#1C2128]">{s.title}</h3>
+                  <h3 className="text-[15px] font-bold text-black">{s.title}</h3>
                   <p className="mt-1 text-[13px] leading-relaxed text-muted-on-paper">{s.detail}</p>
                 </li>
               ))}
             </ol>
           </ScrollReveal>
 
-          <h2 className="mt-14 mb-6 text-center text-2xl font-bold text-[#1C2128]">
+          <h2 className="mt-14 mb-6 text-center text-3xl sm:text-4xl text-black font-light tracking-[-0.03em]">
             <TextReveal>What the free scan checks</TextReveal>
           </h2>
           <ScrollReveal stagger className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {CHECKS.map((c) => (
               <div key={c.title} className="rounded-lg border border-paper-line bg-paper-card p-4">
-                <h3 className="text-[14px] font-bold text-[#1C2128]">{c.title}</h3>
+                <h3 className="text-[14px] font-bold text-black">{c.title}</h3>
                 <p className="mt-1 text-[13px] leading-relaxed text-muted-on-paper">{c.detail}</p>
               </div>
             ))}
@@ -103,8 +103,8 @@ export default function FreeScanPage() {
 
           <ScrollReveal stagger className="mt-14 grid gap-4 md:grid-cols-2">
             <div className="rounded-xl border border-paper-line bg-paper-card p-6">
-              <h3 className="font-mono text-[11px] font-bold tracking-wide text-muted-on-paper uppercase">Free scan</h3>
-              <ul className="mt-3 space-y-1.5 text-[13px] text-[#1C2128]">
+              <h3 className="text-[11px] font-medium tracking-wide text-muted-on-paper uppercase">Free scan</h3>
+              <ul className="mt-3 space-y-1.5 text-[13px] text-black">
                 <li>✓ Public GitHub repositories and pull requests</li>
                 <li>✓ All local checks above</li>
                 <li>✓ Shareable report link</li>
@@ -113,10 +113,10 @@ export default function FreeScanPage() {
               </ul>
             </div>
             <div className="rounded-xl border-2 border-cobalt bg-paper-card p-6">
-              <h3 className="font-mono text-[11px] font-bold tracking-wide text-cobalt uppercase">
+              <h3 className="text-[11px] font-medium tracking-wide text-cobalt uppercase">
                 With a free account
               </h3>
-              <ul className="mt-3 space-y-1.5 text-[13px] text-[#1C2128]">
+              <ul className="mt-3 space-y-1.5 text-[13px] text-black">
                 <li>✓ AI review of risky code, with root causes and fixes</li>
                 <li>✓ Private repositories on GitHub and GitLab</li>
                 <li>✓ Automatic pull request reviews</li>

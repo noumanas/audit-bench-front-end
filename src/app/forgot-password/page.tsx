@@ -162,7 +162,7 @@ function ForgotPasswordFlow() {
             className={`mb-2 text-center font-mono text-2xl tracking-[0.5em] ${authInputClass}`}
           />
           <p className="mb-6 text-xs text-muted-on-ink">
-            Sent to <span className="font-semibold text-[#E8ECF4]">{email.trim()}</span> ·{' '}
+            Sent to <span className="font-semibold text-white">{email.trim()}</span> ·{' '}
             <button
               type="button"
               onClick={() => {

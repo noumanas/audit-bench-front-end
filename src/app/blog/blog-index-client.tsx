@@ -31,8 +31,8 @@ export function BlogIndexClient() {
     <div>
       <section className="border-b border-ink-line bg-ink px-6 py-16 text-center">
         <ScrollReveal>
-          <div className="mb-2 font-mono text-[13px] tracking-wide text-muted-on-ink uppercase">Blog</div>
-          <h1 className="mb-3 text-3xl font-bold text-[#E8ECF4] sm:text-4xl">
+          <div className="mb-2 text-[13px] tracking-wide text-muted-on-ink uppercase">Blog</div>
+          <h1 className="mb-3 text-3xl text-white sm:text-4xl font-light tracking-[-0.03em]">
             <TextReveal>Guides on code review and security</TextReveal>
           </h1>
           <p className="mx-auto max-w-xl text-sm leading-relaxed text-muted-on-ink">
@@ -62,12 +62,12 @@ export function BlogIndexClient() {
                 />
               )}
               <div className="min-w-0">
-                <div className="mb-2 flex items-center gap-2 font-mono text-[11px] tracking-wide text-muted-on-paper uppercase">
+                <div className="mb-2 flex items-center gap-2 text-[11px] tracking-wide text-muted-on-paper uppercase">
                   <time dateTime={post.publishedAt}>{formatDate(post.publishedAt)}</time>
                   <span>·</span>
                   <span>{post.readingTime}</span>
                 </div>
-                <h2 className="mb-1.5 text-lg font-bold text-[#1C2128] group-hover:text-cobalt">{post.title}</h2>
+                <h2 className="mb-1.5 text-lg font-bold text-black group-hover:text-cobalt">{post.title}</h2>
                 <p className="text-sm leading-relaxed text-muted-on-paper">{post.description}</p>
               </div>
             </Link>
@@ -77,7 +77,7 @@ export function BlogIndexClient() {
         {posts.length > POSTS_PER_PAGE && (
           <div className="mx-auto mt-10 flex max-w-3xl items-center justify-between gap-4 text-sm">
             <PageNav label="Previous" href={page > 1 ? `/blog?page=${page - 1}` : null} disabled={page <= 1} />
-            <div className="font-mono text-[11px] tracking-wide text-muted-on-paper uppercase">
+            <div className="text-[11px] tracking-wide text-muted-on-paper uppercase">
               Page {page} of {totalPages}
             </div>
             <PageNav label="Next" href={page < totalPages ? `/blog?page=${page + 1}` : null} disabled={page >= totalPages} />
@@ -104,7 +104,7 @@ function PageNav({
   }
 
   return (
-    <Link href={href} className="rounded-lg border border-paper-line px-4 py-2 font-semibold text-[#1C2128] hover:border-cobalt/40 hover:text-cobalt">
+    <Link href={href} className="rounded-lg border border-paper-line px-4 py-2 font-semibold text-black hover:border-cobalt/40 hover:text-cobalt">
       {label}
     </Link>
   );

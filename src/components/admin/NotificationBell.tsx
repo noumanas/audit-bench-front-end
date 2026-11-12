@@ -87,7 +87,7 @@ export function NotificationBell({ onNavigate }: { onNavigate: (tab: 'requests' 
         onClick={toggle}
         aria-label={unread ? `Notifications, ${unread} new` : 'Notifications'}
         aria-expanded={open}
-        className="relative flex h-9 w-9 cursor-pointer items-center justify-center rounded-lg border border-ink-line bg-ink-soft text-muted-on-ink transition-colors hover:text-[#E8ECF4]"
+        className="relative flex h-9 w-9 cursor-pointer items-center justify-center rounded-lg border border-ink-line bg-ink-soft text-muted-on-ink transition-colors hover:text-white"
       >
         <svg viewBox="0 0 24 24" className="h-[18px] w-[18px]" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
           <path d="M6 9a6 6 0 1 1 12 0c0 5 2 6.5 2 6.5H4S6 14 6 9z" />
@@ -103,8 +103,8 @@ export function NotificationBell({ onNavigate }: { onNavigate: (tab: 'requests' 
       {open && (
         <div className="shadow-panel fade-up absolute right-0 z-40 mt-2 w-[min(380px,calc(100vw-32px))] overflow-hidden rounded-xl border border-ink-line bg-ink-soft">
           <div className="flex items-center justify-between border-b border-ink-line px-4 py-3">
-            <span className="text-sm font-bold text-[#E8ECF4]">Notifications</span>
-            <span className="font-mono text-[10px] tracking-wide text-muted-on-ink uppercase">Sign-ups · plan requests</span>
+            <span className="text-sm font-bold text-white">Notifications</span>
+            <span className="text-[10px] tracking-wide text-muted-on-ink uppercase">Sign-ups · plan requests</span>
           </div>
           {!data || data.items.length === 0 ? (
             <p className="px-4 py-8 text-center text-[13px] text-muted-on-ink">
@@ -127,7 +127,7 @@ export function NotificationBell({ onNavigate }: { onNavigate: (tab: 'requests' 
                     >
                       <span className={`mt-1.5 h-2 w-2 shrink-0 rounded-full ${meta.dot}`} />
                       <span className="min-w-0 flex-1">
-                        <span className="block text-[13px] text-[#E8ECF4]">
+                        <span className="block text-[13px] text-white">
                           <strong className="font-semibold">{log.user?.name || log.email}</strong>{' '}
                           <span className="text-muted-on-ink">
                             {log.type === 'signup'

@@ -51,7 +51,7 @@ export function PublicScanView({ shareId }: { shareId: string }) {
     return (
       <Shell>
         <div className="mx-auto max-w-xl px-6 py-20 text-center">
-          <h1 className="mb-2 text-2xl font-bold text-[#E8ECF4]">Report not available</h1>
+          <h1 className="mb-2 text-3xl sm:text-4xl text-white font-light tracking-[-0.03em]">Report not available</h1>
           <p className="mb-8 text-sm text-muted-on-ink">{error}</p>
           <PublicScanForm />
         </div>
@@ -83,7 +83,7 @@ export function PublicScanView({ shareId }: { shareId: string }) {
       ) : scan.status === 'failed' ? (
         <div className="bg-paper px-6 py-12">
           <div className="mx-auto max-w-xl text-center">
-            <p className="mb-6 text-sm text-[#1C2128]">
+            <p className="mb-6 text-sm text-black">
               This {scan.pullRequest ? 'review' : 'scan'} couldn&apos;t be completed. The{' '}
               {scan.pullRequest ? 'pull request' : 'repository'} may be too large or temporarily unavailable.
             </p>
@@ -114,12 +114,12 @@ function Header({ scan }: { scan: PublicScan }) {
   return (
     <section className="border-b border-ink-line px-6 pt-10 pb-8">
       <div className="mx-auto max-w-5xl">
-        <div className="mb-2 font-mono text-[11px] font-bold tracking-[0.12em] text-cobalt uppercase">
+        <div className="mb-2 text-[11px] font-medium tracking-[0.12em] text-cobalt uppercase">
           {pr ? 'Free pull request review' : 'Free code health report'}
         </div>
         <div className="flex flex-wrap items-end gap-x-6 gap-y-4">
           <div className="min-w-0 flex-1">
-            <h1 className="flex items-center gap-3 font-mono text-2xl font-bold break-all text-[#E8ECF4] sm:text-3xl">
+            <h1 className="flex items-center gap-3 font-mono text-2xl break-all text-white sm:text-3xl font-light tracking-[-0.03em]">
               <GithubLogoIcon className="h-6 w-6 shrink-0 text-muted-on-ink" />
               {pr || scan.repoUrl ? (
                 <a href={pr?.url ?? scan.repoUrl!} target="_blank" rel="noreferrer" className="hover:underline">
@@ -131,7 +131,7 @@ function Header({ scan }: { scan: PublicScan }) {
             </h1>
             {pr ? (
               <>
-                <p className="mt-2 text-[15px] font-semibold break-words text-[#E8ECF4]">{pr.title}</p>
+                <p className="mt-2 text-[15px] font-semibold break-words text-white">{pr.title}</p>
                 <p className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-[13px] text-muted-on-ink">
                   <span className="max-w-full truncate rounded bg-ink-soft px-1.5 py-0.5 font-mono text-[12px]">
                     {pr.baseRef} ← {pr.headRef}
@@ -163,7 +163,7 @@ function Header({ scan }: { scan: PublicScan }) {
                   setTimeout(() => setCopied(false), 1800);
                 })
               }
-              className="cursor-pointer rounded-md border border-ink-line px-3 py-2 text-[13px] font-semibold text-[#E8ECF4] hover:border-cobalt"
+              className="cursor-pointer rounded-md border border-ink-line px-3 py-2 text-[13px] font-semibold text-white hover:border-cobalt"
             >
               {copied ? 'Link copied' : 'Copy link'}
             </button>
@@ -171,7 +171,7 @@ function Header({ scan }: { scan: PublicScan }) {
               href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`}
               target="_blank"
               rel="noreferrer"
-              className="rounded-md border border-ink-line px-3 py-2 text-[13px] font-semibold text-[#E8ECF4] hover:border-cobalt"
+              className="rounded-md border border-ink-line px-3 py-2 text-[13px] font-semibold text-white hover:border-cobalt"
             >
               Share on LinkedIn
             </a>
@@ -179,7 +179,7 @@ function Header({ scan }: { scan: PublicScan }) {
               href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`}
               target="_blank"
               rel="noreferrer"
-              className="rounded-md border border-ink-line px-3 py-2 text-[13px] font-semibold text-[#E8ECF4] hover:border-cobalt"
+              className="rounded-md border border-ink-line px-3 py-2 text-[13px] font-semibold text-white hover:border-cobalt"
             >
               Share on X
             </a>
@@ -199,7 +199,7 @@ function Progress({ scan }: { scan: PublicScan }) {
       <section className="px-6 py-14">
         <div className="mx-auto max-w-xl rounded-xl border border-ink-line bg-ink-soft p-6 text-center">
           <div className="mx-auto mb-4 h-2 w-2 animate-ping rounded-full bg-cobalt" />
-          <h2 className="mb-1 text-lg font-bold text-[#E8ECF4]">Reviewing {scan.sourceName}…</h2>
+          <h2 className="mb-1 text-lg font-bold text-white">Reviewing {scan.sourceName}…</h2>
           <p className="mb-5 text-[13px] text-muted-on-ink">
             Checking the changed lines for risky code and secrets, alongside merge conflicts and CI results. This
             usually takes a few seconds.
@@ -218,7 +218,7 @@ function Progress({ scan }: { scan: PublicScan }) {
     <section className="px-6 py-14">
       <div className="mx-auto max-w-xl rounded-xl border border-ink-line bg-ink-soft p-6 text-center">
         <div className="mx-auto mb-4 h-2 w-2 animate-ping rounded-full bg-cobalt" />
-        <h2 className="mb-1 text-lg font-bold text-[#E8ECF4]">Scanning {scan.sourceName}…</h2>
+        <h2 className="mb-1 text-lg font-bold text-white">Scanning {scan.sourceName}…</h2>
         <p className="mb-5 text-[13px] text-muted-on-ink">
           Checking for exposed secrets, vulnerable dependencies, licenses, dead code, duplication and risky code. This
           usually takes under a minute. You can share this page now; it updates by itself.
@@ -251,12 +251,12 @@ function Report({ scan }: { scan: PublicScan }) {
         <div className="grid gap-3 md:grid-cols-[1.1fr_2fr]">
           {risk && level && (
             <div className="rounded-xl border bg-paper-card p-5" style={{ borderColor: `${level.hex}66` }}>
-              <div className="font-mono text-[11px] tracking-wide text-muted-on-paper uppercase">Overall risk</div>
+              <div className="text-[11px] tracking-wide text-muted-on-paper uppercase">Overall risk</div>
               <div className="mt-1 text-4xl font-bold uppercase" style={{ color: level.hex }}>
                 {level.label}
               </div>
               <div className="mt-3 flex items-baseline gap-2">
-                <span className="text-2xl font-bold text-[#1C2128] tabular-nums">{risk.overallHealthScore}</span>
+                <span className="text-2xl font-bold text-black tabular-nums">{risk.overallHealthScore}</span>
                 <span className="text-[13px] text-muted-on-paper">/ 100 health score</span>
               </div>
               <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-paper-line">
@@ -303,10 +303,10 @@ function Report({ scan }: { scan: PublicScan }) {
                 return (
                   <div key={c.category} className="rounded-lg border border-paper-line bg-paper-card p-3.5">
                     <div className="flex items-center justify-between gap-2">
-                      <span className="text-[13px] font-semibold text-[#1C2128]">{c.category}</span>
+                      <span className="text-[13px] font-semibold text-black">{c.category}</span>
                       <span
-                        className="rounded-full px-2 py-0.5 font-mono text-[10px] font-bold uppercase"
-                        style={r ? { color: r.hex, backgroundColor: `${r.hex}17` } : { color: '#8a93a3' }}
+                        className="rounded-full px-2 py-0.5 text-[10px] font-medium uppercase"
+                        style={r ? { color: r.hex, backgroundColor: `${r.hex}17` } : { color: '#a3a3a3' }}
                       >
                         {r ? r.label : 'n/a'}
                       </span>
@@ -325,7 +325,7 @@ function Report({ scan }: { scan: PublicScan }) {
               <Clean>No passwords, keys or tokens found in the code.</Clean>
             ) : (
               <div className="rounded-lg border border-critical/30 bg-critical/5 p-4">
-                <p className="text-[13px] text-[#1C2128]">
+                <p className="text-[13px] text-black">
                   <strong className="text-critical">
                     {scan.secrets.count} potential secret{scan.secrets.count === 1 ? '' : 's'}
                   </strong>{' '}
@@ -354,12 +354,12 @@ function Report({ scan }: { scan: PublicScan }) {
               <ul className="divide-y divide-paper-line overflow-hidden rounded-lg border border-paper-line bg-paper-card">
                 {deps.slice(0, 8).map((d) => (
                   <li key={d.pkg} className="flex items-center gap-3 px-3.5 py-2">
-                    <span className="min-w-0 flex-1 truncate font-mono text-[13px] text-[#1C2128]">{d.pkg}</span>
+                    <span className="min-w-0 flex-1 truncate font-mono text-[13px] text-black">{d.pkg}</span>
                     <span className="text-[11px] text-muted-on-paper">
                       {d.advisories} advisor{d.advisories === 1 ? 'y' : 'ies'}
                     </span>
                     <span
-                      className="rounded px-1.5 py-0.5 font-mono text-[10px] font-bold text-white uppercase"
+                      className="rounded px-1.5 py-0.5 text-[10px] font-medium text-white uppercase"
                       style={{ backgroundColor: SEVERITY_HEX[d.severity] }}
                     >
                       {d.severity}
@@ -408,8 +408,8 @@ function Report({ scan }: { scan: PublicScan }) {
           <Section title="What to do first">
             <ol className="space-y-2 rounded-lg border border-paper-line bg-paper-card p-4">
               {risk.recommendations.map((r, i) => (
-                <li key={i} className="flex gap-3 text-[13px] leading-relaxed text-[#1C2128]">
-                  <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#1C2128] font-mono text-[10px] font-bold text-white">
+                <li key={i} className="flex gap-3 text-[13px] leading-relaxed text-black">
+                  <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-black font-mono text-[10px] font-bold text-white">
                     {i + 1}
                   </span>
                   {r}
@@ -432,7 +432,7 @@ function Report({ scan }: { scan: PublicScan }) {
         </Section>
 
         <div className="rounded-xl bg-ink p-6 text-center sm:p-8">
-          <h2 className="text-xl font-bold text-[#E8ECF4]">Want the full review?</h2>
+          <h2 className="text-xl font-bold text-white">Want the full review?</h2>
           <p className="mx-auto mt-2 max-w-xl text-[13px] text-muted-on-ink">
             Sign up free to add AI review of risky code, scan private repos, review every pull request and commit fixes
             back to your branch.
@@ -446,7 +446,7 @@ function Report({ scan }: { scan: PublicScan }) {
             </Link>
             <Link
               href="/scan"
-              className="rounded-lg border border-ink-line px-5 py-2.5 text-sm font-bold text-[#E8ECF4] hover:border-cobalt"
+              className="rounded-lg border border-ink-line px-5 py-2.5 text-sm font-bold text-white hover:border-cobalt"
             >
               Scan another repo
             </Link>
@@ -479,7 +479,7 @@ function PrReport({ scan }: { scan: PublicScan }) {
       <ScrollReveal stagger y={20} className="mx-auto max-w-5xl space-y-8">
         {r && readiness && (
           <div className="rounded-xl border-2 bg-paper-card p-5 sm:p-6" style={{ borderColor: `${r.hex}80` }}>
-            <div className="font-mono text-[11px] tracking-wide text-muted-on-paper uppercase">Merge readiness</div>
+            <div className="text-[11px] tracking-wide text-muted-on-paper uppercase">Merge readiness</div>
             <div className="mt-1 text-3xl font-bold sm:text-4xl" style={{ color: r.hex }}>
               {r.label}
             </div>
@@ -560,7 +560,7 @@ function PrReport({ scan }: { scan: PublicScan }) {
           >
             <div className="overflow-hidden rounded-lg border border-paper-line bg-paper-card">
               <div className="flex flex-wrap items-center gap-3 border-b border-paper-line px-4 py-3">
-                <p className="min-w-[14rem] flex-1 text-[13px] text-[#1C2128]">
+                <p className="min-w-[14rem] flex-1 text-[13px] text-black">
                   Copy the review as a GitHub comment, with a link back to this report.
                 </p>
                 <button
@@ -578,12 +578,12 @@ function PrReport({ scan }: { scan: PublicScan }) {
                   href={pr.url}
                   target="_blank"
                   rel="noreferrer"
-                  className="rounded-md border border-paper-line px-3.5 py-1.5 text-[13px] font-semibold text-[#1C2128] hover:border-cobalt"
+                  className="rounded-md border border-paper-line px-3.5 py-1.5 text-[13px] font-semibold text-black hover:border-cobalt"
                 >
                   Open the PR
                 </a>
               </div>
-              <pre className="max-h-72 overflow-auto px-4 py-3 font-mono text-[12px] leading-relaxed whitespace-pre-wrap text-[#1C2128]">
+              <pre className="max-h-72 overflow-auto px-4 py-3 font-mono text-[12px] leading-relaxed whitespace-pre-wrap text-black">
                 {comment}
               </pre>
             </div>
@@ -610,7 +610,7 @@ function PrReport({ scan }: { scan: PublicScan }) {
         </Section>
 
         <div className="rounded-xl bg-ink p-6 text-center sm:p-8">
-          <h2 className="text-xl font-bold text-[#E8ECF4]">Review every pull request automatically</h2>
+          <h2 className="text-xl font-bold text-white">Review every pull request automatically</h2>
           <p className="mx-auto mt-2 max-w-xl text-[13px] text-muted-on-ink">
             Connect GitHub or GitLab and Audit Bench Ai reviews each PR as it opens: AI review of risky changes, inline
             comments, a merge check, and fixes you can commit back to the branch.
@@ -624,7 +624,7 @@ function PrReport({ scan }: { scan: PublicScan }) {
             </Link>
             <Link
               href="/scan"
-              className="rounded-lg border border-ink-line px-5 py-2.5 text-sm font-bold text-[#E8ECF4] hover:border-cobalt"
+              className="rounded-lg border border-ink-line px-5 py-2.5 text-sm font-bold text-white hover:border-cobalt"
             >
               Review another PR
             </Link>
@@ -674,7 +674,7 @@ function PostAsAuditBench({
     <Section title="Post on GitHub">
       <div className="rounded-lg border border-cobalt/30 bg-paper-card p-4">
         {posted ? (
-          <p className="flex flex-wrap items-center gap-2 text-[13px] text-[#1C2128]">
+          <p className="flex flex-wrap items-center gap-2 text-[13px] text-black">
             <span className="font-bold text-pass">✓</span>
             Posted on the pull request by <span className="font-mono">@{postAs}</span>
             {` ${timeAgo(posted)}.`}
@@ -684,7 +684,7 @@ function PostAsAuditBench({
           </p>
         ) : (
           <>
-            <p className="text-[13px] leading-relaxed text-[#1C2128]">
+            <p className="text-[13px] leading-relaxed text-black">
               <strong>Your pull request?</strong> Have <span className="font-mono">@{postAs}</span>
               {
                 " post this review on it: a summary with merge readiness and inline comments on the changed lines. For the PR's author or a maintainer: sign in with the GitHub account that owns the PR, or connect it to your account."
@@ -709,7 +709,7 @@ function PostAsAuditBench({
                   </Link>
                   <Link
                     href="/signup"
-                    className="rounded-md border border-paper-line px-3.5 py-1.5 text-[13px] font-semibold text-[#1C2128] hover:border-cobalt"
+                    className="rounded-md border border-paper-line px-3.5 py-1.5 text-[13px] font-semibold text-black hover:border-cobalt"
                   >
                     Sign up free
                   </Link>
@@ -744,7 +744,7 @@ function ReadinessList({ title, items, hex, mark }: { title: string; items: stri
       </h3>
       <ul className="space-y-1.5">
         {items.map((item) => (
-          <li key={item} className="flex gap-2 text-[13px] leading-snug text-[#1C2128]">
+          <li key={item} className="flex gap-2 text-[13px] leading-snug text-black">
             <span
               aria-hidden="true"
               className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full font-mono text-[10px] font-bold text-white"
@@ -764,7 +764,7 @@ function CheckRow({ name, state, hex }: { name: string; state: string; hex: stri
   return (
     <li className="flex items-center gap-3 px-3.5 py-2">
       <span className="h-2 w-2 shrink-0 rounded-full" style={{ backgroundColor: hex }} />
-      <span className="min-w-0 flex-1 truncate font-mono text-[13px] text-[#1C2128]">{name}</span>
+      <span className="min-w-0 flex-1 truncate font-mono text-[13px] text-black">{name}</span>
       <span className="text-[12px] font-semibold" style={{ color: hex }}>
         {state}
       </span>
@@ -775,7 +775,7 @@ function CheckRow({ name, state, hex }: { name: string; state: string; hex: stri
 function UpgradeNote() {
   return (
     <div className="flex flex-wrap items-center gap-3 rounded-lg border border-cobalt/30 bg-cobalt/5 px-4 py-3">
-      <p className="min-w-[14rem] flex-1 text-[13px] text-[#1C2128]">
+      <p className="min-w-[14rem] flex-1 text-[13px] text-black">
         <strong>Free scan: local checks only.</strong> Risky functions get an AI review, with root causes and fixes,
         when you sign up. Private repos and pull request reviews too.
       </p>
@@ -797,7 +797,7 @@ function FileFindings({ file }: { file: PublicScan['files'][number] }) {
         className="flex w-full cursor-pointer items-center gap-3 px-4 py-2.5 text-left hover:bg-paper"
       >
         <span className="h-2 w-2 shrink-0 rounded-full" style={{ backgroundColor: SEVERITY_HEX[worst] }} />
-        <span className="min-w-0 flex-1 truncate font-mono text-[13px] text-[#1C2128]">{file.path}</span>
+        <span className="min-w-0 flex-1 truncate font-mono text-[13px] text-black">{file.path}</span>
         <span className="text-[12px] text-muted-on-paper">
           {file.findings.length} finding{file.findings.length === 1 ? '' : 's'}
         </span>
@@ -817,14 +817,14 @@ function FileFindings({ file }: { file: PublicScan['files'][number] }) {
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section>
-      <h2 className="mb-3 font-mono text-[11px] font-bold tracking-wide text-muted-on-paper uppercase">{title}</h2>
+      <h2 className="mb-3 text-[11px] font-medium tracking-wide text-muted-on-paper uppercase">{title}</h2>
       {children}
     </section>
   );
 }
 
 function Stat({ label, value, tone }: { label: string; value: number | string; tone?: 'bad' | 'warn' | 'good' }) {
-  const color = tone === 'bad' ? '#c92a3d' : tone === 'warn' ? '#d97706' : tone === 'good' ? '#1f7a4d' : '#1C2128';
+  const color = tone === 'bad' ? '#c92a3d' : tone === 'warn' ? '#d97706' : tone === 'good' ? '#1f7a4d' : '#000000';
   return (
     <div className="rounded-xl border border-paper-line bg-paper-card p-4">
       <div className="text-2xl font-bold tabular-nums" style={{ color }}>
@@ -838,7 +838,7 @@ function Stat({ label, value, tone }: { label: string; value: number | string; t
 function Fact({ label, value }: { label: string; value: number | string }) {
   return (
     <div className="rounded-lg border border-paper-line bg-paper-card px-3.5 py-2.5">
-      <dd className="text-lg font-bold text-[#1C2128] tabular-nums">{value}</dd>
+      <dd className="text-lg font-bold text-black tabular-nums">{value}</dd>
       <dt className="text-[11px] text-muted-on-paper">{label}</dt>
     </div>
   );
@@ -846,7 +846,7 @@ function Fact({ label, value }: { label: string; value: number | string }) {
 
 function Clean({ children }: { children: React.ReactNode }) {
   return (
-    <p className="flex items-center gap-2 rounded-lg border border-pass/30 bg-pass/10 px-3.5 py-2.5 text-[13px] text-[#1C2128]">
+    <p className="flex items-center gap-2 rounded-lg border border-pass/30 bg-pass/10 px-3.5 py-2.5 text-[13px] text-black">
       <span className="font-bold text-pass">✓</span>
       {children}
     </p>

@@ -19,16 +19,16 @@ export function CopySnippet({ label, value }: { label: string; value: string }) 
   return (
     <div className="mt-3">
       <div className="mb-1 flex items-center justify-between">
-        <span className="font-mono text-[11px] tracking-wide text-muted-on-paper uppercase">{label}</span>
+        <span className="text-[11px] tracking-wide text-muted-on-paper uppercase">{label}</span>
         <button
           type="button"
           onClick={copy}
-          className="rounded-md border border-paper-line bg-paper-card px-2.5 py-1 text-xs font-semibold text-[#1C2128] hover:border-cobalt/40 hover:text-cobalt"
+          className="rounded-md border border-paper-line bg-paper-card px-2.5 py-1 text-xs font-semibold text-black hover:border-cobalt/40 hover:text-cobalt"
         >
           {copied ? 'Copied' : 'Copy'}
         </button>
       </div>
-      <pre className="overflow-x-auto rounded-lg border border-paper-line bg-paper-card p-3 font-mono text-xs leading-relaxed whitespace-pre-wrap text-[#1C2128]">
+      <pre className="overflow-x-auto rounded-lg border border-paper-line bg-paper-card p-3 font-mono text-xs leading-relaxed whitespace-pre-wrap text-black">
         {value}
       </pre>
     </div>

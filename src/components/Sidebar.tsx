@@ -174,7 +174,7 @@ function NavItem({ link, pathname, onNavigate }: { link: NavLink; pathname: stri
         href={link.href}
         onClick={onNavigate}
         className={`flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors ${
-          active ? 'bg-cobalt text-white' : 'text-muted-on-ink hover:bg-ink-line hover:text-[#E8ECF4]'
+          active ? 'bg-cobalt text-white' : 'text-muted-on-ink hover:bg-ink-line hover:text-white'
         }`}
       >
         <Icon className="h-4 w-4 shrink-0" />
@@ -196,7 +196,7 @@ function NavItem({ link, pathname, onNavigate }: { link: NavLink; pathname: stri
     <div>
       <div
         className={`flex items-center rounded-md text-sm font-medium transition-colors ${
-          active ? 'bg-cobalt text-white' : 'text-muted-on-ink hover:bg-ink-line hover:text-[#E8ECF4]'
+          active ? 'bg-cobalt text-white' : 'text-muted-on-ink hover:bg-ink-line hover:text-white'
         }`}
       >
         <Link href={link.href} onClick={onNavigate} className="flex flex-1 items-center gap-3 px-3 py-2">
@@ -222,7 +222,7 @@ function NavItem({ link, pathname, onNavigate }: { link: NavLink; pathname: stri
                 key={child.href}
                 href={child.href}
                 onClick={onNavigate}
-                className="flex items-center gap-2.5 rounded-md px-3 py-1.5 text-[13px] font-medium text-muted-on-ink transition-colors hover:bg-ink-line hover:text-[#E8ECF4]"
+                className="flex items-center gap-2.5 rounded-md px-3 py-1.5 text-[13px] font-medium text-muted-on-ink transition-colors hover:bg-ink-line hover:text-white"
               >
                 <ChildIcon className="h-3.5 w-3.5 shrink-0" />
                 {child.label}
@@ -241,7 +241,7 @@ function NavLinks({ isAdmin, pathname, onNavigate }: { isAdmin: boolean; pathnam
     <nav className="flex flex-col gap-5 px-3">
       {groups.map((group) => (
         <div key={group.label}>
-          <div className="mb-1.5 px-3 font-mono text-[10px] font-bold tracking-wide text-muted-on-ink/70 uppercase">
+          <div className="mb-1.5 px-3 text-[10px] font-medium tracking-wide text-muted-on-ink/70 uppercase">
             {group.label}
           </div>
           <div className="flex flex-col gap-1">
@@ -268,7 +268,7 @@ function CreditsMeter() {
 
   if (usage.monthlyLimit == null) {
     return (
-      <div className="px-4 pt-3 pb-3 font-mono text-[11px] tracking-wide text-muted-on-ink uppercase">
+      <div className="px-4 pt-3 pb-3 text-[11px] tracking-wide text-muted-on-ink uppercase">
         Unlimited audits this month
       </div>
     );
@@ -283,7 +283,7 @@ function CreditsMeter() {
       <div className="h-1.5 w-full overflow-hidden rounded-full bg-ink-line">
         <div className={`h-full rounded-full ${low ? 'bg-critical' : 'bg-cobalt'}`} style={{ width: `${pct}%` }} />
       </div>
-      <div className="mt-1.5 font-mono text-[11px] tracking-wide text-muted-on-ink uppercase">
+      <div className="mt-1.5 text-[11px] tracking-wide text-muted-on-ink uppercase">
         {remaining} audit{remaining === 1 ? '' : 's'} remaining
       </div>
     </div>
@@ -294,7 +294,7 @@ function PlanRow({ planName }: { planName: string }) {
   return (
     <Link
       href="/app/dashboard"
-      className="flex items-center justify-between border-t border-ink-line px-4 py-3 text-sm font-semibold text-[#E8ECF4] hover:bg-ink-line"
+      className="flex items-center justify-between border-t border-ink-line px-4 py-3 text-sm font-semibold text-white hover:bg-ink-line"
     >
       {planName}
       <ArrowRightIcon className="h-4 w-4 text-muted-on-ink" />
@@ -308,12 +308,12 @@ function UserFooter({ onLogout }: { onLogout: () => void }) {
   return (
     <div className="border-t border-ink-line p-4">
       {user.organization && (
-        <div className="mb-2 truncate text-xs font-semibold text-[#E8ECF4]">{user.organization.name}</div>
+        <div className="mb-2 truncate text-xs font-semibold text-white">{user.organization.name}</div>
       )}
       <div className="mb-2 truncate text-xs text-muted-on-ink">{user.email}</div>
       <button
         onClick={onLogout}
-        className="cursor-pointer text-xs font-semibold text-muted-on-ink hover:text-[#E8ECF4]"
+        className="cursor-pointer text-xs font-semibold text-muted-on-ink hover:text-white"
       >
         Log out
       </button>
@@ -357,7 +357,7 @@ export function Sidebar() {
               <button
                 onClick={() => setOpen(false)}
                 aria-label="Close menu"
-                className="cursor-pointer text-lg text-muted-on-ink hover:text-[#E8ECF4]"
+                className="cursor-pointer text-lg text-muted-on-ink hover:text-white"
               >
                 ✕
               </button>

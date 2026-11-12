@@ -41,7 +41,7 @@ function ConnectReturnInner() {
       <div className="w-full max-w-sm rounded-xl border border-ink-line bg-ink-soft p-6 text-center">
         {error ? (
           <>
-            <h1 className="mb-2 text-lg font-bold text-[#E8ECF4]">Couldn&apos;t connect {name}</h1>
+            <h1 className="mb-2 text-lg font-bold text-white">Couldn&apos;t connect {name}</h1>
             <p className="mb-5 text-sm text-muted-on-ink">{error}</p>
             <Link href={back} className="inline-block rounded-lg bg-cobalt px-4 py-2.5 text-sm font-bold text-white">
               Back to repositories
@@ -49,7 +49,7 @@ function ConnectReturnInner() {
           </>
         ) : (
           <>
-            <h1 className="mb-1 text-lg font-bold text-[#E8ECF4]">Connecting {name}…</h1>
+            <h1 className="mb-1 text-lg font-bold text-white">Connecting {name}…</h1>
             <p className="text-sm text-muted-on-ink">One moment.</p>
           </>
         )}

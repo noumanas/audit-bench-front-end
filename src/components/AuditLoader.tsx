@@ -29,7 +29,7 @@ export function AuditLoader() {
       </div>
 
       <div className="mb-5 text-center">
-        <div className="mb-1 font-mono text-sm font-semibold text-[#1C2128]">Auditing your code…</div>
+        <div className="mb-1 font-mono text-sm font-semibold text-black">Auditing your code…</div>
         <p className="text-[13px] text-muted-on-paper">
           Checking security, logic, performance, and architecture.
         </p>
@@ -55,9 +55,9 @@ export function AuditLoader() {
               <span
                 className={
                   done
-                    ? 'text-[#1C2128]'
+                    ? 'text-black'
                     : active
-                      ? 'font-medium text-[#1C2128]'
+                      ? 'font-medium text-black'
                       : 'text-muted-on-paper'
                 }
               >

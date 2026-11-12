@@ -162,14 +162,14 @@ export default function PricingPage() {
       {pricingSchema && <StructuredData data={[pricingSchema, faqSchema]} />}
       <section className="border-b border-ink-line bg-ink px-6 py-16 text-center">
         <ScrollReveal>
-          <div className="mb-2 font-mono text-[13px] tracking-wide text-muted-on-ink uppercase">Pricing</div>
-          <h1 className="mb-3 text-3xl font-bold text-[#E8ECF4]">
+          <div className="mb-2 text-[13px] tracking-wide text-muted-on-ink uppercase">Pricing</div>
+          <h1 className="mb-3 text-3xl text-white font-light tracking-[-0.03em]">
             <TextReveal>Simple plans, real limits</TextReveal>
           </h1>
           <p className="mx-auto max-w-xl text-sm leading-relaxed text-muted-on-ink">
             Every plan shares the same audit engine, and local checks — linting, type errors,
             complexity, formatting — are unlimited on every tier, free. What a plan caps is how many
-            <strong className="text-[#E8ECF4]"> AI-reviewed</strong> audits you get per day and per
+            <strong className="text-white"> AI-reviewed</strong> audits you get per day and per
             month, and whether repository scanning is included.
           </p>
         </ScrollReveal>
@@ -206,10 +206,10 @@ export default function PricingPage() {
                   key={plan.id}
                   className="flex flex-col rounded-xl border border-paper-line bg-paper-card p-6 transition-all duration-200 hover:-translate-y-1.5 hover:border-cobalt/40 hover:shadow-panel"
                 >
-                  <div className="mb-1 font-mono text-sm font-bold tracking-wide text-muted-on-paper uppercase">
+                  <div className="mb-1 text-sm font-medium tracking-wide text-muted-on-paper uppercase">
                     {plan.name}
                   </div>
-                  <div className="mb-1 text-3xl font-bold text-[#1C2128]">
+                  <div className="mb-1 text-3xl font-bold text-black">
                     {formatPrice(plan)}
                     {plan.priceMonthlyCents > 0 && (
                       <span className="text-sm font-normal text-muted-on-paper">/mo</span>
@@ -217,7 +217,7 @@ export default function PricingPage() {
                   </div>
                   <p className="mb-4 text-xs leading-relaxed text-muted-on-paper">{copy.blurb}</p>
 
-                  <ul className="mb-4 space-y-1.5 border-t border-paper-line pt-4 text-sm text-[#1C2128]">
+                  <ul className="mb-4 space-y-1.5 border-t border-paper-line pt-4 text-sm text-black">
                     <li>{formatLimit(plan.dailyAuditLimit)} AI audits/day</li>
                     <li>{formatLimit(plan.monthlyAuditLimit)} AI audits/month</li>
                     <li>Unlimited local checks (lint, types, complexity)</li>
@@ -256,7 +256,7 @@ export default function PricingPage() {
 
       <section className="bg-ink px-6 py-16">
         <ScrollReveal className="mx-auto max-w-3xl">
-          <h2 className="mb-8 text-center text-2xl font-bold text-[#E8ECF4]">Questions</h2>
+          <h2 className="mb-8 text-center text-3xl sm:text-4xl text-white font-light tracking-[-0.03em]">Questions</h2>
           <div className="space-y-6">
             <FaqItem
               q="What counts against my limit?"
@@ -286,7 +286,7 @@ export default function PricingPage() {
 function FaqItem({ q, a }: { q: string; a: string }) {
   return (
     <div className="rounded-lg border border-ink-line bg-ink-soft p-5 transition-colors duration-200 hover:border-cobalt/40">
-      <div className="mb-1.5 text-sm font-bold text-[#E8ECF4]">{q}</div>
+      <div className="mb-1.5 text-sm font-bold text-white">{q}</div>
       <p className="text-sm leading-relaxed text-muted-on-ink">{a}</p>
     </div>
   );

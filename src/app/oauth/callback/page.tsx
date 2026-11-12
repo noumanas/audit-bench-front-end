@@ -28,7 +28,7 @@ function OAuthCallbackInner() {
       <div className="w-full max-w-sm rounded-xl border border-ink-line bg-ink-soft p-6 text-center">
         {error ? (
           <>
-            <h1 className="mb-2 text-lg font-bold text-[#E8ECF4]">Login failed</h1>
+            <h1 className="mb-2 text-lg font-bold text-white">Login failed</h1>
             <p className="mb-5 text-sm text-muted-on-ink">{error}</p>
             <Link
               href="/login"
@@ -39,7 +39,7 @@ function OAuthCallbackInner() {
           </>
         ) : (
           <>
-            <h1 className="mb-1 text-lg font-bold text-[#E8ECF4]">Signing you in…</h1>
+            <h1 className="mb-1 text-lg font-bold text-white">Signing you in…</h1>
             <p className="text-sm text-muted-on-ink">One moment.</p>
           </>
         )}

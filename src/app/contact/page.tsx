@@ -31,10 +31,10 @@ export default function ContactPage() {
     <div>
       <section className="border-b border-ink-line bg-ink px-6 py-14">
         <div className="mx-auto max-w-5xl">
-          <div className="mb-4 inline-block rounded-full border border-ink-line px-3 py-1 font-mono text-[11px] tracking-wide text-muted-on-ink uppercase">
+          <div className="mb-4 inline-block rounded-full border border-ink-line px-3 py-1 text-[11px] tracking-wide text-muted-on-ink uppercase">
             Contact
           </div>
-          <h1 className="mb-3 text-3xl leading-tight font-bold text-[#E8ECF4] sm:text-4xl">
+          <h1 className="mb-3 text-3xl leading-tight text-white sm:text-4xl font-light tracking-[-0.03em]">
             <TextReveal>Talk to the Audit Bench team</TextReveal>
           </h1>
           <p className="max-w-2xl text-sm leading-relaxed text-muted-on-ink">
@@ -52,18 +52,18 @@ export default function ContactPage() {
 
           <aside className="space-y-6">
             <div className="rounded-2xl border border-paper-line bg-paper-card p-5">
-              <h2 className="text-[13px] font-semibold text-[#1C2128]">Prefer email?</h2>
+              <h2 className="text-[13px] font-semibold text-black">Prefer email?</h2>
               <a href={`mailto:${EMAIL}`} className="mt-1 block text-[14px] font-semibold break-all text-cobalt hover:underline">
                 {EMAIL}
               </a>
               <dl className="mt-4 space-y-3 border-t border-paper-line pt-4 text-[13px]">
                 <div>
                   <dt className="text-muted-on-paper">Typical reply</dt>
-                  <dd className="font-semibold text-[#1C2128]">Within one business day</dd>
+                  <dd className="font-semibold text-black">Within one business day</dd>
                 </div>
                 <div>
                   <dt className="text-muted-on-paper">Security reports</dt>
-                  <dd className="text-[#1C2128]">
+                  <dd className="text-black">
                     Pick <span className="font-semibold">Security disclosure</span>
                     {' — '}they&apos;re read first.
                   </dd>
@@ -72,14 +72,14 @@ export default function ContactPage() {
             </div>
 
             <nav aria-label="Before you write">
-              <h2 className="mb-2 px-1 font-mono text-[11px] tracking-wide text-muted-on-paper uppercase">
+              <h2 className="mb-2 px-1 text-[11px] tracking-wide text-muted-on-paper uppercase">
                 Before you write
               </h2>
               <ul className="space-y-1">
                 {SHORTCUTS.map((s) => (
                   <li key={s.href}>
                     <Link href={s.href} className="group block rounded-xl px-3 py-2.5 transition hover:bg-paper-card">
-                      <span className="text-[14px] font-semibold text-[#1C2128] group-hover:text-cobalt">
+                      <span className="text-[14px] font-semibold text-black group-hover:text-cobalt">
                         {s.title} →
                       </span>
                       <span className="mt-0.5 block text-[12px] leading-relaxed text-muted-on-paper">{s.detail}</span>

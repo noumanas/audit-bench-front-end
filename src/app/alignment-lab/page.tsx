@@ -55,10 +55,10 @@ export default function AlignmentLabPage() {
     <div>
       <section className="border-b border-ink-line bg-ink px-6 py-16 text-center">
         <ScrollReveal>
-          <div className="mb-2 font-mono text-[13px] tracking-wide text-muted-on-ink uppercase">
+          <div className="mb-2 text-[13px] tracking-wide text-muted-on-ink uppercase">
             AI red-teaming · Team &amp; Enterprise
           </div>
-          <h1 className="mb-3 text-3xl font-bold text-[#E8ECF4] sm:text-4xl">
+          <h1 className="mb-3 text-3xl text-white sm:text-4xl font-light tracking-[-0.03em]">
             <TextReveal>Practice alignment auditing on models you control</TextReveal>
           </h1>
           <p className="mx-auto max-w-xl text-sm leading-relaxed text-muted-on-ink">
@@ -74,7 +74,7 @@ export default function AlignmentLabPage() {
             </Link>
             <Link
               href="/pricing"
-              className="rounded-lg border border-ink-line px-5 py-3 text-sm font-bold text-muted-on-ink transition-all duration-200 hover:-translate-y-0.5 hover:border-cobalt/40 hover:text-[#E8ECF4]"
+              className="rounded-lg border border-ink-line px-5 py-3 text-sm font-bold text-muted-on-ink transition-all duration-200 hover:-translate-y-0.5 hover:border-cobalt/40 hover:text-white"
             >
               See plans
             </Link>
@@ -84,7 +84,7 @@ export default function AlignmentLabPage() {
 
       <section className="bg-paper px-6 py-16">
         <ScrollReveal className="mx-auto max-w-4xl">
-          <h2 className="mb-8 text-center text-xl font-bold text-[#1C2128]">How it works</h2>
+          <h2 className="mb-8 text-center text-xl font-bold text-black">How it works</h2>
           <div className="grid gap-4 sm:grid-cols-3">
             {STEPS.map((s) => (
               <div
@@ -92,7 +92,7 @@ export default function AlignmentLabPage() {
                 className="rounded-lg border border-paper-line bg-paper-card p-5 transition-all duration-200 hover:-translate-y-1 hover:border-cobalt/40 hover:shadow-panel"
               >
                 <div className="mb-2 font-mono text-[11px] text-muted-on-paper">{s.n}</div>
-                <div className="mb-1 text-sm font-bold text-[#1C2128]">{s.title}</div>
+                <div className="mb-1 text-sm font-bold text-black">{s.title}</div>
                 <p className="text-xs leading-relaxed text-muted-on-paper">{s.detail}</p>
               </div>
             ))}
@@ -102,14 +102,14 @@ export default function AlignmentLabPage() {
 
       <section className="bg-ink px-6 py-16">
         <ScrollReveal className="mx-auto max-w-3xl">
-          <h2 className="mb-2 text-center text-xl font-bold text-[#E8ECF4]">What this actually is</h2>
+          <h2 className="mb-2 text-center text-xl font-bold text-white">What this actually is</h2>
           <p className="mb-8 text-center text-sm text-muted-on-ink">
             No overselling — here&apos;s exactly what&apos;s built today, and what isn&apos;t.
           </p>
           <div className="space-y-4">
             {HONEST_NOTES.map((n) => (
               <div key={n.title} className="rounded-lg border border-ink-line bg-ink-soft p-5">
-                <h3 className="mb-1.5 text-sm font-bold text-[#E8ECF4]">{n.title}</h3>
+                <h3 className="mb-1.5 text-sm font-bold text-white">{n.title}</h3>
                 <p className="text-sm leading-relaxed text-muted-on-ink">{n.detail}</p>
               </div>
             ))}
@@ -119,7 +119,7 @@ export default function AlignmentLabPage() {
 
       <section className="bg-paper px-6 py-16 text-center">
         <ScrollReveal>
-          <h2 className="mb-3 text-xl font-bold text-[#1C2128]">Included on Team and Enterprise</h2>
+          <h2 className="mb-3 text-xl font-bold text-black">Included on Team and Enterprise</h2>
           <p className="mx-auto mb-6 max-w-md text-sm leading-relaxed text-muted-on-paper">
             Team plans get a monthly investigation allowance; Enterprise is unlimited. Registering personas to see
             how it works is free on every plan — only running an investigation draws from the allowance.

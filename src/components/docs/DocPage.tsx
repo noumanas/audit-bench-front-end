@@ -66,10 +66,10 @@ export function DocPage({ slug, updated, children }: { slug: string; updated?: s
     <article data-docs-article>
       <StructuredData data={docSchema(slug, updated)} />
       <header className="mb-8 border-b border-ink-line pb-6">
-        <p className="mb-2 font-mono text-[11px] font-bold tracking-[0.14em] text-cobalt uppercase">
+        <p className="mb-2 text-[11px] font-medium tracking-[0.14em] text-cobalt uppercase">
           {docGroupOf(slug)}
         </p>
-        <h1 className="text-3xl font-bold tracking-tight text-[#E8ECF4] sm:text-[2rem]">{page.title}</h1>
+        <h1 className="text-3xl text-white sm:text-[2rem] font-light tracking-[-0.03em]">{page.title}</h1>
         <p className="mt-2 text-[15px] leading-relaxed text-muted-on-ink">{page.description}</p>
       </header>
 
@@ -83,7 +83,7 @@ export function DocPage({ slug, updated, children }: { slug: string; updated?: s
               className="group rounded-lg border border-ink-line p-4 transition-colors hover:border-cobalt/60"
             >
               <span className="block text-[11px] text-muted-on-ink">← Previous</span>
-              <span className="block text-sm font-semibold text-[#E8ECF4] group-hover:text-white">{prev.title}</span>
+              <span className="block text-sm font-semibold text-white group-hover:text-white">{prev.title}</span>
             </Link>
           ) : (
             <span />
@@ -94,14 +94,14 @@ export function DocPage({ slug, updated, children }: { slug: string; updated?: s
               className="group rounded-lg border border-ink-line p-4 text-right transition-colors hover:border-cobalt/60"
             >
               <span className="block text-[11px] text-muted-on-ink">Next →</span>
-              <span className="block text-sm font-semibold text-[#E8ECF4] group-hover:text-white">{next.title}</span>
+              <span className="block text-sm font-semibold text-white group-hover:text-white">{next.title}</span>
             </Link>
           )}
         </div>
         <p className="mt-6 flex flex-wrap justify-between gap-2 text-[12px] text-muted-on-ink">
           <span>
             Something unclear or out of date?{' '}
-            <Link href="/contact" className="text-[#9db6ff] hover:underline">
+            <Link href="/contact" className="text-[#a58bff] hover:underline">
               Tell us
             </Link>
             .

@@ -76,11 +76,11 @@ export default function AuditDetailPage() {
             <>
               <header className="mb-5 flex flex-wrap items-end gap-3">
                 <div className="min-w-0 flex-1">
-                  <div className="mb-1 font-mono text-[12px] tracking-wide text-muted-on-paper uppercase">
+                  <div className="mb-1 text-[12px] tracking-wide text-muted-on-paper uppercase">
                     Code review report
                   </div>
                   <h1
-                    className={`truncate font-mono text-xl font-bold text-[#1C2128] ${name === 'Pasted code' ? 'italic' : ''}`}
+                    className={`truncate font-mono text-xl font-bold text-black ${name === 'Pasted code' ? 'italic' : ''}`}
                   >
                     {name}
                   </h1>
@@ -94,13 +94,13 @@ export default function AuditDetailPage() {
                 <div className="flex flex-wrap gap-2 whitespace-nowrap print:hidden">
                   <button
                     onClick={copyMarkdown}
-                    className="cursor-pointer rounded-md border border-paper-line bg-paper-card px-3 py-1.5 text-[13px] font-semibold text-[#1C2128] hover:border-muted-on-paper"
+                    className="cursor-pointer rounded-md border border-paper-line bg-paper-card px-3 py-1.5 text-[13px] font-semibold text-black hover:border-muted-on-paper"
                   >
                     {copied ? 'Copied' : 'Copy as Markdown'}
                   </button>
                   <button
                     onClick={() => window.print()}
-                    className="cursor-pointer rounded-md border border-paper-line bg-paper-card px-3 py-1.5 text-[13px] font-semibold text-[#1C2128] hover:border-muted-on-paper"
+                    className="cursor-pointer rounded-md border border-paper-line bg-paper-card px-3 py-1.5 text-[13px] font-semibold text-black hover:border-muted-on-paper"
                   >
                     Print / PDF
                   </button>

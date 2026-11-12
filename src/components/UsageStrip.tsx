@@ -30,10 +30,10 @@ export function UsageStrip({ planHref, refreshKey }: { planHref: string; refresh
   return (
     <div className="shadow-panel mb-6 flex flex-wrap items-center gap-x-6 gap-y-3 rounded-lg border border-ink-line bg-ink-soft px-4 py-3">
       <div className="min-w-[150px]">
-        <div className="font-mono text-[10px] tracking-wide text-muted-on-ink uppercase">
+        <div className="text-[10px] tracking-wide text-muted-on-ink uppercase">
           {usage.scope === 'organization' ? `Team plan · ${usage.organizationName}` : 'Your plan'}
         </div>
-        <div className="text-sm font-bold text-[#E8ECF4]">{usage.plan.name}</div>
+        <div className="text-sm font-bold text-white">{usage.plan.name}</div>
         {expires && (
           <div className="text-[11px] text-muted-on-ink">
             Until{' '}
@@ -49,7 +49,7 @@ export function UsageStrip({ planHref, refreshKey }: { planHref: string; refresh
       <Meter label="AI repo scans this month" used={usage.repoScansUsed} limit={usage.repoScanLimit} />
       <Link
         href={planHref}
-        className="ml-auto inline-flex items-center gap-1 font-mono text-[11px] font-bold tracking-wide text-cobalt uppercase hover:underline"
+        className="ml-auto inline-flex items-center gap-1 text-[11px] font-medium tracking-wide text-cobalt uppercase hover:underline"
       >
         Manage plan
         <ArrowRightIcon className="h-3.5 w-3.5" />
@@ -65,7 +65,7 @@ function Meter({ label, used, limit }: { label: string; used: number; limit: num
     <div className="min-w-[140px] flex-1">
       <div className="mb-1 flex items-baseline justify-between gap-2">
         <span className="text-[11px] text-muted-on-ink">{label}</span>
-        <span className={`font-mono text-[11px] tabular-nums ${full ? 'font-bold text-critical' : 'text-[#E8ECF4]'}`}>
+        <span className={`font-mono text-[11px] tabular-nums ${full ? 'font-bold text-critical' : 'text-white'}`}>
           {limit == null ? `${used} · unlimited` : `${used}/${limit}`}
         </span>
       </div>

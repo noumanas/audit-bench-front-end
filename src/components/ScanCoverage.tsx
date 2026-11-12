@@ -92,7 +92,7 @@ export function SecretGroups({ secrets }: { secrets: SecretFinding[] }) {
   return (
     <div className="space-y-3">
       {groups.length < secrets.length && (
-        <p className="text-xs text-[#1C2128]">
+        <p className="text-xs text-black">
           <strong>{groups.length}</strong> distinct secret
           {groups.length === 1 ? "" : "s"} found in{" "}
           <strong>{secrets.length}</strong> places. Rotate each key once, then
@@ -103,10 +103,10 @@ export function SecretGroups({ secrets }: { secrets: SecretFinding[] }) {
         {groups.map((g, i) => (
           <li key={i} className="py-2 first:pt-0 last:pb-0">
             <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-              <span className="rounded bg-critical/10 px-1.5 py-0.5 font-mono text-[10px] font-bold text-critical uppercase">
+              <span className="rounded bg-critical/10 px-1.5 py-0.5 text-[10px] font-medium text-critical uppercase">
                 {g.rule}
               </span>
-              <span className="font-mono text-xs break-all text-[#1C2128]">
+              <span className="font-mono text-xs break-all text-black">
                 {g.places[0].path}:{g.places[0].line}
               </span>
               {g.places.length > 1 && (
@@ -136,7 +136,7 @@ export function SecretGroups({ secrets }: { secrets: SecretFinding[] }) {
           </li>
         ))}
       </ul>
-      <div className="rounded-md border border-paper-line bg-paper px-3 py-2.5 text-xs leading-relaxed text-[#1C2128]">
+      <div className="rounded-md border border-paper-line bg-paper px-3 py-2.5 text-xs leading-relaxed text-black">
         <div className="mb-1 font-bold">How to fix exposed secrets</div>
         <ol className="list-decimal space-y-1 pl-4">
           <li>
@@ -184,7 +184,7 @@ export function SkippedFilesList({
     );
   return (
     <div className="space-y-2">
-      <p className="text-xs text-[#1C2128]">
+      <p className="text-xs text-black">
         Reviewed <strong>{reviewed}</strong> file{reviewed === 1 ? "" : "s"}.{" "}
         <strong>{total}</strong> other file
         {total === 1 ? " was" : "s were"} left out:
@@ -201,10 +201,10 @@ export function SkippedFilesList({
                 aria-expanded={open}
                 className="flex w-full cursor-pointer items-baseline gap-2 text-left"
               >
-                <span className="font-mono text-xs font-bold text-[#1C2128] tabular-nums">
+                <span className="font-mono text-xs font-bold text-black tabular-nums">
                   {skipped.counts[r]}
                 </span>
-                <span className="text-xs font-semibold text-[#1C2128]">
+                <span className="text-xs font-semibold text-black">
                   {SKIP_LABEL[r].label}
                 </span>
                 <span className="min-w-0 flex-1 truncate text-[11px] text-muted-on-paper">
@@ -242,7 +242,7 @@ export function RemediationBasis({
 }) {
   if (!remediation.items.length) return null;
   return (
-    <details className="rounded-lg border border-paper-line px-4 py-2.5 text-xs text-[#1C2128]">
+    <details className="rounded-lg border border-paper-line px-4 py-2.5 text-xs text-black">
       <summary className="cursor-pointer font-semibold">
         How the remediation estimate is calculated
       </summary>

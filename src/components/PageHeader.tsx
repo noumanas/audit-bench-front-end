@@ -16,9 +16,9 @@ export function PageHeader({
       <div>
         <div className="mb-2 flex items-center gap-2">
           <span className="h-1.5 w-1.5 rounded-full bg-cobalt" />
-          <span className="font-mono text-[11px] font-bold tracking-[0.14em] text-cobalt uppercase">{kicker}</span>
+          <span className="text-[11px] font-medium tracking-[0.14em] text-cobalt uppercase">{kicker}</span>
         </div>
-        <h1 className="text-2xl font-bold tracking-tight text-[#E8ECF4]">{title}</h1>
+        <h1 className="text-3xl sm:text-4xl text-white font-light tracking-[-0.03em]">{title}</h1>
         {description && <p className="mt-1.5 max-w-xl text-sm leading-relaxed text-muted-on-ink">{description}</p>}
       </div>
       {action && <div className="shrink-0">{action}</div>}

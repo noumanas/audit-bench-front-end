@@ -168,7 +168,7 @@ function AddRule({
             aria-checked={kind === k}
             onClick={() => setKind(k)}
             className={`cursor-pointer rounded-md px-3 py-1.5 text-[13px] font-semibold ${
-              kind === k ? 'bg-cobalt text-white' : 'border border-ink-line text-muted-on-ink hover:text-[#E8ECF4]'
+              kind === k ? 'bg-cobalt text-white' : 'border border-ink-line text-muted-on-ink hover:text-white'
             }`}
           >
             {KINDS[k].label}
@@ -182,7 +182,7 @@ function AddRule({
         placeholder={KINDS[kind].placeholder}
         rows={kind === 'instruction' ? 3 : 1}
         maxLength={500}
-        className={`w-full rounded-md border border-ink-line bg-ink px-3 py-2 text-[13px] text-[#E8ECF4] outline-none placeholder:text-muted-on-ink focus:border-cobalt ${
+        className={`w-full rounded-md border border-ink-line bg-ink px-3 py-2 text-[13px] text-white outline-none placeholder:text-muted-on-ink focus:border-cobalt ${
           kind === 'ignore_path' ? 'font-mono' : ''
         }`}
       />
@@ -192,7 +192,7 @@ function AddRule({
           onChange={(e) => setRepo(e.target.value)}
           placeholder="owner/repo (optional: every repository)"
           aria-label="Only for this repository"
-          className="min-w-[14rem] flex-1 rounded-md border border-ink-line bg-ink px-3 py-1.5 font-mono text-[12px] text-[#E8ECF4] outline-none placeholder:text-muted-on-ink focus:border-cobalt"
+          className="min-w-[14rem] flex-1 rounded-md border border-ink-line bg-ink px-3 py-1.5 font-mono text-[12px] text-white outline-none placeholder:text-muted-on-ink focus:border-cobalt"
         />
         {canShare && (
           <label className="flex cursor-pointer items-center gap-2 text-[12px] text-muted-on-ink">
@@ -236,7 +236,7 @@ function Section({
 }) {
   return (
     <section className="mb-8">
-      <h2 className="mb-3 font-mono text-[11px] font-bold tracking-wide text-muted-on-ink uppercase">
+      <h2 className="mb-3 text-[11px] font-medium tracking-wide text-muted-on-ink uppercase">
         {title}
         {rules.length > 0 && ` (${rules.length})`}
       </h2>
@@ -285,7 +285,7 @@ function RuleRow({
     <li className={`flex flex-wrap items-start gap-x-4 gap-y-2 px-4 py-3 ${rule.enabled ? '' : 'opacity-60'}`}>
       <div className="min-w-[14rem] flex-1">
         <div className="flex flex-wrap items-center gap-2">
-          <span className="rounded bg-ink-line px-1.5 py-px font-mono text-[10px] font-bold text-muted-on-ink uppercase">
+          <span className="rounded bg-ink-line px-1.5 py-px text-[10px] font-medium text-muted-on-ink uppercase">
             {KINDS[rule.kind]?.label ?? rule.kind}
           </span>
           <span className="text-[11px] text-muted-on-ink">
@@ -294,7 +294,7 @@ function RuleRow({
             {rule.source === 'learned' && ` · dismissed ${rule.evidence} time${rule.evidence === 1 ? '' : 's'}`}
           </span>
         </div>
-        <p className={`mt-1 text-[13px] break-words text-[#E8ECF4] ${rule.kind === 'ignore_path' ? 'font-mono' : ''}`}>
+        <p className={`mt-1 text-[13px] break-words text-white ${rule.kind === 'ignore_path' ? 'font-mono' : ''}`}>
           {rule.text}
         </p>
       </div>
@@ -339,7 +339,7 @@ function OutcomesCard() {
   const cats = Object.entries(data.byCategory).sort((a, b) => b[1].total - a[1].total);
   return (
     <section className="mb-8 rounded-lg border border-ink-line bg-ink-soft p-4">
-      <h2 className="text-sm font-bold text-[#E8ECF4]">What happened to findings (last {data.days} days)</h2>
+      <h2 className="text-sm font-bold text-white">What happened to findings (last {data.days} days)</h2>
       {data.total.total === 0 ? (
         <p className="mt-1 text-[12px] leading-relaxed text-muted-on-ink">
           Nothing yet. When a reviewed pull request closes, each GitHub App comment is counted as accepted (thread
@@ -381,7 +381,7 @@ function Stat({ label, value, tone }: { label: string; value: string; tone: stri
 function CategoryRow({ cat, c, pct }: { cat: string; c: OutcomeCounts; pct: (n: number, of: number) => string }) {
   return (
     <li className="flex flex-wrap items-center gap-x-4 gap-y-1 bg-ink px-3 py-2 text-[12px]">
-      <span className="min-w-[8rem] flex-1 font-semibold text-[#E8ECF4]">{cat}</span>
+      <span className="min-w-[8rem] flex-1 font-semibold text-white">{cat}</span>
       <span className="text-pass">{pct(c.accepted, c.total)} accepted</span>
       <span className="text-[#F3B7BF]">{pct(c.dismissed, c.total)} dismissed</span>
       <span className="text-muted-on-ink">
@@ -401,7 +401,7 @@ function QualityCard() {
   if (!data || data.volume.reviews === 0) return null;
   return (
     <section className="mb-8 rounded-lg border border-ink-line bg-ink-soft p-4">
-      <h2 className="mb-3 text-sm font-bold text-[#E8ECF4]">Review quality (last {data.days} days)</h2>
+      <h2 className="mb-3 text-sm font-bold text-white">Review quality (last {data.days} days)</h2>
       <ReviewQualityPanel data={data} scope="team" />
     </section>
   );
@@ -476,7 +476,7 @@ function StrictnessCard({ canTune, team }: { canTune: boolean; team: boolean }) 
 
   return (
     <section className="mb-8 rounded-lg border border-ink-line bg-ink-soft p-4">
-      <h2 className="text-sm font-bold text-[#E8ECF4]">Review strictness</h2>
+      <h2 className="text-sm font-bold text-white">Review strictness</h2>
       <p className="mt-1 mb-4 text-[12px] leading-relaxed text-muted-on-ink">
         How sure Audit Bench Ai must be before it comments, and when complexity is worth raising.
         {team ? ' Applies to your whole team.' : ''}
@@ -488,9 +488,9 @@ function StrictnessCard({ canTune, team }: { canTune: boolean; team: boolean }) 
           const value = draft[f.key];
           return (
             <label key={f.key} htmlFor={`strict-${f.key}`} className="block">
-              <span className="flex items-baseline justify-between gap-2 text-[12px] font-semibold text-[#E8ECF4]">
+              <span className="flex items-baseline justify-between gap-2 text-[12px] font-semibold text-white">
                 {f.label}
-                <span className="font-mono text-[12px] text-[#8fb0ff] tabular-nums">
+                <span className="font-mono text-[12px] text-[#a58bff] tabular-nums">
                   {f.percent ? `${Math.round(value * 100)}%` : value}
                 </span>
               </span>
@@ -503,7 +503,7 @@ function StrictnessCard({ canTune, team }: { canTune: boolean; team: boolean }) 
                 value={value}
                 disabled={!canTune || busy}
                 onChange={(e) => setDraft({ ...draft, [f.key]: Number(e.target.value) })}
-                className="mt-2 w-full accent-[#2b5be3] disabled:opacity-50"
+                className="mt-2 w-full accent-[#7546f4] disabled:opacity-50"
               />
               <span className="mt-1 block text-[11px] leading-snug text-muted-on-ink">
                 {f.hint} Default {f.percent ? `${Math.round(settings.defaults[f.key] * 100)}%` : settings.defaults[f.key]}.
@@ -512,14 +512,14 @@ function StrictnessCard({ canTune, team }: { canTune: boolean; team: boolean }) 
           );
         })}
       </div>
-      <label htmlFor="strict-suggestions" className="mt-4 flex items-start gap-2.5 text-[12px] text-[#E8ECF4]">
+      <label htmlFor="strict-suggestions" className="mt-4 flex items-start gap-2.5 text-[12px] text-white">
         <input
           id="strict-suggestions"
           type="checkbox"
           checked={draft.optionalSuggestions}
           disabled={!canTune || busy}
           onChange={(e) => setDraft({ ...draft, optionalSuggestions: e.target.checked })}
-          className="mt-0.5 accent-[#2b5be3]"
+          className="mt-0.5 accent-[#7546f4]"
         />
         <span>
           <span className="font-semibold">List optional suggestions on pull requests</span>
@@ -543,7 +543,7 @@ function StrictnessCard({ canTune, team }: { canTune: boolean; team: boolean }) 
             type="button"
             onClick={() => save(settings.defaults)}
             disabled={busy}
-            className="cursor-pointer rounded-md border border-ink-line px-3.5 py-1.5 text-xs font-semibold text-muted-on-ink hover:text-[#E8ECF4] disabled:opacity-50"
+            className="cursor-pointer rounded-md border border-ink-line px-3.5 py-1.5 text-xs font-semibold text-muted-on-ink hover:text-white disabled:opacity-50"
           >
             Reset to defaults
           </button>

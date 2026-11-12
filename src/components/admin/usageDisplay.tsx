@@ -35,7 +35,7 @@ export function UsageMeter({
       <div className="mb-1 flex items-baseline justify-between gap-2">
         <span className={`${compact ? 'text-[10px]' : 'text-[11px]'} truncate text-muted-on-ink`}>{label}</span>
         <span
-          className={`shrink-0 font-mono text-[11px] tabular-nums ${full ? 'font-bold text-critical' : near ? 'text-high' : 'text-[#E8ECF4]'}`}
+          className={`shrink-0 font-mono text-[11px] tabular-nums ${full ? 'font-bold text-critical' : near ? 'text-high' : 'text-white'}`}
         >
           {limit == null ? `${used} / ∞` : `${used}/${limit}`}
         </span>

@@ -117,7 +117,7 @@ export function AdminUserDrawer({
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-2">
               <span className={`h-2 w-2 shrink-0 rounded-full ${user.isActive ? 'bg-pass' : 'bg-critical'}`} />
-              <h2 className="truncate font-mono text-sm font-bold text-[#E8ECF4]">{user.email}</h2>
+              <h2 className="truncate font-mono text-sm font-bold text-white">{user.email}</h2>
             </div>
             <p className="mt-0.5 truncate pl-4 text-[12px] text-muted-on-ink">
               {user.name || 'No name'} · {ROLE_LABEL[user.role]}
@@ -127,7 +127,7 @@ export function AdminUserDrawer({
           </div>
           <button
             onClick={onClose}
-            className="cursor-pointer rounded-md border border-ink-line px-2.5 py-1 text-xs text-muted-on-ink hover:text-[#E8ECF4]"
+            className="cursor-pointer rounded-md border border-ink-line px-2.5 py-1 text-xs text-muted-on-ink hover:text-white"
           >
             Close
           </button>
@@ -142,9 +142,9 @@ export function AdminUserDrawer({
 
           <Section title="Plan">
             <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-              <span className="text-base font-bold text-[#E8ECF4]">{user.effectivePlan?.name ?? user.plan.name}</span>
+              <span className="text-base font-bold text-white">{user.effectivePlan?.name ?? user.plan.name}</span>
               {user.planExpired && (
-                <span className="rounded bg-critical/15 px-1.5 py-0.5 font-mono text-[10px] font-bold text-critical uppercase">
+                <span className="rounded bg-critical/15 px-1.5 py-0.5 text-[10px] font-medium text-critical uppercase">
                   {user.plan.name} expired
                 </span>
               )}
@@ -217,9 +217,9 @@ export function AdminUserDrawer({
               <ul className="divide-y divide-ink-line overflow-hidden rounded-lg border border-ink-line">
                 {detail.recent.map((r) => (
                   <li key={`${r.kind}:${r.id}`} className="flex items-center gap-3 bg-ink-soft px-3.5 py-2.5">
-                    <span className="w-10 shrink-0 font-mono text-[10px] text-muted-on-ink uppercase">{r.kind}</span>
+                    <span className="w-10 shrink-0 text-[10px] text-muted-on-ink uppercase">{r.kind}</span>
                     <div className="min-w-0 flex-1">
-                      <div className="truncate font-mono text-[12px] text-[#E8ECF4]">{r.label}</div>
+                      <div className="truncate font-mono text-[12px] text-white">{r.label}</div>
                       <div className="text-[11px] text-muted-on-ink">
                         {r.usedAi
                           ? `AI · ${r.provider}${r.tokens > 0 ? ` · ${compactNumber(r.tokens)} tokens` : ''}`
@@ -236,7 +236,7 @@ export function AdminUserDrawer({
                     {r.verdict && r.status === 'completed' ? (
                       <VerdictBadge verdict={r.verdict} />
                     ) : (
-                      <span className="font-mono text-[10px] text-muted-on-ink uppercase">{r.status}</span>
+                      <span className="text-[10px] text-muted-on-ink uppercase">{r.status}</span>
                     )}
                     <span
                       className="w-20 shrink-0 text-right text-[11px] text-muted-on-ink"
@@ -295,7 +295,7 @@ export function AdminUserDrawer({
                       <div className="min-w-0 flex-1">
                         <div className="flex flex-wrap items-center gap-2">
                           <ActivityBadge type={a.type} />
-                          <span className="text-[#E8ECF4]">
+                          <span className="text-white">
                             <Location city={a.city} countryCode={a.countryCode} />
                           </span>
                         </div>
@@ -342,13 +342,13 @@ export function AdminUserDrawer({
             </dl>
             {detail && detail.planRequests.length > 0 && (
               <div className="mt-3">
-                <div className="mb-1 font-mono text-[10px] tracking-wide text-muted-on-ink uppercase">
+                <div className="mb-1 text-[10px] tracking-wide text-muted-on-ink uppercase">
                   Plan requests
                 </div>
                 <ul className="space-y-1 text-[12px] text-muted-on-ink">
                   {detail.planRequests.map((r) => (
                     <li key={r.id}>
-                      <span className="text-[#E8ECF4]">{r.requestedPlan.name}</span> · {r.status} ·{' '}
+                      <span className="text-white">{r.requestedPlan.name}</span> · {r.status} ·{' '}
                       {timeAgo(r.createdAt)}
                     </li>
                   ))}
@@ -364,7 +364,7 @@ export function AdminUserDrawer({
                 <input
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="mt-1 w-full rounded-md border border-ink-line bg-ink-soft px-2.5 py-1.5 text-sm text-[#E8ECF4] outline-none focus:border-cobalt"
+                  className="mt-1 w-full rounded-md border border-ink-line bg-ink-soft px-2.5 py-1.5 text-sm text-white outline-none focus:border-cobalt"
                 />
               </label>
               <label className="text-[12px] text-muted-on-ink">
@@ -372,7 +372,7 @@ export function AdminUserDrawer({
                 <select
                   value={planId}
                   onChange={(e) => setPlanId(e.target.value)}
-                  className="mt-1 w-full rounded-md border border-ink-line bg-ink-soft px-2.5 py-1.5 text-sm text-[#E8ECF4] outline-none focus:border-cobalt"
+                  className="mt-1 w-full rounded-md border border-ink-line bg-ink-soft px-2.5 py-1.5 text-sm text-white outline-none focus:border-cobalt"
                 >
                   {plans.map((p) => (
                     <option key={p.id} value={p.id}>
@@ -401,7 +401,7 @@ export function AdminUserDrawer({
                     value={user.role}
                     disabled={busy !== null}
                     onChange={(e) => changeRole(e.target.value as Role)}
-                    className="mt-1 block rounded-md border border-ink-line bg-ink-soft px-2.5 py-1.5 text-sm text-[#E8ECF4] outline-none"
+                    className="mt-1 block rounded-md border border-ink-line bg-ink-soft px-2.5 py-1.5 text-sm text-white outline-none"
                   >
                     <option value="user">User</option>
                     <option value="admin">Admin</option>
@@ -438,7 +438,7 @@ export function AdminUserDrawer({
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section>
-      <h3 className="mb-2.5 font-mono text-[11px] font-bold tracking-wide text-muted-on-ink uppercase">{title}</h3>
+      <h3 className="mb-2.5 text-[11px] font-medium tracking-wide text-muted-on-ink uppercase">{title}</h3>
       {children}
     </section>
   );
@@ -447,7 +447,7 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 function Stat({ label, value, title }: { label: string; value: string; title?: string }) {
   return (
     <div className="rounded-lg border border-ink-line bg-ink-soft px-3 py-2" title={title}>
-      <dd className="font-mono text-base font-bold text-[#E8ECF4] tabular-nums">{value}</dd>
+      <dd className="font-mono text-base font-bold text-white tabular-nums">{value}</dd>
       <dt className="text-[10px] text-muted-on-ink">{label}</dt>
     </div>
   );
@@ -456,8 +456,8 @@ function Stat({ label, value, title }: { label: string; value: string; title?: s
 function Info({ label, value, title }: { label: string; value: string; title?: string }) {
   return (
     <div title={title}>
-      <dt className="font-mono text-[10px] tracking-wide text-muted-on-ink uppercase">{label}</dt>
-      <dd className="text-[#E8ECF4]">{value}</dd>
+      <dt className="text-[10px] tracking-wide text-muted-on-ink uppercase">{label}</dt>
+      <dd className="text-white">{value}</dd>
     </div>
   );
 }
@@ -474,7 +474,7 @@ function ActivityChart({ daily }: { daily: AdminUserUsageDetail['daily'] }) {
   return (
     <div className="mt-3 rounded-lg border border-ink-line bg-ink-soft p-3">
       <div className="mb-2 flex flex-wrap items-baseline justify-between gap-2 text-[11px] text-muted-on-ink">
-        <span className="font-mono tracking-wide uppercase">Last 30 days</span>
+        <span className="tracking-wide uppercase">Last 30 days</span>
         <span>
           {runs} runs · <span className="text-cobalt">{ai} used AI</span> · {compactNumber(tokens)} tokens
         </span>
@@ -493,8 +493,8 @@ function ActivityChart({ daily }: { daily: AdminUserUsageDetail['daily'] }) {
           return (
             <g key={d.date}>
               <title>{`${d.date}: ${total} runs, ${d.aiRuns} with AI, ${d.tokens.toLocaleString()} tokens`}</title>
-              <rect x={i * bw + 1} y={h - th} width={bw - 2} height={th} rx="1.5" fill="#2A3242" />
-              <rect x={i * bw + 1} y={h - ah} width={bw - 2} height={ah} rx="1.5" fill="#2B5BE3" />
+              <rect x={i * bw + 1} y={h - th} width={bw - 2} height={th} rx="1.5" fill="#303030" />
+              <rect x={i * bw + 1} y={h - ah} width={bw - 2} height={ah} rx="1.5" fill="#7546F4" />
             </g>
           );
         })}

@@ -89,7 +89,7 @@ export function GithubAppAdmin() {
         <div className="h-32 animate-pulse rounded-lg bg-ink-soft" />
       ) : status.configured ? (
         <section className="rounded-lg border border-ink-line bg-ink-soft p-5">
-          <h2 className="text-base font-bold text-[#E8ECF4]">{status.name ?? 'Audit Bench Ai'} is set up</h2>
+          <h2 className="text-base font-bold text-white">{status.name ?? 'Audit Bench Ai'} is set up</h2>
           <dl className="mt-3 grid gap-x-6 gap-y-2 text-[13px] sm:grid-cols-2">
             <Fact label="Comments post as" value={status.botLogin ? `@${status.botLogin}` : '—'} mono />
             <Fact label="App slug" value={status.slug ?? '—'} mono />
@@ -123,7 +123,7 @@ export function GithubAppAdmin() {
         </section>
       ) : (
         <section className="rounded-lg border border-ink-line bg-ink-soft p-5">
-          <h2 className="text-base font-bold text-[#E8ECF4]">Create the Audit Bench Ai GitHub App</h2>
+          <h2 className="text-base font-bold text-white">Create the Audit Bench Ai GitHub App</h2>
           <p className="mt-1 text-[13px] leading-relaxed text-muted-on-ink">
             One click creates the app on GitHub with the least access it needs (read code, write pull request reviews
             and comments, write checks for the pass/fail verdict) and events (pull requests, review comments,
@@ -140,7 +140,7 @@ export function GithubAppAdmin() {
               onChange={(e) => setOrg(e.target.value)}
               placeholder="organization login, e.g. auditbenchai"
               aria-invalid={orgInvalid}
-              className="mt-1.5 block w-full max-w-sm rounded-md border border-ink-line bg-ink px-3 py-2 font-mono text-[13px] text-[#E8ECF4] outline-none placeholder:text-muted-on-ink focus:border-cobalt"
+              className="mt-1.5 block w-full max-w-sm rounded-md border border-ink-line bg-ink px-3 py-2 font-mono text-[13px] text-white outline-none placeholder:text-muted-on-ink focus:border-cobalt"
             />
           </label>
           {orgInvalid && (
@@ -166,7 +166,7 @@ function Fact({ label, value, mono }: { label: string; value: string; mono?: boo
   return (
     <div>
       <dt className="text-[11px] text-muted-on-ink">{label}</dt>
-      <dd className={`text-[#E8ECF4] ${mono ? 'font-mono' : ''}`}>{value}</dd>
+      <dd className={`text-white ${mono ? 'font-mono' : ''}`}>{value}</dd>
     </div>
   );
 }

@@ -212,10 +212,10 @@ export default function DueDiligencePage() {
       {/* Hero */}
       <section className="border-b border-ink-line bg-ink px-6 py-20">
         <ScrollReveal className="mx-auto max-w-3xl text-center">
-          <div className="mb-4 inline-block rounded-full border border-ink-line px-3 py-1 font-mono text-[11px] tracking-wide text-muted-on-ink uppercase">
+          <div className="mb-4 inline-block rounded-full border border-ink-line px-3 py-1 text-[11px] tracking-wide text-muted-on-ink uppercase">
             For Investors &amp; M&amp;A
           </div>
-          <h1 className="mb-4 text-4xl leading-tight font-bold text-[#E8ECF4] sm:text-5xl">
+          <h1 className="mb-4 text-4xl leading-tight text-white sm:text-5xl font-light tracking-[-0.03em]">
             <TextReveal>Technical Due Diligence in Days, Not Weeks.</TextReveal>
           </h1>
           <p className="mx-auto mb-8 max-w-xl text-base leading-relaxed text-muted-on-ink">
@@ -232,7 +232,7 @@ export default function DueDiligencePage() {
             </a>
             <a
               href="mailto:noumanqureshi15@gmail.com?subject=Technical%20due%20diligence%20inquiry"
-              className="rounded-lg border border-ink-line px-5 py-3 text-sm font-bold text-muted-on-ink transition-all duration-200 hover:-translate-y-0.5 hover:border-cobalt/40 hover:text-[#E8ECF4]"
+              className="rounded-lg border border-ink-line px-5 py-3 text-sm font-bold text-muted-on-ink transition-all duration-200 hover:-translate-y-0.5 hover:border-cobalt/40 hover:text-white"
             >
               Talk to Us About a Deal
             </a>
@@ -255,7 +255,7 @@ export default function DueDiligencePage() {
           hurry should be able to jump straight to pricing or the FAQ
           instead of scrolling past everything else. */}
       <nav className="sticky top-0 z-10 border-b border-ink-line bg-ink/95 px-6 py-3 backdrop-blur">
-        <div className="mx-auto flex max-w-3xl flex-wrap justify-center gap-x-6 gap-y-1 font-mono text-xs tracking-wide text-muted-on-ink uppercase">
+        <div className="mx-auto flex max-w-3xl flex-wrap justify-center gap-x-6 gap-y-1 text-xs tracking-wide text-muted-on-ink uppercase">
           <a href="#problem" className="hover:text-cobalt">
             The problem
           </a>
@@ -280,18 +280,18 @@ export default function DueDiligencePage() {
       {/* Problem */}
       <section id="problem" className="scroll-mt-14 bg-paper px-6 py-16">
         <ScrollReveal className="mx-auto max-w-3xl">
-          <div className="mb-2 font-mono text-[13px] tracking-wide text-muted-on-paper uppercase">
+          <div className="mb-2 text-[13px] tracking-wide text-muted-on-paper uppercase">
             The problem
           </div>
-          <h2 className="mb-4 text-2xl font-bold text-[#1C2128]">Your deal team is flying blind on the codebase.</h2>
-          <p className="mb-4 text-sm leading-relaxed text-[#1C2128]">
+          <h2 className="mb-4 text-3xl sm:text-4xl text-black font-light tracking-[-0.03em]">Your deal team is flying blind on the codebase.</h2>
+          <p className="mb-4 text-sm leading-relaxed text-black">
             Every acquisition or investment in a software company comes with the same unanswered
             question: is the tech actually worth what&apos;s being claimed? Traditional technical due
             diligence means flying in consultants for 2–3 weeks, at a cost that only makes sense
             for the largest deals — leaving mid-market transactions to skip technical review
             entirely, or rely on a founder&apos;s word.
           </p>
-          <p className="text-sm leading-relaxed text-[#1C2128]">
+          <p className="text-sm leading-relaxed text-black">
             That gap is where deals go wrong. Hidden security vulnerabilities, single-developer
             dependency risk, and unmaintainable architecture don&apos;t show up in a financial model
             — but they show up in your first 90 days of ownership.
@@ -303,10 +303,10 @@ export default function DueDiligencePage() {
       <section className="border-t border-ink-line bg-ink px-6 py-16">
         <ScrollReveal className="mx-auto max-w-5xl">
           <div className="mb-10 text-center">
-            <div className="mb-2 font-mono text-[13px] tracking-wide text-muted-on-ink uppercase">
+            <div className="mb-2 text-[13px] tracking-wide text-muted-on-ink uppercase">
               What we do
             </div>
-            <h2 className="text-2xl font-bold text-[#E8ECF4]">A risk report, not a bug list.</h2>
+            <h2 className="text-3xl sm:text-4xl text-white font-light tracking-[-0.03em]">A risk report, not a bug list.</h2>
             <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-muted-on-ink">
               We scan the full target codebase using the same LLM + static analysis engine that
               reviews production pull requests for engineering teams — pointed instead at the
@@ -321,7 +321,7 @@ export default function DueDiligencePage() {
                 key={item.title}
                 className="rounded-lg border border-ink-line bg-ink-soft p-5 transition-all duration-200 hover:-translate-y-1 hover:border-cobalt/40 hover:shadow-panel"
               >
-                <h3 className="mb-2 text-sm font-bold text-[#E8ECF4]">{item.title}</h3>
+                <h3 className="mb-2 text-sm font-bold text-white">{item.title}</h3>
                 <p className="text-sm leading-relaxed text-muted-on-ink">{item.detail}</p>
               </div>
             ))}
@@ -333,10 +333,10 @@ export default function DueDiligencePage() {
       <section id="how-it-works" className="scroll-mt-14 border-t border-ink-line bg-ink px-6 py-16">
         <ScrollReveal className="mx-auto max-w-5xl">
           <div className="mb-10 text-center">
-            <div className="mb-2 font-mono text-[13px] tracking-wide text-muted-on-ink uppercase">
+            <div className="mb-2 text-[13px] tracking-wide text-muted-on-ink uppercase">
               How it works
             </div>
-            <h2 className="text-2xl font-bold text-[#E8ECF4]">What actually happens inside one scan.</h2>
+            <h2 className="text-3xl sm:text-4xl text-white font-light tracking-[-0.03em]">What actually happens inside one scan.</h2>
             <p className="mx-auto mt-2 max-w-xl text-sm leading-relaxed text-muted-on-ink">
               No black box — here&apos;s the real pipeline, in the order it runs.{' '}
               <Link href="/services" className="text-cobalt hover:underline">
@@ -351,7 +351,7 @@ export default function DueDiligencePage() {
                 className="rounded-lg border border-ink-line bg-ink-soft p-5 transition-all duration-200 hover:-translate-y-1 hover:border-cobalt/40 hover:shadow-panel"
               >
                 <div className="mb-2 font-mono text-[11px] text-cobalt">{s.stage}</div>
-                <h3 className="mb-2 text-sm font-bold text-[#E8ECF4]">{s.title}</h3>
+                <h3 className="mb-2 text-sm font-bold text-white">{s.title}</h3>
                 <p className="text-sm leading-relaxed text-muted-on-ink">{s.detail}</p>
               </div>
             ))}
@@ -363,10 +363,10 @@ export default function DueDiligencePage() {
       <section id="pricing" className="scroll-mt-14 bg-paper px-6 py-16">
         <ScrollReveal className="mx-auto max-w-5xl">
           <div className="mb-10 text-center">
-            <div className="mb-2 font-mono text-[13px] tracking-wide text-muted-on-paper uppercase">
+            <div className="mb-2 text-[13px] tracking-wide text-muted-on-paper uppercase">
               Engagement &amp; pricing
             </div>
-            <h2 className="text-2xl font-bold text-[#1C2128]">Engage at the stage that fits your process.</h2>
+            <h2 className="text-3xl sm:text-4xl text-black font-light tracking-[-0.03em]">Engage at the stage that fits your process.</h2>
             <p className="mx-auto mt-2 max-w-xl text-sm leading-relaxed text-muted-on-paper">
               Priced per engagement, not as a monthly seat — pay once for the report you need on the
               deal in front of you.
@@ -382,10 +382,10 @@ export default function DueDiligencePage() {
                     : 'border-paper-line bg-paper-card hover:border-cobalt/40'
                 }`}
               >
-                <div className="mb-1 font-mono text-xs font-bold tracking-wide text-muted-on-paper uppercase">
+                <div className="mb-1 text-xs font-medium tracking-wide text-muted-on-paper uppercase">
                   {tier.name}
                 </div>
-                <div className="mb-3 text-2xl font-bold text-[#1C2128]">{tier.price}</div>
+                <div className="mb-3 text-2xl font-bold text-black">{tier.price}</div>
                 <p className="mb-4 flex-1 text-sm leading-relaxed text-muted-on-paper">{tier.detail}</p>
                 <div className="border-t border-paper-line pt-3 text-xs font-semibold text-cobalt">
                   {tier.turnaround}
@@ -403,10 +403,10 @@ export default function DueDiligencePage() {
       <section className="border-t border-ink-line bg-ink px-6 py-16">
         <ScrollReveal className="mx-auto max-w-5xl">
           <div className="mb-10 text-center">
-            <div className="mb-2 font-mono text-[13px] tracking-wide text-muted-on-ink uppercase">
+            <div className="mb-2 text-[13px] tracking-wide text-muted-on-ink uppercase">
               Why audit/bench
             </div>
-            <h2 className="text-2xl font-bold text-[#E8ECF4]">Built for speed. Priced for the deal size that usually gets skipped.</h2>
+            <h2 className="text-3xl sm:text-4xl text-white font-light tracking-[-0.03em]">Built for speed. Priced for the deal size that usually gets skipped.</h2>
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
             {WHY_US.map((item) => (
@@ -414,7 +414,7 @@ export default function DueDiligencePage() {
                 key={item.title}
                 className="rounded-lg border border-ink-line bg-ink-soft p-5 transition-all duration-200 hover:-translate-y-1 hover:border-cobalt/40 hover:shadow-panel"
               >
-                <h3 className="mb-2 text-sm font-bold text-[#E8ECF4]">
+                <h3 className="mb-2 text-sm font-bold text-white">
                   {item.href ? (
                     <Link href={item.href} className="hover:text-cobalt">
                       {item.title}
@@ -433,10 +433,10 @@ export default function DueDiligencePage() {
       {/* Sample report CTA */}
       <section id="sample-report" className="scroll-mt-14 bg-paper px-6 py-16 text-center">
         <ScrollReveal className="mx-auto max-w-2xl">
-          <div className="mb-2 font-mono text-[13px] tracking-wide text-muted-on-paper uppercase">
+          <div className="mb-2 text-[13px] tracking-wide text-muted-on-paper uppercase">
             Sample report
           </div>
-          <h2 className="mb-4 text-2xl font-bold text-[#1C2128]">See it before you need it.</h2>
+          <h2 className="mb-4 text-3xl sm:text-4xl text-black font-light tracking-[-0.03em]">See it before you need it.</h2>
           <p className="mb-8 text-sm leading-relaxed text-muted-on-paper">
             Download a redacted sample report to see exactly what your investment committee would
             receive — findings, risk ratings, and remediation estimates, laid out the way your
@@ -455,10 +455,10 @@ export default function DueDiligencePage() {
       <section id="blog" className="scroll-mt-14 border-t border-ink-line bg-paper px-6 py-16">
         <ScrollReveal className="mx-auto max-w-5xl">
           <div className="mb-10 text-center">
-            <div className="mb-2 font-mono text-[13px] tracking-wide text-muted-on-paper uppercase">
+            <div className="mb-2 text-[13px] tracking-wide text-muted-on-paper uppercase">
               From the blog
             </div>
-            <h2 className="text-2xl font-bold text-[#1C2128]">
+            <h2 className="text-3xl sm:text-4xl text-black font-light tracking-[-0.03em]">
               <TextReveal>Technical due diligence, explained</TextReveal>
             </h2>
             <p className="mx-auto mt-2 max-w-xl text-sm leading-relaxed text-muted-on-paper">
@@ -474,7 +474,7 @@ export default function DueDiligencePage() {
               href={`/blog/${post.slug}`}
               className="group block rounded-lg border border-paper-line bg-paper-card p-5 transition-all duration-200 hover:-translate-y-1 hover:border-cobalt/40 hover:shadow-panel"
             >
-              <h3 className="mb-2 text-sm font-bold text-[#1C2128] group-hover:text-cobalt">{post.title}</h3>
+              <h3 className="mb-2 text-sm font-bold text-black group-hover:text-cobalt">{post.title}</h3>
               <p className="text-xs leading-relaxed text-muted-on-paper">{post.description}</p>
             </Link>
           ))}
@@ -485,13 +485,13 @@ export default function DueDiligencePage() {
       <section id="faq" className="scroll-mt-14 border-t border-ink-line bg-ink px-6 py-16">
         <ScrollReveal className="mx-auto max-w-3xl">
           <div className="mb-10 text-center">
-            <div className="mb-2 font-mono text-[13px] tracking-wide text-muted-on-ink uppercase">FAQ</div>
-            <h2 className="text-2xl font-bold text-[#E8ECF4]">Questions deal teams ask before they engage</h2>
+            <div className="mb-2 text-[13px] tracking-wide text-muted-on-ink uppercase">FAQ</div>
+            <h2 className="text-3xl sm:text-4xl text-white font-light tracking-[-0.03em]">Questions deal teams ask before they engage</h2>
           </div>
           <div className="space-y-4">
             {FAQ_ITEMS.map((item) => (
               <div key={item.q} className="rounded-lg border border-ink-line bg-ink-soft p-5">
-                <h3 className="mb-1.5 text-sm font-bold text-[#E8ECF4]">{item.q}</h3>
+                <h3 className="mb-1.5 text-sm font-bold text-white">{item.q}</h3>
                 <p className="text-sm leading-relaxed text-muted-on-ink">{item.a}</p>
               </div>
             ))}
@@ -502,7 +502,7 @@ export default function DueDiligencePage() {
       {/* Closing CTA */}
       <section className="border-t border-ink-line bg-ink px-6 py-16 text-center">
         <ScrollReveal>
-          <h2 className="mb-3 text-2xl font-bold text-[#E8ECF4]">Have a deal in diligence right now?</h2>
+          <h2 className="mb-3 text-3xl sm:text-4xl text-white font-light tracking-[-0.03em]">Have a deal in diligence right now?</h2>
           <p className="mx-auto mb-6 max-w-md text-sm leading-relaxed text-muted-on-ink">
             Send us repo access under NDA and get a screening-tier report back within 5 business days.
           </p>

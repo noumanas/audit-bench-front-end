@@ -22,8 +22,8 @@ function BlogIndexFallback() {
     <div>
       <section className="border-b border-ink-line bg-ink px-6 py-16 text-center">
         <div className="mx-auto max-w-xl">
-          <div className="mb-2 font-mono text-[13px] tracking-wide text-muted-on-ink uppercase">Blog</div>
-          <h1 className="mb-3 text-3xl font-bold text-[#E8ECF4] sm:text-4xl">Guides on code review and security</h1>
+          <div className="mb-2 text-[13px] tracking-wide text-muted-on-ink uppercase">Blog</div>
+          <h1 className="mb-3 text-3xl text-white sm:text-4xl font-light tracking-[-0.03em]">Guides on code review and security</h1>
           <p className="text-sm leading-relaxed text-muted-on-ink">
             Loading articles...
           </p>

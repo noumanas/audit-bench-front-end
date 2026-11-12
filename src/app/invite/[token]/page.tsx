@@ -57,7 +57,7 @@ export default function InviteAcceptPage() {
 
         {error && (
           <>
-            <h1 className="mb-2 text-lg font-bold text-[#E8ECF4]">Invite not found</h1>
+            <h1 className="mb-2 text-lg font-bold text-white">Invite not found</h1>
             <p className="mb-5 text-sm text-muted-on-ink">{error}</p>
             <Link href="/" className="inline-block rounded-lg bg-cobalt px-4 py-2.5 text-sm font-bold text-white">
               Back home
@@ -67,7 +67,7 @@ export default function InviteAcceptPage() {
 
         {preview && !error && preview.status !== 'pending' && (
           <>
-            <h1 className="mb-2 text-lg font-bold text-[#E8ECF4]">{preview.organizationName}</h1>
+            <h1 className="mb-2 text-lg font-bold text-white">{preview.organizationName}</h1>
             <p className="text-sm text-muted-on-ink">{STATUS_COPY[preview.status]}</p>
           </>
         )}
@@ -76,14 +76,14 @@ export default function InviteAcceptPage() {
           <>
             <div className="mb-5 flex items-center justify-center gap-2">
               <span className="h-1.5 w-1.5 rounded-full bg-cobalt" />
-              <span className="font-mono text-[11px] font-bold tracking-[0.14em] text-cobalt uppercase">
+              <span className="text-[11px] font-medium tracking-[0.14em] text-cobalt uppercase">
                 Team invite
               </span>
             </div>
-            <h1 className="mb-1 text-xl font-bold tracking-tight text-[#E8ECF4]">{preview.organizationName}</h1>
+            <h1 className="mb-1 text-xl font-bold tracking-tight text-white">{preview.organizationName}</h1>
             <p className="mb-6 text-sm leading-relaxed text-muted-on-ink">
-              <strong className="text-[#E8ECF4]">{preview.invitedBy}</strong> invited{' '}
-              <strong className="text-[#E8ECF4]">{preview.email}</strong> to join as{' '}
+              <strong className="text-white">{preview.invitedBy}</strong> invited{' '}
+              <strong className="text-white">{preview.email}</strong> to join as{' '}
               {preview.role === 'admin' ? 'an admin' : 'a member'}.
             </p>
 
@@ -108,8 +108,8 @@ export default function InviteAcceptPage() {
                 </button>
               ) : (
                 <p className="text-sm text-muted-on-ink">
-                  You&apos;re logged in as <strong className="text-[#E8ECF4]">{user.email}</strong>, but this invite
-                  was sent to <strong className="text-[#E8ECF4]">{preview.email}</strong>. Log out and sign in with
+                  You&apos;re logged in as <strong className="text-white">{user.email}</strong>, but this invite
+                  was sent to <strong className="text-white">{preview.email}</strong>. Log out and sign in with
                   that account to accept it.
                 </p>
               )
@@ -123,7 +123,7 @@ export default function InviteAcceptPage() {
                 </Link>
                 <Link
                   href="/login"
-                  className="w-full rounded-lg border border-ink-line px-4 py-2.5 text-sm font-bold text-[#E8ECF4]"
+                  className="w-full rounded-lg border border-ink-line px-4 py-2.5 text-sm font-bold text-white"
                 >
                   Log in
                 </Link>

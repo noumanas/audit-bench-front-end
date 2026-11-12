@@ -115,9 +115,9 @@ export function RepositoryReport({ scan }: { scan: ScanJob }) {
   return (
     <article className="print-exact overflow-hidden rounded-xl border border-paper-line bg-paper-card shadow-2xl shadow-black/40 print:rounded-none print:border-0 print:shadow-none">
       {/* Header band */}
-      <header className="bg-ink px-6 pt-6 pb-5 text-[#E8ECF4] sm:px-8">
+      <header className="bg-ink px-6 pt-6 pb-5 text-white sm:px-8">
         <div className="mb-3 flex flex-wrap items-center gap-2">
-          <span className="font-mono text-[11px] font-bold tracking-[0.12em] text-muted-on-ink uppercase">
+          <span className="text-[11px] font-medium tracking-[0.12em] text-muted-on-ink uppercase">
             {SOURCE_LABEL[scan.sourceType]}
           </span>
           <StatusBadge status={scan.status} />
@@ -145,10 +145,10 @@ export function RepositoryReport({ scan }: { scan: ScanJob }) {
             />
             {(scan.inputTokens > 0 || scan.outputTokens > 0) && (
               <div className="min-w-0">
-                <dt className="mb-0.5 font-mono text-[10px] tracking-[0.08em] text-muted-on-ink uppercase">
+                <dt className="mb-0.5 text-[10px] tracking-[0.08em] text-muted-on-ink uppercase">
                   AI tokens
                 </dt>
-                <dd className="text-[13px] font-semibold [&_span]:text-[13px] [&_span]:text-[#E8ECF4]">
+                <dd className="text-[13px] font-semibold [&_span]:text-[13px] [&_span]:text-white">
                   <TokenUsageNote inputTokens={scan.inputTokens} outputTokens={scan.outputTokens} />
                 </dd>
               </div>
@@ -161,7 +161,7 @@ export function RepositoryReport({ scan }: { scan: ScanJob }) {
                 href={scan.pullRequestUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="rounded-md border border-ink-line px-3 py-1.5 text-xs font-bold text-muted-on-ink transition-colors hover:border-cobalt hover:text-[#E8ECF4]"
+                className="rounded-md border border-ink-line px-3 py-1.5 text-xs font-bold text-muted-on-ink transition-colors hover:border-cobalt hover:text-white"
               >
                 View on{' '}
                 {scan.sourceType === 'github_pr'
@@ -175,7 +175,7 @@ export function RepositoryReport({ scan }: { scan: ScanJob }) {
             {!isDiffReview && scan.status === 'completed' && (
               <Link
                 href={`/app/due-diligence/${scan.id}`}
-                className="rounded-md border border-ink-line px-3 py-1.5 text-xs font-bold text-muted-on-ink transition-colors hover:border-cobalt hover:text-[#E8ECF4]"
+                className="rounded-md border border-ink-line px-3 py-1.5 text-xs font-bold text-muted-on-ink transition-colors hover:border-cobalt hover:text-white"
               >
                 Due diligence view →
               </Link>
@@ -184,7 +184,7 @@ export function RepositoryReport({ scan }: { scan: ScanJob }) {
               <a
                 href="#share"
                 title={scan.isPublic ? 'Anyone with the link can open this report' : 'Only you and your team can see this report'}
-                className="rounded-md border border-ink-line px-3 py-1.5 text-xs font-bold text-muted-on-ink transition-colors hover:border-cobalt hover:text-[#E8ECF4]"
+                className="rounded-md border border-ink-line px-3 py-1.5 text-xs font-bold text-muted-on-ink transition-colors hover:border-cobalt hover:text-white"
               >
                 {scan.isPublic ? 'Shared publicly' : 'Private · Share…'}
               </a>
@@ -219,7 +219,7 @@ export function RepositoryReport({ scan }: { scan: ScanJob }) {
       <div className="space-y-8 p-6 sm:p-8">
         {(scan.status === 'queued' || scan.status === 'processing') && (
           <div>
-            <div className="mb-1.5 flex items-baseline justify-between text-sm text-[#1C2128]">
+            <div className="mb-1.5 flex items-baseline justify-between text-sm text-black">
               <span>Reviewing files…</span>
               <span className="font-mono text-xs text-muted-on-paper tabular-nums">
                 {scan.filesScanned}/{scan.fileCount || '?'}
@@ -250,7 +250,7 @@ export function RepositoryReport({ scan }: { scan: ScanJob }) {
 
             {/* Overview */}
             <section className="space-y-4">
-              {scan.summary && <p className="max-w-[72ch] text-sm leading-relaxed text-[#1C2128]">{scan.summary}</p>}
+              {scan.summary && <p className="max-w-[72ch] text-sm leading-relaxed text-black">{scan.summary}</p>}
 
               <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-5">
                 {SEVERITY_ORDER.map((s) => (
@@ -327,7 +327,7 @@ export function RepositoryReport({ scan }: { scan: ScanJob }) {
                       {scan.licenseFindings?.map((f, i) => (
                         <li
                           key={i}
-                          className="flex flex-wrap items-baseline gap-2 py-2 text-xs text-[#1C2128] first:pt-0 last:pb-0"
+                          className="flex flex-wrap items-baseline gap-2 py-2 text-xs text-black first:pt-0 last:pb-0"
                         >
                           <SeverityBadge level={f.riskLevel} />
                           <span className="font-mono font-bold">
@@ -379,7 +379,7 @@ export function RepositoryReport({ scan }: { scan: ScanJob }) {
                   >
                     <ul className="space-y-1.5">
                       {scan.circularImports?.map((cycle, i) => (
-                        <li key={i} className="font-mono text-xs break-all text-[#1C2128]">
+                        <li key={i} className="font-mono text-xs break-all text-black">
                           {cycle.join(' → ')}
                         </li>
                       ))}
@@ -394,7 +394,7 @@ export function RepositoryReport({ scan }: { scan: ScanJob }) {
                   >
                     <ul className="space-y-1">
                       {scan.deadCode?.map((path) => (
-                        <li key={path} className="font-mono text-xs break-all text-[#1C2128]">
+                        <li key={path} className="font-mono text-xs break-all text-black">
                           {path}
                         </li>
                       ))}
@@ -410,14 +410,14 @@ export function RepositoryReport({ scan }: { scan: ScanJob }) {
                     <ul className="divide-y divide-paper-line">
                       {scan.duplicates?.map((group, i) => (
                         <li key={i} className="py-2 first:pt-0 last:pb-0">
-                          <div className="mb-1 font-mono text-[10px] tracking-wide text-muted-on-paper uppercase">
+                          <div className="mb-1 text-[10px] tracking-wide text-muted-on-paper uppercase">
                             {group.linesOfCode} lines · {group.occurrences.length} copies
                           </div>
                           <div className="flex flex-col gap-0.5">
                             {group.occurrences.map((o) => (
                               <span
                                 key={`${o.path}:${o.startLine}`}
-                                className="font-mono text-xs break-all text-[#1C2128]"
+                                className="font-mono text-xs break-all text-black"
                               >
                                 {o.path}:{o.startLine}–{o.endLine}
                               </span>
@@ -476,7 +476,7 @@ export function RepositoryReport({ scan }: { scan: ScanJob }) {
                       type="checkbox"
                       checked={showCleanFiles}
                       onChange={(e) => setShowCleanFiles(e.target.checked)}
-                      className="h-3.5 w-3.5 accent-[#2b5be3]"
+                      className="h-3.5 w-3.5 accent-[#7546f4]"
                     />
                     Show {files.length - filesWithFindings} clean file
                     {files.length - filesWithFindings === 1 ? '' : 's'}
@@ -500,13 +500,13 @@ export function RepositoryReport({ scan }: { scan: ScanJob }) {
                         <ChevronRightIcon
                           className={`h-3.5 w-3.5 shrink-0 text-muted-on-paper transition-transform duration-150 ${isOpen ? 'rotate-90' : ''}`}
                         />
-                        <span className="min-w-0 flex-1 truncate font-mono text-[13px] text-[#1C2128]">{f.path}</span>
+                        <span className="min-w-0 flex-1 truncate font-mono text-[13px] text-black">{f.path}</span>
                         <span className="hidden shrink-0 items-center gap-1.5 sm:flex">
                           {SEVERITY_ORDER.filter((s) => fileCounts[s] > 0).map((s) => (
                             <span
                               key={s}
                               title={`${fileCounts[s]} ${s}`}
-                              className="inline-flex items-center gap-1 rounded-full border border-paper-line px-2 py-0.5 font-mono text-[10px] font-bold text-[#1C2128] tabular-nums"
+                              className="inline-flex items-center gap-1 rounded-full border border-paper-line px-2 py-0.5 font-mono text-[10px] font-bold text-black tabular-nums"
                             >
                               <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: SEVERITY_HEX[s] }} />
                               {fileCounts[s]}
@@ -618,7 +618,7 @@ function PrPublishStatus({ scan }: { scan: ScanJob }) {
 
   if (state.at) {
     return (
-      <p className="flex flex-wrap items-center gap-2 rounded-lg border border-pass/30 bg-pass/10 px-3.5 py-2.5 text-[13px] text-[#1C2128]">
+      <p className="flex flex-wrap items-center gap-2 rounded-lg border border-pass/30 bg-pass/10 px-3.5 py-2.5 text-[13px] text-black">
         <span className="font-bold text-pass">✓</span>
         Review posted on {host} {timeAgo(state.at)}.
         {scan.pullRequestUrl && (
@@ -642,7 +642,7 @@ function PrPublishStatus({ scan }: { scan: ScanJob }) {
     );
   }
   return (
-    <div className="rounded-lg border border-critical/40 bg-critical/5 px-3.5 py-3 text-[13px] text-[#1C2128]">
+    <div className="rounded-lg border border-critical/40 bg-critical/5 px-3.5 py-3 text-[13px] text-black">
       <p className="font-bold text-critical">
         {state.error ? `The review wasn't posted on ${host}` : `No record of posting this review to ${host}`}
       </p>
@@ -657,7 +657,7 @@ function PrPublishStatus({ scan }: { scan: ScanJob }) {
         </button>
         <Link
           href={`/app/repository?source=${scan.sourceType === 'gitlab_mr' ? 'gitlab' : scan.sourceType === 'bitbucket_pr' ? 'bitbucket' : 'github'}`}
-          className="rounded-md border border-paper-line px-3.5 py-1.5 text-[13px] font-semibold text-[#1C2128] hover:border-cobalt"
+          className="rounded-md border border-paper-line px-3.5 py-1.5 text-[13px] font-semibold text-black hover:border-cobalt"
         >
           Reconnect {host}
         </Link>
@@ -691,7 +691,7 @@ function MergeReadinessBanner({
   return (
     <section className="rounded-lg border-2 bg-paper-card p-4" style={{ borderColor: `${r.hex}80` }}>
       <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-        <span className="font-mono text-[11px] tracking-wide text-muted-on-paper uppercase">Merge readiness</span>
+        <span className="text-[11px] tracking-wide text-muted-on-paper uppercase">Merge readiness</span>
         <span className="text-xl font-bold" style={{ color: r.hex }}>
           {r.label}
         </span>
@@ -700,13 +700,13 @@ function MergeReadinessBanner({
       {(readiness.blockers.length > 0 || readiness.notes.length > 0) && (
         <ul className="mt-3 space-y-1">
           {readiness.blockers.map((b) => (
-            <li key={b} className="flex gap-2 text-[13px] text-[#1C2128]">
+            <li key={b} className="flex gap-2 text-[13px] text-black">
               <span className="font-bold text-critical">✕</span>
               {b}
             </li>
           ))}
           {readiness.notes.map((n) => (
-            <li key={n} className="flex gap-2 text-[13px] text-[#1C2128]">
+            <li key={n} className="flex gap-2 text-[13px] text-black">
               <span className="font-bold text-medium">!</span>
               {n}
             </li>
@@ -724,7 +724,7 @@ function MergeReadinessBanner({
 function Meta({ label, value }: { label: string; value: string }) {
   return (
     <div className="min-w-0">
-      <dt className="mb-0.5 font-mono text-[10px] tracking-[0.08em] text-muted-on-ink uppercase">{label}</dt>
+      <dt className="mb-0.5 text-[10px] tracking-[0.08em] text-muted-on-ink uppercase">{label}</dt>
       <dd className="truncate text-[13px] font-semibold">{value}</dd>
     </div>
   );
@@ -735,7 +735,7 @@ function ExportButton({ label, title, onClick }: { label: string; title?: string
     <button
       onClick={onClick}
       title={title}
-      className="cursor-pointer border-r border-ink-line px-2.5 py-1.5 font-mono text-[11px] font-bold text-muted-on-ink transition-colors last:border-r-0 hover:bg-ink-soft hover:text-[#E8ECF4]"
+      className="cursor-pointer border-r border-ink-line px-2.5 py-1.5 font-mono text-[11px] font-bold text-muted-on-ink transition-colors last:border-r-0 hover:bg-ink-soft hover:text-white"
     >
       {label}
     </button>
@@ -745,7 +745,7 @@ function ExportButton({ label, title, onClick }: { label: string; title?: string
 function SectionTitle({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
     <h2
-      className={`mb-3 font-mono text-[11px] font-bold tracking-[0.08em] text-[#1C2128] uppercase ${className ?? ''}`}
+      className={`mb-3 font-mono text-[11px] font-bold tracking-[0.08em] text-black uppercase ${className ?? ''}`}
     >
       {children}
     </h2>
@@ -782,11 +782,11 @@ function CountTile({
   const active = value > 0;
   return (
     <div className={`rounded-lg border border-paper-line bg-paper px-3 py-2.5 ${className ?? ''}`}>
-      <div className="text-2xl leading-none font-bold tabular-nums" style={{ color: active ? hex : '#b4bac4' }}>
+      <div className="text-2xl leading-none font-bold tabular-nums" style={{ color: active ? hex : '#bdbdbd' }}>
         {value}
       </div>
-      <div className="mt-1.5 flex items-center gap-1.5 font-mono text-[10px] tracking-[0.06em] text-muted-on-paper uppercase">
-        <span className="h-1.5 w-1.5 shrink-0 rounded-full" style={{ backgroundColor: active ? hex : '#d3d7de' }} />
+      <div className="mt-1.5 flex items-center gap-1.5 text-[10px] tracking-[0.06em] text-muted-on-paper uppercase">
+        <span className="h-1.5 w-1.5 shrink-0 rounded-full" style={{ backgroundColor: active ? hex : '#d6d6d6' }} />
         {label}
       </div>
     </div>
@@ -798,14 +798,14 @@ function PipelineBar({ aiReviewed, cached, localOnly }: { aiReviewed: number; ca
   const total = aiReviewed + cached + localOnly;
   if (total === 0) return null;
   const parts = [
-    { label: 'AI reviewed', value: aiReviewed, hex: '#2b5be3' },
+    { label: 'AI reviewed', value: aiReviewed, hex: '#7546f4' },
     { label: 'From cache', value: cached, hex: '#2e6fab' },
     { label: 'Local checks only', value: localOnly, hex: '#1f7a4d' },
   ];
   return (
     <div className="rounded-lg border border-paper-line px-4 py-3">
       <div className="mb-2 flex flex-wrap items-baseline justify-between gap-2">
-        <span className="font-mono text-[10px] font-bold tracking-[0.08em] text-muted-on-paper uppercase">
+        <span className="text-[10px] font-medium tracking-[0.08em] text-muted-on-paper uppercase">
           Review pipeline
         </span>
         <span className="text-[11px] text-muted-on-paper">
@@ -825,7 +825,7 @@ function PipelineBar({ aiReviewed, cached, localOnly }: { aiReviewed: number; ca
       </div>
       <div className="flex flex-wrap gap-x-5 gap-y-1">
         {parts.map((p) => (
-          <span key={p.label} className="flex items-center gap-1.5 text-xs text-[#1C2128]">
+          <span key={p.label} className="flex items-center gap-1.5 text-xs text-black">
             <span className="h-2 w-2 rounded-full" style={{ backgroundColor: p.hex }} />
             {p.label} <span className="font-mono font-bold tabular-nums">{p.value}</span>
           </span>
@@ -848,7 +848,7 @@ function CountPill({ n, tone }: { n: number; tone: 'critical' | 'high' | 'medium
 
 function CleanPill() {
   return (
-    <span className="rounded-full border border-pass/30 bg-pass/10 px-2 py-0.5 font-mono text-[10px] font-bold tracking-wide text-pass uppercase">
+    <span className="rounded-full border border-pass/30 bg-pass/10 px-2 py-0.5 text-[10px] font-medium tracking-wide text-pass uppercase">
       Clean
     </span>
   );
@@ -856,7 +856,7 @@ function CleanPill() {
 
 function NaPill() {
   return (
-    <span className="rounded-full border border-paper-line px-2 py-0.5 font-mono text-[10px] font-bold tracking-wide text-muted-on-paper uppercase">
+    <span className="rounded-full border border-paper-line px-2 py-0.5 text-[10px] font-medium tracking-wide text-muted-on-paper uppercase">
       N/A
     </span>
   );
@@ -887,12 +887,12 @@ function DependencyList({ vulns }: { vulns: DependencyVulnerability[] }) {
           <li key={g.pkg} className="py-2.5 first:pt-0 last:pb-0">
             <div className="flex flex-wrap items-center gap-2">
               <span
-                className="rounded px-1.5 py-0.5 font-mono text-[10px] font-bold tracking-wide text-white uppercase"
+                className="rounded px-1.5 py-0.5 text-[10px] font-medium tracking-wide text-white uppercase"
                 style={{ backgroundColor: SEVERITY_HEX[g.severity] }}
               >
                 {g.severity}
               </span>
-              <span className="font-mono text-[13px] font-bold text-[#1C2128]">{g.pkg}</span>
+              <span className="font-mono text-[13px] font-bold text-black">{g.pkg}</span>
               <span className="font-mono text-[11px] text-muted-on-paper">
                 {g.advisories} advisor{g.advisories === 1 ? 'y' : 'ies'}
                 {g.ranges.length > 0 && ` · affected ${g.ranges.slice(0, 2).join(', ')}`}
@@ -932,7 +932,7 @@ export function RiskAssessmentBanner({ aggregation }: { aggregation: RiskAggrega
     <div className="space-y-4">
       <div className="grid gap-2.5 sm:grid-cols-3">
         <div className={`rounded-lg border px-4 py-3 ${style.bg}`}>
-          <div className="font-mono text-[10px] font-bold tracking-[0.08em] text-muted-on-paper uppercase">
+          <div className="text-[10px] font-medium tracking-[0.08em] text-muted-on-paper uppercase">
             Overall risk
           </div>
           <div className={`mt-1 text-2xl leading-none font-bold uppercase ${style.text}`}>
@@ -940,11 +940,11 @@ export function RiskAssessmentBanner({ aggregation }: { aggregation: RiskAggrega
           </div>
         </div>
         <div className="rounded-lg border border-paper-line bg-paper px-4 py-3">
-          <div className="font-mono text-[10px] font-bold tracking-[0.08em] text-muted-on-paper uppercase">
+          <div className="text-[10px] font-medium tracking-[0.08em] text-muted-on-paper uppercase">
             Health score
           </div>
           <div className="mt-1 flex items-baseline gap-1">
-            <span className="text-2xl leading-none font-bold text-[#1C2128] tabular-nums">
+            <span className="text-2xl leading-none font-bold text-black tabular-nums">
               {aggregation.overallHealthScore}
             </span>
             <span className="text-xs text-muted-on-paper">/100</span>
@@ -965,10 +965,10 @@ export function RiskAssessmentBanner({ aggregation }: { aggregation: RiskAggrega
           </div>
         </div>
         <div className="rounded-lg border border-paper-line bg-paper px-4 py-3">
-          <div className="font-mono text-[10px] font-bold tracking-[0.08em] text-muted-on-paper uppercase">
+          <div className="text-[10px] font-medium tracking-[0.08em] text-muted-on-paper uppercase">
             Est. remediation
           </div>
-          <div className="mt-1 text-lg leading-tight font-bold text-[#1C2128] tabular-nums">
+          <div className="mt-1 text-lg leading-tight font-bold text-black tabular-nums">
             ${remediation.estimatedCostLowUsd.toLocaleString('en-US')}–$
             {remediation.estimatedCostHighUsd.toLocaleString('en-US')}
           </div>
@@ -976,7 +976,7 @@ export function RiskAssessmentBanner({ aggregation }: { aggregation: RiskAggrega
         </div>
       </div>
 
-      <p className="max-w-[72ch] text-sm leading-relaxed text-[#1C2128]">{aggregation.summary}</p>
+      <p className="max-w-[72ch] text-sm leading-relaxed text-black">{aggregation.summary}</p>
 
       <RemediationBasis remediation={remediation} />
 
@@ -999,8 +999,8 @@ export function RiskAssessmentBanner({ aggregation }: { aggregation: RiskAggrega
       {aggregation.recommendations.length > 0 && (
         <ol className="space-y-1.5 rounded-lg bg-paper px-4 py-3">
           {aggregation.recommendations.map((r, i) => (
-            <li key={i} className="flex gap-2.5 text-xs leading-relaxed text-[#1C2128]">
-              <span className="mt-px flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-[#1C2128] font-mono text-[9px] font-bold text-white">
+            <li key={i} className="flex gap-2.5 text-xs leading-relaxed text-black">
+              <span className="mt-px flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-black font-mono text-[9px] font-bold text-white">
                 {i + 1}
               </span>
               <span>{r}</span>
@@ -1018,14 +1018,14 @@ export function ArchitectureSummary({ assessment }: { assessment: ArchitectureAs
     <div className="space-y-2.5">
       <div className="flex flex-wrap items-center gap-2">
         <SeverityBadge level={assessment.riskLevel} />
-        <span className="text-xs text-[#1C2128]">Consistency score: {assessment.consistencyScore}/100</span>
+        <span className="text-xs text-black">Consistency score: {assessment.consistencyScore}/100</span>
       </div>
       <p className="text-xs leading-relaxed text-muted-on-paper">{assessment.summary}</p>
       {assessment.inconsistencies.length > 0 && (
         <ul className="space-y-2">
           {assessment.inconsistencies.map((inc, i) => (
             <li key={i} className="rounded-md border border-paper-line bg-paper px-3 py-2">
-              <div className="mb-1 text-xs font-bold text-[#1C2128]">{inc.title}</div>
+              <div className="mb-1 text-xs font-bold text-black">{inc.title}</div>
               <div className="mb-1 text-xs leading-relaxed text-muted-on-paper">{inc.description}</div>
               {inc.files.length > 0 && (
                 <div className="font-mono text-[11px] break-all text-muted-on-paper">{inc.files.join(', ')}</div>
@@ -1044,7 +1044,7 @@ export function TestCoverageSummary({ coverage }: { coverage: TestCoverageEstima
     <div className="space-y-2.5">
       <div className="flex flex-wrap items-center gap-2">
         <SeverityBadge level={coverage.riskLevel} />
-        <span className="text-xs text-[#1C2128]">
+        <span className="text-xs text-black">
           {coverage.testFileCount} test file{coverage.testFileCount === 1 ? '' : 's'} / {coverage.sourceFileCount}{' '}
           source file{coverage.sourceFileCount === 1 ? '' : 's'} ({Math.round(coverage.testFileRatio * 100)}%)
         </span>
@@ -1060,7 +1060,7 @@ export function TestCoverageSummary({ coverage }: { coverage: TestCoverageEstima
           {coverage.untestedDirectories.map((d) => (
             <code
               key={d}
-              className="rounded border border-paper-line bg-paper px-1.5 py-0.5 font-mono text-[11px] text-[#1C2128]"
+              className="rounded border border-paper-line bg-paper px-1.5 py-0.5 font-mono text-[11px] text-black"
             >
               {d}
             </code>
@@ -1109,11 +1109,11 @@ export function ContributorConcentration({ stats }: { stats: ContributorStat[] }
         const pct = (c.commits / total) * 100;
         return (
           <div key={c.author} className="grid grid-cols-[minmax(0,8rem)_1fr_auto] items-center gap-3">
-            <span className="truncate font-mono text-xs text-[#1C2128]">{c.author}</span>
+            <span className="truncate font-mono text-xs text-black">{c.author}</span>
             <div className="h-1.5 overflow-hidden rounded-full bg-paper-line">
               <div
                 className="h-full rounded-full"
-                style={{ width: `${Math.max(pct, 2)}%`, backgroundColor: i === 0 && risk ? risk.hex : '#2b5be3' }}
+                style={{ width: `${Math.max(pct, 2)}%`, backgroundColor: i === 0 && risk ? risk.hex : '#7546f4' }}
               />
             </div>
             <span className="w-24 text-right text-xs text-muted-on-paper tabular-nums">
@@ -1163,7 +1163,7 @@ function AnalysisSection({
         <ChevronRightIcon
           className={`h-3.5 w-3.5 shrink-0 text-muted-on-paper transition-transform duration-150 ${open ? 'rotate-90' : ''}`}
         />
-        <span className="shrink-0 text-[13px] font-semibold text-[#1C2128]">{title}</span>
+        <span className="shrink-0 text-[13px] font-semibold text-black">{title}</span>
         {!open && !show && <span className="min-w-0 truncate text-xs text-muted-on-paper">{empty}</span>}
         <span className="ml-auto shrink-0">{badge}</span>
       </button>

@@ -1,80 +1,45 @@
 import { ImageResponse } from 'next/og';
-import { SITE_DESCRIPTION } from '@/lib/seo';
+import { SYMBOL_PATH } from '@/components/Logo';
 
-export const alt = 'Audit Bench Ai — AI code review before it ships';
+export const alt = 'Audit Bench Ai — Build fast. Check what ships.';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
+// Brand cover: copy on flat black, the "Dusk" mesh (purple dominant, black
+// falloff, warm edge) on the right. Approximated with layered radial
+// gradients because the image renderer can't decode the WebP mesh file.
 export default function Image() {
   return new ImageResponse(
     (
-      <div
-        style={{
-          width: '100%',
-          height: '100%',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          background: '#10141c',
-          position: 'relative',
-        }}
-      >
+      <div style={{ width: '100%', height: '100%', display: 'flex', background: '#000000' }}>
         <div
           style={{
-            position: 'absolute',
-            top: -120,
-            left: '50%',
-            marginLeft: -300,
             width: 600,
-            height: 400,
-            borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(43,91,227,0.35) 0%, rgba(43,91,227,0) 70%)',
             display: 'flex',
-          }}
-        />
-
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <span style={{ height: 12, width: 12, borderRadius: 999, background: '#c92a3d' }} />
-          <span style={{ height: 12, width: 12, borderRadius: 999, background: '#d97706' }} />
-          <span style={{ height: 12, width: 12, borderRadius: 999, background: '#1f7a4d' }} />
-        </div>
-
-        <div style={{ display: 'flex', alignItems: 'center', gap: 18, marginTop: 28 }}>
-          <svg width="72" height="72" viewBox="0 0 24 24">
-            <path d="M12 3.5l7 2.6v5.4c0 4.5-3 8.2-7 9-4-.8-7-4.5-7-9V6.1l7-2.6z" fill="#2b5be3" />
-            <path d="M4.3 9.6L19.7 14.4" stroke="#E8ECF4" strokeWidth="1.2" strokeLinecap="round" />
-            <circle cx="19.7" cy="14.4" r="1.2" fill="#E8ECF4" />
-          </svg>
-          <div
-            style={{
-              display: 'flex',
-              gap: 20,
-              fontSize: 80,
-              fontWeight: 700,
-              fontFamily: 'monospace',
-              color: '#E8ECF4',
-              letterSpacing: -2,
-            }}
-          >
-            <span>Audit Bench</span>
-            <span style={{ color: '#2b5be3' }}>Ai</span>
-          </div>
-        </div>
-
-        <div
-          style={{
-            display: 'flex',
-            marginTop: 24,
-            maxWidth: 820,
-            textAlign: 'center',
-            fontSize: 30,
-            lineHeight: 1.4,
-            color: '#8b96ab',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            padding: '64px 56px',
           }}
         >
-          {SITE_DESCRIPTION}
+          <svg width="76" height="70" viewBox="0 0 121.05 111.94">
+            <path d={SYMBOL_PATH} fill="#ffffff" />
+          </svg>
+          <div style={{ display: 'flex', flexDirection: 'column', color: '#ffffff' }}>
+            <div style={{ fontSize: 76, fontWeight: 300, lineHeight: 1.02, letterSpacing: -3 }}>Build fast.</div>
+            <div style={{ fontSize: 76, fontWeight: 300, lineHeight: 1.02, letterSpacing: -3 }}>Check what ships.</div>
+            <div style={{ marginTop: 28, fontSize: 28, color: '#adadad' }}>AI code review for people building with AI.</div>
+          </div>
         </div>
+        <div
+          style={{
+            flex: 1,
+            display: 'flex',
+            margin: 12,
+            borderRadius: 18,
+            background:
+              'radial-gradient(circle at 85% 95%, #ffe36a 0%, rgba(255,227,106,0) 35%), radial-gradient(circle at 95% 70%, #ff783b 0%, rgba(255,120,59,0) 50%), radial-gradient(circle at 10% 95%, #000000 0%, rgba(0,0,0,0) 55%), #7546f4',
+          }}
+        />
       </div>
     ),
     { ...size },

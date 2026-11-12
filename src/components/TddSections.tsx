@@ -7,7 +7,7 @@ import { TddAssessment, TddCheck, TddCheckSeverity, TddRating, TddRemediationPha
  * read straight off ScanJob.tddAssessment; nothing is scored client-side.
  */
 
-const INK = '#1C2128';
+const INK = '#000000';
 
 export const RATING: Record<TddRating, { label: string; hex: string }> = {
   critical: { label: 'Critical', hex: '#c92a3d' },
@@ -15,7 +15,7 @@ export const RATING: Record<TddRating, { label: string; hex: string }> = {
   medium: { label: 'Medium', hex: '#b08a00' },
   low: { label: 'Low', hex: '#2e6fab' },
   pass: { label: 'Pass', hex: '#1f7a4d' },
-  not_assessed: { label: 'N/A', hex: '#8a93a3' },
+  not_assessed: { label: 'N/A', hex: '#a3a3a3' },
 };
 
 const SEVERITIES: TddCheckSeverity[] = ['critical', 'high', 'medium', 'low'];
@@ -54,7 +54,7 @@ function formatDays(n: number): string {
 
 function Label({ children }: { children: React.ReactNode }) {
   return (
-    <div className="mb-2 font-mono text-[10px] font-bold tracking-[0.08em] text-muted-on-paper uppercase">
+    <div className="mb-2 text-[10px] font-medium tracking-[0.08em] text-muted-on-paper uppercase">
       {children}
     </div>
   );
@@ -65,7 +65,7 @@ export function RatingPill({ rating }: { rating: TddRating }) {
   const solid = rating !== 'pass' && rating !== 'not_assessed';
   return (
     <span
-      className="inline-block shrink-0 rounded px-1.5 py-0.5 font-mono text-[10px] font-bold tracking-wide uppercase"
+      className="inline-block shrink-0 rounded px-1.5 py-0.5 text-[10px] font-medium tracking-wide uppercase"
       style={
         solid ? { backgroundColor: r.hex, color: '#fff' } : { color: r.hex, boxShadow: `inset 0 0 0 1px ${r.hex}66` }
       }
@@ -77,7 +77,7 @@ export function RatingPill({ rating }: { rating: TddRating }) {
 
 function PassBar({ passed, run, hex }: { passed: number; run: number; hex: string }) {
   return (
-    <div className="h-1.5 overflow-hidden rounded-full bg-[#eceef1]">
+    <div className="h-1.5 overflow-hidden rounded-full bg-[#eeeeee]">
       {run > 0 && (
         <div
           className="h-full rounded-full"
@@ -115,7 +115,7 @@ export function CoverageStrip({ tdd }: { tdd: TddAssessment }) {
             <span className="text-xl leading-none font-bold tabular-nums" style={{ color: i.hex ?? INK }}>
               {i.value}
             </span>
-            <span className="font-mono text-[10px] tracking-[0.06em] text-muted-on-paper uppercase">{i.label}</span>
+            <span className="text-[10px] tracking-[0.06em] text-muted-on-paper uppercase">{i.label}</span>
           </div>
         ))}
       </div>
@@ -142,7 +142,7 @@ export function AreaGrid({ tdd }: { tdd: TddAssessment }) {
             style={{ borderTop: `3px solid ${r.hex}` }}
           >
             <div className="flex items-start justify-between gap-2">
-              <span className="text-[13px] leading-snug font-bold text-[#1C2128]">{a.name}</span>
+              <span className="text-[13px] leading-snug font-bold text-black">{a.name}</span>
               <RatingPill rating={a.rating} />
             </div>
             <p className="mt-1.5 line-clamp-2 flex-1 text-[11px] leading-snug text-muted-on-paper">{a.headline}</p>
@@ -165,7 +165,7 @@ export function DomainScorecard({ tdd }: { tdd: TddAssessment }) {
     <div className="overflow-hidden rounded-lg border border-paper-line">
       <table className="w-full text-left">
         <thead>
-          <tr className="border-b border-paper-line bg-paper font-mono text-[10px] tracking-[0.08em] text-muted-on-paper uppercase">
+          <tr className="border-b border-paper-line bg-paper text-[10px] tracking-[0.08em] text-muted-on-paper uppercase">
             <th className="px-4 py-2 font-bold">Domain</th>
             <th className="hidden w-36 px-4 py-2 font-bold sm:table-cell">Checks passed</th>
             <th className="w-20 px-4 py-2 text-right font-bold">Rating</th>
@@ -173,8 +173,8 @@ export function DomainScorecard({ tdd }: { tdd: TddAssessment }) {
         </thead>
         {tdd.areas.map((a) => (
           <tbody key={a.id} className="break-inside-avoid">
-            <tr className="border-b border-paper-line bg-[#f6f7f4]">
-              <td colSpan={2} className="px-4 py-2 text-[12px] font-bold text-[#1C2128]">
+            <tr className="border-b border-paper-line bg-[#f7f7f7]">
+              <td colSpan={2} className="px-4 py-2 text-[12px] font-bold text-black">
                 {a.name}
               </td>
               <td className="px-4 py-2 text-right">
@@ -185,7 +185,7 @@ export function DomainScorecard({ tdd }: { tdd: TddAssessment }) {
               .filter((d) => d.areaId === a.id)
               .map((d) => (
                 <tr key={d.id} className="border-b border-paper-line last:border-b-0">
-                  <td className="py-2 pr-4 pl-8 text-[13px] text-[#1C2128]">
+                  <td className="py-2 pr-4 pl-8 text-[13px] text-black">
                     {d.name}
                     <span className="ml-2 font-mono text-[10px] text-muted-on-paper tabular-nums sm:hidden">
                       {d.checksRun > 0 ? `${d.checksPassed}/${d.checksRun}` : '—'}
@@ -241,14 +241,14 @@ export function FindingsEvidence({ tdd }: { tdd: TddAssessment }) {
             <div key={s} className="rounded-lg border border-paper-line bg-paper px-3 py-2.5 break-inside-avoid">
               <div
                 className="text-2xl leading-none font-bold tabular-nums"
-                style={{ color: n > 0 ? RATING[s].hex : '#b4bac4' }}
+                style={{ color: n > 0 ? RATING[s].hex : '#bdbdbd' }}
               >
                 {n}
               </div>
-              <div className="mt-1.5 flex items-center gap-1.5 font-mono text-[10px] tracking-[0.06em] text-muted-on-paper uppercase">
+              <div className="mt-1.5 flex items-center gap-1.5 text-[10px] tracking-[0.06em] text-muted-on-paper uppercase">
                 <span
                   className="h-1.5 w-1.5 rounded-full"
-                  style={{ backgroundColor: n > 0 ? RATING[s].hex : '#d3d7de' }}
+                  style={{ backgroundColor: n > 0 ? RATING[s].hex : '#d6d6d6' }}
                 />
                 {RATING[s].label}
               </div>
@@ -258,7 +258,7 @@ export function FindingsEvidence({ tdd }: { tdd: TddAssessment }) {
       </div>
 
       {failed.length === 0 ? (
-        <p className="flex items-center gap-2 rounded-lg border border-pass/30 bg-pass/10 px-3.5 py-2.5 text-xs text-[#1C2128]">
+        <p className="flex items-center gap-2 rounded-lg border border-pass/30 bg-pass/10 px-3.5 py-2.5 text-xs text-black">
           <span className="font-bold text-pass">✓</span>
           Every check that ran on this scan passed.
         </p>
@@ -276,10 +276,10 @@ export function FindingsEvidence({ tdd }: { tdd: TddAssessment }) {
                     F{String(i + 1).padStart(2, '0')}
                   </span>
                   <RatingPill rating={c.severity} />
-                  <span className="text-[13px] font-bold text-[#1C2128]">{c.title}</span>
+                  <span className="text-[13px] font-bold text-black">{c.title}</span>
                 </div>
                 <div className="mt-0.5 font-mono text-[10px] text-muted-on-paper">{domainPath(tdd, c.domainId)}</div>
-                <p className="mt-1.5 text-xs leading-relaxed text-[#1C2128]">
+                <p className="mt-1.5 text-xs leading-relaxed text-black">
                   <span className="font-semibold">Finding: </span>
                   {c.detail}
                 </p>
@@ -287,7 +287,7 @@ export function FindingsEvidence({ tdd }: { tdd: TddAssessment }) {
                   <ul className="mt-2 space-y-0.5 rounded-md border border-paper-line bg-paper px-3 py-2">
                     {c.evidence.map((e, j) => (
                       <li key={j} className="flex min-w-0 gap-2 text-[11px] leading-snug">
-                        <span className="shrink-0 font-mono font-semibold break-all text-[#1C2128]">
+                        <span className="shrink-0 font-mono font-semibold break-all text-black">
                           {e.path}
                           {e.line ? `:${e.line}` : ''}
                         </span>
@@ -297,8 +297,8 @@ export function FindingsEvidence({ tdd }: { tdd: TddAssessment }) {
                   </ul>
                 )}
               </div>
-              <div className="border-t border-paper-line bg-[#f6f7f4] px-4 py-2 text-[11px] leading-relaxed text-[#1C2128]">
-                <span className="font-mono text-[10px] font-bold tracking-[0.06em] text-muted-on-paper uppercase">
+              <div className="border-t border-paper-line bg-[#f7f7f7] px-4 py-2 text-[11px] leading-relaxed text-black">
+                <span className="text-[10px] font-medium tracking-[0.06em] text-muted-on-paper uppercase">
                   Business impact ·{' '}
                 </span>
                 {c.businessImpact}
@@ -340,10 +340,10 @@ export function BusinessImpact({ tdd }: { tdd: TddAssessment }) {
           className="grid gap-x-4 gap-y-1 border-b border-paper-line px-4 py-3 break-inside-avoid last:border-b-0 sm:grid-cols-[11rem_1fr_auto]"
         >
           <div className="flex items-start gap-2 sm:flex-col sm:gap-1">
-            <span className="text-[13px] font-bold text-[#1C2128]">{area.name}</span>
+            <span className="text-[13px] font-bold text-black">{area.name}</span>
             <RatingPill rating={area.rating} />
           </div>
-          <p className="text-xs leading-relaxed text-[#1C2128]">{worst!.businessImpact}</p>
+          <p className="text-xs leading-relaxed text-black">{worst!.businessImpact}</p>
           <div className="font-mono text-[11px] text-muted-on-paper tabular-nums sm:text-right">
             {days > 0 ? `${formatDays(days)} days` : 'Advisory'}
           </div>
@@ -375,10 +375,10 @@ export function RemediationPlan({ tdd }: { tdd: TddAssessment }) {
           const b = byPhase[p.id];
           return (
             <div key={p.id} className="rounded-lg border border-paper-line bg-paper px-3.5 py-3 break-inside-avoid">
-              <div className="font-mono text-[10px] font-bold tracking-[0.08em] text-cobalt uppercase">
+              <div className="text-[10px] font-medium tracking-[0.08em] text-cobalt uppercase">
                 Phase {i + 1} · {p.label}
               </div>
-              <div className="mt-1.5 text-lg leading-tight font-bold text-[#1C2128] tabular-nums">
+              <div className="mt-1.5 text-lg leading-tight font-bold text-black tabular-nums">
                 {b.days > 0 ? `${formatUsd(b.costLowUsd)}–${formatUsd(b.costHighUsd)}` : '—'}
               </div>
               <div className="mt-0.5 text-[11px] text-muted-on-paper">
@@ -392,7 +392,7 @@ export function RemediationPlan({ tdd }: { tdd: TddAssessment }) {
       <div className="overflow-hidden rounded-lg border border-paper-line break-inside-avoid">
         <table className="w-full text-left">
           <thead>
-            <tr className="border-b border-paper-line bg-paper font-mono text-[10px] tracking-[0.08em] text-muted-on-paper uppercase">
+            <tr className="border-b border-paper-line bg-paper text-[10px] tracking-[0.08em] text-muted-on-paper uppercase">
               <th className="px-4 py-2 font-bold">Workstream</th>
               <th className="hidden w-28 px-4 py-2 font-bold sm:table-cell">Phase</th>
               <th className="w-16 px-4 py-2 text-right font-bold">Days</th>
@@ -403,17 +403,17 @@ export function RemediationPlan({ tdd }: { tdd: TddAssessment }) {
             {steps.map((s, i) => (
               <tr key={i} className="border-b border-paper-line">
                 <td className="px-4 py-2.5 align-top">
-                  <div className="text-[13px] font-semibold text-[#1C2128]">{s.category}</div>
+                  <div className="text-[13px] font-semibold text-black">{s.category}</div>
                   <div className="mt-0.5 text-[11px] leading-snug text-muted-on-paper">{s.description}</div>
                   <div className="mt-0.5 font-mono text-[10px] text-muted-on-paper">
                     {areaName(s.areaId)}
                     <span className="sm:hidden"> · {PHASES.find((p) => p.id === s.phase)?.label}</span>
                   </div>
                 </td>
-                <td className="hidden px-4 py-2.5 align-top text-[11px] text-[#1C2128] sm:table-cell">
+                <td className="hidden px-4 py-2.5 align-top text-[11px] text-black sm:table-cell">
                   {PHASES.find((p) => p.id === s.phase)?.label}
                 </td>
-                <td className="px-4 py-2.5 text-right align-top font-mono text-[13px] font-semibold text-[#1C2128] tabular-nums">
+                <td className="px-4 py-2.5 text-right align-top font-mono text-[13px] font-semibold text-black tabular-nums">
                   {formatDays(s.estimatedDays)}
                 </td>
                 <td className="hidden px-4 py-2.5 text-right align-top font-mono text-[11px] text-muted-on-paper tabular-nums sm:table-cell">
@@ -423,7 +423,7 @@ export function RemediationPlan({ tdd }: { tdd: TddAssessment }) {
             ))}
           </tbody>
           <tfoot>
-            <tr className="bg-[#1C2128] text-white">
+            <tr className="bg-black text-white">
               <td className="px-4 py-3 text-[13px] font-bold">Total</td>
               <td className="hidden sm:table-cell" />
               <td className="px-4 py-3 text-right font-mono text-[13px] font-bold tabular-nums">
@@ -459,14 +459,14 @@ export function CheckCatalog({ tdd }: { tdd: TddAssessment }) {
                 <div
                   key={c.id}
                   className={`grid grid-cols-[1.25rem_1fr] gap-x-2 border-b border-paper-line px-3.5 py-2 break-inside-avoid last:border-b-0 ${
-                    c.status === 'not_assessed' ? 'bg-[#fafbf8]' : ''
+                    c.status === 'not_assessed' ? 'bg-[#fafafa]' : ''
                   }`}
                 >
                   <StatusMark status={c.status} severity={c.severity} />
                   <div className="min-w-0">
                     <div className="flex flex-wrap items-baseline justify-between gap-x-3">
                       <span
-                        className={`text-[12px] font-semibold ${c.status === 'not_assessed' ? 'text-muted-on-paper' : 'text-[#1C2128]'}`}
+                        className={`text-[12px] font-semibold ${c.status === 'not_assessed' ? 'text-muted-on-paper' : 'text-black'}`}
                       >
                         {c.title}
                       </span>
@@ -497,7 +497,7 @@ function StatusMark({ status, severity }: { status: TddCheck['status']; severity
       </span>
     );
   return (
-    <span className="pt-px text-[13px] font-bold text-[#b4bac4]" aria-label="Not assessed">
+    <span className="pt-px text-[13px] font-bold text-[#bdbdbd]" aria-label="Not assessed">
       –
     </span>
   );

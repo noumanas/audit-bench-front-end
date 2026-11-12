@@ -63,11 +63,11 @@ function AdminPageInner() {
           <div>
             <div className="mb-1 flex items-center gap-2">
               <span className="h-1.5 w-1.5 rounded-full bg-cobalt" />
-              <span className="font-mono text-[11px] font-bold tracking-[0.14em] text-cobalt uppercase">
+              <span className="text-[11px] font-medium tracking-[0.14em] text-cobalt uppercase">
                 {isSuperAdmin ? 'Super admin' : 'Admin'}
               </span>
             </div>
-            <h1 className="text-2xl font-bold tracking-tight text-[#E8ECF4]">Admin console</h1>
+            <h1 className="text-3xl sm:text-4xl text-white font-light tracking-[-0.03em]">Admin console</h1>
             <p className="mt-1 text-sm text-muted-on-ink">
               Sign-ups, sign-ins and plan requests as they happen — plus users, revenue and site health.
             </p>
@@ -88,7 +88,7 @@ function AdminPageInner() {
                   onClick={() => setTab(t.id)}
                   aria-current={active ? 'page' : undefined}
                   className={`relative flex cursor-pointer items-center gap-2 px-3 py-3 text-sm font-semibold transition-colors ${
-                    active ? 'text-[#E8ECF4]' : 'text-muted-on-ink hover:text-[#E8ECF4]'
+                    active ? 'text-white' : 'text-muted-on-ink hover:text-white'
                   }`}
                 >
                   <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">

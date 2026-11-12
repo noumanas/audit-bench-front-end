@@ -31,7 +31,7 @@ function UsageStat({ label, used, limit }: { label: string; used: number; limit:
   return (
     <div className="min-w-[140px] flex-1 text-xs text-muted-on-ink">
       <div className="mb-1 flex items-center justify-between">
-        <span className="font-mono tracking-wide uppercase">{label}</span>
+        <span className="tracking-wide uppercase">{label}</span>
         <span className="font-mono">{limit != null ? `${used}/${limit}` : `${used} (unlimited)`}</span>
       </div>
       {limit != null && (

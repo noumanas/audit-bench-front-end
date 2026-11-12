@@ -199,10 +199,10 @@ export default function SecurityPage() {
     <div>
       <section className="border-b border-ink-line bg-ink px-6 py-16">
         <ScrollReveal className="mx-auto max-w-3xl">
-          <div className="mb-4 inline-block rounded-full border border-ink-line px-3 py-1 font-mono text-[11px] tracking-wide text-muted-on-ink uppercase">
+          <div className="mb-4 inline-block rounded-full border border-ink-line px-3 py-1 text-[11px] tracking-wide text-muted-on-ink uppercase">
             Security &amp; Trust
           </div>
-          <h1 className="mb-4 text-3xl leading-tight font-bold text-[#E8ECF4] sm:text-4xl">
+          <h1 className="mb-4 text-3xl leading-tight text-white sm:text-4xl font-light tracking-[-0.03em]">
             <TextReveal>What actually happens to your code.</TextReveal>
           </h1>
           <p className="max-w-xl text-sm leading-relaxed text-muted-on-ink">
@@ -215,10 +215,10 @@ export default function SecurityPage() {
       <section className="bg-paper px-6 py-14">
         <div className="mx-auto max-w-3xl">
           <ScrollReveal className="rounded-lg border-2 border-cobalt/30 bg-paper-card p-5">
-            <h2 className="mb-3 text-sm font-bold text-[#1C2128]">The short version</h2>
+            <h2 className="mb-3 text-sm font-bold text-black">The short version</h2>
             <ul className="space-y-1.5">
               {SHORT_VERSION.map((s) => (
-                <li key={s} className="flex gap-2 text-sm leading-relaxed text-[#1C2128]">
+                <li key={s} className="flex gap-2 text-sm leading-relaxed text-black">
                   <span className="font-bold text-pass">✓</span>
                   {s}
                 </li>
@@ -226,7 +226,7 @@ export default function SecurityPage() {
             </ul>
           </ScrollReveal>
 
-          <div className="prose-blog mt-10 space-y-10 text-sm leading-relaxed text-[#1C2128]">
+          <div className="prose-blog mt-10 space-y-10 text-sm leading-relaxed text-black">
             {SECTIONS.map((s) => (
               <section key={s.title} className="[&>p]:mt-3 [&>ul]:mt-3">
                 <h2>{s.title}</h2>
@@ -251,7 +251,7 @@ export default function SecurityPage() {
 
       <section className="border-t border-ink-line bg-ink px-6 py-16 text-center">
         <ScrollReveal>
-          <h2 className="mb-3 text-xl font-bold text-[#E8ECF4]">Questions we didn&apos;t answer here?</h2>
+          <h2 className="mb-3 text-xl font-bold text-white">Questions we didn&apos;t answer here?</h2>
           <p className="mx-auto mb-6 max-w-md text-sm leading-relaxed text-muted-on-ink">
             Ask directly, especially before a security review on your end.
           </p>

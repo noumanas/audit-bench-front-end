@@ -17,7 +17,7 @@ export const CONTACT_TOPICS: { key: ContactTopic; label: string; hint: string }[
 const isTopic = (v: string | null): v is ContactTopic => CONTACT_TOPICS.some((t) => t.key === v);
 
 const FIELD =
-  'block w-full rounded-lg border border-paper-line bg-white px-3.5 py-2.5 text-[14px] text-[#1C2128] outline-none transition placeholder:text-[#9AA1AC] focus:border-cobalt focus:ring-2 focus:ring-cobalt/20';
+  'block w-full rounded-lg border border-paper-line bg-white px-3.5 py-2.5 text-[14px] text-black outline-none transition placeholder:text-[#A8A8A8] focus:border-cobalt focus:ring-2 focus:ring-cobalt/20';
 
 /** The /contact form — posts to the API, which emails the team inbox and confirms to the sender. */
 export function ContactForm({ fallbackEmail }: { fallbackEmail: string }) {
@@ -52,9 +52,9 @@ export function ContactForm({ fallbackEmail }: { fallbackEmail: string }) {
             <path d="M5 12.5l4.5 4.5L19 7.5" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </div>
-        <h2 className="text-xl font-bold text-[#1C2128]">Thanks, {form.name.split(' ')[0]} — message received</h2>
+        <h2 className="text-xl font-bold text-black">Thanks, {form.name.split(' ')[0]} — message received</h2>
         <p className="mx-auto mt-2 max-w-md text-[14px] leading-relaxed text-muted-on-paper">
-          A person on our team will reply to <strong className="text-[#1C2128]">{form.email}</strong>, usually within
+          A person on our team will reply to <strong className="text-black">{form.email}</strong>, usually within
           one business day. We&apos;ve sent you a confirmation email too.
         </p>
         <button
@@ -75,7 +75,7 @@ export function ContactForm({ fallbackEmail }: { fallbackEmail: string }) {
   return (
     <form onSubmit={submit} className="rounded-2xl border border-paper-line bg-paper-card p-6 sm:p-8">
       <fieldset>
-        <legend className="mb-2.5 text-[13px] font-semibold text-[#1C2128]">What can we help with?</legend>
+        <legend className="mb-2.5 text-[13px] font-semibold text-black">What can we help with?</legend>
         <div className="flex flex-wrap gap-2">
           {CONTACT_TOPICS.map((t) => (
             <label
@@ -83,7 +83,7 @@ export function ContactForm({ fallbackEmail }: { fallbackEmail: string }) {
               className={`cursor-pointer rounded-full border px-3.5 py-1.5 text-[13px] font-medium transition has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-cobalt/40 ${
                 topic === t.key
                   ? 'border-cobalt bg-cobalt text-white'
-                  : 'border-paper-line bg-white text-[#3B4250] hover:border-cobalt/60'
+                  : 'border-paper-line bg-white text-[#3D3D3D] hover:border-cobalt/60'
               }`}
             >
               <input
@@ -102,11 +102,11 @@ export function ContactForm({ fallbackEmail }: { fallbackEmail: string }) {
       </fieldset>
 
       <div className="mt-6 grid gap-4 sm:grid-cols-2">
-        <label className="block text-[13px] font-semibold text-[#1C2128]">
+        <label className="block text-[13px] font-semibold text-black">
           Name
           <input required maxLength={120} autoComplete="name" value={form.name} onChange={set('name')} className={`${FIELD} mt-1.5 font-normal`} />
         </label>
-        <label className="block text-[13px] font-semibold text-[#1C2128]">
+        <label className="block text-[13px] font-semibold text-black">
           Work email
           <input
             required
@@ -118,7 +118,7 @@ export function ContactForm({ fallbackEmail }: { fallbackEmail: string }) {
             className={`${FIELD} mt-1.5 font-normal`}
           />
         </label>
-        <label className="block text-[13px] font-semibold text-[#1C2128] sm:col-span-2">
+        <label className="block text-[13px] font-semibold text-black sm:col-span-2">
           Company <span className="font-normal text-muted-on-paper">(optional)</span>
           <input
             maxLength={160}
@@ -128,7 +128,7 @@ export function ContactForm({ fallbackEmail }: { fallbackEmail: string }) {
             className={`${FIELD} mt-1.5 font-normal`}
           />
         </label>
-        <label className="block text-[13px] font-semibold text-[#1C2128] sm:col-span-2">
+        <label className="block text-[13px] font-semibold text-black sm:col-span-2">
           Message
           <textarea
             required

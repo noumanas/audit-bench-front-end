@@ -361,7 +361,7 @@ export function GitHostPanel({
     <div className="shadow-panel overflow-hidden rounded-lg border border-ink-line bg-ink-soft">
       <div className="flex flex-wrap items-center gap-2 border-b border-ink-line px-4 py-3">
         <Icon className="h-4 w-4 text-muted-on-ink" />
-        <span className="text-sm text-[#E8ECF4]">
+        <span className="text-sm text-white">
           {status.via === 'app' ? (
             <>
               Connected through the GitHub App on{' '}
@@ -383,7 +383,7 @@ export function GitHostPanel({
             href="https://github.com/settings/installations"
             target="_blank"
             rel="noreferrer"
-            className="ml-auto text-[12px] font-medium text-muted-on-ink hover:text-[#E8ECF4]"
+            className="ml-auto text-[12px] font-medium text-muted-on-ink hover:text-white"
           >
             Choose repositories on GitHub ↗
           </a>
@@ -401,7 +401,7 @@ export function GitHostPanel({
                 setFailure(toFailure(err, 'Failed to disconnect.'));
               }
             }}
-            className="ml-auto cursor-pointer text-[12px] font-medium text-muted-on-ink hover:text-[#E8ECF4]"
+            className="ml-auto cursor-pointer text-[12px] font-medium text-muted-on-ink hover:text-white"
           >
             Disconnect
           </button>
@@ -429,7 +429,7 @@ export function GitHostPanel({
               onChange={(e) => setQuery(e.target.value)}
               placeholder={`Search ${cfg.repoPlural}…`}
               aria-label={`Search ${cfg.repoPlural}`}
-              className="w-full rounded-md border border-ink-line bg-ink px-3 py-2 text-sm text-[#E8ECF4] outline-none placeholder:text-muted-on-ink focus:border-cobalt"
+              className="w-full rounded-md border border-ink-line bg-ink px-3 py-2 text-sm text-white outline-none placeholder:text-muted-on-ink focus:border-cobalt"
             />
           </div>
           <div className="max-h-[520px] overflow-y-auto" role="listbox" aria-label={`${cfg.name} ${cfg.repoPlural}`}>
@@ -460,9 +460,9 @@ export function GitHostPanel({
                   }`}
                 >
                   <div className="flex items-center gap-2">
-                    <span className="truncate font-mono text-[13px] text-[#E8ECF4]">{r.fullName}</span>
+                    <span className="truncate font-mono text-[13px] text-white">{r.fullName}</span>
                     {r.private && (
-                      <span className="shrink-0 rounded bg-ink-line px-1.5 py-px font-mono text-[9px] font-bold text-muted-on-ink uppercase">
+                      <span className="shrink-0 rounded bg-ink-line px-1.5 py-px text-[9px] font-medium text-muted-on-ink uppercase">
                         Private
                       </span>
                     )}
@@ -494,7 +494,7 @@ export function GitHostPanel({
           ) : (
             <div className="flex h-full min-h-[240px] flex-col items-center justify-center px-6 py-10 text-center">
               <GitBranchIcon className="mb-3 h-7 w-7 text-muted-on-ink" />
-              <p className="text-sm font-semibold text-[#E8ECF4]">Pick a {cfg.repoNoun}</p>
+              <p className="text-sm font-semibold text-white">Pick a {cfg.repoNoun}</p>
               <p className="mt-1 max-w-[34ch] text-[12px] text-muted-on-ink">
                 Scan a whole branch, or review one open {cfg.changeNoun} with comments posted back on {cfg.name}.
               </p>
@@ -571,21 +571,21 @@ function RepoDetail({
 
       <div className="mb-4 flex flex-wrap items-start gap-2">
         <div className="min-w-0 flex-1">
-          <h3 className="truncate font-mono text-[15px] font-bold text-[#E8ECF4]">{repo.fullName}</h3>
+          <h3 className="truncate font-mono text-[15px] font-bold text-white">{repo.fullName}</h3>
           {repo.description && <p className="mt-0.5 text-[12px] text-muted-on-ink">{repo.description}</p>}
         </div>
         <a
           href={repo.url}
           target="_blank"
           rel="noreferrer"
-          className="shrink-0 text-[12px] text-muted-on-ink hover:text-[#E8ECF4]"
+          className="shrink-0 text-[12px] text-muted-on-ink hover:text-white"
         >
           Open on {cfg.name} ↗
         </a>
       </div>
 
       <section className="mb-4 rounded-lg border border-ink-line bg-ink p-4">
-        <h4 className="text-sm font-bold text-[#E8ECF4]">Scan the full {cfg.repoNoun}</h4>
+        <h4 className="text-sm font-bold text-white">Scan the full {cfg.repoNoun}</h4>
         <p className="mt-0.5 mb-3 text-[12px] text-muted-on-ink">
           Secrets, vulnerable dependencies, licenses, dead code and duplicates, plus an AI review of the riskiest files.
         </p>
@@ -596,7 +596,7 @@ function RepoDetail({
               value={branch}
               onChange={(e) => setBranch(e.target.value)}
               disabled={branches === null}
-              className="max-w-[220px] rounded-md border border-ink-line bg-ink-soft px-2.5 py-1.5 font-mono text-[12px] text-[#E8ECF4] outline-none focus:border-cobalt disabled:opacity-60"
+              className="max-w-[220px] rounded-md border border-ink-line bg-ink-soft px-2.5 py-1.5 font-mono text-[12px] text-white outline-none focus:border-cobalt disabled:opacity-60"
             >
               {(branches ?? [repo.defaultBranch]).map((b) => (
                 <option key={b} value={b}>
@@ -617,7 +617,7 @@ function RepoDetail({
       </section>
 
       <section className="rounded-lg border border-ink-line bg-ink p-4">
-        <h4 className="text-sm font-bold text-[#E8ECF4]">
+        <h4 className="text-sm font-bold text-white">
           Review a {cfg.changeNoun}
           {changes && changes.length > 0 && (
             <span className="ml-2 rounded-full bg-ink-line px-1.5 py-0.5 font-mono text-[10px] text-muted-on-ink">
@@ -652,13 +652,13 @@ function RepoDetail({
                       href={c.url}
                       target="_blank"
                       rel="noreferrer"
-                      className="truncate text-[13px] font-semibold text-[#E8ECF4] hover:underline"
+                      className="truncate text-[13px] font-semibold text-white hover:underline"
                       title={c.title}
                     >
                       {c.title}
                     </a>
                     {c.draft && (
-                      <span className="shrink-0 rounded border border-ink-line px-1.5 py-px font-mono text-[9px] text-muted-on-ink uppercase">
+                      <span className="shrink-0 rounded border border-ink-line px-1.5 py-px text-[9px] text-muted-on-ink uppercase">
                         Draft
                       </span>
                     )}
@@ -733,7 +733,7 @@ function PrLinkReview({
       className="border-b border-ink-line bg-ink px-4 py-3.5"
     >
       <div className="mb-2 flex flex-wrap items-baseline gap-x-2">
-        <h3 className="text-sm font-bold text-[#E8ECF4]">Review any pull request</h3>
+        <h3 className="text-sm font-bold text-white">Review any pull request</h3>
         <span className="text-[12px] text-muted-on-ink">
           Paste a link from any repository your account can read, including public ones you don&apos;t own.
         </span>
@@ -748,7 +748,7 @@ function PrLinkReview({
             placeholder="https://github.com/owner/repo/pull/123"
             autoComplete="off"
             spellCheck={false}
-            className="w-full rounded-md border border-ink-line bg-ink-soft py-2 pr-3 pl-9 font-mono text-[13px] text-[#E8ECF4] outline-none placeholder:text-muted-on-ink focus:border-cobalt"
+            className="w-full rounded-md border border-ink-line bg-ink-soft py-2 pr-3 pl-9 font-mono text-[13px] text-white outline-none placeholder:text-muted-on-ink focus:border-cobalt"
           />
         </label>
         <button
@@ -770,7 +770,7 @@ function PrLinkReview({
           className="mt-0.5 h-3.5 w-3.5 accent-cobalt"
         />
         <span>
-          <span className="font-semibold text-[#E8ECF4]">Post the review on GitHub</span> as{' '}
+          <span className="font-semibold text-white">Post the review on GitHub</span> as{' '}
           {username ? <span className="font-mono">@{username}</span> : 'your connected account'}: a summary with merge
           readiness (conflicts, CI, blockers) and inline comments on the changed lines. It&apos;s public on public
           repositories.
@@ -801,7 +801,7 @@ function SelectedReposOption() {
   if (!available) return null;
   return (
     <div className="mb-4 rounded-md border border-cobalt/40 bg-cobalt/10 px-4 py-3">
-      <div className="text-[13px] font-bold text-[#E8ECF4]">
+      <div className="text-[13px] font-bold text-white">
         Only want to share some repositories?
       </div>
       <p className="mt-1 max-w-[70ch] text-[12px] leading-relaxed text-muted-on-ink">
@@ -826,7 +826,7 @@ function SelectedReposOption() {
             );
           }
         }}
-        className="mt-2.5 cursor-pointer rounded-md border border-cobalt bg-ink px-4 py-2 text-[13px] font-bold text-[#E8ECF4] hover:bg-cobalt disabled:cursor-wait disabled:opacity-60"
+        className="mt-2.5 cursor-pointer rounded-md border border-cobalt bg-ink px-4 py-2 text-[13px] font-bold text-white hover:bg-cobalt disabled:cursor-wait disabled:opacity-60"
       >
         {opening
           ? "Opening GitHub…"
@@ -874,8 +874,8 @@ function ConnectCard({
   return (
     <div className="shadow-panel rounded-lg border border-ink-line bg-ink-soft p-5">
       <div className="mb-1 flex items-center gap-2">
-        <Icon className="h-5 w-5 text-[#E8ECF4]" />
-        <h3 className="text-base font-bold text-[#E8ECF4]">
+        <Icon className="h-5 w-5 text-white" />
+        <h3 className="text-base font-bold text-white">
           {reconnect ? `Reconnect ${cfg.name}` : `Connect ${cfg.name}`}
         </h3>
       </div>
@@ -910,7 +910,7 @@ function ConnectCard({
             <button
               type="button"
               onClick={() => setUseToken(true)}
-              className="mt-3 cursor-pointer text-[12px] font-medium text-muted-on-ink underline hover:text-[#E8ECF4]"
+              className="mt-3 cursor-pointer text-[12px] font-medium text-muted-on-ink underline hover:text-white"
             >
               Use an access token instead
             </button>
@@ -949,13 +949,13 @@ function ConnectCard({
               placeholder={cfg.tokenPlaceholder}
               aria-label={`${cfg.name} personal access token`}
               wrapperClassName="min-w-[240px] flex-1"
-              className="w-full rounded-md border border-ink-line bg-ink px-3 py-2 font-mono text-[13px] text-[#E8ECF4] outline-none focus:border-cobalt"
+              className="w-full rounded-md border border-ink-line bg-ink px-3 py-2 font-mono text-[13px] text-white outline-none focus:border-cobalt"
             />
             <button
               type="submit"
               disabled={connecting || !token.trim()}
               className={`cursor-pointer rounded-md px-4 py-2 text-sm font-bold disabled:cursor-not-allowed disabled:opacity-50 ${
-                cfg.oauth ? 'border border-ink-line text-[#E8ECF4] hover:bg-ink-line/40' : 'bg-cobalt text-white'
+                cfg.oauth ? 'border border-ink-line text-white hover:bg-ink-line/40' : 'bg-cobalt text-white'
               }`}
             >
               {connecting

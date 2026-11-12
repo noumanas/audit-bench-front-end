@@ -144,7 +144,7 @@ export default function AuditPage() {
             value={filename}
             onChange={(e) => setFilename(e.target.value)}
             placeholder="filename (e.g. send-invoice.ts)"
-            className="flex-1 rounded-md border border-ink-line bg-ink-soft px-3 py-2 font-mono text-[13px] text-[#E8ECF4] outline-none placeholder:text-muted-on-ink"
+            className="flex-1 rounded-md border border-ink-line bg-ink-soft px-3 py-2 font-mono text-[13px] text-white outline-none placeholder:text-muted-on-ink"
           />
           <input
             ref={fileInputRef}
@@ -224,7 +224,7 @@ export default function AuditPage() {
       <section className="flex-1 basis-[420px] border-l border-ink-line bg-paper p-6">
         {!audit && !loading && (
           <div className="mx-auto mt-16 max-w-md text-center">
-            <div className="mb-2.5 font-mono text-[13px] tracking-wide text-muted-on-paper uppercase">
+            <div className="mb-2.5 text-[13px] tracking-wide text-muted-on-paper uppercase">
               Findings report
             </div>
             <p className="text-sm leading-relaxed text-muted-on-paper">

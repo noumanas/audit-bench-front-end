@@ -32,7 +32,7 @@ function ChromeDots() {
 function BeforeSlide() {
   return (
     <>
-      <div className="mb-3 whitespace-pre text-[#E8ECF4]">
+      <div className="mb-3 whitespace-pre text-white">
         {BEFORE_LINES.map((line, i) => (
           <div key={i}>{line}</div>
         ))}
@@ -42,7 +42,7 @@ function BeforeSlide() {
           <SeverityTag severity="critical" />
           <CategoryTag label="Security" />
         </div>
-        <div className="text-[#E8ECF4]">No auth check — any caller can mark any invoice as sent.</div>
+        <div className="text-white">No auth check — any caller can mark any invoice as sent.</div>
       </div>
     </>
   );
@@ -51,7 +51,7 @@ function BeforeSlide() {
 function AfterSlide() {
   return (
     <>
-      <div className="mb-3 whitespace-pre text-[#E8ECF4]">
+      <div className="mb-3 whitespace-pre text-white">
         {AFTER_LINES.map((line, i) => (
           <div key={i}>{line}</div>
         ))}
@@ -62,7 +62,7 @@ function AfterSlide() {
           <SeverityTag severity="clean" />
           <CategoryTag label="Security" />
         </div>
-        <div className="text-[#E8ECF4]">Ownership check added from the suggested fix — re-audited and passing.</div>
+        <div className="text-white">Ownership check added from the suggested fix — re-audited and passing.</div>
       </div>
     </>
   );
@@ -71,7 +71,7 @@ function AfterSlide() {
 function MiniScore({ label, value }: { label: string; value: number }) {
   return (
     <div className="rounded-md border border-ink-line bg-ink px-2.5 py-2">
-      <div className="text-base font-bold text-[#E8ECF4] tabular-nums">{value}</div>
+      <div className="text-base font-bold text-white tabular-nums">{value}</div>
       <div className="text-[9px] tracking-wide text-muted-on-ink uppercase">{label}</div>
     </div>
   );
@@ -82,7 +82,7 @@ function MiniRow({ name, verdict }: { name: string; verdict: 'pass' | 'needs_wor
     verdict === 'pass' ? { label: 'Ship it', className: 'bg-pass' } : { label: 'Needs work', className: 'bg-high' };
   return (
     <div className="flex items-center justify-between gap-2 rounded-md border border-ink-line bg-ink px-2.5 py-1.5">
-      <span className="truncate text-[#E8ECF4]">{name}</span>
+      <span className="truncate text-white">{name}</span>
       <span className={`shrink-0 rounded px-1.5 py-0.5 text-[9px] font-bold tracking-wide text-white uppercase ${style.className}`}>
         {style.label}
       </span>
@@ -138,7 +138,7 @@ export function HeroShowcase() {
     >
       <div className="mb-3 flex items-center justify-between">
         <ChromeDots />
-        <span className="font-mono text-[10px] tracking-wide text-muted-on-ink uppercase">Audit Bench Ai</span>
+        <span className="text-[10px] tracking-wide text-muted-on-ink uppercase">Audit Bench Ai</span>
       </div>
 
       <div key={active} className="fade-up min-h-[172px]">

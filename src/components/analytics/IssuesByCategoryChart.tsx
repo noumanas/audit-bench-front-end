@@ -8,13 +8,13 @@ import { CategoryBreakdown } from '@/lib/types';
 // inventing a new palette — Security reuses "critical" red, etc.
 const CATEGORY_STYLE: Record<string, { color: string; short: string }> = {
   Security: { color: '#c92a3d', short: 'SEC' },
-  Logic: { color: '#2b5be3', short: 'LGC' },
+  Logic: { color: '#7546f4', short: 'LGC' },
   Performance: { color: '#d97706', short: 'PRF' },
   Architecture: { color: '#2e6fab', short: 'ARC' },
   Maintainability: { color: '#b08a00', short: 'MNT' },
   Testing: { color: '#1f7a4d', short: 'TST' },
 };
-const FALLBACK_COLOR = '#8b96ab';
+const FALLBACK_COLOR = '#adadad';
 
 const SIZE = 148;
 const STROKE = 26;
@@ -45,7 +45,7 @@ export function IssuesByCategoryChart({ breakdown }: { breakdown: CategoryBreakd
   return (
     <div className="flex flex-wrap items-center gap-6">
       <svg width={SIZE} height={SIZE} className="shrink-0 -rotate-90">
-        <circle cx={CX} cy={CY} r={R} fill="none" stroke="#2a3242" strokeWidth={STROKE} />
+        <circle cx={CX} cy={CY} r={R} fill="none" stroke="#303030" strokeWidth={STROKE} />
         {arcs.map(({ category, dash, offset }) => {
           const style = CATEGORY_STYLE[category] ?? { color: FALLBACK_COLOR, short: category.slice(0, 3).toUpperCase() };
           const isHovered = hovered === category;
@@ -73,7 +73,7 @@ export function IssuesByCategoryChart({ breakdown }: { breakdown: CategoryBreakd
           transform={`rotate(90 ${CX} ${CY})`}
           textAnchor="middle"
           dominantBaseline="middle"
-          className="fill-[#E8ECF4]"
+          className="fill-white"
           fontSize={22}
           fontWeight={700}
         >
@@ -93,7 +93,7 @@ export function IssuesByCategoryChart({ breakdown }: { breakdown: CategoryBreakd
               onPointerLeave={() => setHovered(null)}
             >
               <span className="inline-block h-2 w-2 shrink-0 rounded-full" style={{ backgroundColor: style.color }} />
-              <span className={hovered && hovered !== category ? 'text-muted-on-ink' : 'text-[#E8ECF4]'}>{category}</span>
+              <span className={hovered && hovered !== category ? 'text-muted-on-ink' : 'text-white'}>{category}</span>
               <span className="ml-auto shrink-0 tabular-nums text-muted-on-ink">
                 {pct}% · {count}
               </span>

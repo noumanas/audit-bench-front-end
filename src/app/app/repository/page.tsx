@@ -134,7 +134,7 @@ function RepositoryPageInner() {
             >
               <Icon className={`mt-0.5 h-4 w-4 shrink-0 ${active ? 'text-cobalt' : 'text-muted-on-ink'}`} />
               <span className="min-w-0">
-                <span className={`block text-sm font-bold ${active ? 'text-[#E8ECF4]' : 'text-[#C9CED8]'}`}>
+                <span className={`block text-sm font-bold ${active ? 'text-white' : 'text-[#D4D4D4]'}`}>
                   {s.label}
                 </span>
                 <span className="block text-[11px] leading-snug text-muted-on-ink">{s.hint}</span>
@@ -174,19 +174,19 @@ function RepositoryPageInner() {
             <UploadCloudIcon className={`mx-auto mb-3 h-9 w-9 ${dragging ? 'text-cobalt' : 'text-muted-on-ink'}`} />
             {file ? (
               <div className="mb-4 inline-flex items-center gap-3 rounded-md border border-ink-line bg-ink px-3 py-2">
-                <span className="font-mono text-sm text-[#E8ECF4]">{file.name}</span>
+                <span className="font-mono text-sm text-white">{file.name}</span>
                 <span className="text-[12px] text-muted-on-ink">{formatBytes(file.size)}</span>
                 <button
                   onClick={() => setFile(null)}
                   aria-label="Remove file"
-                  className="cursor-pointer text-muted-on-ink hover:text-[#E8ECF4]"
+                  className="cursor-pointer text-muted-on-ink hover:text-white"
                 >
                   ×
                 </button>
               </div>
             ) : (
               <>
-                <p className="mb-1 text-sm text-[#E8ECF4]">
+                <p className="mb-1 text-sm text-white">
                   Drop a .zip of the project here, or{' '}
                   <label className="cursor-pointer font-semibold text-cobalt hover:underline">
                     choose a file

@@ -41,8 +41,8 @@ export function DueDiligenceGate({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="rounded-xl border border-cobalt/40 bg-cobalt/10 px-6 py-7">
-      <div className="mb-2 font-mono text-[11px] font-bold tracking-[0.1em] text-cobalt uppercase">Enterprise plan</div>
-      <h2 className="mb-2 text-xl font-bold text-[#E8ECF4]">Technical due diligence is part of Enterprise</h2>
+      <div className="mb-2 text-[11px] font-medium tracking-[0.1em] text-cobalt uppercase">Enterprise plan</div>
+      <h2 className="mb-2 text-xl font-bold text-white">Technical due diligence is part of Enterprise</h2>
       <p className="mb-4 max-w-[62ch] text-sm leading-relaxed text-muted-on-ink">
         Investor-ready reports rate 6 risk areas across 15 domains, show the evidence behind every finding, and price
         the fixes in engineer-days and dollars. Your repository scans and developer reports stay available on your
@@ -59,7 +59,7 @@ export function DueDiligenceGate({ children }: { children: React.ReactNode }) {
           href="/audit-bench-sample-tdd-report.pdf"
           target="_blank"
           rel="noreferrer"
-          className="rounded-lg border border-ink-line px-4 py-2 text-sm font-bold text-[#E8ECF4] hover:border-cobalt"
+          className="rounded-lg border border-ink-line px-4 py-2 text-sm font-bold text-white hover:border-cobalt"
         >
           See a sample report
         </a>

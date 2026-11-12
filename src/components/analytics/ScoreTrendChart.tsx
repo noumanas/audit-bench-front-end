@@ -12,7 +12,7 @@ const SERIES = [
 
 const HEIGHT = 220;
 const PAD = { top: 20, right: 78, bottom: 26, left: 30 };
-const SURFACE = '#1a2130';
+const SURFACE = '#141414';
 
 function buildPath(points: TrendPoint[], key: (typeof SERIES)[number]['key'], x: (i: number) => number, y: (v: number) => number) {
   const segments: string[] = [];
@@ -89,7 +89,7 @@ export function ScoreTrendChart({ points }: { points: TrendPoint[] }) {
                     x2={width - PAD.right}
                     y1={y(tick)}
                     y2={y(tick)}
-                    stroke="#2a3242"
+                    stroke="#303030"
                     strokeWidth={1}
                   />
                   <text x={PAD.left - 8} y={y(tick)} textAnchor="end" dominantBaseline="middle" className="fill-muted-on-ink" fontSize={10}>
@@ -125,7 +125,7 @@ export function ScoreTrendChart({ points }: { points: TrendPoint[] }) {
               ))}
 
               {hoverIndex !== null && (
-                <line x1={x(hoverIndex)} x2={x(hoverIndex)} y1={PAD.top} y2={PAD.top + plotH} stroke="#8b96ab" strokeWidth={1} strokeDasharray="2,3" />
+                <line x1={x(hoverIndex)} x2={x(hoverIndex)} y1={PAD.top} y2={PAD.top + plotH} stroke="#adadad" strokeWidth={1} strokeDasharray="2,3" />
               )}
 
               <rect
@@ -153,7 +153,7 @@ export function ScoreTrendChart({ points }: { points: TrendPoint[] }) {
                     <div key={s.key} className="flex items-center gap-2">
                       <span className="inline-block h-[2px] w-2.5" style={{ background: s.color }} />
                       <span className="text-muted-on-ink">{s.label}</span>
-                      <span className="ml-auto font-semibold text-[#E8ECF4]">{v ?? '—'}</span>
+                      <span className="ml-auto font-semibold text-white">{v ?? '—'}</span>
                     </div>
                   );
                 })}
@@ -164,7 +164,7 @@ export function ScoreTrendChart({ points }: { points: TrendPoint[] }) {
       </div>
 
       <details className="mt-2">
-        <summary className="cursor-pointer font-mono text-[11px] tracking-wide text-muted-on-ink uppercase">
+        <summary className="cursor-pointer text-[11px] tracking-wide text-muted-on-ink uppercase">
           View as table
         </summary>
         <div className="mt-2 max-h-48 overflow-auto rounded-md border border-ink-line">

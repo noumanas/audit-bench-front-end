@@ -50,8 +50,8 @@ export default function CliPage() {
     <div>
       <section className="border-b border-ink-line bg-ink px-6 py-16 text-center">
         <ScrollReveal>
-          <div className="mb-2 font-mono text-[13px] tracking-wide text-muted-on-ink uppercase">CLI</div>
-          <h1 className="mb-3 text-3xl font-bold text-[#E8ECF4]">
+          <div className="mb-2 text-[13px] tracking-wide text-muted-on-ink uppercase">CLI</div>
+          <h1 className="mb-3 text-3xl text-white font-light tracking-[-0.03em]">
             <TextReveal>Audit Bench Ai, from your terminal</TextReveal>
           </h1>
           <p className="mx-auto mb-8 max-w-xl text-sm leading-relaxed text-muted-on-ink">
@@ -66,7 +66,7 @@ export default function CliPage() {
               <a
                 key={s.href}
                 href={s.href}
-                className="rounded-full border border-ink-line px-3 py-1.5 text-xs font-medium text-muted-on-ink transition-colors duration-200 hover:border-cobalt/50 hover:text-[#E8ECF4]"
+                className="rounded-full border border-ink-line px-3 py-1.5 text-xs font-medium text-muted-on-ink transition-colors duration-200 hover:border-cobalt/50 hover:text-white"
               >
                 {s.label}
               </a>
@@ -78,11 +78,11 @@ export default function CliPage() {
       {/* Install */}
       <section id="install" className="scroll-mt-6 bg-paper px-6 py-14">
         <ScrollReveal className="mx-auto max-w-4xl">
-          <h2 className="mb-2 text-xl font-bold text-[#1C2128]">Install</h2>
+          <h2 className="mb-2 text-xl font-bold text-black">Install</h2>
           <p className="mb-6 text-sm text-muted-on-paper">Two ways to get it running, depending on your setup.</p>
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="rounded-lg border border-paper-line bg-paper-card p-5 transition-all duration-200 hover:-translate-y-1 hover:border-cobalt/40 hover:shadow-panel">
-              <h3 className="mb-2 text-sm font-bold text-[#1C2128]">npm (global install)</h3>
+              <h3 className="mb-2 text-sm font-bold text-black">npm (global install)</h3>
               <p className="mb-3 text-sm leading-relaxed text-muted-on-paper">
                 Needs Node.js 20+. Puts <code className="rounded bg-paper px-1 py-0.5 font-mono text-[12px]">auditbench</code> on
                 your PATH.
@@ -90,7 +90,7 @@ export default function CliPage() {
               <CodeBlock code="npm install -g auditbench-cli" />
             </div>
             <div className="rounded-lg border border-paper-line bg-paper-card p-5 transition-all duration-200 hover:-translate-y-1 hover:border-cobalt/40 hover:shadow-panel">
-              <h3 className="mb-2 text-sm font-bold text-[#1C2128]">Docker</h3>
+              <h3 className="mb-2 text-sm font-bold text-black">Docker</h3>
               <p className="mb-3 text-sm leading-relaxed text-muted-on-paper">
                 No Node.js toolchain needed — good for pipelines that only have Docker available.
                 Build it from source (see <a href="#docker" className="text-cobalt underline">Docker</a> below).
@@ -104,7 +104,7 @@ export default function CliPage() {
       {/* Commands */}
       <section id="commands" className="scroll-mt-6 bg-ink px-6 py-14">
         <ScrollReveal className="mx-auto max-w-4xl">
-          <h2 className="mb-2 text-xl font-bold text-[#E8ECF4]">Commands</h2>
+          <h2 className="mb-2 text-xl font-bold text-white">Commands</h2>
           <p className="mb-6 text-sm text-muted-on-ink">Five commands cover the whole workflow.</p>
           <div className="mb-6 overflow-hidden rounded-lg border border-ink-line">
             {COMMANDS.map((c, i) => (
@@ -115,7 +115,7 @@ export default function CliPage() {
             ))}
           </div>
 
-          <h3 className="mb-3 font-mono text-[11px] font-bold tracking-wide text-muted-on-ink uppercase">
+          <h3 className="mb-3 text-[11px] font-medium tracking-wide text-muted-on-ink uppercase">
             Flags (audit / scan)
           </h3>
           <div className="mb-6 overflow-hidden rounded-lg border border-ink-line">
@@ -127,7 +127,7 @@ export default function CliPage() {
             ))}
           </div>
 
-          <h3 className="mb-3 font-mono text-[11px] font-bold tracking-wide text-muted-on-ink uppercase">
+          <h3 className="mb-3 text-[11px] font-medium tracking-wide text-muted-on-ink uppercase">
             Environment variables
           </h3>
           <div className="overflow-hidden rounded-lg border border-ink-line">
@@ -144,11 +144,11 @@ export default function CliPage() {
       {/* Authentication */}
       <section id="auth" className="scroll-mt-6 bg-paper px-6 py-14">
         <ScrollReveal className="mx-auto max-w-4xl">
-          <h2 className="mb-2 text-xl font-bold text-[#1C2128]">Authentication</h2>
+          <h2 className="mb-2 text-xl font-bold text-black">Authentication</h2>
           <p className="mb-6 text-sm text-muted-on-paper">Two modes, depending on where the CLI runs.</p>
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="rounded-lg border border-paper-line bg-paper-card p-5 transition-all duration-200 hover:-translate-y-1 hover:border-cobalt/40 hover:shadow-panel">
-              <h3 className="mb-2 text-sm font-bold text-[#1C2128]">Interactive login</h3>
+              <h3 className="mb-2 text-sm font-bold text-black">Interactive login</h3>
               <p className="mb-3 text-sm leading-relaxed text-muted-on-paper">
                 For your own machine. Stores an access token in{' '}
                 <code className="rounded bg-paper px-1 py-0.5 font-mono text-[12px]">~/.auditbench/config.json</code>{' '}
@@ -157,10 +157,10 @@ export default function CliPage() {
               <CodeBlock code="auditbench login" />
             </div>
             <div className="rounded-lg border border-paper-line bg-paper-card p-5 transition-all duration-200 hover:-translate-y-1 hover:border-cobalt/40 hover:shadow-panel">
-              <h3 className="mb-2 text-sm font-bold text-[#1C2128]">API key</h3>
+              <h3 className="mb-2 text-sm font-bold text-black">API key</h3>
               <p className="mb-3 text-sm leading-relaxed text-muted-on-paper">
                 For CI — no password ever touches the pipeline. Generate one from the dashboard:{' '}
-                <span className="font-semibold text-[#1C2128]">Repository scan → Integrations → CLI / CI-CD API key</span>.
+                <span className="font-semibold text-black">Repository scan → Integrations → CLI / CI-CD API key</span>.
               </p>
               <CodeBlock code={'export AUDITBENCH_API_KEY="abk_..."\nauditbench status'} />
             </div>
@@ -171,7 +171,7 @@ export default function CliPage() {
       {/* CI/CD */}
       <section id="ci" className="scroll-mt-6 bg-ink px-6 py-14">
         <ScrollReveal className="mx-auto max-w-4xl">
-          <h2 className="mb-2 text-xl font-bold text-[#E8ECF4]">CI/CD — fail the build on bad findings</h2>
+          <h2 className="mb-2 text-xl font-bold text-white">CI/CD — fail the build on bad findings</h2>
           <p className="mb-6 text-sm leading-relaxed text-muted-on-ink">
             Both <code className="rounded bg-ink-soft px-1.5 py-0.5 font-mono text-[13px]">audit</code> and{' '}
             <code className="rounded bg-ink-soft px-1.5 py-0.5 font-mono text-[13px]">scan</code> exit non-zero once the
@@ -179,7 +179,7 @@ export default function CliPage() {
             failing review fails the build, the same threshold that blocks a PR merge.
           </p>
 
-          <h3 className="mb-3 font-mono text-[11px] font-bold tracking-wide text-muted-on-ink uppercase">
+          <h3 className="mb-3 text-[11px] font-medium tracking-wide text-muted-on-ink uppercase">
             GitHub Actions
           </h3>
           <div className="mb-8">
@@ -202,7 +202,7 @@ jobs:
             />
           </div>
 
-          <h3 className="mb-3 font-mono text-[11px] font-bold tracking-wide text-muted-on-ink uppercase">GitLab CI</h3>
+          <h3 className="mb-3 text-[11px] font-medium tracking-wide text-muted-on-ink uppercase">GitLab CI</h3>
           <div>
             <CodeBlock
               label=".gitlab-ci.yml"
@@ -221,7 +221,7 @@ jobs:
       {/* Docker */}
       <section id="docker" className="scroll-mt-6 bg-paper px-6 py-14">
         <ScrollReveal className="mx-auto max-w-4xl">
-          <h2 className="mb-2 text-xl font-bold text-[#1C2128]">Docker</h2>
+          <h2 className="mb-2 text-xl font-bold text-black">Docker</h2>
           <p className="mb-6 text-sm leading-relaxed text-muted-on-paper">
             No Node.js required on the runner. Build the image from source, then bind-mount the repo
             to scan at <code className="rounded bg-paper px-1 py-0.5 font-mono text-[12px]">/workspace</code> — the
@@ -247,7 +247,7 @@ jobs:
 
       <section className="bg-ink px-6 py-16 text-center">
         <ScrollReveal>
-          <h2 className="mb-4 text-xl font-bold text-[#E8ECF4]">Wire it into your pipeline</h2>
+          <h2 className="mb-4 text-xl font-bold text-white">Wire it into your pipeline</h2>
           <p className="mx-auto mb-6 max-w-md text-sm leading-relaxed text-muted-on-ink">
             Free plan includes the CLI — sign up, generate an API key, and drop the workflow above into
             your repo.
@@ -261,7 +261,7 @@ jobs:
             </Link>
             <Link
               href="/pricing"
-              className="rounded-lg border border-ink-line px-5 py-3 text-sm font-bold text-muted-on-ink transition-all duration-200 hover:-translate-y-0.5 hover:border-cobalt/40 hover:text-[#E8ECF4]"
+              className="rounded-lg border border-ink-line px-5 py-3 text-sm font-bold text-muted-on-ink transition-all duration-200 hover:-translate-y-0.5 hover:border-cobalt/40 hover:text-white"
             >
               View pricing
             </Link>

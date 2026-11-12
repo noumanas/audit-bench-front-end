@@ -20,22 +20,22 @@ export function LegalPage({
     <div>
       <section className="border-b border-ink-line bg-ink px-6 py-14">
         <div className="mx-auto max-w-3xl">
-          <div className="mb-4 inline-block rounded-full border border-ink-line px-3 py-1 font-mono text-[11px] tracking-wide text-muted-on-ink uppercase">
+          <div className="mb-4 inline-block rounded-full border border-ink-line px-3 py-1 text-[11px] tracking-wide text-muted-on-ink uppercase">
             {kicker}
           </div>
-          <h1 className="mb-3 text-3xl leading-tight font-bold text-[#E8ECF4] sm:text-4xl">
+          <h1 className="mb-3 text-3xl leading-tight text-white sm:text-4xl font-light tracking-[-0.03em]">
             <TextReveal>{title}</TextReveal>
           </h1>
           <p className="max-w-2xl text-sm leading-relaxed text-muted-on-ink">{intro}</p>
           {updated && (
-            <p className="mt-3 font-mono text-[11px] tracking-wide text-muted-on-ink uppercase">
+            <p className="mt-3 text-[11px] tracking-wide text-muted-on-ink uppercase">
               Last updated {updated}
             </p>
           )}
         </div>
       </section>
       <article className="bg-paper px-6 py-14">
-        <div className="prose-blog mx-auto max-w-3xl text-sm leading-relaxed text-[#1C2128]">{children}</div>
+        <div className="prose-blog mx-auto max-w-3xl text-sm leading-relaxed text-black">{children}</div>
         <nav
           aria-label="Legal"
           className="mx-auto mt-12 flex max-w-3xl flex-wrap gap-4 border-t border-paper-line pt-6 text-[13px]"

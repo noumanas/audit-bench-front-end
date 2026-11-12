@@ -105,7 +105,7 @@ export function FindingCard({
                 F{String(number).padStart(2, '0')}
               </span>
             )}
-            <span className={`text-sm font-semibold text-[#1C2128] ${dismissed ? 'line-through' : ''}`}>
+            <span className={`text-sm font-semibold text-black ${dismissed ? 'line-through' : ''}`}>
               {finding.title}
             </span>
           </div>
@@ -144,18 +144,18 @@ export function FindingCard({
 
       {open && (
         <div className="space-y-3 border-t border-paper-line px-3.5 pt-3 pb-3.5">
-          <p className="text-[13.5px] leading-relaxed text-[#1C2128]">{finding.description}</p>
+          <p className="text-[13.5px] leading-relaxed text-black">{finding.description}</p>
 
           <div>
-            <div className="mb-1 font-mono text-[11px] font-bold tracking-wide text-muted-on-paper uppercase">
+            <div className="mb-1 text-[11px] font-medium tracking-wide text-muted-on-paper uppercase">
               Root cause
             </div>
-            <p className="text-[13px] leading-relaxed text-[#1C2128]">{finding.rootCause}</p>
+            <p className="text-[13px] leading-relaxed text-black">{finding.rootCause}</p>
           </div>
 
           <div className="rounded-md border border-pass/25 bg-pass/5 px-3 py-2.5">
-            <div className="mb-1 font-mono text-[11px] font-bold tracking-wide text-pass uppercase">Suggested fix</div>
-            <p className="text-[13px] leading-relaxed text-[#1C2128]">{finding.suggestedFix}</p>
+            <div className="mb-1 text-[11px] font-medium tracking-wide text-pass uppercase">Suggested fix</div>
+            <p className="text-[13px] leading-relaxed text-black">{finding.suggestedFix}</p>
             {finding.examplePatch && <PatchBlock patch={finding.examplePatch} />}
             {onFixWithAi && (
               <button
@@ -175,7 +175,7 @@ export function FindingCard({
 
           {onStatusChange && (
             <div className="flex flex-wrap items-center gap-2">
-              <span className="font-mono text-[11px] tracking-wide text-muted-on-paper uppercase">Status</span>
+              <span className="text-[11px] tracking-wide text-muted-on-paper uppercase">Status</span>
               <div
                 className="flex rounded-md border border-paper-line bg-paper p-0.5"
                 role="group"
@@ -188,7 +188,7 @@ export function FindingCard({
                     disabled={statusUpdating}
                     aria-pressed={status === s}
                     className={`cursor-pointer rounded px-2.5 py-1 text-[12px] font-medium disabled:cursor-wait ${
-                      status === s ? 'bg-[#1C2128] text-white' : 'text-muted-on-paper hover:text-[#1C2128]'
+                      status === s ? 'bg-black text-white' : 'text-muted-on-paper hover:text-black'
                     }`}
                   >
                     {STATUS_LABEL[s]}
@@ -209,7 +209,7 @@ function PatchBlock({ patch }: { patch: string }) {
   return (
     <div className="mt-2.5 overflow-hidden rounded-md bg-ink">
       <div className="flex items-center justify-between border-b border-ink-line px-3 py-1.5">
-        <span className="font-mono text-[10px] tracking-wide text-muted-on-ink uppercase">Example patch</span>
+        <span className="text-[10px] tracking-wide text-muted-on-ink uppercase">Example patch</span>
         <button
           onClick={(e) => {
             e.stopPropagation();
@@ -218,12 +218,12 @@ function PatchBlock({ patch }: { patch: string }) {
               setTimeout(() => setCopied(false), 1500);
             });
           }}
-          className="cursor-pointer text-[11px] font-semibold text-muted-on-ink hover:text-[#E8ECF4]"
+          className="cursor-pointer text-[11px] font-semibold text-muted-on-ink hover:text-white"
         >
           {copied ? 'Copied' : 'Copy'}
         </button>
       </div>
-      <pre className="overflow-x-auto p-3 font-mono text-[12px] leading-relaxed text-[#E8ECF4]">{patch}</pre>
+      <pre className="overflow-x-auto p-3 font-mono text-[12px] leading-relaxed text-white">{patch}</pre>
     </div>
   );
 }

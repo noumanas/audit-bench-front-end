@@ -43,7 +43,7 @@ function CreateOrgCard({ onCreated }: { onCreated: () => void }) {
     <div className="shadow-panel mx-auto max-w-lg rounded-lg border border-ink-line bg-ink-soft p-6">
       <div className="mb-2 flex items-center gap-2 text-cobalt">
         <UsersIcon className="h-5 w-5" />
-        <h2 className="text-lg font-bold text-[#E8ECF4]">Create an organization</h2>
+        <h2 className="text-lg font-bold text-white">Create an organization</h2>
       </div>
       <p className="mb-5 text-sm leading-relaxed text-muted-on-ink">
         Bring your team into one shared workspace — everyone&apos;s audits, repo scans, and analytics become
@@ -61,7 +61,7 @@ function CreateOrgCard({ onCreated }: { onCreated: () => void }) {
           onChange={(e) => setName(e.target.value)}
           placeholder="Organization name"
           maxLength={80}
-          className="min-w-0 flex-1 rounded-md border border-ink-line bg-ink px-3 py-2 text-sm text-[#E8ECF4] outline-none focus:border-cobalt"
+          className="min-w-0 flex-1 rounded-md border border-ink-line bg-ink px-3 py-2 text-sm text-white outline-none focus:border-cobalt"
         />
         <button
           type="submit"
@@ -102,7 +102,7 @@ function InviteForm({ onInvited }: { onInvited: () => void }) {
 
   return (
     <div className="mb-6 rounded-lg border border-ink-line bg-ink-soft p-4">
-      <h3 className="mb-3 font-mono text-[11px] font-bold tracking-wide text-muted-on-ink uppercase">
+      <h3 className="mb-3 text-[11px] font-medium tracking-wide text-muted-on-ink uppercase">
         Invite a teammate
       </h3>
       {error && (
@@ -116,12 +116,12 @@ function InviteForm({ onInvited }: { onInvited: () => void }) {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="teammate@company.com"
-          className="min-w-0 flex-1 rounded-md border border-ink-line bg-ink px-3 py-2 text-sm text-[#E8ECF4] outline-none focus:border-cobalt"
+          className="min-w-0 flex-1 rounded-md border border-ink-line bg-ink px-3 py-2 text-sm text-white outline-none focus:border-cobalt"
         />
         <select
           value={role}
           onChange={(e) => setRole(e.target.value as OrgRole)}
-          className="rounded-md border border-ink-line bg-ink px-2.5 py-2 font-mono text-[12px] text-[#E8ECF4] outline-none"
+          className="rounded-md border border-ink-line bg-ink px-2.5 py-2 font-mono text-[12px] text-white outline-none"
         >
           <option value="member">Member</option>
           <option value="admin">Admin</option>
@@ -135,7 +135,7 @@ function InviteForm({ onInvited }: { onInvited: () => void }) {
         </button>
       </form>
       {lastInviteUrl && (
-        <div className="mt-3 rounded-md border border-cobalt/40 bg-cobalt/10 px-3 py-2 text-[12px] text-[#B9CCF7]">
+        <div className="mt-3 rounded-md border border-cobalt/40 bg-cobalt/10 px-3 py-2 text-[12px] text-[#D3C6FF]">
           Invite created.{' '}
           <button
             onClick={() => navigator.clipboard.writeText(lastInviteUrl)}
@@ -275,7 +275,7 @@ export default function TeamPage() {
             {canManage && <InviteForm onInvited={load} />}
 
             <div className="mb-8">
-              <h2 className="mb-3 font-mono text-[11px] font-bold tracking-wide text-muted-on-ink uppercase">
+              <h2 className="mb-3 text-[11px] font-medium tracking-wide text-muted-on-ink uppercase">
                 Members
               </h2>
               <div className="shadow-panel overflow-hidden rounded-lg border border-ink-line">
@@ -287,14 +287,14 @@ export default function TeamPage() {
                       key={m.id}
                       className="flex flex-wrap items-center gap-2 border-b border-ink-line bg-ink-soft px-4 py-3 last:border-b-0"
                     >
-                      <span className="truncate font-mono text-[13px] text-[#E8ECF4]">{m.email}</span>
+                      <span className="truncate font-mono text-[13px] text-white">{m.email}</span>
                       {m.name && <span className="truncate text-xs text-muted-on-ink">({m.name})</span>}
                       {isOwner && !isSelf && m.orgRole !== 'owner' ? (
                         <select
                           value={m.orgRole}
                           disabled={busy}
                           onChange={(e) => handleRoleChange(m.id, e.target.value as OrgRole)}
-                          className="rounded-md border border-ink-line bg-ink px-2 py-1 font-mono text-[11px] text-[#E8ECF4] outline-none"
+                          className="rounded-md border border-ink-line bg-ink px-2 py-1 font-mono text-[11px] text-white outline-none"
                         >
                           <option value="member">Member</option>
                           <option value="admin">Admin</option>
@@ -327,7 +327,7 @@ export default function TeamPage() {
 
             {canManage && org.invites.length > 0 && (
               <div className="mb-8">
-                <h2 className="mb-3 font-mono text-[11px] font-bold tracking-wide text-muted-on-ink uppercase">
+                <h2 className="mb-3 text-[11px] font-medium tracking-wide text-muted-on-ink uppercase">
                   Pending invites
                 </h2>
                 <div className="shadow-panel overflow-hidden rounded-lg border border-ink-line">
@@ -336,7 +336,7 @@ export default function TeamPage() {
                       key={inv.id}
                       className="flex flex-wrap items-center gap-2 border-b border-ink-line bg-ink-soft px-4 py-3 last:border-b-0"
                     >
-                      <span className="truncate font-mono text-[13px] text-[#E8ECF4]">{inv.email}</span>
+                      <span className="truncate font-mono text-[13px] text-white">{inv.email}</span>
                       <span className="shrink-0 rounded border border-ink-line px-2 py-0.5 font-mono text-[11px] whitespace-nowrap text-muted-on-ink">
                         {ROLE_LABEL[inv.role]}
                       </span>

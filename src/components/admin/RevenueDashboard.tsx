@@ -130,7 +130,7 @@ export function RevenueDashboard() {
                   onClick={() => setMonths(r)}
                   aria-pressed={months === r}
                   className={`cursor-pointer rounded px-2.5 py-1 font-mono text-[11px] ${
-                    months === r ? 'bg-cobalt text-white' : 'text-muted-on-ink hover:text-[#E8ECF4]'
+                    months === r ? 'bg-cobalt text-white' : 'text-muted-on-ink hover:text-white'
                   }`}
                 >
                   {r}M
@@ -139,7 +139,7 @@ export function RevenueDashboard() {
             </div>
             <button
               onClick={() => setShowTable((v) => !v)}
-              className="cursor-pointer rounded-md border border-ink-line px-2.5 py-1 text-[11px] text-muted-on-ink hover:text-[#E8ECF4]"
+              className="cursor-pointer rounded-md border border-ink-line px-2.5 py-1 text-[11px] text-muted-on-ink hover:text-white"
             >
               {showTable ? 'View chart' : 'View as table'}
             </button>
@@ -153,7 +153,7 @@ export function RevenueDashboard() {
         ) : (
           <>
             <MrrTrendChart series={o.series} />
-            <h3 className="mt-6 mb-2 font-mono text-[11px] tracking-wide text-muted-on-ink uppercase">MRR movements</h3>
+            <h3 className="mt-6 mb-2 text-[11px] tracking-wide text-muted-on-ink uppercase">MRR movements</h3>
             <MrrMovementsChart series={o.series} />
           </>
         )}
@@ -170,10 +170,10 @@ export function RevenueDashboard() {
               {o.planMix.map((p) => (
                 <li key={p.plan}>
                   <div className="mb-1 flex items-baseline justify-between text-[13px]">
-                    <span className="text-[#E8ECF4]">
+                    <span className="text-white">
                       {p.plan} <span className="text-muted-on-ink">· {p.accounts} accounts</span>
                     </span>
-                    <span className="font-mono text-[#E8ECF4]">{formatMoney(p.mrrCents)}</span>
+                    <span className="font-mono text-white">{formatMoney(p.mrrCents)}</span>
                   </div>
                   <div className="h-1.5 overflow-hidden rounded-full bg-ink-line">
                     <div
@@ -206,7 +206,7 @@ export function RevenueDashboard() {
               {o.renewals.map((r) => (
                 <li key={r.subscriptionId} className="flex items-center gap-3 py-2">
                   <div className="min-w-0 flex-1">
-                    <div className="truncate text-[13px] text-[#E8ECF4]">{r.account}</div>
+                    <div className="truncate text-[13px] text-white">{r.account}</div>
                     <div className="text-[11px] text-muted-on-ink">
                       {r.plan} · {formatMoney(r.amountCents)}/mo · ends {shortDate(r.endsAt)}
                     </div>
@@ -296,7 +296,7 @@ function SubscriptionsCard({
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search account, plan or note…"
           aria-label="Search subscriptions"
-          className="min-w-[200px] flex-1 rounded-md border border-ink-line bg-ink px-3 py-1.5 text-[13px] text-[#E8ECF4] outline-none placeholder:text-muted-on-ink focus:border-cobalt"
+          className="min-w-[200px] flex-1 rounded-md border border-ink-line bg-ink px-3 py-1.5 text-[13px] text-white outline-none placeholder:text-muted-on-ink focus:border-cobalt"
         />
         <div className="flex rounded-md border border-ink-line p-0.5" role="group" aria-label="Filter subscriptions">
           {(
@@ -310,7 +310,7 @@ function SubscriptionsCard({
               key={k}
               onClick={() => setFilter(k)}
               aria-pressed={filter === k}
-              className={`cursor-pointer rounded px-2.5 py-1 text-[12px] ${filter === k ? 'bg-cobalt text-white' : 'text-muted-on-ink hover:text-[#E8ECF4]'}`}
+              className={`cursor-pointer rounded px-2.5 py-1 text-[12px] ${filter === k ? 'bg-cobalt text-white' : 'text-muted-on-ink hover:text-white'}`}
             >
               {label}
             </button>
@@ -326,7 +326,7 @@ function SubscriptionsCard({
         <div className="overflow-x-auto">
           <table className="w-full min-w-[760px] text-left text-[13px]">
             <thead>
-              <tr className="border-b border-ink-line font-mono text-[10px] tracking-wide text-muted-on-ink uppercase">
+              <tr className="border-b border-ink-line text-[10px] tracking-wide text-muted-on-ink uppercase">
                 <th className="py-2 pr-3">Account</th>
                 <th className="py-2 pr-3">Plan</th>
                 <th className="py-2 pr-3 text-right">Monthly</th>
@@ -341,13 +341,13 @@ function SubscriptionsCard({
                 return (
                   <tr key={s.id} className="border-b border-ink-line/60 align-top">
                     <td className="py-2 pr-3">
-                      <div className="text-[#E8ECF4]">{s.account}</div>
+                      <div className="text-white">{s.account}</div>
                       <div className="text-[11px] text-muted-on-ink">
                         {s.source}
                         {s.notes && ` · ${s.notes}`}
                       </div>
                     </td>
-                    <td className="py-2 pr-3 text-[#E8ECF4]">{s.plan.name}</td>
+                    <td className="py-2 pr-3 text-white">{s.plan.name}</td>
                     <td className="py-2 pr-3 text-right">
                       {editing === s.id ? (
                         <form
@@ -366,7 +366,7 @@ function SubscriptionsCard({
                             value={amount}
                             onChange={(e) => setAmount(e.target.value)}
                             aria-label="Monthly amount in USD"
-                            className="w-24 rounded border border-cobalt bg-ink px-2 py-1 text-right font-mono text-[12px] text-[#E8ECF4] outline-none"
+                            className="w-24 rounded border border-cobalt bg-ink px-2 py-1 text-right font-mono text-[12px] text-white outline-none"
                           />
                           <button
                             type="submit"
@@ -389,7 +389,7 @@ function SubscriptionsCard({
                             setAmount((s.amountCents / 100).toFixed(2));
                           }}
                           title="Edit monthly amount"
-                          className={`cursor-pointer font-mono hover:underline ${s.amountCents === 0 ? 'text-high' : 'text-[#E8ECF4]'}`}
+                          className={`cursor-pointer font-mono hover:underline ${s.amountCents === 0 ? 'text-high' : 'text-white'}`}
                         >
                           {s.amountCents === 0 ? 'Set price' : formatMoney(s.amountCents)}
                         </button>
@@ -424,7 +424,7 @@ function SubscriptionsCard({
                                 void onAction(() => cancelRevenueSubscription(s.id, false));
                               }
                             }}
-                            className="cursor-pointer px-1.5 text-[12px] text-muted-on-ink hover:text-[#E8ECF4]"
+                            className="cursor-pointer px-1.5 text-[12px] text-muted-on-ink hover:text-white"
                           >
                             Don&apos;t renew
                           </button>
@@ -507,7 +507,7 @@ function PaymentsCard({
     );
 
   const input =
-    'w-full rounded-md border border-ink-line bg-ink px-2.5 py-1.5 text-[13px] text-[#E8ECF4] outline-none focus:border-cobalt';
+    'w-full rounded-md border border-ink-line bg-ink px-2.5 py-1.5 text-[13px] text-white outline-none focus:border-cobalt';
 
   return (
     <Card
@@ -625,7 +625,7 @@ function PaymentsCard({
         <div className="overflow-x-auto">
           <table className="w-full min-w-[680px] text-left text-[13px]">
             <thead>
-              <tr className="border-b border-ink-line font-mono text-[10px] tracking-wide text-muted-on-ink uppercase">
+              <tr className="border-b border-ink-line text-[10px] tracking-wide text-muted-on-ink uppercase">
                 <th className="py-2 pr-3">Date</th>
                 <th className="py-2 pr-3">Payer</th>
                 <th className="py-2 pr-3">Type</th>
@@ -638,7 +638,7 @@ function PaymentsCard({
               {payments.map((p) => (
                 <tr key={p.id} className="border-b border-ink-line/60">
                   <td className="py-2 pr-3 text-muted-on-ink">{shortDate(p.paidAt)}</td>
-                  <td className="py-2 pr-3 text-[#E8ECF4]">
+                  <td className="py-2 pr-3 text-white">
                     {p.payer}
                     {p.notes && <div className="text-[11px] text-muted-on-ink">{p.notes}</div>}
                   </td>
@@ -649,7 +649,7 @@ function PaymentsCard({
                   <td className="py-2 pr-3 text-[12px] text-muted-on-ink">
                     {[p.method, p.reference].filter(Boolean).join(' · ') || '—'}
                   </td>
-                  <td className="py-2 pr-3 text-right font-mono text-[#E8ECF4]">{formatMoney(p.amountCents)}</td>
+                  <td className="py-2 pr-3 text-right font-mono text-white">{formatMoney(p.amountCents)}</td>
                   <td className="py-2 text-right">
                     <button
                       onClick={() => {
@@ -677,7 +677,7 @@ function Card({ title, action, children }: { title: string; action?: React.React
   return (
     <section className="min-w-0 rounded-lg border border-ink-line bg-ink-soft p-4">
       <div className="mb-3 flex flex-wrap items-center gap-2">
-        <h2 className="mr-auto font-mono text-[11px] font-bold tracking-wide text-muted-on-ink uppercase">{title}</h2>
+        <h2 className="mr-auto text-[11px] font-medium tracking-wide text-muted-on-ink uppercase">{title}</h2>
         {action}
       </div>
       {children}
@@ -698,10 +698,10 @@ function Kpi({
   tone?: 'good' | 'bad';
   accent?: boolean;
 }) {
-  const color = tone === 'good' ? 'text-pass' : tone === 'bad' ? 'text-[#F3B7BF]' : 'text-[#E8ECF4]';
+  const color = tone === 'good' ? 'text-pass' : tone === 'bad' ? 'text-[#F3B7BF]' : 'text-white';
   return (
     <div className={`rounded-lg border bg-ink-soft px-3.5 py-3 ${accent ? 'border-cobalt/50' : 'border-ink-line'}`}>
-      <div className="font-mono text-[10px] tracking-wide text-muted-on-ink uppercase">{label}</div>
+      <div className="text-[10px] tracking-wide text-muted-on-ink uppercase">{label}</div>
       {value === undefined || value === null ? (
         <div className="mt-1.5 h-6 w-16 animate-pulse rounded bg-ink-line" />
       ) : (

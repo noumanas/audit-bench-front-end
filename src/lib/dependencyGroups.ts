@@ -8,8 +8,8 @@ export const SEVERITY_HEX: Record<DepSeverity | 'info', string> = {
   high: '#d97706',
   medium: '#b08a00',
   low: '#2e6fab',
-  unknown: '#8a93a3',
-  info: '#8a93a3',
+  unknown: '#a3a3a3',
+  info: '#a3a3a3',
 };
 
 export const DEP_RANK: Record<DepSeverity, number> = { critical: 4, high: 3, medium: 2, low: 1, unknown: 0 };
