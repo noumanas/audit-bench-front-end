@@ -41,10 +41,10 @@ export default function AboutPage() {
     <div>
       <section className="border-b border-ink-line bg-ink px-6 py-16">
         <ScrollReveal className="mx-auto max-w-3xl text-center">
-          <div className="mb-2 font-mono text-[13px] tracking-wide text-muted-on-ink uppercase">
+          <div className="mb-2 text-[13px] tracking-wide text-muted-on-ink uppercase">
             About
           </div>
-          <h1 className="mb-4 text-3xl font-bold text-[#E8ECF4]">
+          <h1 className="mb-4 text-3xl text-white font-light tracking-[-0.03em]">
             <TextReveal>Code review built for the way code gets written now</TextReveal>
           </h1>
           <p className="text-base leading-relaxed text-muted-on-ink">
@@ -57,15 +57,15 @@ export default function AboutPage() {
 
       <section className="bg-paper px-6 py-16">
         <ScrollReveal className="mx-auto max-w-3xl">
-          <h2 className="mb-4 text-xl font-bold text-[#1C2128]">Why this exists</h2>
-          <p className="mb-4 text-sm leading-relaxed text-[#1C2128]">
+          <h2 className="mb-4 text-xl font-bold text-black">Why this exists</h2>
+          <p className="mb-4 text-sm leading-relaxed text-black">
             Traditional linters catch syntax problems. They don&apos;t catch a service-role key
             bypassing row-level security, a shared mutable variable leaking data across requests,
             or Node syntax quietly failing inside a Deno edge function. Those are the mistakes AI
             assistants make constantly — because they produce code that <em>looks right</em> without
             necessarily reasoning about the runtime, the framework, or who&apos;s allowed to call it.
           </p>
-          <p className="text-sm leading-relaxed text-[#1C2128]">
+          <p className="text-sm leading-relaxed text-black">
             Audit Bench Ai pairs LLM reasoning with static analysis — dependency graphs, dead code
             detection, secret scanning — so a review considers both what the code says and what the
             rest of the repository implies about it.
@@ -75,7 +75,7 @@ export default function AboutPage() {
 
       <section className="bg-ink px-6 py-16">
         <ScrollReveal className="mx-auto max-w-4xl">
-          <h2 className="mb-8 text-center text-xl font-bold text-[#E8ECF4]">How an audit runs</h2>
+          <h2 className="mb-8 text-center text-xl font-bold text-white">How an audit runs</h2>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {PIPELINE.map((step, i) => (
               <div
@@ -83,7 +83,7 @@ export default function AboutPage() {
                 className="rounded-lg border border-ink-line bg-ink-soft p-4 transition-all duration-200 hover:-translate-y-1 hover:border-cobalt/40 hover:shadow-panel"
               >
                 <div className="mb-1 font-mono text-[11px] text-muted-on-ink">{`0${i + 1}`}</div>
-                <div className="mb-1 text-sm font-bold text-[#E8ECF4]">{step.name}</div>
+                <div className="mb-1 text-sm font-bold text-white">{step.name}</div>
                 <p className="text-xs leading-relaxed text-muted-on-ink">{step.detail}</p>
               </div>
             ))}
@@ -94,8 +94,8 @@ export default function AboutPage() {
       <section className="bg-paper px-6 py-16">
         <ScrollReveal className="mx-auto grid max-w-4xl gap-10 sm:grid-cols-2">
           <div>
-            <h2 className="mb-4 text-xl font-bold text-[#1C2128]">Who it&apos;s for</h2>
-            <ul className="space-y-2 text-sm text-[#1C2128]">
+            <h2 className="mb-4 text-xl font-bold text-black">Who it&apos;s for</h2>
+            <ul className="space-y-2 text-sm text-black">
               {USERS.map((u) => (
                 <li key={u} className="flex items-center gap-2">
                   <span className="h-1.5 w-1.5 rounded-full bg-cobalt" />
@@ -105,8 +105,8 @@ export default function AboutPage() {
             </ul>
           </div>
           <div>
-            <h2 className="mb-4 text-xl font-bold text-[#1C2128]">What sets it apart</h2>
-            <ul className="space-y-2 text-sm text-[#1C2128]">
+            <h2 className="mb-4 text-xl font-bold text-black">What sets it apart</h2>
+            <ul className="space-y-2 text-sm text-black">
               {ADVANTAGES.map((a) => (
                 <li key={a} className="flex items-start gap-2">
                   <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-cobalt" />
@@ -120,7 +120,7 @@ export default function AboutPage() {
 
       <section className="bg-ink px-6 py-16 text-center">
         <ScrollReveal>
-          <h2 className="mb-4 text-xl font-bold text-[#E8ECF4]">Try it on your own code</h2>
+          <h2 className="mb-4 text-xl font-bold text-white">Try it on your own code</h2>
           <Link
             href="/signup"
             className="inline-block rounded-lg bg-cobalt px-5 py-3 text-sm font-bold text-white transition-all duration-200 hover:-translate-y-0.5 hover:bg-cobalt-dark hover:shadow-lg"

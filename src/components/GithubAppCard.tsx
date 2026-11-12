@@ -95,11 +95,11 @@ export function GithubAppCard() {
   return (
     <section className="mb-4 overflow-hidden rounded-lg border border-cobalt/40 bg-ink-soft">
       <div className="flex flex-wrap items-center gap-3 px-4 py-3.5">
-        <GithubLogoIcon className="h-5 w-5 shrink-0 text-[#E8ECF4]" />
+        <GithubLogoIcon className="h-5 w-5 shrink-0 text-white" />
         <div className="min-w-[14rem] flex-1">
           <div className="flex flex-wrap items-center gap-2">
-            <h3 className="text-sm font-bold text-[#E8ECF4]">Audit Bench Ai GitHub App</h3>
-            <span className="rounded-full bg-cobalt/20 px-2 py-0.5 font-mono text-[10px] font-bold text-cobalt uppercase">
+            <h3 className="text-sm font-bold text-white">Audit Bench Ai GitHub App</h3>
+            <span className="rounded-full bg-cobalt/20 px-2 py-0.5 text-[10px] font-medium text-cobalt uppercase">
               Recommended
             </span>
           </div>
@@ -173,7 +173,7 @@ function InstallationRow({
   return (
     <li className="flex flex-wrap items-center gap-x-4 gap-y-2 px-4 py-2.5">
       <div className="min-w-[14rem] flex-1">
-        <span className="font-mono text-[13px] text-[#E8ECF4]">@{inst.accountLogin}</span>
+        <span className="font-mono text-[13px] text-white">@{inst.accountLogin}</span>
         <span className="ml-2 text-[11px] text-muted-on-ink">
           {inst.accountType === 'Organization' ? 'Organization' : 'Personal account'} ·{' '}
           {inst.repositorySelection === 'all' ? 'all repositories' : 'selected repositories'}

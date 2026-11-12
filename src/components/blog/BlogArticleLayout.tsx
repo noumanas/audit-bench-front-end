@@ -54,13 +54,13 @@ export function BlogArticleLayout({
       <StructuredData data={[schema, breadcrumb]} />
       <section className="border-b border-ink-line bg-ink px-6 py-14">
         <div className="mx-auto max-w-2xl">
-          <Link href="/blog" className="mb-4 inline-block text-xs font-semibold text-muted-on-ink hover:text-[#E8ECF4]">
+          <Link href="/blog" className="mb-4 inline-block text-xs font-semibold text-muted-on-ink hover:text-white">
             ← All posts
           </Link>
-          <h1 className="mb-3 text-3xl font-bold text-[#E8ECF4] sm:text-4xl">
+          <h1 className="mb-3 text-3xl text-white sm:text-4xl font-light tracking-[-0.03em]">
             <TextReveal>{title}</TextReveal>
           </h1>
-          <div className="flex items-center gap-2 font-mono text-[11px] tracking-wide text-muted-on-ink uppercase">
+          <div className="flex items-center gap-2 text-[11px] tracking-wide text-muted-on-ink uppercase">
             <time dateTime={publishedAt}>{formatDate(publishedAt)}</time>
             {updatedAt && updatedAt !== publishedAt && (
               <>
@@ -86,7 +86,7 @@ export function BlogArticleLayout({
       </section>
 
       <article className="bg-paper px-6 py-14">
-        <ScrollReveal y={18} className="prose-blog mx-auto max-w-2xl text-sm leading-relaxed text-[#1C2128]">
+        <ScrollReveal y={18} className="prose-blog mx-auto max-w-2xl text-sm leading-relaxed text-black">
           {children}
         </ScrollReveal>
       </article>

@@ -60,12 +60,12 @@ export function DeleteUserDialog({
           <span className="flex h-9 w-9 items-center justify-center rounded-full bg-critical/15 text-critical">
             <TrashIcon className="h-4 w-4" />
           </span>
-          <h2 id="delete-user-title" className="text-base font-bold text-[#E8ECF4]">
+          <h2 id="delete-user-title" className="text-base font-bold text-white">
             Delete this user?
           </h2>
         </div>
         <p id="delete-user-desc" className="mb-4 text-sm leading-relaxed text-muted-on-ink">
-          <span className="font-mono text-[#E8ECF4]">{user.email}</span>
+          <span className="font-mono text-white">{user.email}</span>
           {
             ' and all their audits, scans, reports, rules and connected tokens will be permanently deleted. Payment records are kept. This can’t be undone.'
           }
@@ -77,7 +77,7 @@ export function DeleteUserDialog({
           }}
         >
           <label className="mb-1.5 block text-[13px] text-muted-on-ink" htmlFor="delete-user-confirm">
-            Type <span className="font-mono text-[#E8ECF4]">{user.email}</span> to confirm
+            Type <span className="font-mono text-white">{user.email}</span> to confirm
           </label>
           <input
             id="delete-user-confirm"
@@ -86,7 +86,7 @@ export function DeleteUserDialog({
             onChange={(e) => setTyped(e.target.value)}
             autoComplete="off"
             spellCheck={false}
-            className="mb-3 w-full rounded-md border border-ink-line bg-ink px-3 py-2 font-mono text-[13px] text-[#E8ECF4] outline-none focus:border-critical"
+            className="mb-3 w-full rounded-md border border-ink-line bg-ink px-3 py-2 font-mono text-[13px] text-white outline-none focus:border-critical"
           />
           {error && (
             <div className="mb-3 rounded-md border border-critical/40 bg-critical/10 px-3 py-2 text-[12px] text-[#F3B7BF]">
@@ -98,7 +98,7 @@ export function DeleteUserDialog({
               type="button"
               onClick={onClose}
               disabled={busy}
-              className="min-h-10 cursor-pointer rounded-md border border-ink-line px-4 text-sm font-medium text-[#E8ECF4] disabled:opacity-50"
+              className="min-h-10 cursor-pointer rounded-md border border-ink-line px-4 text-sm font-medium text-white disabled:opacity-50"
             >
               Cancel
             </button>

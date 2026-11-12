@@ -29,7 +29,7 @@ export function DeleteAccountCard() {
 
   return (
     <section className="mt-10 rounded-lg border border-critical/40 bg-ink-soft p-5">
-      <h2 className="text-sm font-bold text-[#E8ECF4]">Delete account</h2>
+      <h2 className="text-sm font-bold text-white">Delete account</h2>
       <p className="mt-1 max-w-2xl text-[13px] leading-relaxed text-muted-on-ink">
         Permanently deletes your account and everything tied to it: scans and their reports, audits, review rules,
         feedback, connected GitHub, GitLab and Bitbucket tokens, and GitHub App links. If you own a team with no other
@@ -51,7 +51,7 @@ export function DeleteAccountCard() {
               onChange={(e) => setEmail(e.target.value)}
               placeholder={`Type ${user.email} to confirm`}
               autoComplete="off"
-              className="w-full rounded-md border border-ink-line bg-ink px-3 py-1.5 text-[13px] text-[#E8ECF4] outline-none placeholder:text-muted-on-ink focus:border-critical"
+              className="w-full rounded-md border border-ink-line bg-ink px-3 py-1.5 text-[13px] text-white outline-none placeholder:text-muted-on-ink focus:border-critical"
             />
           </label>
           <button
@@ -63,7 +63,7 @@ export function DeleteAccountCard() {
           </button>
           <button
             onClick={() => setOpen(false)}
-            className="cursor-pointer text-[13px] text-muted-on-ink hover:text-[#E8ECF4]"
+            className="cursor-pointer text-[13px] text-muted-on-ink hover:text-white"
           >
             Cancel
           </button>

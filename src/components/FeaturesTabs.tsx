@@ -58,7 +58,7 @@ function Finding({
       ) : (
         <Dot tone={tone} />
       )}
-      <span className="truncate text-[#E8ECF4]">{text}</span>
+      <span className="truncate text-white">{text}</span>
     </div>
   );
 }
@@ -83,7 +83,7 @@ function PrNativeDemo() {
     <Panel label="github pr #482">
       <div className="rounded-md border border-ink-line bg-ink px-3 py-2">
         <div className="mb-1 text-[10px] tracking-wide text-muted-on-ink uppercase">src/api/orders.ts · line 58</div>
-        <div className="text-[#E8ECF4]">Missing ownership check — any authenticated user can cancel any order.</div>
+        <div className="text-white">Missing ownership check — any authenticated user can cancel any order.</div>
       </div>
       <div className="mt-3 flex items-center justify-between rounded-md bg-ink-soft px-3 py-2">
         <span className="text-muted-on-ink">Audit Bench Ai</span>
@@ -114,15 +114,15 @@ function SeverityDemo() {
     <Panel label="verdict logic">
       <div className="space-y-1.5">
         <div className="flex items-center justify-between rounded-md border border-ink-line bg-ink px-2.5 py-1.5">
-          <span className="flex items-center gap-2 text-[#E8ECF4]"><Dot tone="critical" />2 critical</span>
+          <span className="flex items-center gap-2 text-white"><Dot tone="critical" />2 critical</span>
           <span className="text-muted-on-ink">→ do_not_ship</span>
         </div>
         <div className="flex items-center justify-between rounded-md border border-ink-line bg-ink px-2.5 py-1.5">
-          <span className="flex items-center gap-2 text-[#E8ECF4]"><Dot tone="medium" />3 medium</span>
+          <span className="flex items-center gap-2 text-white"><Dot tone="medium" />3 medium</span>
           <span className="text-muted-on-ink">→ needs_work</span>
         </div>
         <div className="flex items-center justify-between rounded-md border border-ink-line bg-ink px-2.5 py-1.5">
-          <span className="flex items-center gap-2 text-[#E8ECF4]"><Dot tone="low" />0 findings</span>
+          <span className="flex items-center gap-2 text-white"><Dot tone="low" />0 findings</span>
           <span className="text-muted-on-ink">→ pass</span>
         </div>
       </div>
@@ -135,7 +135,7 @@ function SeverityDemo() {
 function FixDemo() {
   return (
     <Panel label="fix with ai">
-      <div className="whitespace-pre text-[#E8ECF4]">
+      <div className="whitespace-pre text-white">
         {'if (user.role === "admin") {\n  return res.json(allInvoices);\n}'}
       </div>
       <div className="mt-2 rounded bg-pass/15 px-2 py-1 text-pass">
@@ -152,7 +152,7 @@ function ReauditDemo() {
       <div className="mb-2 text-muted-on-ink">Re-checking billing/invoices.ts…</div>
       <div className="flex items-center gap-2 rounded-md border-l-4 border-l-pass bg-ink px-3 py-2">
         <Dot tone="pass" />
-        <span className="text-[#E8ECF4]">Ownership check confirmed — resolved, ready to commit.</span>
+        <span className="text-white">Ownership check confirmed — resolved, ready to commit.</span>
       </div>
     </Panel>
   );
@@ -166,7 +166,7 @@ function CliInstallDemo() {
       <div className="text-muted-on-ink">$ npm install -g auditbench-cli</div>
       <div className="mt-1 text-muted-on-ink">$ docker run auditbench-cli scan .</div>
       <div className="mt-1 text-muted-on-ink"># or drop it straight into a workflow step</div>
-      <div className="mt-2 rounded bg-ink px-2.5 py-1.5 text-[#E8ECF4]">- run: auditbench scan . --fail-on do_not_ship</div>
+      <div className="mt-2 rounded bg-ink px-2.5 py-1.5 text-white">- run: auditbench scan . --fail-on do_not_ship</div>
     </Panel>
   );
 }
@@ -176,7 +176,7 @@ function CiFailOnDemo() {
     <Panel label="ci log">
       <div className="text-muted-on-ink">Run auditbench scan . --fail-on do_not_ship</div>
       <div className="mt-1 text-muted-on-ink">Verdict: do_not_ship (2 critical, 1 high)</div>
-      <div className="mt-3 rounded-md border-l-4 border-l-critical bg-ink px-3 py-2 text-[#E8ECF4]">
+      <div className="mt-3 rounded-md border-l-4 border-l-critical bg-ink px-3 py-2 text-white">
         Error: Process completed with exit code 1.
       </div>
     </Panel>
@@ -195,7 +195,7 @@ function TrendDemo() {
           { label: 'Tech debt', value: 91 },
         ].map((s) => (
           <div key={s.label} className="rounded-md border border-ink-line bg-ink px-2.5 py-2">
-            <div className="text-base font-bold text-[#E8ECF4] tabular-nums">{s.value}</div>
+            <div className="text-base font-bold text-white tabular-nums">{s.value}</div>
             <div className="text-[9px] tracking-wide text-muted-on-ink uppercase">{s.label}</div>
           </div>
         ))}
@@ -224,7 +224,7 @@ function ExportDemo() {
       <div className="space-y-1.5">
         {['PDF report', 'HTML report', 'Markdown', 'JSON'].map((f) => (
           <div key={f} className="flex items-center justify-between rounded-md border border-ink-line bg-ink px-2.5 py-1.5">
-            <span className="text-[#E8ECF4]">{f}</span>
+            <span className="text-white">{f}</span>
             <span className="text-muted-on-ink">↓ download</span>
           </div>
         ))}
@@ -253,7 +253,7 @@ function MergeGateDemo() {
   return (
     <Panel label="branch protection">
       <div className="flex items-center justify-between rounded-md border border-ink-line bg-ink px-3 py-2">
-        <span className="text-[#E8ECF4]">Audit Bench Ai / do_not_ship</span>
+        <span className="text-white">Audit Bench Ai / do_not_ship</span>
         <span className="rounded bg-critical px-2 py-0.5 text-[10px] font-bold tracking-wide text-white uppercase">
           Blocked
         </span>
@@ -269,7 +269,7 @@ function MentionDemo() {
       <div className="rounded-md border border-ink-line bg-ink px-3 py-2 text-muted-on-ink">
         @auditbench why is this flagged as critical?
       </div>
-      <div className="mt-2 rounded-md border-l-4 border-l-cobalt bg-ink px-3 py-2 text-[#E8ECF4]">
+      <div className="mt-2 rounded-md border-l-4 border-l-cobalt bg-ink px-3 py-2 text-white">
         The token is logged in plain text on line 41 before the mask helper runs — anyone with log access can read it.
       </div>
     </Panel>
@@ -413,7 +413,7 @@ export function FeaturesTabs() {
               className={`shrink-0 cursor-pointer rounded-full px-4 py-2 font-mono text-[13px] whitespace-nowrap transition-colors ${
                 i === active
                   ? 'bg-cobalt font-bold text-white'
-                  : 'text-muted-on-ink hover:text-[#E8ECF4]'
+                  : 'text-muted-on-ink hover:text-white'
               }`}
             >
               {i === active && <span className="mr-1.5 opacity-70">//</span>}
@@ -427,7 +427,7 @@ export function FeaturesTabs() {
         <div key={tab.key} className="fade-up grid md:grid-cols-2">
           <div className="border-b border-ink-line px-6 py-10 md:col-span-2">
             <p className="max-w-2xl text-lg leading-relaxed text-muted-on-ink">
-              <span className="font-bold text-[#E8ECF4]">// {tab.label}.</span> {tab.intro}
+              <span className="font-bold text-white">// {tab.label}.</span> {tab.intro}
             </p>
           </div>
 
@@ -437,7 +437,7 @@ export function FeaturesTabs() {
               <Fragment key={row.title}>
                 <div className="border-b border-ink-line px-6 py-10 md:border-r">
                   <p className="max-w-sm text-sm leading-relaxed text-muted-on-ink">
-                    <span className="font-bold text-[#E8ECF4]">// {row.title}.</span> {row.body}
+                    <span className="font-bold text-white">// {row.title}.</span> {row.body}
                   </p>
                 </div>
                 <div className="flex items-center justify-center border-b border-ink-line px-6 py-10">

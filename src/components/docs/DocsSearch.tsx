@@ -77,7 +77,7 @@ export function DocsSearch({ compact }: { compact?: boolean }) {
     <>
       <button
         onClick={() => setOpen(true)}
-        className="flex w-full cursor-pointer items-center gap-2 rounded-md border border-ink-line bg-ink-soft px-3 py-1.5 text-left text-[13px] text-muted-on-ink transition-colors hover:border-[#3a4458] hover:text-[#E8ECF4]"
+        className="flex w-full cursor-pointer items-center gap-2 rounded-md border border-ink-line bg-ink-soft px-3 py-1.5 text-left text-[13px] text-muted-on-ink transition-colors hover:border-[#3d3d3d] hover:text-white"
       >
         <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 shrink-0" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
           <circle cx="11" cy="11" r="7" />
@@ -108,7 +108,7 @@ export function DocsSearch({ compact }: { compact?: boolean }) {
                 onKeyDown={onInputKey}
                 placeholder="Search the docs"
                 aria-label="Search the docs"
-                className="w-full bg-transparent py-3.5 text-sm text-[#E8ECF4] placeholder:text-muted-on-ink focus:outline-none"
+                className="w-full bg-transparent py-3.5 text-sm text-white placeholder:text-muted-on-ink focus:outline-none"
               />
               <kbd className="rounded border border-ink-line px-1.5 font-mono text-[10px] text-muted-on-ink">Esc</kbd>
             </div>
@@ -123,8 +123,8 @@ export function DocsSearch({ compact }: { compact?: boolean }) {
                     onMouseEnter={() => setActive(i)}
                     className={`block w-full cursor-pointer rounded-md px-3 py-2 text-left ${i === active ? 'bg-cobalt/15' : ''}`}
                   >
-                    <span className="block font-mono text-[10px] tracking-wider text-muted-on-ink uppercase">{r.group}</span>
-                    <span className="block text-sm font-semibold text-[#E8ECF4]">{r.title}</span>
+                    <span className="block text-[10px] tracking-wider text-muted-on-ink uppercase">{r.group}</span>
+                    <span className="block text-sm font-semibold text-white">{r.title}</span>
                     <span className="block truncate text-[12px] text-muted-on-ink">{r.description}</span>
                   </button>
                 </li>

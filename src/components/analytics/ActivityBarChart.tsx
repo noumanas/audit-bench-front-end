@@ -6,8 +6,8 @@ import { formatShortDate, pickTickIndices, useChartWidth } from './useChartWidth
 
 const HEIGHT = 140;
 const PAD = { top: 16, right: 8, bottom: 26, left: 30 };
-const BAR_COLOR = '#2b5be3';
-const BAR_COLOR_HOVER = '#5b82ea';
+const BAR_COLOR = '#7546f4';
+const BAR_COLOR_HOVER = '#8f6bff';
 
 export function ActivityBarChart({ points }: { points: TrendPoint[] }) {
   const [containerRef, width] = useChartWidth(720);
@@ -41,7 +41,7 @@ export function ActivityBarChart({ points }: { points: TrendPoint[] }) {
             <svg width={width} height={HEIGHT} className="block overflow-visible">
               {[0, yMax].map((tick) => (
                 <g key={tick}>
-                  <line x1={PAD.left} x2={width - PAD.right} y1={y(tick)} y2={y(tick)} stroke="#2a3242" strokeWidth={1} />
+                  <line x1={PAD.left} x2={width - PAD.right} y1={y(tick)} y2={y(tick)} stroke="#303030" strokeWidth={1} />
                   <text x={PAD.left - 8} y={y(tick)} textAnchor="end" dominantBaseline="middle" className="fill-muted-on-ink" fontSize={10}>
                     {tick}
                   </text>
@@ -93,11 +93,11 @@ export function ActivityBarChart({ points }: { points: TrendPoint[] }) {
                 <div className="mb-1 font-mono text-muted-on-ink">{formatShortDate(hovered.date)}</div>
                 <div className="flex items-center gap-2">
                   <span className="text-muted-on-ink">Audits</span>
-                  <span className="ml-auto font-semibold text-[#E8ECF4]">{hovered.audits}</span>
+                  <span className="ml-auto font-semibold text-white">{hovered.audits}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="text-muted-on-ink">Repo scans</span>
-                  <span className="ml-auto font-semibold text-[#E8ECF4]">{hovered.scans}</span>
+                  <span className="ml-auto font-semibold text-white">{hovered.scans}</span>
                 </div>
               </div>
             )}

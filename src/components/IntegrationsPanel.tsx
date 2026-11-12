@@ -23,7 +23,7 @@ function CopyButton({ value, label = 'Copy' }: { value: string; label?: string }
         setCopied(true);
         setTimeout(() => setCopied(false), 1500);
       }}
-      className="shrink-0 cursor-pointer rounded-md border border-ink-line px-2.5 py-1 text-xs font-semibold whitespace-nowrap text-muted-on-ink hover:text-[#E8ECF4]"
+      className="shrink-0 cursor-pointer rounded-md border border-ink-line px-2.5 py-1 text-xs font-semibold whitespace-nowrap text-muted-on-ink hover:text-white"
     >
       {copied ? 'Copied!' : label}
     </button>
@@ -61,7 +61,7 @@ function BadgeSection() {
 
   return (
     <div className="rounded-lg border border-ink-line bg-ink-soft p-4">
-      <h3 className="mb-1 text-sm font-bold text-[#E8ECF4]">README score badge</h3>
+      <h3 className="mb-1 text-sm font-bold text-white">README score badge</h3>
       <p className="mb-3 text-xs text-muted-on-ink">
         Shows the verdict of your most recent completed scan. Drop the markdown into your repo's README.
       </p>
@@ -75,7 +75,7 @@ function BadgeSection() {
               value={repo}
               onChange={(e) => setRepo(e.target.value)}
               placeholder="Optional: scope to owner/repo"
-              className="min-w-0 flex-1 rounded-md border border-ink-line bg-ink px-2.5 py-1.5 text-xs text-[#E8ECF4] outline-none placeholder:text-muted-on-ink/60"
+              className="min-w-0 flex-1 rounded-md border border-ink-line bg-ink px-2.5 py-1.5 text-xs text-white outline-none placeholder:text-muted-on-ink/60"
             />
             {imageUrl && <img src={imageUrl} alt="Audit Bench Ai badge preview" className="h-5" />}
           </div>
@@ -90,7 +90,7 @@ function BadgeSection() {
           <button
             onClick={handleRotate}
             disabled={rotating}
-            className="cursor-pointer text-xs font-medium text-muted-on-ink hover:text-[#E8ECF4] disabled:cursor-wait"
+            className="cursor-pointer text-xs font-medium text-muted-on-ink hover:text-white disabled:cursor-wait"
           >
             {rotating ? 'Rotating…' : 'Rotate badge token'}
           </button>
@@ -140,7 +140,7 @@ function ApiKeySection() {
 
   return (
     <div className="rounded-lg border border-ink-line bg-ink-soft p-4">
-      <h3 className="mb-1 text-sm font-bold text-[#E8ECF4]">CLI / CI-CD API key</h3>
+      <h3 className="mb-1 text-sm font-bold text-white">CLI / CI-CD API key</h3>
       <p className="mb-3 text-xs text-muted-on-ink">
         A long-lived credential for the{' '}
         <code className="rounded bg-ink px-1 py-0.5 font-mono text-[11px]">auditbench</code> CLI — use it in a pipeline
@@ -159,7 +159,7 @@ function ApiKeySection() {
             </code>
             <button
               onClick={() => setRevealed((v) => !v)}
-              className="shrink-0 cursor-pointer rounded-md border border-ink-line px-2.5 py-1 text-xs font-semibold whitespace-nowrap text-muted-on-ink hover:text-[#E8ECF4]"
+              className="shrink-0 cursor-pointer rounded-md border border-ink-line px-2.5 py-1 text-xs font-semibold whitespace-nowrap text-muted-on-ink hover:text-white"
             >
               {revealed ? 'Hide' : 'Reveal'}
             </button>
@@ -167,7 +167,7 @@ function ApiKeySection() {
           </div>
 
           <details>
-            <summary className="cursor-pointer text-xs text-muted-on-ink hover:text-[#E8ECF4]">
+            <summary className="cursor-pointer text-xs text-muted-on-ink hover:text-white">
               GitHub Actions example
             </summary>
             <div className="mt-2 space-y-2">
@@ -188,7 +188,7 @@ function ApiKeySection() {
           <button
             onClick={handleRotate}
             disabled={rotating}
-            className="cursor-pointer text-xs font-medium text-muted-on-ink hover:text-[#E8ECF4] disabled:cursor-wait"
+            className="cursor-pointer text-xs font-medium text-muted-on-ink hover:text-white disabled:cursor-wait"
           >
             {rotating ? 'Rotating…' : 'Rotate API key'}
           </button>
@@ -259,7 +259,7 @@ function WebhookSection() {
 
   return (
     <div className="rounded-lg border border-ink-line bg-ink-soft p-4">
-      <h3 className="mb-1 text-sm font-bold text-[#E8ECF4]">Continuous PR/MR review &amp; chat</h3>
+      <h3 className="mb-1 text-sm font-bold text-white">Continuous PR/MR review &amp; chat</h3>
       <p className="mb-3 text-xs leading-relaxed text-muted-on-ink">
         Automatically reviews every new PR/MR and each new commit pushed to it — inline comments, a summary, and a
         merge-blocking status check, no button click needed. Mention{' '}
@@ -277,7 +277,7 @@ function WebhookSection() {
         <select
           value={provider}
           onChange={(e) => setProvider(e.target.value as WebhookProvider)}
-          className="rounded-md border border-ink-line bg-ink px-2 py-1.5 text-xs text-[#E8ECF4] outline-none"
+          className="rounded-md border border-ink-line bg-ink px-2 py-1.5 text-xs text-white outline-none"
         >
           <option value="github">GitHub</option>
           <option value="gitlab">GitLab</option>
@@ -289,7 +289,7 @@ function WebhookSection() {
           placeholder={
             provider === 'gitlab' ? 'GitLab project ID' : provider === 'bitbucket' ? 'workspace/repo' : 'owner/repo'
           }
-          className="min-w-0 flex-1 rounded-md border border-ink-line bg-ink px-2.5 py-1.5 text-xs text-[#E8ECF4] outline-none placeholder:text-muted-on-ink/60"
+          className="min-w-0 flex-1 rounded-md border border-ink-line bg-ink px-2.5 py-1.5 text-xs text-white outline-none placeholder:text-muted-on-ink/60"
         />
         <button
           onClick={handleCreate}
@@ -311,7 +311,7 @@ function WebhookSection() {
 
       {justCreated && (
         <div className="mb-3 rounded-lg border border-cobalt/40 bg-cobalt/10 p-3 text-xs text-muted-on-ink">
-          <p className="mb-2 font-semibold text-[#E8ECF4]">
+          <p className="mb-2 font-semibold text-white">
             Webhook created for {justCreated.repoIdentifier} — set this up in {PROVIDER_LABEL[justCreated.provider]} now
             (the secret below is only shown here):
           </p>
@@ -330,10 +330,10 @@ function WebhookSection() {
           {configs.map((c) => (
             <div key={c.id} className="rounded-lg border border-ink-line bg-ink p-3">
               <div className="flex flex-wrap items-center gap-2">
-                <span className="shrink-0 rounded bg-ink-line px-2 py-0.5 font-mono text-[10px] font-bold whitespace-nowrap text-muted-on-ink uppercase">
+                <span className="shrink-0 rounded bg-ink-line px-2 py-0.5 text-[10px] font-medium whitespace-nowrap text-muted-on-ink uppercase">
                   {c.provider}
                 </span>
-                <span className="min-w-0 flex-1 truncate font-mono text-xs text-[#E8ECF4]">{c.repoIdentifier}</span>
+                <span className="min-w-0 flex-1 truncate font-mono text-xs text-white">{c.repoIdentifier}</span>
                 <button
                   onClick={() => handleDelete(c.id)}
                   className="shrink-0 cursor-pointer text-xs font-medium whitespace-nowrap text-critical hover:underline"
@@ -353,7 +353,7 @@ function WebhookSection() {
               </label>
               {justCreated?.id !== c.id && (
                 <details className="mt-2">
-                  <summary className="cursor-pointer text-xs text-muted-on-ink hover:text-[#E8ECF4]">
+                  <summary className="cursor-pointer text-xs text-muted-on-ink hover:text-white">
                     Setup instructions
                   </summary>
                   <div className="mt-2">
@@ -419,7 +419,7 @@ function Row({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex items-center gap-2">
       <span className="w-20 shrink-0 text-muted-on-ink">{label}</span>
-      <code className="min-w-0 flex-1 truncate rounded-md border border-ink-line bg-ink px-2 py-1 font-mono text-[11px] text-[#E8ECF4]">
+      <code className="min-w-0 flex-1 truncate rounded-md border border-ink-line bg-ink px-2 py-1 font-mono text-[11px] text-white">
         {value}
       </code>
       <CopyButton value={value} />

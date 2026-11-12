@@ -103,11 +103,11 @@ export function PlanRequestsTable() {
               >
                 {r.status}
               </span>
-              <span className="truncate font-mono text-[13px] text-[#E8ECF4]">{r.user?.email}</span>
+              <span className="truncate font-mono text-[13px] text-white">{r.user?.email}</span>
             </div>
             <div className="flex flex-wrap items-center gap-2 text-xs text-muted-on-ink">
               <span>
-                Requested <strong className="text-[#E8ECF4]">{r.requestedPlan.name}</strong>
+                Requested <strong className="text-white">{r.requestedPlan.name}</strong>
               </span>
               <span className="ml-auto shrink-0 whitespace-nowrap">{new Date(r.createdAt).toLocaleString()}</span>
             </div>
@@ -127,7 +127,7 @@ export function PlanRequestsTable() {
                       value={note}
                       onChange={(e) => setNote(e.target.value)}
                       placeholder="Optional reason…"
-                      className="min-w-0 flex-1 rounded-md border border-ink-line bg-ink px-2 py-1 text-xs text-[#E8ECF4] outline-none"
+                      className="min-w-0 flex-1 rounded-md border border-ink-line bg-ink px-2 py-1 text-xs text-white outline-none"
                     />
                     <button
                       onClick={() => handleReject(r.id)}
@@ -141,7 +141,7 @@ export function PlanRequestsTable() {
                         setRejectingId(null);
                         setNote('');
                       }}
-                      className="shrink-0 cursor-pointer text-xs font-medium whitespace-nowrap text-muted-on-ink hover:text-[#E8ECF4]"
+                      className="shrink-0 cursor-pointer text-xs font-medium whitespace-nowrap text-muted-on-ink hover:text-white"
                     >
                       Cancel
                     </button>

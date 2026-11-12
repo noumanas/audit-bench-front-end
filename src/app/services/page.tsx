@@ -47,10 +47,10 @@ export default function ServicesPage() {
     <div>
       <section className="border-b border-ink-line bg-ink px-6 py-16 text-center">
         <ScrollReveal>
-          <div className="mb-2 font-mono text-[13px] tracking-wide text-muted-on-ink uppercase">
+          <div className="mb-2 text-[13px] tracking-wide text-muted-on-ink uppercase">
             Services
           </div>
-          <h1 className="mb-3 text-3xl font-bold text-[#E8ECF4]">
+          <h1 className="mb-3 text-3xl text-white font-light tracking-[-0.03em]">
             <TextReveal>What actually happens inside one audit</TextReveal>
           </h1>
           <p className="mx-auto max-w-xl text-sm leading-relaxed text-muted-on-ink">
@@ -66,7 +66,7 @@ export default function ServicesPage() {
       {/* Code ingestion */}
       <section className="bg-paper px-6 py-14">
         <ScrollReveal className="mx-auto max-w-4xl">
-          <h2 className="mb-2 text-xl font-bold text-[#1C2128]">Code ingestion</h2>
+          <h2 className="mb-2 text-xl font-bold text-black">Code ingestion</h2>
           <p className="mb-6 text-sm text-muted-on-paper">Get code in however it&apos;s easiest.</p>
           <div className="grid gap-4 sm:grid-cols-2">
             <ServiceCard title="Paste code" detail="Drop a snippet or a full file straight into the editor." />
@@ -78,7 +78,7 @@ export default function ServicesPage() {
       {/* Security coverage */}
       <section className="bg-ink px-6 py-14">
         <ScrollReveal className="mx-auto max-w-4xl">
-          <h2 className="mb-2 text-xl font-bold text-[#E8ECF4]">Security coverage</h2>
+          <h2 className="mb-2 text-xl font-bold text-white">Security coverage</h2>
           <p className="mb-6 text-sm text-muted-on-ink">
             The security lens is checked on every audit, backed by a deterministic secrets scanner
             in addition to model reasoning.
@@ -87,7 +87,7 @@ export default function ServicesPage() {
             {SECURITY_COVERAGE.map((s) => (
               <span
                 key={s}
-                className="rounded-full border border-ink-line px-3 py-1.5 text-xs font-medium text-muted-on-ink transition-colors duration-200 hover:border-cobalt/50 hover:text-[#E8ECF4]"
+                className="rounded-full border border-ink-line px-3 py-1.5 text-xs font-medium text-muted-on-ink transition-colors duration-200 hover:border-cobalt/50 hover:text-white"
               >
                 {s}
               </span>
@@ -99,7 +99,7 @@ export default function ServicesPage() {
       {/* Repository analysis */}
       <section className="bg-paper px-6 py-14">
         <ScrollReveal className="mx-auto max-w-4xl">
-          <h2 className="mb-2 text-xl font-bold text-[#1C2128]">Repository analysis</h2>
+          <h2 className="mb-2 text-xl font-bold text-black">Repository analysis</h2>
           <p className="mb-6 text-sm text-muted-on-paper">
             Beyond per-file review, a repository scan looks at how files relate to each other.
           </p>
@@ -114,7 +114,7 @@ export default function ServicesPage() {
       {/* AI output shape */}
       <section className="bg-ink px-6 py-14">
         <ScrollReveal className="mx-auto max-w-3xl">
-          <h2 className="mb-2 text-xl font-bold text-[#E8ECF4]">Every finding, same shape</h2>
+          <h2 className="mb-2 text-xl font-bold text-white">Every finding, same shape</h2>
           <p className="mb-6 text-sm text-muted-on-ink">
             No vague warnings — every finding is structured so it&apos;s immediately actionable.
           </p>
@@ -134,7 +134,7 @@ export default function ServicesPage() {
 
       <section className="bg-paper px-6 py-16 text-center">
         <ScrollReveal>
-          <h2 className="mb-4 text-xl font-bold text-[#1C2128]">See it on your own code</h2>
+          <h2 className="mb-4 text-xl font-bold text-black">See it on your own code</h2>
           <Link
             href="/signup"
             className="inline-block rounded-lg bg-cobalt px-5 py-3 text-sm font-bold text-white transition-all duration-200 hover:-translate-y-0.5 hover:bg-cobalt-dark hover:shadow-lg"
@@ -156,7 +156,7 @@ function ServiceCard({ title, detail, light }: { title: string; detail: string; 
         light ? 'border-paper-line bg-paper-card' : 'border-ink-line bg-ink-soft'
       }`}
     >
-      <h3 className={`mb-2 text-sm font-bold ${light ? 'text-[#1C2128]' : 'text-[#E8ECF4]'}`}>{title}</h3>
+      <h3 className={`mb-2 text-sm font-bold ${light ? 'text-black' : 'text-white'}`}>{title}</h3>
       <p className={`text-sm leading-relaxed ${light ? 'text-muted-on-paper' : 'text-muted-on-ink'}`}>
         {detail}
       </p>

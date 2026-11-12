@@ -44,7 +44,7 @@ const RISK_LEVEL: Record<'high' | 'medium' | 'low', { label: string; hex: string
   },
 };
 
-const INK = '#1C2128';
+const INK = '#000000';
 
 function allFindings(scan: ScanJob): Array<Finding & { path: string }> {
   return (scan.files || []).flatMap((f) => f.findings.map((finding) => ({ ...finding, path: f.path })));
@@ -154,9 +154,9 @@ export function DueDiligenceReport({ scan }: { scan: ScanJob }) {
   return (
     <article className="print-exact mx-auto max-w-4xl overflow-hidden rounded-xl border border-paper-line bg-paper-card shadow-2xl shadow-black/40 print:max-w-none print:rounded-none print:border-0 print:shadow-none">
       {/* Cover band */}
-      <header className="bg-ink px-8 pt-7 pb-6 text-[#E8ECF4]">
+      <header className="bg-ink px-8 pt-7 pb-6 text-white">
         <div className="mb-5 flex items-start justify-between gap-4">
-          <div className="flex items-center gap-2 font-mono text-[11px] font-bold tracking-[0.12em] uppercase">
+          <div className="flex items-center gap-2 text-[11px] font-medium tracking-[0.12em] uppercase">
             <span className="text-muted-on-ink">Technical Due Diligence Report</span>
             <span className="rounded-sm border border-ink-line px-1.5 py-0.5 text-[10px] text-muted-on-ink">
               Confidential
@@ -164,13 +164,13 @@ export function DueDiligenceReport({ scan }: { scan: ScanJob }) {
           </div>
           <button
             onClick={() => window.print()}
-            className="shrink-0 cursor-pointer rounded-md border border-ink-line px-3.5 py-1.5 text-xs font-bold text-muted-on-ink transition-colors hover:border-cobalt hover:text-[#E8ECF4] print:hidden"
+            className="shrink-0 cursor-pointer rounded-md border border-ink-line px-3.5 py-1.5 text-xs font-bold text-muted-on-ink transition-colors hover:border-cobalt hover:text-white print:hidden"
           >
             Print / Save as PDF
           </button>
         </div>
 
-        <h1 className="mb-6 text-[28px] leading-tight font-bold tracking-tight break-words text-balance">
+        <h1 className="mb-6 text-[28px] leading-tight break-words text-balance font-light tracking-[-0.03em]">
           {scan.sourceName}
         </h1>
 
@@ -253,7 +253,7 @@ export function DueDiligenceReport({ scan }: { scan: ScanJob }) {
                     </div>
                     <div className="min-w-0">
                       <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-0.5">
-                        <span className="text-[13px] font-bold text-[#1C2128]">{f.title}</span>
+                        <span className="text-[13px] font-bold text-black">{f.title}</span>
                         <span className="truncate font-mono text-[11px] text-muted-on-paper">
                           {f.path}
                           {f.line ? `:${f.line}` : ''}
@@ -300,7 +300,7 @@ export function DueDiligenceReport({ scan }: { scan: ScanJob }) {
                   {scan.licenseFindings.map((f, i) => (
                     <li key={i} className="px-3 py-2.5 break-inside-avoid">
                       <div className="flex items-center justify-between gap-2">
-                        <span className="truncate font-mono text-xs font-bold text-[#1C2128]">
+                        <span className="truncate font-mono text-xs font-bold text-black">
                           {f.package}@{f.version}
                         </span>
                         <SeverityBadge level={f.riskLevel} />
@@ -374,7 +374,7 @@ export function DueDiligenceReport({ scan }: { scan: ScanJob }) {
 function MetaItem({ label, value, mono }: { label: string; value: string; mono?: boolean }) {
   return (
     <div className="min-w-0">
-      <dt className="mb-0.5 font-mono text-[10px] tracking-[0.08em] text-muted-on-ink uppercase">{label}</dt>
+      <dt className="mb-0.5 text-[10px] tracking-[0.08em] text-muted-on-ink uppercase">{label}</dt>
       <dd className={`truncate text-[13px] font-semibold ${mono ? 'font-mono' : ''}`}>{value}</dd>
     </div>
   );
@@ -385,9 +385,9 @@ function Section({ num, id, title, children }: { num: string; id: string; title:
     // scroll-mt so a jump from the quick-nav doesn't land the heading flush
     // against the viewport edge.
     <section id={id} className="mb-10 scroll-mt-6 last:mb-0">
-      <h2 className="mb-4 flex items-baseline gap-3 border-b-2 border-[#1C2128] pb-2 break-after-avoid">
+      <h2 className="mb-4 flex items-baseline gap-3 border-b-2 border-black pb-2 break-after-avoid">
         <span className="font-mono text-xs font-bold text-cobalt">{num}</span>
-        <span className="text-[17px] font-bold text-[#1C2128]">{title}</span>
+        <span className="text-[17px] font-bold text-black">{title}</span>
       </h2>
       {children}
     </section>
@@ -396,7 +396,7 @@ function Section({ num, id, title, children }: { num: string; id: string; title:
 
 function SubHeading({ children }: { children: React.ReactNode }) {
   return (
-    <div className="mb-2 font-mono text-[10px] font-bold tracking-[0.08em] text-muted-on-paper uppercase">
+    <div className="mb-2 text-[10px] font-medium tracking-[0.08em] text-muted-on-paper uppercase">
       {children}
     </div>
   );
@@ -410,7 +410,7 @@ function EmptyNote({ children }: { children: React.ReactNode }) {
 
 function CleanNote({ children }: { children: React.ReactNode }) {
   return (
-    <p className="flex items-center gap-2 rounded-lg border border-pass/30 bg-pass/10 px-3.5 py-2.5 text-xs text-[#1C2128]">
+    <p className="flex items-center gap-2 rounded-lg border border-pass/30 bg-pass/10 px-3.5 py-2.5 text-xs text-black">
       <span className="font-bold text-pass">✓</span>
       {children}
     </p>
@@ -431,11 +431,11 @@ function CountTile({
   const active = value > 0;
   return (
     <div className={`rounded-lg border border-paper-line bg-paper px-3 py-2.5 break-inside-avoid ${className ?? ''}`}>
-      <div className="text-2xl leading-none font-bold tabular-nums" style={{ color: active ? hex : '#b4bac4' }}>
+      <div className="text-2xl leading-none font-bold tabular-nums" style={{ color: active ? hex : '#bdbdbd' }}>
         {value}
       </div>
-      <div className="mt-1.5 flex items-center gap-1.5 font-mono text-[10px] tracking-[0.06em] text-muted-on-paper uppercase">
-        <span className="h-1.5 w-1.5 shrink-0 rounded-full" style={{ backgroundColor: active ? hex : '#d3d7de' }} />
+      <div className="mt-1.5 flex items-center gap-1.5 text-[10px] tracking-[0.06em] text-muted-on-paper uppercase">
+        <span className="h-1.5 w-1.5 shrink-0 rounded-full" style={{ backgroundColor: active ? hex : '#d6d6d6' }} />
         {label}
       </div>
     </div>
@@ -449,7 +449,7 @@ function HealthRing({ score }: { score: number }) {
   const c = 2 * Math.PI * r;
   return (
     <svg width="76" height="76" viewBox="0 0 76 76" className="shrink-0" aria-hidden="true">
-      <circle cx="38" cy="38" r={r} fill="none" stroke="#e6e8ec" strokeWidth="7" />
+      <circle cx="38" cy="38" r={r} fill="none" stroke="#ebebeb" strokeWidth="7" />
       <circle
         cx="38"
         cy="38"
@@ -493,14 +493,14 @@ function ExecutiveSummary({ aggregation, tdd }: { aggregation: RiskAggregation; 
           <HealthRing score={aggregation.overallHealthScore} />
           <div>
             <SubHeading>Health score</SubHeading>
-            <div className="text-[13px] font-semibold text-[#1C2128]">{aggregation.overallHealthScore} out of 100</div>
+            <div className="text-[13px] font-semibold text-black">{aggregation.overallHealthScore} out of 100</div>
             <p className="mt-0.5 text-[11px] text-muted-on-paper">Under 50 is at risk</p>
           </div>
         </div>
 
         <div className="rounded-lg border border-paper-line bg-paper px-4 py-3.5 break-inside-avoid">
           <SubHeading>Est. remediation</SubHeading>
-          <div className="text-[22px] leading-tight font-bold tracking-tight text-[#1C2128] tabular-nums">
+          <div className="text-[22px] leading-tight font-bold tracking-tight text-black tabular-nums">
             {formatUsd(remediation.estimatedCostLowUsd)}–{formatUsd(remediation.estimatedCostHighUsd)}
           </div>
           <p className="mt-1.5 text-[11px] text-muted-on-paper">
@@ -509,7 +509,7 @@ function ExecutiveSummary({ aggregation, tdd }: { aggregation: RiskAggregation; 
         </div>
       </div>
 
-      <p className="max-w-[68ch] text-sm leading-relaxed text-[#1C2128]">{aggregation.summary}</p>
+      <p className="max-w-[68ch] text-sm leading-relaxed text-black">{aggregation.summary}</p>
 
       {tdd ? (
         <>
@@ -531,7 +531,7 @@ function ExecutiveSummary({ aggregation, tdd }: { aggregation: RiskAggregation; 
                   className="flex items-start justify-between gap-3 border-b border-paper-line px-3.5 py-2.5 break-inside-avoid sm:odd:border-r"
                 >
                   <div className="min-w-0">
-                    <div className="text-[13px] font-semibold text-[#1C2128]">{c.category}</div>
+                    <div className="text-[13px] font-semibold text-black">{c.category}</div>
                     {c.detail && (
                       <p className="mt-0.5 line-clamp-2 text-[11px] leading-snug text-muted-on-paper">{c.detail}</p>
                     )}
@@ -555,8 +555,8 @@ function ExecutiveSummary({ aggregation, tdd }: { aggregation: RiskAggregation; 
           <SubHeading>Key actions</SubHeading>
           <ol className="space-y-2">
             {aggregation.recommendations.map((r, i) => (
-              <li key={i} className="flex gap-3 text-[13px] leading-relaxed text-[#1C2128]">
-                <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#1C2128] font-mono text-[10px] font-bold text-white">
+              <li key={i} className="flex gap-3 text-[13px] leading-relaxed text-black">
+                <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-black font-mono text-[10px] font-bold text-white">
                   {i + 1}
                 </span>
                 <span>{r}</span>
@@ -577,13 +577,13 @@ function DependencyTable({ vulns }: { vulns: DependencyVulnerability[] }) {
         {groups.map((g) => (
           <li key={g.pkg} className="px-3.5 py-2.5 break-inside-avoid">
             <div className="flex items-center justify-between gap-3">
-              <span className="truncate font-mono text-[13px] font-bold text-[#1C2128]">{g.pkg}</span>
+              <span className="truncate font-mono text-[13px] font-bold text-black">{g.pkg}</span>
               <span className="flex shrink-0 items-center gap-2">
                 <span className="font-mono text-[10px] text-muted-on-paper">
                   {g.advisories} advisor{g.advisories === 1 ? 'y' : 'ies'}
                 </span>
                 <span
-                  className="rounded px-1.5 py-0.5 font-mono text-[10px] font-bold tracking-wide text-white uppercase"
+                  className="rounded px-1.5 py-0.5 text-[10px] font-medium tracking-wide text-white uppercase"
                   style={{ backgroundColor: SEVERITY_HEX[g.severity] }}
                 >
                   {g.severity}
@@ -625,12 +625,12 @@ function TechnicalDebt({
       <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-4">
         <div className="rounded-lg border border-paper-line bg-paper px-3 py-2.5 break-inside-avoid">
           <div className="flex items-baseline gap-1.5">
-            <span className="text-2xl leading-none font-bold text-[#1C2128] tabular-nums">
+            <span className="text-2xl leading-none font-bold text-black tabular-nums">
               {coverage ? `${Math.round(coverage.testFileRatio * 100)}%` : '—'}
             </span>
             {coverage && <SeverityBadge level={coverage.riskLevel} />}
           </div>
-          <div className="mt-1.5 font-mono text-[10px] tracking-[0.06em] text-muted-on-paper uppercase">
+          <div className="mt-1.5 text-[10px] tracking-[0.06em] text-muted-on-paper uppercase">
             Test-to-source
           </div>
           {coverage && (
@@ -646,7 +646,7 @@ function TechnicalDebt({
 
       {coverage ? (
         <div className="space-y-2.5">
-          <p className="max-w-[68ch] text-xs leading-relaxed text-[#1C2128]">{coverage.reason}</p>
+          <p className="max-w-[68ch] text-xs leading-relaxed text-black">{coverage.reason}</p>
           <div className="flex flex-wrap gap-2">
             <CheckChip ok={coverage.hasCoverageConfig} label="Coverage config" />
             <CheckChip ok={coverage.hasCiTestStep} label="CI test step" />
@@ -657,7 +657,7 @@ function TechnicalDebt({
               {coverage.untestedDirectories.map((d) => (
                 <code
                   key={d}
-                  className="rounded border border-paper-line bg-paper px-1.5 py-0.5 font-mono text-[11px] text-[#1C2128]"
+                  className="rounded border border-paper-line bg-paper px-1.5 py-0.5 font-mono text-[11px] text-black"
                 >
                   {d}
                 </code>
@@ -709,12 +709,12 @@ function Contributors({ stats }: { stats: ContributorStat[] }) {
           }}
         >
           <span
-            className="font-mono text-[10px] font-bold tracking-[0.08em] uppercase"
+            className="text-[10px] font-medium tracking-[0.08em] uppercase"
             style={{ color: concentration.hex }}
           >
             {concentration.label}
           </span>
-          <span className="text-[13px] text-[#1C2128]">
+          <span className="text-[13px] text-black">
             <span className="font-mono font-bold">{sorted[0].author}</span> authored {Math.round(topShare * 100)}% of{' '}
             {total.toLocaleString('en-US')} commits.
           </span>
@@ -724,14 +724,14 @@ function Contributors({ stats }: { stats: ContributorStat[] }) {
       <div className="space-y-2">
         {sorted.slice(0, 8).map((c, i) => {
           const pct = (c.commits / total) * 100;
-          const barHex = i === 0 && concentration ? concentration.hex : '#2b5be3';
+          const barHex = i === 0 && concentration ? concentration.hex : '#7546f4';
           return (
             <div
               key={c.author}
               className="grid grid-cols-[minmax(0,9rem)_1fr_auto] items-center gap-3 break-inside-avoid"
             >
-              <span className="truncate font-mono text-xs text-[#1C2128]">{c.author}</span>
-              <div className="h-2 overflow-hidden rounded-full bg-[#eceef1]">
+              <span className="truncate font-mono text-xs text-black">{c.author}</span>
+              <div className="h-2 overflow-hidden rounded-full bg-[#eeeeee]">
                 <div
                   className="h-full rounded-full"
                   style={{
@@ -759,16 +759,16 @@ function Architecture({ assessment }: { assessment: ArchitectureAssessment }) {
     <div className="space-y-3">
       <div className="flex flex-wrap items-center gap-3">
         <SeverityBadge level={assessment.riskLevel} />
-        <span className="text-[13px] font-semibold text-[#1C2128]">
+        <span className="text-[13px] font-semibold text-black">
           Consistency score {assessment.consistencyScore}/100
         </span>
       </div>
-      <p className="max-w-[68ch] text-xs leading-relaxed text-[#1C2128]">{assessment.summary}</p>
+      <p className="max-w-[68ch] text-xs leading-relaxed text-black">{assessment.summary}</p>
       {assessment.inconsistencies.length > 0 && (
         <ul className="divide-y divide-paper-line overflow-hidden rounded-lg border border-paper-line">
           {assessment.inconsistencies.map((inc, i) => (
             <li key={i} className="px-4 py-3 break-inside-avoid">
-              <div className="text-[13px] font-bold text-[#1C2128]">{inc.title}</div>
+              <div className="text-[13px] font-bold text-black">{inc.title}</div>
               <p className="mt-0.5 text-xs leading-relaxed text-muted-on-paper">{inc.description}</p>
               {inc.files.length > 0 && (
                 <div className="mt-1 font-mono text-[11px] break-all text-muted-on-paper">{inc.files.join(', ')}</div>
@@ -793,7 +793,7 @@ function RemediationTable({ aggregation }: { aggregation: RiskAggregation }) {
       <div className="overflow-hidden rounded-lg border border-paper-line break-inside-avoid">
         <table className="w-full text-left">
           <thead>
-            <tr className="border-b border-paper-line bg-paper font-mono text-[10px] tracking-[0.08em] text-muted-on-paper uppercase">
+            <tr className="border-b border-paper-line bg-paper text-[10px] tracking-[0.08em] text-muted-on-paper uppercase">
               <th className="px-4 py-2 font-bold">Line item</th>
               <th className="hidden w-40 px-4 py-2 font-bold sm:table-cell">Share of effort</th>
               <th className="w-24 px-4 py-2 text-right font-bold">Days</th>
@@ -803,30 +803,30 @@ function RemediationTable({ aggregation }: { aggregation: RiskAggregation }) {
             {items.map((item, i) => (
               <tr key={i} className="border-b border-paper-line">
                 <td className="px-4 py-2.5 align-top">
-                  <div className="text-[13px] font-semibold text-[#1C2128]">{item.category}</div>
+                  <div className="text-[13px] font-semibold text-black">{item.category}</div>
                   <div className="mt-0.5 text-[11px] leading-snug text-muted-on-paper">{item.description}</div>
                 </td>
                 <td className="hidden px-4 py-2.5 align-middle sm:table-cell">
-                  <div className="h-1.5 overflow-hidden rounded-full bg-[#eceef1]">
+                  <div className="h-1.5 overflow-hidden rounded-full bg-[#eeeeee]">
                     <div
-                      className="h-full rounded-full bg-[#1C2128]"
+                      className="h-full rounded-full bg-black"
                       style={{
                         width: `${Math.max((item.estimatedDays / maxDays) * 100, 3)}%`,
                       }}
                     />
                   </div>
                 </td>
-                <td className="px-4 py-2.5 text-right align-top font-mono text-[13px] font-semibold text-[#1C2128] tabular-nums">
+                <td className="px-4 py-2.5 text-right align-top font-mono text-[13px] font-semibold text-black tabular-nums">
                   {formatDays(item.estimatedDays)}
                 </td>
               </tr>
             ))}
           </tbody>
           <tfoot>
-            <tr className="bg-[#1C2128] text-white">
+            <tr className="bg-black text-white">
               <td className="px-4 py-3 text-[13px] font-bold">
                 Total
-                <span className="ml-2 font-mono text-[11px] font-normal text-[#c9ced8]">
+                <span className="ml-2 font-mono text-[11px] font-normal text-[#d4d4d4]">
                   {formatUsd(estimatedCostLowUsd)}–{formatUsd(estimatedCostHighUsd)}
                 </span>
               </td>

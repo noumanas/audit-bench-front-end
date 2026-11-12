@@ -113,12 +113,12 @@ export function PlanPanel() {
 
   return (
     <div className="mb-8">
-      <h2 className="mb-1 font-mono text-[11px] font-bold tracking-wide text-muted-on-ink uppercase">
+      <h2 className="mb-1 text-[11px] font-medium tracking-wide text-muted-on-ink uppercase">
         {usage?.scope === 'organization' ? 'Team plan & usage' : 'Plan & usage'}
       </h2>
       {usage?.scope === 'organization' && (
         <p className="mb-3 text-[11px] text-muted-on-ink">
-          Shared across everyone in <strong className="text-[#E8ECF4]">{usage.organizationName}</strong> — every
+          Shared across everyone in <strong className="text-white">{usage.organizationName}</strong> — every
           teammate&apos;s audits and scans draw from the same pool.
         </p>
       )}
@@ -130,7 +130,7 @@ export function PlanPanel() {
       )}
 
       {notice && (
-        <div className="mb-3 rounded-lg border border-cobalt/40 bg-cobalt/10 px-3.5 py-2.5 text-[13px] text-[#B9CCF7]">
+        <div className="mb-3 rounded-lg border border-cobalt/40 bg-cobalt/10 px-3.5 py-2.5 text-[13px] text-[#D3C6FF]">
           {notice}
         </div>
       )}
@@ -188,9 +188,9 @@ export function PlanPanel() {
               }`}
             >
               <div className="mb-1 flex items-center justify-between">
-                <span className="font-mono text-sm font-bold text-[#E8ECF4]">{plan.name}</span>
+                <span className="font-mono text-sm font-bold text-white">{plan.name}</span>
                 {isCurrent && (
-                  <span className="rounded bg-cobalt px-1.5 py-0.5 font-mono text-[10px] font-bold text-white uppercase">
+                  <span className="rounded bg-cobalt px-1.5 py-0.5 text-[10px] font-medium text-white uppercase">
                     Current
                   </span>
                 )}
@@ -201,7 +201,7 @@ export function PlanPanel() {
                 <li>{formatLimit(plan.monthlyAuditLimit)} AI audits/month</li>
                 <li>{repoScanLabel(plan)}</li>
                 {repoScanQuotaLabel(plan) && <li>{repoScanQuotaLabel(plan)}</li>}
-                {plan.dueDiligence && <li className="font-semibold text-[#E8ECF4]">Technical due diligence</li>}
+                {plan.dueDiligence && <li className="font-semibold text-white">Technical due diligence</li>}
                 {alignmentLabLabel(plan) && <li>{alignmentLabLabel(plan)}</li>}
               </ul>
               {!isCurrent && isPendingThis && (
@@ -288,8 +288,8 @@ function PaymentModal({
         onClick={(e) => e.stopPropagation()}
         className="shadow-panel fade-up max-h-[90vh] w-full max-w-md overflow-y-auto rounded-xl border border-ink-line bg-ink-soft p-6"
       >
-        <div className="mb-1 font-mono text-[11px] font-bold tracking-[0.14em] text-cobalt uppercase">Upgrade</div>
-        <h3 id="payment-modal-title" className="mb-1 text-lg font-bold text-[#E8ECF4]">
+        <div className="mb-1 text-[11px] font-medium tracking-[0.14em] text-cobalt uppercase">Upgrade</div>
+        <h3 id="payment-modal-title" className="mb-1 text-lg font-bold text-white">
           {plan.name} · {formatPrice(plan)}
         </h3>
         <p className="mb-5 text-[13px] leading-relaxed text-muted-on-ink">
@@ -297,7 +297,7 @@ function PaymentModal({
           within 24 hours.
         </p>
 
-        <ol className="mb-5 space-y-4 text-[13px] text-[#E8ECF4]">
+        <ol className="mb-5 space-y-4 text-[13px] text-white">
           <li className="flex gap-3">
             <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-cobalt font-mono text-[11px] font-bold text-white">
               1
@@ -315,7 +315,7 @@ function PaymentModal({
               </a>
               {email && (
                 <p className="mt-2 text-[11px] text-muted-on-ink">
-                  Add <strong className="text-[#E8ECF4]">{email}</strong> as the payment reference so we can match it to
+                  Add <strong className="text-white">{email}</strong> as the payment reference so we can match it to
                   your account.
                 </p>
               )}
@@ -343,14 +343,14 @@ function PaymentModal({
           <button
             onClick={onCancel}
             disabled={submitting}
-            className="flex-1 cursor-pointer rounded-md border border-ink-line px-3 py-2 text-xs font-bold text-muted-on-ink hover:text-[#E8ECF4] disabled:cursor-not-allowed disabled:opacity-50"
+            className="flex-1 cursor-pointer rounded-md border border-ink-line px-3 py-2 text-xs font-bold text-muted-on-ink hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
           >
             Cancel
           </button>
           <button
             onClick={onConfirm}
             disabled={submitting}
-            className="flex-[2] cursor-pointer rounded-md border border-cobalt bg-cobalt/15 px-3 py-2 text-xs font-bold text-[#B9CCF7] hover:bg-cobalt/25 disabled:cursor-wait disabled:opacity-60"
+            className="flex-[2] cursor-pointer rounded-md border border-cobalt bg-cobalt/15 px-3 py-2 text-xs font-bold text-[#D3C6FF] hover:bg-cobalt/25 disabled:cursor-wait disabled:opacity-60"
           >
             {submitting ? 'Submitting…' : "I've paid — submit request"}
           </button>
@@ -381,7 +381,7 @@ function BankTransferDetails() {
 
   return (
     <details className="group mt-3 rounded-md border border-ink-line bg-ink/60">
-      <summary className="cursor-pointer list-none px-3 py-2 text-[11px] font-semibold text-muted-on-ink hover:text-[#E8ECF4]">
+      <summary className="cursor-pointer list-none px-3 py-2 text-[11px] font-semibold text-muted-on-ink hover:text-white">
         <span className="mr-1 inline-block transition-transform group-open:rotate-90">›</span>
         Payment link not working? Pay by bank transfer
       </summary>
@@ -398,12 +398,12 @@ function BankTransferDetails() {
                   {label}
                   {hint && <span className="text-muted-on-ink/70"> · {hint}</span>}
                 </dt>
-                <dd className="font-mono text-[12px] break-words text-[#E8ECF4]">{value}</dd>
+                <dd className="font-mono text-[12px] break-words text-white">{value}</dd>
               </div>
               <button
                 type="button"
                 onClick={() => copy(label, value)}
-                className="mt-2.5 shrink-0 cursor-pointer rounded border border-ink-line px-1.5 py-0.5 font-mono text-[10px] text-muted-on-ink hover:text-[#E8ECF4]"
+                className="mt-2.5 shrink-0 cursor-pointer rounded border border-ink-line px-1.5 py-0.5 font-mono text-[10px] text-muted-on-ink hover:text-white"
               >
                 {copied === label ? 'Copied' : 'Copy'}
               </button>
@@ -427,7 +427,7 @@ function ExpiryNotice({ planName, expiresAt }: { planName: string; expiresAt: st
         soon ? 'border-high/40 bg-high/10 text-[#F0CE9A]' : 'border-ink-line bg-ink-soft text-muted-on-ink'
       }`}
     >
-      <strong className={soon ? '' : 'text-[#E8ECF4]'}>{planName}</strong> is active until{' '}
+      <strong className={soon ? '' : 'text-white'}>{planName}</strong> is active until{' '}
       {when.toLocaleDateString(undefined, {
         year: 'numeric',
         month: 'short',
@@ -455,7 +455,7 @@ function UsageCard({
   return (
     <div className="rounded-lg border border-ink-line bg-ink-soft px-4 py-3">
       <div className="mb-1 flex items-center justify-between">
-        <span className="font-mono text-[11px] tracking-wide text-muted-on-ink uppercase">{label}</span>
+        <span className="text-[11px] tracking-wide text-muted-on-ink uppercase">{label}</span>
         <span className="font-mono text-xs text-muted-on-ink">
           {limit != null ? `${used}/${limit}` : `${used} (unlimited)`}
         </span>

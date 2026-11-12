@@ -41,7 +41,7 @@ export function ReviewQualityAdmin() {
               onClick={() => setDays(w)}
               aria-pressed={days === w}
               className={`cursor-pointer rounded-md px-2.5 py-1 text-xs font-semibold ${
-                days === w ? 'bg-cobalt text-white' : 'border border-ink-line text-muted-on-ink hover:text-[#E8ECF4]'
+                days === w ? 'bg-cobalt text-white' : 'border border-ink-line text-muted-on-ink hover:text-white'
               }`}
             >
               {w} days

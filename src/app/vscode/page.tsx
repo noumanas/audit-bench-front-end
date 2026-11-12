@@ -59,8 +59,8 @@ export default function VsCodePage() {
     <div>
       <section className="border-b border-ink-line bg-ink px-6 py-16 text-center">
         <ScrollReveal>
-          <div className="mb-2 font-mono text-[13px] tracking-wide text-muted-on-ink uppercase">VS Code Extension</div>
-          <h1 className="mb-3 text-3xl font-bold text-[#E8ECF4]">
+          <div className="mb-2 text-[13px] tracking-wide text-muted-on-ink uppercase">VS Code Extension</div>
+          <h1 className="mb-3 text-3xl text-white font-light tracking-[-0.03em]">
             <TextReveal>Audit Bench Ai, right in your editor</TextReveal>
           </h1>
           <p className="mx-auto mb-8 max-w-xl text-sm leading-relaxed text-muted-on-ink">
@@ -72,7 +72,7 @@ export default function VsCodePage() {
               <a
                 key={s.href}
                 href={s.href}
-                className="rounded-full border border-ink-line px-3 py-1.5 text-xs font-medium text-muted-on-ink transition-colors duration-200 hover:border-cobalt/50 hover:text-[#E8ECF4]"
+                className="rounded-full border border-ink-line px-3 py-1.5 text-xs font-medium text-muted-on-ink transition-colors duration-200 hover:border-cobalt/50 hover:text-white"
               >
                 {s.label}
               </a>
@@ -84,7 +84,7 @@ export default function VsCodePage() {
       {/* What it does */}
       <section id="what-it-does" className="scroll-mt-6 bg-paper px-6 py-14">
         <ScrollReveal className="mx-auto max-w-4xl">
-          <h2 className="mb-2 text-xl font-bold text-[#1C2128]">What it does</h2>
+          <h2 className="mb-2 text-xl font-bold text-black">What it does</h2>
           <p className="mb-6 text-sm text-muted-on-paper">
             Talks to the same <code className="rounded bg-paper-card px-1 py-0.5 font-mono text-[12px]">/audit</code>,{' '}
             <code className="rounded bg-paper-card px-1 py-0.5 font-mono text-[12px]">/me</code>, and repo-scan/fix
@@ -96,7 +96,7 @@ export default function VsCodePage() {
                 key={f.title}
                 className="rounded-lg border border-paper-line bg-paper-card p-5 transition-all duration-200 hover:-translate-y-1 hover:border-cobalt/40 hover:shadow-panel"
               >
-                <h3 className="mb-2 text-sm font-bold text-[#1C2128]">{f.title}</h3>
+                <h3 className="mb-2 text-sm font-bold text-black">{f.title}</h3>
                 <p className="text-sm leading-relaxed text-muted-on-paper">{f.detail}</p>
               </div>
             ))}
@@ -116,18 +116,18 @@ export default function VsCodePage() {
             </div>
             <div className="p-4 font-mono text-[13px] leading-relaxed">
               <div className="text-muted-on-ink">{'async function chargeCard(token: string, amount: number) {'}</div>
-              <div className="pl-4 text-[#E8ECF4]">
+              <div className="pl-4 text-white">
                 <span className="border-b-2 border-dotted border-critical">
                   {'  logger.info(`charging ${token} for ${amount}`);'}
                 </span>
               </div>
               <div className="text-muted-on-ink">{'}'}</div>
               <div className="mt-4 max-w-sm rounded-lg border border-ink-line bg-ink p-3 text-[12px]">
-                <div className="mb-1 font-bold text-[#E8ECF4]">Card token logged in plain text</div>
+                <div className="mb-1 font-bold text-white">Card token logged in plain text</div>
                 <div className="mb-2 flex items-center gap-1.5">
                   <SeverityTag severity="critical" />
                   <CategoryTag label="Security" />
-                  <span className="font-mono text-[9px] tracking-wide text-muted-on-ink uppercase">96% confidence</span>
+                  <span className="text-[9px] tracking-wide text-muted-on-ink uppercase">96% confidence</span>
                 </div>
                 <div className="text-muted-on-ink">
                   Sensitive payment data is written to application logs on every charge attempt — mask it before logging.
@@ -145,7 +145,7 @@ export default function VsCodePage() {
       {/* Fix All */}
       <section id="fix-all" className="scroll-mt-6 bg-paper px-6 py-14">
         <ScrollReveal className="mx-auto max-w-4xl">
-          <h2 className="mb-2 text-xl font-bold text-[#1C2128]">Fix All Issues with AI</h2>
+          <h2 className="mb-2 text-xl font-bold text-black">Fix All Issues with AI</h2>
           <p className="mb-4 text-sm leading-relaxed text-muted-on-paper">
             The backend&apos;s AI-fix endpoints are scoped to a repo scan, the same way the web app&apos;s
             fix-in-editor flow works. Rather than needing a separate backend path for a single open file,
@@ -167,7 +167,7 @@ export default function VsCodePage() {
       {/* Get it */}
       <section id="get-it" className="scroll-mt-6 bg-ink px-6 py-14">
         <ScrollReveal className="mx-auto max-w-4xl">
-          <h2 className="mb-2 text-xl font-bold text-[#E8ECF4]">Get it</h2>
+          <h2 className="mb-2 text-xl font-bold text-white">Get it</h2>
           <p className="mb-6 text-sm leading-relaxed text-muted-on-ink">
             Not yet on the VS Code Marketplace — build it from source for now, same as the CLI before its
             first release.
@@ -184,7 +184,7 @@ export default function VsCodePage() {
             }
           />
           <p className="mt-4 text-sm leading-relaxed text-muted-on-ink">
-            Then run <span className="font-semibold text-[#E8ECF4]">Audit Bench Ai: Set API Key</span> from the
+            Then run <span className="font-semibold text-white">Audit Bench Ai: Set API Key</span> from the
             Command Palette (Dashboard → Integrations → &quot;CLI / CI-CD API key&quot;) and you&apos;re set.
           </p>
         </ScrollReveal>
@@ -193,7 +193,7 @@ export default function VsCodePage() {
       {/* Settings */}
       <section id="settings" className="scroll-mt-6 bg-paper px-6 py-14">
         <ScrollReveal className="mx-auto max-w-4xl">
-          <h2 className="mb-2 text-xl font-bold text-[#1C2128]">Settings</h2>
+          <h2 className="mb-2 text-xl font-bold text-black">Settings</h2>
           <div className="overflow-hidden rounded-lg border border-paper-line">
             {SETTINGS.map((s, i) => (
               <div
@@ -210,7 +210,7 @@ export default function VsCodePage() {
 
       <section className="bg-ink px-6 py-16 text-center">
         <ScrollReveal>
-          <h2 className="mb-4 text-xl font-bold text-[#E8ECF4]">Review code without leaving the editor</h2>
+          <h2 className="mb-4 text-xl font-bold text-white">Review code without leaving the editor</h2>
           <p className="mx-auto mb-6 max-w-md text-sm leading-relaxed text-muted-on-ink">
             Free plan includes single-file audits from the extension — sign up, generate an API key, and
             you&apos;re auditing in a couple of minutes.
@@ -224,7 +224,7 @@ export default function VsCodePage() {
             </Link>
             <Link
               href="/cli"
-              className="rounded-lg border border-ink-line px-5 py-3 text-sm font-bold text-muted-on-ink transition-all duration-200 hover:-translate-y-0.5 hover:border-cobalt/40 hover:text-[#E8ECF4]"
+              className="rounded-lg border border-ink-line px-5 py-3 text-sm font-bold text-muted-on-ink transition-all duration-200 hover:-translate-y-0.5 hover:border-cobalt/40 hover:text-white"
             >
               See the CLI
             </Link>

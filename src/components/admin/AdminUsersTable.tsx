@@ -158,7 +158,7 @@ export function AdminUsersTable() {
           onChange={(e) => resetPage(setQuery)(e.target.value)}
           placeholder="Search email, name or team…"
           aria-label="Search users"
-          className="min-w-[220px] flex-1 rounded-md border border-ink-line bg-ink-soft px-3 py-2 text-sm text-[#E8ECF4] outline-none placeholder:text-muted-on-ink focus:border-cobalt"
+          className="min-w-[220px] flex-1 rounded-md border border-ink-line bg-ink-soft px-3 py-2 text-sm text-white outline-none placeholder:text-muted-on-ink focus:border-cobalt"
         />
         <Select label="Plan" value={planFilter} onChange={resetPage(setPlanFilter)}>
           <option value="all">All plans</option>
@@ -192,7 +192,7 @@ export function AdminUsersTable() {
             className={`cursor-pointer rounded-full border px-3 py-1 text-[12px] font-medium ${
               status === f.key
                 ? 'border-cobalt bg-cobalt text-white'
-                : 'border-ink-line text-muted-on-ink hover:text-[#E8ECF4]'
+                : 'border-ink-line text-muted-on-ink hover:text-white'
             }`}
           >
             {f.label}
@@ -210,7 +210,7 @@ export function AdminUsersTable() {
             <col className="w-[72px]" />
           </colgroup>
           <thead>
-            <tr className="border-b border-ink-line bg-ink-line/40 font-mono text-[11px] tracking-wide text-muted-on-ink uppercase">
+            <tr className="border-b border-ink-line bg-ink-line/40 text-[11px] tracking-wide text-muted-on-ink uppercase">
               <th className="px-4 py-2.5 font-semibold">User</th>
               <th className="px-2 py-2.5 font-semibold">Plan</th>
               <th className="hidden px-2 py-2.5 font-semibold md:table-cell">Usage this month</th>
@@ -270,7 +270,7 @@ export function AdminUsersTable() {
                         className={`h-1.5 w-1.5 shrink-0 rounded-full ${u.isActive ? 'bg-pass' : 'bg-critical'}`}
                         title={u.isActive ? 'Active' : 'Suspended'}
                       />
-                      <span className="truncate font-mono text-[13px] text-[#E8ECF4]">{u.email}</span>
+                      <span className="truncate font-mono text-[13px] text-white">{u.email}</span>
                       {u.id === me?.id && <span className="shrink-0 text-[11px] text-muted-on-ink">(you)</span>}
                     </div>
                     <div className="mt-0.5 flex flex-wrap items-center gap-1.5 pl-3.5 text-[11px] text-muted-on-ink">
@@ -289,12 +289,12 @@ export function AdminUsersTable() {
                         </span>
                       )}
                       {!u.isActive && (
-                        <span className="rounded bg-critical/15 px-1.5 py-px font-mono text-[10px] font-bold text-critical uppercase">
+                        <span className="rounded bg-critical/15 px-1.5 py-px text-[10px] font-medium text-critical uppercase">
                           Suspended
                         </span>
                       )}
                       {limited && (
-                        <span className="rounded bg-critical/15 px-1.5 py-px font-mono text-[10px] font-bold text-critical uppercase">
+                        <span className="rounded bg-critical/15 px-1.5 py-px text-[10px] font-medium text-critical uppercase">
                           At limit
                         </span>
                       )}
@@ -316,7 +316,7 @@ export function AdminUsersTable() {
                   </td>
 
                   <td className="px-2 py-2.5 align-top">
-                    <span className="rounded bg-ink-line px-1.5 py-0.5 font-mono text-[10px] whitespace-nowrap text-[#E8ECF4]">
+                    <span className="rounded bg-ink-line px-1.5 py-0.5 font-mono text-[10px] whitespace-nowrap text-white">
                       {plan.name}
                     </span>
                     {u.planExpired ? (
@@ -454,12 +454,12 @@ function Kpi({
 }) {
   const body = (
     <>
-      <div className="font-mono text-[10px] tracking-wide text-muted-on-ink uppercase">{label}</div>
+      <div className="text-[10px] tracking-wide text-muted-on-ink uppercase">{label}</div>
       {value === undefined ? (
         <div className="mt-1.5 h-6 w-12 animate-pulse rounded bg-ink-line" />
       ) : (
         <div
-          className={`mt-0.5 text-2xl font-bold tabular-nums ${tone === 'critical' ? 'text-critical' : 'text-[#E8ECF4]'}`}
+          className={`mt-0.5 text-2xl font-bold tabular-nums ${tone === 'critical' ? 'text-critical' : 'text-white'}`}
         >
           {typeof value === 'number' ? value.toLocaleString() : value}
         </div>
@@ -493,7 +493,7 @@ function Select({
       aria-label={label}
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="rounded-md border border-ink-line bg-ink-soft px-2.5 py-2 text-[13px] text-[#E8ECF4] outline-none focus:border-cobalt"
+      className="rounded-md border border-ink-line bg-ink-soft px-2.5 py-2 text-[13px] text-white outline-none focus:border-cobalt"
     >
       {children}
     </select>
@@ -513,7 +513,7 @@ function PageButton({
     <button
       disabled={disabled}
       onClick={onClick}
-      className="cursor-pointer rounded-md border border-ink-line px-3 py-1 text-[12px] text-[#E8ECF4] disabled:cursor-not-allowed disabled:opacity-40"
+      className="cursor-pointer rounded-md border border-ink-line px-3 py-1 text-[12px] text-white disabled:cursor-not-allowed disabled:opacity-40"
     >
       {children}
     </button>

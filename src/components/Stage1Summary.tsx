@@ -27,7 +27,7 @@ export function Stage1Summary({ stage1 }: { stage1: Stage1Result }) {
         onClick={() => setOpen((v) => !v)}
         className="flex w-full cursor-pointer items-center gap-2.5 px-3.5 py-2.5 text-left"
       >
-        <span className="font-mono text-[11px] font-bold tracking-wide text-muted-on-paper uppercase">
+        <span className="text-[11px] font-medium tracking-wide text-muted-on-paper uppercase">
           Local checks
         </span>
         <span className="flex-1 text-xs text-muted-on-paper">
@@ -37,7 +37,7 @@ export function Stage1Summary({ stage1 }: { stage1: Stage1Result }) {
       </button>
 
       {open && (
-        <div className="space-y-3 border-t border-paper-line px-3.5 py-3 text-xs text-[#1C2128]">
+        <div className="space-y-3 border-t border-paper-line px-3.5 py-3 text-xs text-black">
           <Row label="ESLint">
             {stage1.lint.length === 0
               ? 'No issues'
@@ -91,7 +91,7 @@ export function Stage1Summary({ stage1 }: { stage1: Stage1Result }) {
 function Row({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <div className="mb-1 font-mono text-[10px] font-bold tracking-wide text-muted-on-paper uppercase">
+      <div className="mb-1 text-[10px] font-medium tracking-wide text-muted-on-paper uppercase">
         {label}
       </div>
       <div className="leading-relaxed">{children}</div>

@@ -105,7 +105,7 @@ export function ActivityLogPanel() {
                 className={`cursor-pointer rounded-md px-2.5 py-1 text-xs font-semibold transition-colors ${
                   filter === f.value
                     ? 'bg-cobalt text-white'
-                    : 'border border-ink-line text-muted-on-ink hover:text-[#E8ECF4]'
+                    : 'border border-ink-line text-muted-on-ink hover:text-white'
                 }`}
               >
                 {f.label}
@@ -116,7 +116,7 @@ export function ActivityLogPanel() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search email, IP, city or country code…"
-            className="w-full rounded-md border border-ink-line bg-ink px-3 py-1.5 text-sm text-[#E8ECF4] outline-none placeholder:text-muted-on-ink/70 focus:border-cobalt lg:w-72"
+            className="w-full rounded-md border border-ink-line bg-ink px-3 py-1.5 text-sm text-white outline-none placeholder:text-muted-on-ink/70 focus:border-cobalt lg:w-72"
           />
         </div>
 
@@ -125,7 +125,7 @@ export function ActivityLogPanel() {
         <div className="overflow-x-auto">
           <table className="w-full min-w-[860px] text-left text-[13px]">
             <thead>
-              <tr className="border-b border-ink-line font-mono text-[10px] tracking-wide text-muted-on-ink uppercase">
+              <tr className="border-b border-ink-line text-[10px] tracking-wide text-muted-on-ink uppercase">
                 <th className="px-4 py-2.5 font-semibold">When</th>
                 <th className="px-4 py-2.5 font-semibold">Event</th>
                 <th className="px-4 py-2.5 font-semibold">User</th>
@@ -159,7 +159,7 @@ export function ActivityLogPanel() {
             <button
               onClick={loadMore}
               disabled={loadingMore}
-              className="cursor-pointer rounded-md border border-ink-line px-4 py-1.5 text-xs font-semibold text-muted-on-ink hover:text-[#E8ECF4] disabled:cursor-wait disabled:opacity-60"
+              className="cursor-pointer rounded-md border border-ink-line px-4 py-1.5 text-xs font-semibold text-muted-on-ink hover:text-white disabled:cursor-wait disabled:opacity-60"
             >
               {loadingMore ? 'Loading…' : 'Load more'}
             </button>
@@ -187,14 +187,14 @@ function ActivityRow({ log }: { log: ActivityLog }) {
         {detail && <div className="mt-1 text-[11px] text-muted-on-ink">{detail}</div>}
       </td>
       <td className="px-4 py-3">
-        <div className="max-w-[240px] truncate text-[#E8ECF4]">{log.user?.name || log.email || '—'}</div>
+        <div className="max-w-[240px] truncate text-white">{log.user?.name || log.email || '—'}</div>
         {log.user?.name && <div className="max-w-[240px] truncate text-[11px] text-muted-on-ink">{log.email}</div>}
       </td>
-      <td className="px-4 py-3 text-[#E8ECF4]">
+      <td className="px-4 py-3 text-white">
         <Location city={log.city} countryCode={log.countryCode} />
       </td>
       <td className="px-4 py-3">
-        <div className="font-mono text-[12px] text-[#E8ECF4]">{log.ip ?? '—'}</div>
+        <div className="font-mono text-[12px] text-white">{log.ip ?? '—'}</div>
         {device && <div className="text-[11px] text-muted-on-ink">{device}</div>}
       </td>
     </tr>
@@ -223,8 +223,8 @@ function SummaryCards({ summary }: { summary: ActivitySummary }) {
     <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-5">
       {cards.map((c) => (
         <div key={c.label} className="rounded-xl border border-ink-line bg-ink-soft px-4 py-3.5">
-          <div className="font-mono text-[10px] tracking-wide text-muted-on-ink uppercase">{c.label}</div>
-          <div className={`mt-1 text-2xl font-bold tabular-nums ${c.tone ?? 'text-[#E8ECF4]'}`}>{c.value}</div>
+          <div className="text-[10px] tracking-wide text-muted-on-ink uppercase">{c.label}</div>
+          <div className={`mt-1 text-2xl font-bold tabular-nums ${c.tone ?? 'text-white'}`}>{c.value}</div>
           <div className="mt-0.5 text-[11px] text-muted-on-ink">{c.hint}</div>
         </div>
       ))}
@@ -281,7 +281,7 @@ function BreakdownCard({
   const max = Math.max(1, ...rows.map((r) => r.value));
   return (
     <div className="rounded-xl border border-ink-line bg-ink-soft p-4">
-      <div className="mb-3 font-mono text-[10px] tracking-wide text-muted-on-ink uppercase">{title}</div>
+      <div className="mb-3 text-[10px] tracking-wide text-muted-on-ink uppercase">{title}</div>
       {rows.length === 0 ? (
         <p className="text-[12px] text-muted-on-ink">{empty}</p>
       ) : (
@@ -289,7 +289,7 @@ function BreakdownCard({
           {rows.map((r) => (
             <li key={r.key}>
               <div className="mb-1 flex items-center justify-between gap-2 text-[12px]">
-                <span className="truncate text-[#E8ECF4]">{r.label}</span>
+                <span className="truncate text-white">{r.label}</span>
                 <span className="shrink-0 font-mono text-muted-on-ink" title={`${r.value} ${unit}`}>
                   {r.value}
                 </span>

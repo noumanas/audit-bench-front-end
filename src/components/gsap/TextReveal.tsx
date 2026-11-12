@@ -18,7 +18,15 @@ function escapeHtml(s: string): string {
  * happens client-side in an effect, so there's no hydration mismatch and
  * search engines / no-JS clients still see the real text node.
  */
-export function TextReveal({ children, className }: { children: string; className?: string }) {
+export function TextReveal({
+  children,
+  className,
+  delay = 0,
+}: {
+  children: string;
+  className?: string;
+  delay?: number;
+}) {
   const ref = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
@@ -49,6 +57,7 @@ export function TextReveal({ children, className }: { children: string; classNam
           opacity: 1,
           y: 0,
           duration: 0.5,
+          delay: delay / 1000,
           ease: 'power2.out',
           stagger: 0.035,
           scrollTrigger: { trigger: el, start: 'top 88%', once: true },
@@ -57,7 +66,7 @@ export function TextReveal({ children, className }: { children: string; classNam
     }, el);
 
     return () => ctx.revert();
-  }, [children]);
+  }, [children, delay]);
 
   return (
     <span ref={ref} className={className}>

@@ -37,7 +37,7 @@ export function SeverityBreakdownBar({ breakdown }: { breakdown: SeverityBreakdo
           <div key={k} className="flex items-center gap-2 text-[12px]">
             <span className="inline-block h-2 w-2 shrink-0 rounded-full" style={{ backgroundColor: SEVERITY_STYLE[k].color }} />
             <span className="text-muted-on-ink">{SEVERITY_STYLE[k].label}</span>
-            <span className="ml-auto tabular-nums font-semibold text-[#E8ECF4]">{breakdown[k]}</span>
+            <span className="ml-auto tabular-nums font-semibold text-white">{breakdown[k]}</span>
           </div>
         ))}
       </div>

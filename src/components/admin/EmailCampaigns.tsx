@@ -133,7 +133,7 @@ function CampaignCard({
     <section className="rounded-lg border border-ink-line bg-ink-soft p-5">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0">
-          <h2 className="text-base font-bold text-[#E8ECF4]">{campaign.title}</h2>
+          <h2 className="text-base font-bold text-white">{campaign.title}</h2>
           <p className="mt-1 text-[13px] leading-relaxed text-muted-on-ink">{campaign.description}</p>
         </div>
         <span
@@ -154,7 +154,7 @@ function CampaignCard({
         <div className="mt-4 rounded-md border border-ink-line bg-ink px-3.5 py-2.5 text-[13px]">
           {run.finishedAt === null ? (
             <>
-              <p className="font-semibold text-[#E8ECF4]">
+              <p className="font-semibold text-white">
                 Sending… {run.sent + run.failed} of {run.eligible}
               </p>
               <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-ink-line">
@@ -167,7 +167,7 @@ function CampaignCard({
           ) : (
             <p className="text-muted-on-ink">
               Last run{' '}
-              <span className="text-[#E8ECF4]" title={formatDateTime(run.finishedAt)}>
+              <span className="text-white" title={formatDateTime(run.finishedAt)}>
                 {timeAgo(run.finishedAt)}
               </span>{' '}
               ({run.trigger === 'manual' ? 'sent from here' : 'scheduled'}):{' '}
@@ -182,14 +182,14 @@ function CampaignCard({
         <button
           onClick={() => void check()}
           disabled={disabled}
-          className="cursor-pointer rounded-md border border-ink-line px-3.5 py-1.5 text-sm font-semibold text-[#E8ECF4] hover:border-cobalt disabled:cursor-not-allowed disabled:opacity-60"
+          className="cursor-pointer rounded-md border border-ink-line px-3.5 py-1.5 text-sm font-semibold text-white hover:border-cobalt disabled:cursor-not-allowed disabled:opacity-60"
         >
           {busy === 'check' ? 'Checking…' : 'Check recipients'}
         </button>
         <button
           onClick={() => void preview()}
           disabled={disabled}
-          className="cursor-pointer rounded-md border border-ink-line px-3.5 py-1.5 text-sm font-semibold text-[#E8ECF4] hover:border-cobalt disabled:cursor-not-allowed disabled:opacity-60"
+          className="cursor-pointer rounded-md border border-ink-line px-3.5 py-1.5 text-sm font-semibold text-white hover:border-cobalt disabled:cursor-not-allowed disabled:opacity-60"
         >
           {busy === 'preview' ? 'Sending preview…' : 'Send me a preview'}
         </button>
@@ -213,7 +213,7 @@ function CampaignCard({
 
       {recipients && (
         <div className="mt-4">
-          <p className="text-[13px] text-[#E8ECF4]">
+          <p className="text-[13px] text-white">
             {recipients.eligible === 0
               ? 'Nobody would get this right now.'
               : `${recipients.eligible} ${recipients.eligible === 1 ? 'user' : 'users'} would get this right now:`}
@@ -224,7 +224,7 @@ function CampaignCard({
                 const email = typeof r === 'string' ? r : r.email;
                 return (
                   <li key={email} className="flex justify-between gap-3 py-1">
-                    <span className="truncate font-mono text-[#E8ECF4]">{email}</span>
+                    <span className="truncate font-mono text-white">{email}</span>
                     {typeof r !== 'string' && (
                       <span className="shrink-0 text-muted-on-ink">{r.daysInactive} days inactive</span>
                     )}

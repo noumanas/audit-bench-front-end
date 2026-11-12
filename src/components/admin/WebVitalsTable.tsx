@@ -75,8 +75,8 @@ export function WebVitalsTable() {
             <tbody>
               {rows.map((r) => (
                 <tr key={r.name} className="border-b border-ink-line last:border-b-0">
-                  <td className="px-4 py-2.5 font-mono font-bold text-[#E8ECF4]">{r.name}</td>
-                  <td className="px-4 py-2.5 tabular-nums text-[#E8ECF4]">{formatValue(r.name, r.p75)}</td>
+                  <td className="px-4 py-2.5 font-mono font-bold text-white">{r.name}</td>
+                  <td className="px-4 py-2.5 tabular-nums text-white">{formatValue(r.name, r.p75)}</td>
                   <td className="px-4 py-2.5 tabular-nums text-muted-on-ink">{r.count}</td>
                   <td className="px-4 py-2.5">
                     <div className="flex h-2 w-full max-w-[180px] overflow-hidden rounded-full bg-ink-line">

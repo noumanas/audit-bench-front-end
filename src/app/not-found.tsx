@@ -12,8 +12,8 @@ export default function NotFound() {
   return (
     <div>
       <section className="flex min-h-[60vh] flex-col items-center justify-center border-b border-ink-line bg-ink px-6 py-20 text-center">
-        <div className="mb-2 font-mono text-[13px] tracking-wide text-muted-on-ink uppercase">404</div>
-        <h1 className="mb-3 text-3xl font-bold text-[#E8ECF4] sm:text-4xl">This page doesn&apos;t exist</h1>
+        <div className="mb-2 text-[13px] tracking-wide text-muted-on-ink uppercase">404</div>
+        <h1 className="mb-3 text-3xl text-white sm:text-4xl font-light tracking-[-0.03em]">This page doesn&apos;t exist</h1>
         <p className="mx-auto mb-8 max-w-md text-sm leading-relaxed text-muted-on-ink">
           The link that brought you here is broken, or the page moved. Here&apos;s where you probably meant to go.
         </p>
@@ -26,13 +26,13 @@ export default function NotFound() {
           </Link>
           <Link
             href="/features"
-            className="rounded-lg border border-ink-line px-5 py-3 text-sm font-bold text-muted-on-ink transition-all duration-200 hover:-translate-y-0.5 hover:border-cobalt/40 hover:text-[#E8ECF4]"
+            className="rounded-lg border border-ink-line px-5 py-3 text-sm font-bold text-muted-on-ink transition-all duration-200 hover:-translate-y-0.5 hover:border-cobalt/40 hover:text-white"
           >
             See features
           </Link>
           <Link
             href="/pricing"
-            className="rounded-lg border border-ink-line px-5 py-3 text-sm font-bold text-muted-on-ink transition-all duration-200 hover:-translate-y-0.5 hover:border-cobalt/40 hover:text-[#E8ECF4]"
+            className="rounded-lg border border-ink-line px-5 py-3 text-sm font-bold text-muted-on-ink transition-all duration-200 hover:-translate-y-0.5 hover:border-cobalt/40 hover:text-white"
           >
             View pricing
           </Link>

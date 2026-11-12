@@ -28,7 +28,7 @@ const VERDICT_STYLE = {
 function CardHeading({ title, hint }: { title: string; hint: string }) {
   return (
     <div className="mb-3 flex items-center justify-between">
-      <h3 className="font-mono text-[11px] tracking-wide text-muted-on-ink uppercase">{title}</h3>
+      <h3 className="text-[11px] tracking-wide text-muted-on-ink uppercase">{title}</h3>
       <InfoIcon title={hint} className="h-3.5 w-3.5 shrink-0 text-muted-on-ink" />
     </div>
   );
@@ -58,7 +58,7 @@ function KpiCard({
         {icon}
         {label}
       </div>
-      <div className="mb-1 text-[28px] leading-none font-bold tabular-nums text-[#E8ECF4]">{value}</div>
+      <div className="mb-1 text-[28px] leading-none font-bold tabular-nums text-white">{value}</div>
       <p className="text-[12px] leading-snug text-muted-on-ink">{detail}</p>
     </div>
   );
@@ -101,7 +101,7 @@ export function AnalyticsSection() {
     <div className="mb-8">
       <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
         <div>
-          <h2 className="font-mono text-[11px] font-bold tracking-wide text-muted-on-ink uppercase">Code health</h2>
+          <h2 className="text-[11px] font-medium tracking-wide text-muted-on-ink uppercase">Code health</h2>
           <p className="text-[12px] text-muted-on-ink">
             Findings, scores and activity for {repo || 'all repositories'} over the last {days} days.
           </p>
@@ -236,7 +236,7 @@ export function AnalyticsSection() {
                           style={{ backgroundColor: VERDICT_STYLE[k].color }}
                         />
                         <span className="text-muted-on-ink">{VERDICT_STYLE[k].label}</span>
-                        <span className="ml-auto tabular-nums font-semibold text-[#E8ECF4]">
+                        <span className="ml-auto tabular-nums font-semibold text-white">
                           {overview.verdictBreakdown[k]}
                         </span>
                       </div>
@@ -334,7 +334,7 @@ export function AnalyticsSection() {
                   {overview.topIssues.map((issue) => (
                     <div key={`${issue.category}:${issue.title}`} className="flex items-center gap-2 text-[12px]">
                       <SeverityBadge level={issue.maxSeverity} />
-                      <span className="flex-1 truncate text-[#E8ECF4]">{issue.title}</span>
+                      <span className="flex-1 truncate text-white">{issue.title}</span>
                       <span className="tabular-nums text-muted-on-ink">×{issue.count}</span>
                     </div>
                   ))}
@@ -357,7 +357,7 @@ export function AnalyticsSection() {
                     return (
                       <div key={`${item.label}:${i}`}>
                         <div className="mb-1 flex items-center gap-2 text-[12px]">
-                          <span className="truncate font-mono text-[#E8ECF4]">{item.label}</span>
+                          <span className="truncate font-mono text-white">{item.label}</span>
                           <span className="ml-auto shrink-0 text-muted-on-ink">
                             {item.criticalCount > 0 && `${item.criticalCount} critical`}
                             {item.criticalCount > 0 && item.highCount > 0 && ' · '}

@@ -5,7 +5,7 @@ export const READINESS: Record<MergeReadinessStatus, { label: string; icon: stri
   ready_with_notes: { label: 'Ready to merge, with notes', icon: '🟡', hex: '#d97706' },
   not_ready: { label: 'Not ready to merge', icon: '⛔', hex: '#c92a3d' },
   merged: { label: 'Already merged', icon: '🟣', hex: '#7c5cd6' },
-  closed: { label: 'Closed without merging', icon: '⚪', hex: '#6b7280' },
+  closed: { label: 'Closed without merging', icon: '⚪', hex: '#5c5c5c' },
 };
 
 const SEVERITY_LABEL: Record<Severity, string> = {

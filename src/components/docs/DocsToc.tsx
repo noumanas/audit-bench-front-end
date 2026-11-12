@@ -49,7 +49,7 @@ export function DocsToc() {
 
   return (
     <nav aria-label="On this page" className="text-[12.5px]">
-      <h2 className="mb-3 font-mono text-[10.5px] font-bold tracking-[0.14em] text-muted-on-ink uppercase">
+      <h2 className="mb-3 text-[10.5px] font-medium tracking-[0.14em] text-muted-on-ink uppercase">
         On this page
       </h2>
       <ul className="space-y-1.5 border-l border-ink-line">
@@ -59,8 +59,8 @@ export function DocsToc() {
               href={`#${h.id}`}
               className={`-ml-px block border-l py-0.5 transition-colors ${h.level === 3 ? 'pl-6' : 'pl-3'} ${
                 activeId === h.id
-                  ? 'border-cobalt font-semibold text-[#E8ECF4]'
-                  : 'border-transparent text-muted-on-ink hover:text-[#E8ECF4]'
+                  ? 'border-cobalt font-semibold text-white'
+                  : 'border-transparent text-muted-on-ink hover:text-white'
               }`}
             >
               {h.text}

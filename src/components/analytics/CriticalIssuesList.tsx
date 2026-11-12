@@ -12,14 +12,14 @@ const SEVERITY_COLOR: Record<string, string> = {
 function scoreColor(pct: number): string {
   if (pct >= 90) return '#c92a3d';
   if (pct >= 70) return '#d97706';
-  return '#8b96ab';
+  return '#adadad';
 }
 
 export function CriticalIssuesList({ issues }: { issues: CriticalIssue[] }) {
   if (issues.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-8 text-center">
-        <div className="mb-1 text-sm font-bold text-[#E8ECF4]">No critical issues found</div>
+        <div className="mb-1 text-sm font-bold text-white">No critical issues found</div>
         <p className="text-[12px] text-muted-on-ink">Nothing critical or high severity in this window.</p>
       </div>
     );
@@ -37,10 +37,10 @@ export function CriticalIssuesList({ issues }: { issues: CriticalIssue[] }) {
           >
             <span
               className="h-2 w-2 shrink-0 rounded-full"
-              style={{ backgroundColor: SEVERITY_COLOR[issue.severity] ?? '#8b96ab' }}
+              style={{ backgroundColor: SEVERITY_COLOR[issue.severity] ?? '#adadad' }}
             />
             <div className="min-w-0 flex-1">
-              <div className="truncate text-[13px] font-semibold text-[#E8ECF4]">{issue.title}</div>
+              <div className="truncate text-[13px] font-semibold text-white">{issue.title}</div>
               <div className="truncate text-[11px] text-muted-on-ink">
                 {issue.category} · {issue.resourceLabel}
               </div>

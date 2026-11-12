@@ -332,11 +332,11 @@ export default function TechnicalDueDiligenceQuestionsPage() {
               const n = STARTS[si] + qi;
               return (
                 <li key={q} className="flex gap-3 rounded-lg border border-paper-line bg-paper-card p-3.5">
-                  <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#1C2128] font-mono text-[11px] font-bold text-white">
+                  <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-black font-mono text-[11px] font-bold text-white">
                     {n}
                   </span>
                   <div>
-                    <div className="font-semibold text-[#1C2128]">{q}</div>
+                    <div className="font-semibold text-black">{q}</div>
                     <div className="mt-0.5 text-sm text-muted-on-paper">{why}</div>
                   </div>
                 </li>

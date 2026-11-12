@@ -6,7 +6,7 @@ import { useChartWidth } from '../analytics/useChartWidth';
 import { formatMoney } from './revenueFormat';
 
 // Palette validated with the dataviz validator on the admin card surface
-// (#1A2130, dark): lightness band, chroma, CVD and normal-vision separation
+// (#141414, dark): lightness band, chroma, CVD and normal-vision separation
 // between neighbours, and 3:1 contrast all pass. Movement order is fixed so a
 // series keeps its colour whichever months are shown.
 const MRR_COLOR = '#3987e5';
@@ -19,8 +19,8 @@ export const MOVEMENTS = [
 ] as const;
 
 const PAD = { top: 18, right: 12, bottom: 28, left: 56 };
-const GRID = '#2A3242';
-const AXIS_TEXT = '#8B96AB';
+const GRID = '#303030';
+const AXIS_TEXT = '#ADADAD';
 
 function monthLabel(m: string, withYear = false): string {
   const d = new Date(`${m}-01T00:00:00Z`);
@@ -110,15 +110,15 @@ export function MrrTrendChart({ series }: { series: RevenueMonth[] }) {
       </svg>
       {hovered && hover !== null && (
         <Tooltip x={PAD.left + hover * band + band / 2} width={width}>
-          <div className="mb-1 font-semibold text-[#E8ECF4]">{monthLabel(hovered.month, true)}</div>
+          <div className="mb-1 font-semibold text-white">{monthLabel(hovered.month, true)}</div>
           <div className="flex justify-between text-muted-on-ink">
-            MRR <span className="font-mono text-[#E8ECF4]">{formatMoney(hovered.mrrCents)}</span>
+            MRR <span className="font-mono text-white">{formatMoney(hovered.mrrCents)}</span>
           </div>
           <div className="flex justify-between text-muted-on-ink">
-            ARR <span className="font-mono text-[#E8ECF4]">{formatMoney(hovered.mrrCents * 12)}</span>
+            ARR <span className="font-mono text-white">{formatMoney(hovered.mrrCents * 12)}</span>
           </div>
           <div className="flex justify-between text-muted-on-ink">
-            Paying accounts <span className="font-mono text-[#E8ECF4]">{hovered.accounts}</span>
+            Paying accounts <span className="font-mono text-white">{hovered.accounts}</span>
           </div>
         </Tooltip>
       )}
@@ -212,12 +212,12 @@ export function MrrMovementsChart({ series }: { series: RevenueMonth[] }) {
       )}
       {hovered && hover !== null && (
         <Tooltip x={PAD.left + hover * band + band / 2} width={width}>
-          <div className="mb-1 font-semibold text-[#E8ECF4]">{monthLabel(hovered.month, true)}</div>
+          <div className="mb-1 font-semibold text-white">{monthLabel(hovered.month, true)}</div>
           {MOVEMENTS.map((s) => (
             <div key={s.key} className="flex items-center gap-2 text-muted-on-ink">
               <span className="h-2 w-2 rounded-sm" style={{ backgroundColor: s.color }} />
               {s.label}
-              <span className="ml-auto font-mono text-[#E8ECF4]">
+              <span className="ml-auto font-mono text-white">
                 {hovered[s.key] ? `${s.sign > 0 ? '+' : '−'}${formatMoney(hovered[s.key])}` : '—'}
               </span>
             </div>
@@ -243,7 +243,7 @@ export function RevenueTable({ series }: { series: RevenueMonth[] }) {
     <div className="overflow-x-auto">
       <table className="w-full min-w-[640px] text-left text-[12px]">
         <thead>
-          <tr className="border-b border-ink-line font-mono text-[10px] tracking-wide text-muted-on-ink uppercase">
+          <tr className="border-b border-ink-line text-[10px] tracking-wide text-muted-on-ink uppercase">
             <th className="py-2 pr-3">Month</th>
             <th className="py-2 pr-3 text-right">MRR</th>
             {MOVEMENTS.map((s) => (
@@ -257,7 +257,7 @@ export function RevenueTable({ series }: { series: RevenueMonth[] }) {
         </thead>
         <tbody>
           {[...series].reverse().map((m) => (
-            <tr key={m.month} className="border-b border-ink-line/60 text-[#E8ECF4]">
+            <tr key={m.month} className="border-b border-ink-line/60 text-white">
               <td className="py-1.5 pr-3">{monthLabel(m.month, true)}</td>
               <td className="py-1.5 pr-3 text-right font-mono">{formatMoney(m.mrrCents)}</td>
               {MOVEMENTS.map((s) => (

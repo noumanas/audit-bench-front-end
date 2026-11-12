@@ -1,15 +1,20 @@
 {
   "name": "Audit Bench Ai",
   "short_name": "Audit Bench",
-  "description": "AI code review before it ships.",
+  "description": "Build fast. Check what ships.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
-  "background_color": "#10141c",
-  "theme_color": "#10141c",
+  "background_color": "#000000",
+  "theme_color": "#000000",
   "icons": [
     {
-      "src": "/globe.svg",
+      "src": "/apple-icon",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml"
     }

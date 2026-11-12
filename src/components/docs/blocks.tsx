@@ -33,7 +33,7 @@ export const H2 = (props: { id?: string; children: ReactNode }) => <Heading as="
 export const H3 = (props: { id?: string; children: ReactNode }) => <Heading as="h3" {...props} />;
 
 const CALLOUT_STYLES = {
-  note: { label: 'Note', border: 'border-cobalt/50', bg: 'bg-cobalt/[0.07]', text: 'text-[#9db6ff]' },
+  note: { label: 'Note', border: 'border-cobalt/50', bg: 'bg-cobalt/[0.07]', text: 'text-[#a58bff]' },
   tip: { label: 'Tip', border: 'border-pass/60', bg: 'bg-pass/[0.08]', text: 'text-[#7fd1a6]' },
   warning: { label: 'Heads up', border: 'border-high/60', bg: 'bg-high/[0.08]', text: 'text-[#F0CE9A]' },
 } as const;
@@ -53,7 +53,7 @@ export function Callout({
       <div className={`mb-1 font-mono text-[10.5px] font-bold tracking-[0.12em] uppercase ${s.text}`}>
         {title ?? s.label}
       </div>
-      <div className="docs-callout-body text-[13.5px] leading-relaxed text-[#c9d1e0]">{children}</div>
+      <div className="docs-callout-body text-[13.5px] leading-relaxed text-[#d4d4d4]">{children}</div>
     </div>
   );
 }
@@ -66,7 +66,7 @@ export function Steps({ children }: { children: ReactNode }) {
       {steps.map((step, i) => (
         <li key={i} className="relative flex gap-4">
           {i < steps.length - 1 && <span aria-hidden className="absolute top-8 bottom-[-1.5rem] left-[13px] w-px bg-ink-line" />}
-          <span className="relative z-10 flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-cobalt/60 bg-ink font-mono text-[12px] font-bold text-[#9db6ff]">
+          <span className="relative z-10 flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-cobalt/60 bg-ink font-mono text-[12px] font-bold text-[#a58bff]">
             {i + 1}
           </span>
           <div className="min-w-0 flex-1 pt-0.5">{step}</div>
@@ -79,8 +79,8 @@ export function Steps({ children }: { children: ReactNode }) {
 export function Step({ title, children }: { title: string; children: ReactNode }) {
   return (
     <div>
-      <h3 className="mb-1.5 text-[15px] font-bold text-[#E8ECF4]">{title}</h3>
-      <div className="docs-step-body space-y-3 text-[14px] leading-relaxed text-[#c9d1e0]">{children}</div>
+      <h3 className="mb-1.5 text-[15px] font-bold text-white">{title}</h3>
+      <div className="docs-step-body space-y-3 text-[14px] leading-relaxed text-[#d4d4d4]">{children}</div>
     </div>
   );
 }
@@ -95,8 +95,8 @@ export function Card({ href, title, icon, children }: { href: string; title: str
   const external = href.startsWith('http');
   const body = (
     <>
-      {icon && <div className="mb-3 text-[#9db6ff]">{icon}</div>}
-      <div className="mb-1 flex items-center gap-1.5 text-[14px] font-bold text-[#E8ECF4]">
+      {icon && <div className="mb-3 text-[#a58bff]">{icon}</div>}
+      <div className="mb-1 flex items-center gap-1.5 text-[14px] font-bold text-white">
         {title}
         <span aria-hidden className="text-muted-on-ink transition-transform group-hover:translate-x-0.5">→</span>
       </div>
@@ -143,7 +143,7 @@ export function Table({ head, rows }: { head: ReactNode[]; rows: ReactNode[][] }
 }
 
 export const Kbd =({ children }: { children: ReactNode }) => (
-  <kbd className="rounded border border-ink-line bg-ink-soft px-1.5 py-0.5 font-mono text-[11px] text-[#E8ECF4]">{children}</kbd>
+  <kbd className="rounded border border-ink-line bg-ink-soft px-1.5 py-0.5 font-mono text-[11px] text-white">{children}</kbd>
 );
 
 /** A small inline icon set for cards, in the 24px stroke style of components/icons.tsx. */

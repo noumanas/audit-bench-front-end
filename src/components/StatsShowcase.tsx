@@ -33,7 +33,7 @@ export function StatsShowcase() {
               <div className="text-5xl font-semibold tracking-tight text-cobalt tabular-nums">
                 <CountUp value={s.value} />
               </div>
-              <p className="mt-4 text-sm leading-relaxed text-[#1C2128]">{s.label}</p>
+              <p className="mt-4 text-sm leading-relaxed text-black">{s.label}</p>
             </div>
           ))}
         </ScrollReveal>
@@ -50,8 +50,8 @@ export function StatsShowcase() {
               className="group flex items-start justify-between gap-4 bg-paper-card px-7 py-7 transition-colors duration-200 hover:bg-paper"
             >
               <div>
-                <div className="font-mono text-[12px] tracking-[0.08em] text-muted-on-paper uppercase">{r.kicker}</div>
-                <div className="mt-1.5 text-xl font-bold tracking-tight text-[#1C2128] group-hover:text-cobalt">
+                <div className="text-[12px] tracking-[0.08em] text-muted-on-paper uppercase">{r.kicker}</div>
+                <div className="mt-1.5 text-xl font-bold tracking-tight text-black group-hover:text-cobalt">
                   {r.title}
                 </div>
               </div>

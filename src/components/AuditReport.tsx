@@ -15,7 +15,7 @@ const SEVERITY_HEX: Record<Severity, string> = {
   high: '#d97706',
   medium: '#b08a00',
   low: '#2e6fab',
-  info: '#8a93a3',
+  info: '#a3a3a3',
 };
 const STATUS_FILTERS: Array<{ key: FindingStatus | 'all'; label: string }> = [
   { key: 'all', label: 'All' },
@@ -101,7 +101,7 @@ export function AuditReport({
           <PipelineBadge aiInvoked={audit.aiInvoked} fromCache={audit.fromCache} />
           <TokenUsageNote inputTokens={audit.inputTokens} outputTokens={audit.outputTokens} />
         </div>
-        <p className="text-sm leading-relaxed text-[#1C2128]">{audit.summary}</p>
+        <p className="text-sm leading-relaxed text-black">{audit.summary}</p>
 
         {audit.findings.length > 0 && (
           <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4">
@@ -116,16 +116,16 @@ export function AuditReport({
                   aria-pressed={active}
                   title={n ? `Show only ${s} findings` : undefined}
                   className={`rounded-md border px-3 py-2 text-left transition-colors disabled:cursor-default ${
-                    active ? 'border-[#1C2128] bg-paper' : 'border-paper-line bg-paper hover:border-muted-on-paper'
+                    active ? 'border-black bg-paper' : 'border-paper-line bg-paper hover:border-muted-on-paper'
                   } ${n ? 'cursor-pointer' : ''}`}
                 >
                   <div
                     className="text-xl leading-none font-bold tabular-nums"
-                    style={{ color: n ? SEVERITY_HEX[s] : '#b4bac4' }}
+                    style={{ color: n ? SEVERITY_HEX[s] : '#bdbdbd' }}
                   >
                     {n}
                   </div>
-                  <div className="mt-1 font-mono text-[10px] tracking-wide text-muted-on-paper uppercase">{s}</div>
+                  <div className="mt-1 text-[10px] tracking-wide text-muted-on-paper uppercase">{s}</div>
                 </button>
               );
             })}
@@ -163,7 +163,7 @@ export function AuditReport({
       ) : (
         <>
           <div className="mb-3 flex flex-wrap items-center gap-2">
-            <h2 className="mr-auto font-mono text-[11px] font-bold tracking-wide text-muted-on-paper uppercase">
+            <h2 className="mr-auto text-[11px] font-medium tracking-wide text-muted-on-paper uppercase">
               Findings{' '}
               <span className="tabular-nums">
                 {filtering ? `${visible.length} of ${audit.findings.length}` : audit.findings.length}
@@ -181,7 +181,7 @@ export function AuditReport({
                     onClick={() => setStatus(f.key)}
                     aria-pressed={status === f.key}
                     className={`cursor-pointer rounded px-2 py-1 text-[12px] ${
-                      status === f.key ? 'bg-[#1C2128] text-white' : 'text-muted-on-paper hover:text-[#1C2128]'
+                      status === f.key ? 'bg-black text-white' : 'text-muted-on-paper hover:text-black'
                     }`}
                   >
                     {f.label}
@@ -195,7 +195,7 @@ export function AuditReport({
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
                 aria-label="Filter by category"
-                className="rounded-md border border-paper-line bg-paper-card px-2 py-1.5 text-[12px] text-[#1C2128] outline-none"
+                className="rounded-md border border-paper-line bg-paper-card px-2 py-1.5 text-[12px] text-black outline-none"
               >
                 <option value="all">All categories</option>
                 {categories.map((c) => (
@@ -209,14 +209,14 @@ export function AuditReport({
               value={sortByLine ? 'line' : 'severity'}
               onChange={(e) => setSortByLine(e.target.value === 'line')}
               aria-label="Sort findings"
-              className="rounded-md border border-paper-line bg-paper-card px-2 py-1.5 text-[12px] text-[#1C2128] outline-none"
+              className="rounded-md border border-paper-line bg-paper-card px-2 py-1.5 text-[12px] text-black outline-none"
             >
               <option value="severity">Sort: severity</option>
               <option value="line">Sort: line number</option>
             </select>
             <button
               onClick={() => setOpenSet(allOpen ? new Set() : new Set(visible.map((v) => v.index)))}
-              className="cursor-pointer rounded-md border border-paper-line bg-paper-card px-2.5 py-1.5 text-[12px] font-medium text-[#1C2128] hover:border-muted-on-paper"
+              className="cursor-pointer rounded-md border border-paper-line bg-paper-card px-2.5 py-1.5 text-[12px] font-medium text-black hover:border-muted-on-paper"
             >
               {allOpen ? 'Collapse all' : 'Expand all'}
             </button>

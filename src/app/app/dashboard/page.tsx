@@ -94,7 +94,7 @@ function AuditRow({ a }: { a: Audit }) {
     >
       <span className={`absolute top-0 left-0 h-full w-1 ${VERDICT_ACCENT[a.verdict] ?? 'bg-muted-on-ink'}`} />
       <span
-        className={`truncate font-mono text-[13px] ${auditName(a) === 'Pasted code' ? 'text-muted-on-ink italic' : 'text-[#E8ECF4]'}`}
+        className={`truncate font-mono text-[13px] ${auditName(a) === 'Pasted code' ? 'text-muted-on-ink italic' : 'text-white'}`}
       >
         {auditName(a)}
       </span>
@@ -125,7 +125,7 @@ function StatusPill({ status }: { status: ScanJob['status'] }) {
   return (
     <span
       className={`inline-flex shrink-0 items-center gap-1.5 rounded px-2 py-0.5 font-mono text-[11px] font-bold whitespace-nowrap uppercase ${
-        status === 'failed' ? 'bg-critical/20 text-[#F3B7BF]' : 'bg-ink-line text-[#E8ECF4]'
+        status === 'failed' ? 'bg-critical/20 text-[#F3B7BF]' : 'bg-ink-line text-white'
       }`}
     >
       {running && <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-cobalt" />}
@@ -147,7 +147,7 @@ function ScanRow({ s }: { s: ScanJob }) {
       />
       <span className="flex min-w-0 items-center gap-2">
         {SourceIcon && <SourceIcon className="h-3.5 w-3.5 shrink-0 text-muted-on-ink" />}
-        <span className="truncate font-mono text-[13px] text-[#E8ECF4]">{s.sourceName}</span>
+        <span className="truncate font-mono text-[13px] text-white">{s.sourceName}</span>
       </span>
       <div className="flex flex-wrap items-center gap-2">
         {s.verdict && s.status === 'completed' ? (
@@ -161,7 +161,7 @@ function ScanRow({ s }: { s: ScanJob }) {
         </span>
         {s.isPublic && s.shareId && (
           <span
-            className="rounded-full border border-cobalt/40 px-2 py-px font-mono text-[10px] font-bold text-cobalt uppercase"
+            className="rounded-full border border-cobalt/40 px-2 py-px text-[10px] font-medium text-cobalt uppercase"
             title="This report has a public share link"
           >
             Shared
@@ -226,7 +226,7 @@ function DashboardPageInner() {
           <div className="flex flex-wrap gap-2">
             <Link
               href="/app/repository"
-              className="inline-flex items-center gap-1.5 rounded-md border border-ink-line px-3.5 py-2 text-sm font-bold text-[#E8ECF4] transition-colors hover:border-cobalt"
+              className="inline-flex items-center gap-1.5 rounded-md border border-ink-line px-3.5 py-2 text-sm font-bold text-white transition-colors hover:border-cobalt"
             >
               <GitBranchIcon className="h-4 w-4" />
               Scan a repository
@@ -258,7 +258,7 @@ function DashboardPageInner() {
               aria-selected={active}
               onClick={() => goTab(t.key)}
               className={`-mb-px flex shrink-0 cursor-pointer items-center gap-2 border-b-2 px-3 py-2.5 text-sm font-medium transition-colors ${
-                active ? 'border-cobalt text-[#E8ECF4]' : 'border-transparent text-muted-on-ink hover:text-[#E8ECF4]'
+                active ? 'border-cobalt text-white' : 'border-transparent text-muted-on-ink hover:text-white'
               }`}
             >
               <Icon className="h-4 w-4" />
@@ -382,7 +382,7 @@ function GetStarted({ hasAudit, hasScan }: { hasAudit: boolean; hasScan: boolean
   ];
   return (
     <div className="shadow-panel mb-8 rounded-lg border border-cobalt/40 bg-cobalt/10 p-5">
-      <h2 className="mb-1 text-base font-bold text-[#E8ECF4]">Get started</h2>
+      <h2 className="mb-1 text-base font-bold text-white">Get started</h2>
       <p className="mb-4 text-[13px] text-muted-on-ink">
         Three steps to your first full report. Local checks are free on every plan.
       </p>
@@ -392,12 +392,12 @@ function GetStarted({ hasAudit, hasScan }: { hasAudit: boolean; hasScan: boolean
             <div className="mb-2 flex items-center gap-2">
               <span
                 className={`flex h-6 w-6 items-center justify-center rounded-full font-mono text-[11px] font-bold ${
-                  s.done ? 'bg-pass text-white' : 'bg-ink-line text-[#E8ECF4]'
+                  s.done ? 'bg-pass text-white' : 'bg-ink-line text-white'
                 }`}
               >
                 {s.done ? '✓' : i + 1}
               </span>
-              <span className={`text-sm font-bold ${s.done ? 'text-muted-on-ink line-through' : 'text-[#E8ECF4]'}`}>
+              <span className={`text-sm font-bold ${s.done ? 'text-muted-on-ink line-through' : 'text-white'}`}>
                 {s.title}
               </span>
             </div>
@@ -445,7 +445,7 @@ function RecentList({
           total > 5 && (
             <button
               onClick={onViewAll}
-              className="cursor-pointer font-mono text-[11px] font-bold tracking-wide text-cobalt uppercase hover:underline"
+              className="cursor-pointer text-[11px] font-medium tracking-wide text-cobalt uppercase hover:underline"
             >
               View all {total}
             </button>
@@ -505,7 +505,7 @@ function FilterableList<T>({
           onChange={(e) => setQuery(e.target.value)}
           placeholder={searchPlaceholder}
           aria-label={searchPlaceholder}
-          className="min-w-[220px] flex-1 rounded-md border border-ink-line bg-ink-soft px-3 py-2 text-sm text-[#E8ECF4] outline-none placeholder:text-muted-on-ink focus:border-cobalt"
+          className="min-w-[220px] flex-1 rounded-md border border-ink-line bg-ink-soft px-3 py-2 text-sm text-white outline-none placeholder:text-muted-on-ink focus:border-cobalt"
         />
         <div
           className="flex flex-wrap gap-1 rounded-md border border-ink-line bg-ink-soft p-0.5"
@@ -518,7 +518,7 @@ function FilterableList<T>({
               onClick={() => setVerdict(f.key)}
               aria-pressed={verdict === f.key}
               className={`cursor-pointer rounded px-2.5 py-1 text-[12px] font-medium ${
-                verdict === f.key ? 'bg-cobalt text-white' : 'text-muted-on-ink hover:bg-ink-line hover:text-[#E8ECF4]'
+                verdict === f.key ? 'bg-cobalt text-white' : 'text-muted-on-ink hover:bg-ink-line hover:text-white'
               }`}
             >
               {f.label}
@@ -587,7 +587,7 @@ function SectionHeading({
   return (
     <div className="mb-3 flex items-center gap-2">
       <span className="text-muted-on-ink">{icon}</span>
-      <h2 className="font-mono text-[11px] font-bold tracking-wide text-muted-on-ink uppercase">{title}</h2>
+      <h2 className="text-[11px] font-medium tracking-wide text-muted-on-ink uppercase">{title}</h2>
       {count > 0 && (
         <span className="rounded-full bg-ink-line px-1.5 py-0.5 font-mono text-[10px] font-bold text-muted-on-ink tabular-nums">
           {count}
@@ -602,7 +602,7 @@ function EmptyRow({ href, label }: { href: string; label: string }) {
   return (
     <Link
       href={href}
-      className="row-hover group flex items-center justify-between bg-ink-soft px-5 py-4 text-sm text-muted-on-ink hover:bg-ink-line hover:text-[#E8ECF4]"
+      className="row-hover group flex items-center justify-between bg-ink-soft px-5 py-4 text-sm text-muted-on-ink hover:bg-ink-line hover:text-white"
     >
       {label}
       <ArrowRightIcon className="h-4 w-4 opacity-0 transition-opacity group-hover:opacity-100" />

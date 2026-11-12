@@ -30,7 +30,7 @@ function ScanDemo() {
       <div className="mt-3 flex items-center gap-2 rounded-md border-l-4 border-l-critical bg-ink px-3 py-2">
         <SeverityTag severity="critical" />
         <CategoryTag label="Security" />
-        <span className="text-[#E8ECF4]">api/webhooks/stripe.ts — signature not verified before processing</span>
+        <span className="text-white">api/webhooks/stripe.ts — signature not verified before processing</span>
       </div>
       <div className="mt-2 flex items-center justify-between rounded-md bg-ink-soft px-3 py-2">
         <span className="text-muted-on-ink">Verdict</span>
@@ -58,7 +58,7 @@ function CategoriesDemo() {
             <SeverityTag severity={r.tone} />
             <CategoryTag label={r.label} />
           </div>
-          <div className="text-[#E8ECF4]">{r.finding}</div>
+          <div className="text-white">{r.finding}</div>
         </div>
       ))}
     </div>
@@ -68,7 +68,7 @@ function CategoriesDemo() {
 function FixLoopDemo() {
   return (
     <div className="font-mono text-[12px] leading-relaxed">
-      <div className="whitespace-pre text-[#E8ECF4]">
+      <div className="whitespace-pre text-white">
         {'const rows = await db.orders.findMany();\nfor (const o of rows) {\n  await db.customers.findOne(o.customerId);\n}'}
       </div>
       <div className="mt-2 rounded bg-pass/15 px-2 py-1 text-pass">
@@ -76,7 +76,7 @@ function FixLoopDemo() {
       </div>
       <div className="mt-3 flex items-center gap-2 rounded-md border-l-4 border-l-pass bg-ink px-3 py-2">
         <Dot tone="low" />
-        <span className="text-[#E8ECF4]">Fix applied — re-audited automatically, N+1 resolved.</span>
+        <span className="text-white">Fix applied — re-audited automatically, N+1 resolved.</span>
       </div>
     </div>
   );
@@ -87,7 +87,7 @@ function PrGateDemo() {
     <div className="font-mono text-[12px] leading-relaxed">
       <div className="rounded-md border border-ink-line bg-ink px-3 py-2">
         <div className="mb-1 text-[10px] tracking-wide text-muted-on-ink uppercase">src/auth/session.ts · line 41</div>
-        <div className="text-[#E8ECF4]">Session token isn&apos;t invalidated on password change — same bug we flagged last week, still open.</div>
+        <div className="text-white">Session token isn&apos;t invalidated on password change — same bug we flagged last week, still open.</div>
       </div>
       <div className="mt-3 flex items-center justify-between rounded-md bg-ink-soft px-3 py-2">
         <span className="text-muted-on-ink">Audit Bench Ai / do_not_ship</span>
@@ -104,7 +104,7 @@ function CiGateDemo() {
     <div className="font-mono text-[12px] leading-relaxed text-muted-on-ink">
       <div>Run auditbench scan . --fail-on do_not_ship</div>
       <div className="mt-1">Verdict: do_not_ship (2 critical, 1 high)</div>
-      <div className="mt-3 rounded-md border-l-4 border-l-critical bg-ink px-3 py-2 text-[#E8ECF4]">
+      <div className="mt-3 rounded-md border-l-4 border-l-critical bg-ink px-3 py-2 text-white">
         Error: Process completed with exit code 1.
       </div>
       <div className="mt-2 text-[11px] text-muted-on-ink">The build fails here — before review, not after.</div>
@@ -125,7 +125,7 @@ function DashboardDemo() {
         {files.map((f) => (
           <div key={f.name} className="flex items-center gap-2 rounded-md border border-ink-line bg-ink px-2.5 py-1.5">
             <Dot tone={f.tone} />
-            <span className="truncate text-[#E8ECF4]">{f.name}</span>
+            <span className="truncate text-white">{f.name}</span>
           </div>
         ))}
       </div>
@@ -143,7 +143,7 @@ function PipelineDemo() {
     <div className="space-y-2 font-mono text-[12px]">
       {stages.map((s) => (
         <div key={s.n} className="rounded-md border border-ink-line bg-ink px-3 py-2">
-          <div className="flex items-center gap-2 text-[#E8ECF4]">
+          <div className="flex items-center gap-2 text-white">
             <span className="text-muted-on-ink">{s.n}</span>
             <span className="font-bold">{s.label}</span>
           </div>
@@ -230,12 +230,12 @@ export function FeatureShowcase() {
             Reviews. Gates. Fixes. Reports. Same findings whether it&apos;s a file, a PR, or a whole repository.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link href="/features" className="rounded-full bg-white px-4 py-2 text-xs font-bold text-[#10141C]">
+            <Link href="/features" className="rounded-full bg-white px-4 py-2 text-xs font-bold text-[#080808]">
               Explore all features →
             </Link>
             <Link
               href="/cli"
-              className="rounded-full border border-ink-line px-4 py-2 text-xs font-bold text-muted-on-ink hover:text-[#E8ECF4]"
+              className="rounded-full border border-ink-line px-4 py-2 text-xs font-bold text-muted-on-ink hover:text-white"
             >
               Docs
             </Link>
@@ -257,7 +257,7 @@ export function FeatureShowcase() {
                 }`}
               >
                 <span className="mr-3 font-mono text-[11px] text-muted-on-ink">{r.n}</span>
-                <span className={`text-[15px] font-medium ${i === active ? 'text-[#E8ECF4]' : 'text-muted-on-ink'}`}>
+                <span className={`text-[15px] font-medium ${i === active ? 'text-white' : 'text-muted-on-ink'}`}>
                   {r.label}
                 </span>
                 {r.code && (
@@ -277,13 +277,13 @@ export function FeatureShowcase() {
             >
               <div className="mb-3 flex items-center justify-between">
                 <ChromeDots />
-                <span className="font-mono text-[10px] tracking-wide text-muted-on-ink uppercase">Audit Bench Ai</span>
+                <span className="text-[10px] tracking-wide text-muted-on-ink uppercase">Audit Bench Ai</span>
               </div>
               <div key={active} className="fade-up min-h-[168px]">
                 <Demo />
               </div>
               <div className="mt-4 flex items-center justify-between border-t border-ink-line pt-3">
-                <span className="font-mono text-[10px] font-bold tracking-wide text-cobalt uppercase">
+                <span className="text-[10px] font-medium tracking-wide text-cobalt uppercase">
                   {ROWS[active].n} — {ROWS[active].label}
                 </span>
               </div>

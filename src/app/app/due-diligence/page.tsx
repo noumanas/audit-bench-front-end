@@ -36,7 +36,7 @@ function reportRow(scan: ScanJob) {
       className="row-hover group relative flex flex-col gap-1.5 border-b border-ink-line bg-ink-soft py-3 pr-4 pl-5 last:border-b-0 hover:bg-ink-line"
     >
       <span className={`absolute top-0 left-0 h-full w-1 ${verdict?.className ?? 'bg-muted-on-ink'}`} />
-      <span className="truncate font-mono text-[13px] text-[#E8ECF4]">{scan.sourceName}</span>
+      <span className="truncate font-mono text-[13px] text-white">{scan.sourceName}</span>
       <div className="flex flex-wrap items-center gap-2">
         <span
           className={`${verdict?.className ?? 'bg-muted-on-ink'} rounded px-2 py-0.5 font-mono text-[11px] font-bold text-white uppercase`}

@@ -17,10 +17,10 @@ export default function FeaturesPage() {
     <div>
       <section className="border-b border-ink-line bg-ink px-6 py-16">
         <ScrollReveal className="mx-auto max-w-5xl">
-          <div className="mb-4 inline-block rounded-full border border-ink-line px-3 py-1 font-mono text-[11px] tracking-wide text-muted-on-ink uppercase">
+          <div className="mb-4 inline-block rounded-full border border-ink-line px-3 py-1 text-[11px] tracking-wide text-muted-on-ink uppercase">
             Features
           </div>
-          <h1 className="mb-4 max-w-2xl text-3xl leading-tight font-bold text-[#E8ECF4] sm:text-4xl">
+          <h1 className="mb-4 max-w-2xl text-3xl leading-tight text-white sm:text-4xl font-light tracking-[-0.03em]">
             <TextReveal>Everything Audit Bench Ai does, before you ship it.</TextReveal>
           </h1>
           <p className="mb-8 max-w-xl text-sm leading-relaxed text-muted-on-ink">
@@ -40,7 +40,7 @@ export default function FeaturesPage() {
             </Link>
             <Link
               href="/cli"
-              className="rounded-lg border border-ink-line px-5 py-3 text-sm font-bold text-muted-on-ink transition-all duration-200 hover:-translate-y-0.5 hover:border-cobalt/40 hover:text-[#E8ECF4]"
+              className="rounded-lg border border-ink-line px-5 py-3 text-sm font-bold text-muted-on-ink transition-all duration-200 hover:-translate-y-0.5 hover:border-cobalt/40 hover:text-white"
             >
               CLI docs
             </Link>
@@ -52,7 +52,7 @@ export default function FeaturesPage() {
 
       <section className="border-t border-ink-line bg-ink px-6 py-16 text-center">
         <ScrollReveal>
-          <h2 className="mb-3 text-2xl font-bold text-[#E8ECF4]">See it on your own code</h2>
+          <h2 className="mb-3 text-3xl sm:text-4xl text-white font-light tracking-[-0.03em]">See it on your own code</h2>
           <p className="mx-auto mb-6 max-w-md text-sm leading-relaxed text-muted-on-ink">
             No credit card required. Connect GitHub or GitLab, or upload a .zip, and get a real verdict on real code.
           </p>
@@ -65,7 +65,7 @@ export default function FeaturesPage() {
             </Link>
             <Link
               href="/pricing"
-              className="rounded-lg border border-ink-line px-5 py-3 text-sm font-bold text-muted-on-ink transition-all duration-200 hover:-translate-y-0.5 hover:border-cobalt/40 hover:text-[#E8ECF4]"
+              className="rounded-lg border border-ink-line px-5 py-3 text-sm font-bold text-muted-on-ink transition-all duration-200 hover:-translate-y-0.5 hover:border-cobalt/40 hover:text-white"
             >
               See pricing
             </Link>

@@ -4,6 +4,7 @@ import { PageTransition } from '@/components/motion/PageTransition';
 import { SmoothScroll } from '@/components/motion/SmoothScroll';
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
+import { Outfit } from "next/font/google";
 import { AuthProvider } from "@/lib/AuthContext";
 import { Navbar } from "@/components/Navbar";
 import { WebVitalsReporter } from "@/components/WebVitalsReporter";
@@ -11,6 +12,15 @@ import { AttributionCapture } from "@/components/AttributionCapture";
 import { StructuredData } from "@/components/StructuredData";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/seo";
 import "./globals.css";
+
+// Brand typeface (Brand Book: "Outfit. All the way."). Light for display,
+// regular for headings and body, medium for labels and UI.
+const outfit = Outfit({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-outfit",
+  display: "swap",
+});
 
 const ORGANIZATION_SCHEMA = {
   '@context': 'https://schema.org',
@@ -40,7 +50,7 @@ const WEBSITE_SCHEMA = {
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: `${SITE_NAME} — AI code review before it ships`,
+    default: `${SITE_NAME} — Build fast. Check what ships.`,
     template: `%s · ${SITE_NAME}`,
   },
   description: SITE_DESCRIPTION,
@@ -77,12 +87,12 @@ export const metadata: Metadata = {
     type: "website",
     url: SITE_URL,
     siteName: SITE_NAME,
-    title: `${SITE_NAME} — AI code review before it ships`,
+    title: `${SITE_NAME} — Build fast. Check what ships.`,
     description: SITE_DESCRIPTION,
   },
   twitter: {
     card: "summary_large_image",
-    title: `${SITE_NAME} — AI code review before it ships`,
+    title: `${SITE_NAME} — Build fast. Check what ships.`,
     description: SITE_DESCRIPTION,
   },
   robots: {
@@ -92,7 +102,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#10141c",
+  themeColor: "#080808",
 };
 
 export default function RootLayout({
@@ -101,7 +111,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="h-full antialiased">
+    <html lang="en" className={`${outfit.variable} h-full antialiased`}>
       <head>
         <link rel="manifest" href="/manifest.webmanifest" />
         {/* Google AdSense: site verification and ads. Kept as a plain <script>

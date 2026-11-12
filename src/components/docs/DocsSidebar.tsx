@@ -12,7 +12,7 @@ function NavList({ onNavigate }: { onNavigate?: () => void }) {
     <nav aria-label="Documentation" className="space-y-6">
       {DOC_GROUPS.map((group) => (
         <div key={group.title}>
-          <h2 className="mb-2 px-3 font-mono text-[10.5px] font-bold tracking-[0.14em] text-muted-on-ink uppercase">
+          <h2 className="mb-2 px-3 text-[10.5px] font-medium tracking-[0.14em] text-muted-on-ink uppercase">
             {group.title}
           </h2>
           <ul className="space-y-0.5">
@@ -27,8 +27,8 @@ function NavList({ onNavigate }: { onNavigate?: () => void }) {
                     aria-current={active ? 'page' : undefined}
                     className={`block rounded-md border-l-2 px-3 py-1.5 text-[13.5px] transition-colors ${
                       active
-                        ? 'border-cobalt bg-cobalt/10 font-semibold text-[#E8ECF4]'
-                        : 'border-transparent text-[#aeb7c8] hover:bg-ink-soft hover:text-[#E8ECF4]'
+                        ? 'border-cobalt bg-cobalt/10 font-semibold text-white'
+                        : 'border-transparent text-[#bdbdbd] hover:bg-ink-soft hover:text-white'
                     }`}
                   >
                     {page.title}
@@ -66,7 +66,7 @@ export function DocsSidebar() {
           onClick={() => setOpen(true)}
           aria-expanded={open}
           aria-controls="docs-drawer"
-          className="flex cursor-pointer items-center gap-2 rounded-md border border-ink-line px-3 py-1.5 text-sm font-semibold text-[#E8ECF4]"
+          className="flex cursor-pointer items-center gap-2 rounded-md border border-ink-line px-3 py-1.5 text-sm font-semibold text-white"
         >
           <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
             <path d="M4 6h16M4 12h16M4 18h16" strokeLinecap="round" />
@@ -87,10 +87,10 @@ export function DocsSidebar() {
             className="absolute inset-y-0 left-0 w-72 max-w-[85vw] overflow-y-auto border-r border-ink-line bg-ink px-4 py-6"
           >
             <div className="mb-5 flex items-center justify-between px-3">
-              <span className="text-sm font-bold text-[#E8ECF4]">Documentation</span>
+              <span className="text-sm font-bold text-white">Documentation</span>
               <button
                 onClick={() => setOpen(false)}
-                className="cursor-pointer text-sm text-muted-on-ink hover:text-[#E8ECF4]"
+                className="cursor-pointer text-sm text-muted-on-ink hover:text-white"
               >
                 Close
               </button>

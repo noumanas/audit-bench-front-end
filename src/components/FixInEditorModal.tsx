@@ -173,14 +173,14 @@ export function FixInEditorModal({
       <div className="flex h-[85vh] w-full max-w-6xl flex-col overflow-hidden rounded-xl border border-paper-line bg-paper-card shadow-2xl">
         <div className="flex items-center justify-between border-b border-paper-line px-5 py-3.5">
           <div className="min-w-0">
-            <div className="mb-0.5 font-mono text-[10px] font-bold tracking-wide text-muted-on-paper uppercase">
+            <div className="mb-0.5 text-[10px] font-medium tracking-wide text-muted-on-paper uppercase">
               Fix in editor
             </div>
-            <div className="truncate font-mono text-sm text-[#1C2128]">{path}</div>
+            <div className="truncate font-mono text-sm text-black">{path}</div>
           </div>
           <button
             onClick={onClose}
-            className="shrink-0 cursor-pointer rounded-md border border-paper-line px-3 py-1.5 text-xs font-semibold text-muted-on-paper hover:text-[#1C2128]"
+            className="shrink-0 cursor-pointer rounded-md border border-paper-line px-3 py-1.5 text-xs font-semibold text-muted-on-paper hover:text-black"
           >
             Close
           </button>
@@ -250,7 +250,7 @@ export function FixInEditorModal({
                       </div>
                     )}
                   </div>
-                  <div className="mb-2 font-mono text-[11px] font-bold tracking-wide text-muted-on-paper uppercase">
+                  <div className="mb-2 text-[11px] font-medium tracking-wide text-muted-on-paper uppercase">
                     {recheckResult.after.findings.length} finding{recheckResult.after.findings.length === 1 ? '' : 's'} now
                   </div>
                   {recheckResult.after.findings.length === 0 ? (
@@ -271,7 +271,7 @@ export function FixInEditorModal({
               ) : (
                 <>
                   <div className="mb-2 flex items-center justify-between">
-                    <div className="font-mono text-[11px] font-bold tracking-wide text-muted-on-paper uppercase">
+                    <div className="text-[11px] font-medium tracking-wide text-muted-on-paper uppercase">
                       {findings.length} finding{findings.length === 1 ? '' : 's'} in this file
                     </div>
                   </div>
@@ -353,7 +353,7 @@ export function FixInEditorModal({
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     placeholder="Commit message (optional)"
-                    className="w-full rounded-md border border-paper-line bg-paper px-2.5 py-1.5 text-xs text-[#1C2128] outline-none placeholder:text-muted-on-paper/70"
+                    className="w-full rounded-md border border-paper-line bg-paper px-2.5 py-1.5 text-xs text-black outline-none placeholder:text-muted-on-paper/70"
                   />
                   <button
                     onClick={handleCommit}

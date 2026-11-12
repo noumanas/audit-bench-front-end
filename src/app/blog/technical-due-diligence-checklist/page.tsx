@@ -97,7 +97,7 @@ function slugify(s: string) {
 function DownloadBox() {
   return (
     <div className="not-prose my-8 rounded-xl border border-cobalt/40 bg-cobalt/5 p-5">
-      <div className="text-base font-bold text-[#1C2128]">Free template: all {ALL} checks in a spreadsheet</div>
+      <div className="text-base font-bold text-black">Free template: all {ALL} checks in a spreadsheet</div>
       <p className="mt-1 text-sm leading-relaxed text-muted-on-paper">
         One row per check with what to look at, the red flag, severity, and empty columns for status, evidence and
         engineer-days to fix. Opens in Excel, Google Sheets or Numbers.
@@ -112,7 +112,7 @@ function DownloadBox() {
         </a>
         <Link
           href="/signup"
-          className="rounded-lg border border-paper-line bg-paper-card px-4 py-2 text-sm font-bold text-[#1C2128] no-underline hover:border-cobalt/40"
+          className="rounded-lg border border-paper-line bg-paper-card px-4 py-2 text-sm font-bold text-black no-underline hover:border-cobalt/40"
         >
           Run the {TOTAL} code checks automatically
         </Link>
@@ -127,10 +127,10 @@ function DownloadBox() {
 function AutomateCallout() {
   return (
     <div className="not-prose my-8 rounded-xl border border-ink-line bg-ink p-6">
-      <div className="font-mono text-[11px] font-bold tracking-[0.12em] text-cobalt uppercase">
+      <div className="text-[11px] font-medium tracking-[0.12em] text-cobalt uppercase">
         Skip the manual pass
       </div>
-      <div className="mt-2 text-lg leading-snug font-bold text-[#E8ECF4]">
+      <div className="mt-2 text-lg leading-snug font-bold text-white">
         {TOTAL} of these {ALL} checks run automatically on a repo — every finding priced in engineer-days.
       </div>
       <p className="mt-2 text-sm leading-relaxed text-muted-on-ink">
@@ -146,7 +146,7 @@ function AutomateCallout() {
         </Link>
         <a
           href={SAMPLE_REPORT_URL}
-          className="rounded-lg border border-ink-line px-4 py-2 text-sm font-bold text-muted-on-ink hover:border-cobalt/40 hover:text-[#E8ECF4]"
+          className="rounded-lg border border-ink-line px-4 py-2 text-sm font-bold text-muted-on-ink hover:border-cobalt/40 hover:text-white"
         >
           See a sample report (PDF)
         </a>
@@ -158,7 +158,7 @@ function AutomateCallout() {
 function AreaAutomationStrip({ area }: { area: TddChecklistArea }) {
   return (
     <div className="not-prose my-6 flex flex-wrap items-center justify-between gap-3 rounded-lg border border-cobalt/30 bg-cobalt/5 px-4 py-3">
-      <span className="text-sm text-[#1C2128]">
+      <span className="text-sm text-black">
         <span className="font-semibold">All {countChecks(area)} checks above run automatically</span> in {SITE_NAME}.
       </span>
       <Link href="/signup" className="text-sm font-bold whitespace-nowrap text-cobalt no-underline hover:underline">
@@ -186,10 +186,10 @@ function AreaSection({ area, index, automated }: { area: TddChecklistArea; index
                     aria-hidden="true"
                     className="inline-block h-4 w-4 shrink-0 rounded border-2 border-muted-on-paper"
                   />
-                  <span className="font-semibold text-[#1C2128]">{c.check}</span>
+                  <span className="font-semibold text-black">{c.check}</span>
                   <span className="ml-auto flex items-center gap-1.5">
                     {automated && (
-                      <span className="rounded border border-cobalt/40 px-1.5 py-0.5 font-mono text-[10px] font-bold text-cobalt uppercase">
+                      <span className="rounded border border-cobalt/40 px-1.5 py-0.5 text-[10px] font-medium text-cobalt uppercase">
                         Automated
                       </span>
                     )}
@@ -200,11 +200,11 @@ function AreaSection({ area, index, automated }: { area: TddChecklistArea; index
                     </span>
                   </span>
                 </div>
-                <p className="mt-2 text-sm leading-relaxed text-[#1C2128]">
+                <p className="mt-2 text-sm leading-relaxed text-black">
                   <span className="font-semibold">What to look at: </span>
                   {c.lookFor}
                 </p>
-                <p className="mt-1 text-sm leading-relaxed text-[#1C2128]">
+                <p className="mt-1 text-sm leading-relaxed text-black">
                   <span className="font-semibold text-critical">Red flag: </span>
                   {c.redFlag}
                 </p>
@@ -248,10 +248,10 @@ export default function TechnicalDueDiligenceChecklistPage() {
       <div className="not-prose my-6 overflow-x-auto">
         <table className="w-full min-w-[520px] border-collapse text-left text-sm">
           <thead>
-            <tr className="border-b-2 border-[#1C2128]">
-              <th className="py-2 pr-4 font-bold text-[#1C2128]">Risk area</th>
-              <th className="py-2 pr-4 font-bold text-[#1C2128]">Domains</th>
-              <th className="py-2 text-right font-bold text-[#1C2128]">Checks</th>
+            <tr className="border-b-2 border-black">
+              <th className="py-2 pr-4 font-bold text-black">Risk area</th>
+              <th className="py-2 pr-4 font-bold text-black">Domains</th>
+              <th className="py-2 text-right font-bold text-black">Checks</th>
             </tr>
           </thead>
           <tbody>
@@ -263,7 +263,7 @@ export default function TechnicalDueDiligenceChecklistPage() {
                   </a>
                 </td>
                 <td className="py-2 pr-4 align-top text-muted-on-paper">{a.domains.map((d) => d.name).join(', ')}</td>
-                <td className="py-2 text-right align-top font-mono text-[#1C2128]">{countChecks(a)}</td>
+                <td className="py-2 text-right align-top font-mono text-black">{countChecks(a)}</td>
               </tr>
             ))}
           </tbody>
@@ -390,7 +390,7 @@ export default function TechnicalDueDiligenceChecklistPage() {
       ))}
 
       <div className="not-prose mt-10 rounded-xl border border-ink-line bg-ink p-6 text-center">
-        <div className="text-xl font-bold text-[#E8ECF4]">Run the {TOTAL} code-level checks in minutes, not weeks</div>
+        <div className="text-xl font-bold text-white">Run the {TOTAL} code-level checks in minutes, not weeks</div>
         <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-muted-on-ink">
           {SITE_NAME} scans the target’s repositories, prices every finding in engineer-days, and gives you a report
           for the investment committee. Free to start, no credit card.
@@ -404,7 +404,7 @@ export default function TechnicalDueDiligenceChecklistPage() {
           </Link>
           <Link
             href="/due-diligence"
-            className="rounded-lg border border-ink-line px-5 py-2.5 text-sm font-bold text-muted-on-ink hover:border-cobalt/40 hover:text-[#E8ECF4]"
+            className="rounded-lg border border-ink-line px-5 py-2.5 text-sm font-bold text-muted-on-ink hover:border-cobalt/40 hover:text-white"
           >
             Need a full TDD report? →
           </Link>
