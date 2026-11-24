@@ -25,6 +25,9 @@ import {
   AdminUserUsageDetail,
   AnalyticsOverview,
   AnalyticsTrend,
+  ComplianceFramework,
+  ComplianceReport,
+  DoraMetrics,
   Audit,
   BenchmarkDifficulty,
   BenchmarkModel,
@@ -1128,6 +1131,27 @@ export function listAnalyticsRepos(): Promise<string[]> {
   return fetch(`${API_URL}/analytics/repos`, { headers: authHeaders() }).then(
     (res) => unwrap<string[]>(res),
   );
+}
+
+export function listDoraRepos(): Promise<string[]> {
+  return fetch(`${API_URL}/analytics/dora/repos`, { headers: authHeaders() }).then(
+    (res) => unwrap<string[]>(res),
+  );
+}
+
+export function getDoraMetrics(repo: string, days: number): Promise<DoraMetrics> {
+  return fetch(
+    `${API_URL}/analytics/dora?repo=${encodeURIComponent(repo)}&days=${days}`,
+    { headers: authHeaders() },
+  ).then((res) => unwrap<DoraMetrics>(res));
+}
+
+// ---------- Compliance ----------
+
+export function getComplianceReport(framework: ComplianceFramework, days: number): Promise<ComplianceReport> {
+  return fetch(`${API_URL}/compliance/report?framework=${framework}&days=${days}`, {
+    headers: authHeaders(),
+  }).then((res) => unwrap<ComplianceReport>(res));
 }
 
 // ---------- Contact form (public) ----------
