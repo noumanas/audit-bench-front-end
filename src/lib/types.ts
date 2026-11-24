@@ -248,6 +248,9 @@ export interface Usage {
   repoScansUsed: number;
   repoScanLimit: number | null;
   dueDiligence: boolean;
+  // DORA delivery metrics and the compliance evidence report (Team and Enterprise).
+  // Optional: absent from servers deployed before the feature, which treat it as off.
+  teamInsights?: boolean;
   // When the current paid plan lapses back to Free; null on Free.
   planExpiresAt: string | null;
   dailyResetsAt: string;
@@ -672,6 +675,77 @@ export interface TrendPoint {
 export interface AnalyticsTrend {
   windowDays: number;
   points: TrendPoint[];
+}
+
+export type DoraBand = 'elite' | 'high' | 'medium' | 'low';
+
+export interface DoraMetric {
+  value: number | null;
+  band: DoraBand | null;
+  sample: number;
+}
+
+export type ComplianceFramework = 'soc2' | 'iso27001';
+export type ComplianceSeverity = 'critical' | 'high' | 'medium' | 'low';
+
+export interface ComplianceEvidenceItem {
+  severity: ComplianceSeverity;
+  topic: string;
+  title: string;
+  location: string;
+  source: string;
+  sourceId: string;
+  date: string;
+  cwe: string[];
+  owasp: string | null;
+  controlIds: string[];
+}
+
+export interface ComplianceControl {
+  id: string;
+  title: string;
+  description: string;
+  status: 'attention' | 'evidence' | 'no_activity';
+  evidence: string[];
+  counts: Record<ComplianceSeverity, number>;
+  topics: Array<{ id: string; label: string; count: number }>;
+  items: ComplianceEvidenceItem[];
+  totalItems: number;
+}
+
+/** GET /compliance/report — review activity and findings mapped to SOC 2 or ISO 27001 controls. */
+export interface ComplianceReport {
+  framework: ComplianceFramework;
+  frameworkName: string;
+  windowDays: number;
+  generatedAt: string;
+  scope: {
+    prReviews: number;
+    repoScans: number;
+    audits: number;
+    repositories: number;
+    heldBack: number;
+    needsWork: number;
+    secretsChecks: number;
+    dependencyChecks: number;
+  };
+  summary: { attention: number; evidence: number; noActivity: number; items: number };
+  controls: ComplianceControl[];
+  allItems: ComplianceEvidenceItem[];
+  disclaimer: string;
+}
+
+/** GET /analytics/dora — the four DORA delivery metrics for one GitHub repository. */
+export interface DoraMetrics {
+  repo: string;
+  windowDays: number;
+  source: 'deployments' | 'merges';
+  deploymentFrequency: DoraMetric & { total: number };
+  leadTimeHours: DoraMetric;
+  changeFailureRate: DoraMetric & { failures: number };
+  timeToRestoreHours: DoraMetric;
+  basis: string;
+  generatedAt: string;
 }
 
 export interface ScanJob {

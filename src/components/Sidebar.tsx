@@ -109,6 +109,10 @@ const NAV_GROUPS = [
     links: [{ href: '/app/team', label: 'Team', icon: UsersIcon }],
   },
   {
+    label: 'Compliance',
+    links: [{ href: '/app/compliance', label: 'Compliance report', icon: ShieldIcon, tag: 'Team' }],
+  },
+  {
     label: 'Investors & M&A',
     links: [
       // Enterprise only — the page shows an upgrade prompt to other plans

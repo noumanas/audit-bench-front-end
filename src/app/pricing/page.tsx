@@ -18,12 +18,19 @@ const TIER_COPY: Record<string, { blurb: string; extras: string[] }> = {
   },
   pro: {
     blurb: 'For individual developers shipping AI-assisted code daily.',
-    extras: ['Repository scans', 'Dependency graph & dead code analysis', 'Priority model access'],
+    extras: [
+      'Repository scans',
+      'Large pull requests reviewed in full',
+      'Dependency graph & dead code analysis',
+      'Priority model access',
+    ],
   },
   team: {
     blurb: 'For teams that want shared visibility across a codebase.',
     extras: [
       'Everything in Pro',
+      'DORA delivery metrics per repository',
+      'SOC 2 & ISO 27001 compliance evidence reports',
       'Alignment Lab — AI red-teaming & hidden-behavior testing',
       'Organization-wide reports (roadmap)',
       'Shared audit history (roadmap)',

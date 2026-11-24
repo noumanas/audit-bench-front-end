@@ -11,6 +11,7 @@ import { PlanPanel } from '@/components/PlanPanel';
 import { UsageStrip } from '@/components/UsageStrip';
 import { RequireAuth } from '@/components/RequireAuth';
 import { AnalyticsSection } from '@/components/analytics/AnalyticsSection';
+import { DoraSection } from '@/components/analytics/DoraSection';
 import { PageHeader } from '@/components/PageHeader';
 import { useAuth } from '@/lib/AuthContext';
 import { formatDateTime, timeAgo } from '@/lib/time';
@@ -317,6 +318,7 @@ function DashboardPageInner() {
           )}
 
           {!isNew && <AnalyticsSection />}
+          {!isNew && <DoraSection />}
         </>
       )}
 
