@@ -9,7 +9,7 @@ function apiOrigin(): string {
   try {
     return new URL(
       process.env.NEXT_PUBLIC_API_URL ||
-        "https://audit-bench-backend-git-242355763105.europe-west1.run.app",
+        "https://audit-bench-backend-git-1043712126325.us-central1.run.app",
     ).origin;
   } catch {
     return "";
@@ -28,7 +28,8 @@ function contentSecurityPolicy(): string {
       "https://www.googletagmanager.com https://*.googlesyndication.com https://*.google.com https://*.googletagservices.com https://*.doubleclick.net https://*.adtrafficquality.google",
     connect:
       "https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net https://*.adtrafficquality.google",
-    frame: "https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com https://*.adtrafficquality.google",
+    frame:
+      "https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com https://*.adtrafficquality.google",
   };
   return [
     `default-src 'self'`,
@@ -49,7 +50,7 @@ function contentSecurityPolicy(): string {
     `base-uri 'self'`,
     // github.com: the admin "Create the GitHub App" button posts GitHub's app-manifest form there.
     `form-action 'self' https://github.com`,
-  ].join('; ');
+  ].join("; ");
 }
 
 const nextConfig: NextConfig = {
@@ -74,7 +75,10 @@ const nextConfig: NextConfig = {
           { key: "X-Frame-Options", value: "DENY" },
           { key: "X-Content-Type-Options", value: "nosniff" },
           { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-          { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
+          {
+            key: "Strict-Transport-Security",
+            value: "max-age=63072000; includeSubDomains; preload",
+          },
         ],
       },
     ];

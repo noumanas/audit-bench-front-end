@@ -60,7 +60,7 @@ import { readAttribution } from "./attribution";
 
 export const API_URL =
   process.env.NEXT_PUBLIC_API_URL ||
-  "https://audit-bench-backend-git-242355763105.europe-west1.run.app";
+  "https://audit-bench-backend-git-1043712126325.us-central1.run.app";
 const TOKEN_KEY = "auditbench_token";
 
 export function getToken(): string | null {
@@ -135,7 +135,12 @@ export function signup(
   return fetch(`${API_URL}/auth/signup`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, password, name, attribution: readAttribution() }),
+    body: JSON.stringify({
+      email,
+      password,
+      name,
+      attribution: readAttribution(),
+    }),
   }).then((res) => unwrap<AuthResponse>(res));
 }
 
@@ -159,7 +164,10 @@ export function requestPasswordReset(email: string): Promise<{ ok: true }> {
 }
 
 /** Step 2: the code from the email, traded for a short-lived reset token. */
-export function verifyPasswordResetCode(email: string, code: string): Promise<{ resetToken: string }> {
+export function verifyPasswordResetCode(
+  email: string,
+  code: string,
+): Promise<{ resetToken: string }> {
   return fetch(`${API_URL}/auth/forgot-password/verify`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -168,7 +176,11 @@ export function verifyPasswordResetCode(email: string, code: string): Promise<{ 
 }
 
 /** Step 3: sets the new password and returns a fresh session (other sessions are signed out). */
-export function resetPassword(email: string, resetToken: string, password: string): Promise<AuthResponse> {
+export function resetPassword(
+  email: string,
+  resetToken: string,
+  password: string,
+): Promise<AuthResponse> {
   return fetch(`${API_URL}/auth/reset-password`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -432,27 +444,28 @@ export function listAdminActivity(params: {
 }): Promise<ActivityPage> {
   const query = new URLSearchParams();
   for (const [k, v] of Object.entries(params)) if (v) query.set(k, v);
-  return fetch(`${API_URL}/admin/activity?${query}`, { headers: authHeaders() }).then((res) =>
-    unwrap<ActivityPage>(res),
-  );
+  return fetch(`${API_URL}/admin/activity?${query}`, {
+    headers: authHeaders(),
+  }).then((res) => unwrap<ActivityPage>(res));
 }
 
 export function getAdminActivitySummary(): Promise<ActivitySummary> {
-  return fetch(`${API_URL}/admin/activity/summary`, { headers: authHeaders() }).then((res) =>
-    unwrap<ActivitySummary>(res),
-  );
+  return fetch(`${API_URL}/admin/activity/summary`, {
+    headers: authHeaders(),
+  }).then((res) => unwrap<ActivitySummary>(res));
 }
 
 export function getAdminNotifications(): Promise<AdminNotifications> {
-  return fetch(`${API_URL}/admin/notifications`, { headers: authHeaders() }).then((res) =>
-    unwrap<AdminNotifications>(res),
-  );
+  return fetch(`${API_URL}/admin/notifications`, {
+    headers: authHeaders(),
+  }).then((res) => unwrap<AdminNotifications>(res));
 }
 
 export function markAdminNotificationsSeen(): Promise<{ ok: true }> {
-  return fetch(`${API_URL}/admin/notifications/seen`, { method: "POST", headers: authHeaders() }).then((res) =>
-    unwrap<{ ok: true }>(res),
-  );
+  return fetch(`${API_URL}/admin/notifications/seen`, {
+    method: "POST",
+    headers: authHeaders(),
+  }).then((res) => unwrap<{ ok: true }>(res));
 }
 
 // ---------- Audits ----------
@@ -829,16 +842,20 @@ export function getReviewOutcomes(): Promise<ReviewOutcomes> {
 }
 
 export function getReviewQuality(): Promise<ReviewQuality> {
-  return fetch(`${API_URL}/review-rules/quality`, { headers: authHeaders() }).then((res) => unwrap<ReviewQuality>(res));
+  return fetch(`${API_URL}/review-rules/quality`, {
+    headers: authHeaders(),
+  }).then((res) => unwrap<ReviewQuality>(res));
 }
 
 export function getReviewSettings(): Promise<ReviewSettings> {
-  return fetch(`${API_URL}/review-rules/settings`, { headers: authHeaders() }).then((res) =>
-    unwrap<ReviewSettings>(res),
-  );
+  return fetch(`${API_URL}/review-rules/settings`, {
+    headers: authHeaders(),
+  }).then((res) => unwrap<ReviewSettings>(res));
 }
 
-export function updateReviewSettings(input: Partial<ReviewThresholds>): Promise<ReviewThresholds> {
+export function updateReviewSettings(
+  input: Partial<ReviewThresholds>,
+): Promise<ReviewThresholds> {
   return fetch(`${API_URL}/review-rules/settings`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json", ...authHeaders() },
@@ -848,9 +865,9 @@ export function updateReviewSettings(input: Partial<ReviewThresholds>): Promise<
 
 /** Admins: review usefulness across every team. */
 export function getAdminReviewQuality(days = 90): Promise<ReviewQuality> {
-  return fetch(`${API_URL}/admin/review-quality?days=${days}`, { headers: authHeaders() }).then((res) =>
-    unwrap<ReviewQuality>(res),
-  );
+  return fetch(`${API_URL}/admin/review-quality?days=${days}`, {
+    headers: authHeaders(),
+  }).then((res) => unwrap<ReviewQuality>(res));
 }
 
 export function createReviewRule(input: {
@@ -1134,12 +1151,15 @@ export function listAnalyticsRepos(): Promise<string[]> {
 }
 
 export function listDoraRepos(): Promise<string[]> {
-  return fetch(`${API_URL}/analytics/dora/repos`, { headers: authHeaders() }).then(
-    (res) => unwrap<string[]>(res),
-  );
+  return fetch(`${API_URL}/analytics/dora/repos`, {
+    headers: authHeaders(),
+  }).then((res) => unwrap<string[]>(res));
 }
 
-export function getDoraMetrics(repo: string, days: number): Promise<DoraMetrics> {
+export function getDoraMetrics(
+  repo: string,
+  days: number,
+): Promise<DoraMetrics> {
   return fetch(
     `${API_URL}/analytics/dora?repo=${encodeURIComponent(repo)}&days=${days}`,
     { headers: authHeaders() },
@@ -1148,10 +1168,16 @@ export function getDoraMetrics(repo: string, days: number): Promise<DoraMetrics>
 
 // ---------- Compliance ----------
 
-export function getComplianceReport(framework: ComplianceFramework, days: number): Promise<ComplianceReport> {
-  return fetch(`${API_URL}/compliance/report?framework=${framework}&days=${days}`, {
-    headers: authHeaders(),
-  }).then((res) => unwrap<ComplianceReport>(res));
+export function getComplianceReport(
+  framework: ComplianceFramework,
+  days: number,
+): Promise<ComplianceReport> {
+  return fetch(
+    `${API_URL}/compliance/report?framework=${framework}&days=${days}`,
+    {
+      headers: authHeaders(),
+    },
+  ).then((res) => unwrap<ComplianceReport>(res));
 }
 
 // ---------- Contact form (public) ----------
